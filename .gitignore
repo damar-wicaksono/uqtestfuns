@@ -25,3 +25,4 @@ MANIFEST
 
 # Unit test / coverage
 .coverage
+.tox
