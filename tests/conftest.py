@@ -1,0 +1,58 @@
+"""
+This is the conftest module for UQTestFuns.
+
+All global fixtures are defined here.
+"""
+import numpy as np
+import random
+import string
+from typing import List, Dict
+
+from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
+
+
+def create_random_alphanumeric(length: int) -> str:
+    """Create a random alphanumeric string of a given length.
+
+    Parameters
+    ----------
+    length : int
+        Length of the string
+
+    Returns
+    -------
+    str
+        A random alphanumeric string of the given length.
+    """
+
+    out = "".join(
+        random.choice(string.ascii_letters+string.digits) for _ in range(length)
+    )
+
+    return out
+
+
+def create_random_input_dicts(length: int) -> List[Dict]:
+    """Create a random multivariate input dictionaries.
+
+    Parameters
+    ----------
+    length : int
+        Length of the list of dictionaries.
+
+    Returns
+    -------
+    List[Dict]
+        List of dictionaries to specify a MultivariateInput class.
+    """
+    input_dicts = []
+
+    for i in range(length):
+        input_dicts.append(
+            {"name": f"X{i+1}",
+             "distribution": random.choice(SUPPORTED_MARGINALS),
+             "parameters": np.sort(np.random.rand(2))
+             }
+        )
+
+    return input_dicts
