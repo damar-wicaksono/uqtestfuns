@@ -51,7 +51,8 @@ def create_random_input_dicts(length: int) -> List[Dict]:
         input_dicts.append(
             {"name": f"X{i+1}",
              "distribution": random.choice(SUPPORTED_MARGINALS),
-             "parameters": np.sort(np.random.rand(2))
+             "parameters": np.sort(np.random.rand(2)),
+             "description": create_random_alphanumeric(10)
              }
         )
 

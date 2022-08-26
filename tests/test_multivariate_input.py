@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-import random
+from tabulate import tabulate
 
 from uqtestfuns.core.prob_input.multivariate_input import MultivariateInput
 from conftest import create_random_input_dicts
@@ -138,6 +138,55 @@ def test_transform_dependent_sample():
     with pytest.raises(ValueError) as e_info:
         my_multivariate_input_1.copulas = []
         my_multivariate_input_1.transform_sample(my_multivariate_input_2, xx)
+
+
+def test_str():
+    """Test __str__ method of an instance of MultivariateInput."""
+
+    # Create a test instance
+    input_dicts = create_random_input_dicts(2)
+    my_multivariate_input = MultivariateInput(input_dicts)
+
+    # Create the reference string
+    header_names = ["name", "distribution", "parameters", "description"]
+    str_ref = [
+        [i+1] + list(map(input_dict.get, header_names)) for
+        i, input_dict in enumerate(input_dicts)
+    ]
+    header_names.insert(0, "No.")
+    str_ref = tabulate(
+        str_ref,
+        headers=list(map(str.capitalize, header_names)),
+        stralign="center"
+    )
+
+    # Assertion
+    assert my_multivariate_input.__str__() == str_ref
+
+
+def test_repr_html():
+    """Test _repr_html_ method of an instance of MultivariateInput."""
+
+    # Create a test instance
+    input_dicts = create_random_input_dicts(5)
+    my_multivariate_input = MultivariateInput(input_dicts)
+
+    # Create the reference string
+    header_names = ["name", "distribution", "parameters", "description"]
+    str_ref = [
+        [i+1] + list(map(input_dict.get, header_names)) for
+        i, input_dict in enumerate(input_dicts)
+    ]
+    header_names.insert(0, "No.")
+    str_ref = tabulate(
+        str_ref,
+        headers=list(map(str.capitalize, header_names)),
+        stralign="center",
+        tablefmt="html"
+    )
+
+    # Assertion
+    assert my_multivariate_input._repr_html_() == str_ref
 
 #
 # def test_get_cdf_values():
