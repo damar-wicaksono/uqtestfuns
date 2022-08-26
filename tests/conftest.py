@@ -56,3 +56,15 @@ def create_random_input_dicts(length: int) -> List[Dict]:
         )
 
     return input_dicts
+
+
+def assert_call(fct, *args, **kwargs):
+    """Assert that a call runs as expected."""
+    try:
+        fct(*args, **kwargs)
+    except Exception as e:
+        print(type(e))
+        raise AssertionError(
+            f"The function was not called properly. "
+            f"It raised the exception:\n\n {e.__class__.__name__}: {e}"
+        )
