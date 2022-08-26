@@ -73,13 +73,13 @@ class MultivariateInput:
             name="X", distribution="uniform", parameters=[0, 1]
         )
 
-        xx = np.empty((sample_size, self.spatial_dimension))
+        xx = np.random.rand(sample_size, self.spatial_dimension)
         # Transform the sample in [0, 1] to the domain of the distribution
         if self.copulas is None:
             # Independent inputs generate sample marginal by marginal
             for idx_dim, marginal in enumerate(self.marginals):
                 xx[:, idx_dim] = univ_input.transform_sample(
-                    marginal, univ_input.get_sample(sample_size)
+                    marginal, xx[:, idx_dim]
                 )
         else:
             raise ValueError("Copulas are not currently supported!")
