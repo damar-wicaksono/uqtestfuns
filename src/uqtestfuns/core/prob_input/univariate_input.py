@@ -36,6 +36,7 @@ class UnivariateInput:
     name: str
     distribution: str
     parameters: Union[List, np.ndarray]
+    description: str = None
     lower: float = field(init=False, repr=False)
     upper: float = field(init=False, repr=False)
 

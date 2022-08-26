@@ -51,8 +51,21 @@ def create_random_input_dicts(length: int) -> List[Dict]:
         input_dicts.append(
             {"name": f"X{i+1}",
              "distribution": random.choice(SUPPORTED_MARGINALS),
-             "parameters": np.sort(np.random.rand(2))
+             "parameters": np.sort(np.random.rand(2)),
+             "description": create_random_alphanumeric(10)
              }
         )
 
     return input_dicts
+
+
+def assert_call(fct, *args, **kwargs):
+    """Assert that a call runs as expected."""
+    try:
+        fct(*args, **kwargs)
+    except Exception as e:
+        print(type(e))
+        raise AssertionError(
+            f"The function was not called properly. "
+            f"It raised the exception:\n\n {e.__class__.__name__}: {e}"
+        )

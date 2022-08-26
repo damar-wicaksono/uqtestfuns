@@ -6,8 +6,9 @@ Each multivariate input has a set of marginals defined by an instance of
 the UnivariateInput class.
 """
 import numpy as np
-from dataclasses import dataclass, InitVar, field
+from tabulate import tabulate
 from typing import List, Dict, Any
+from dataclasses import dataclass, InitVar, field, fields
 
 from .univariate_input import UnivariateInput
 
@@ -73,13 +74,13 @@ class MultivariateInput:
             name="X", distribution="uniform", parameters=[0, 1]
         )
 
-        xx = np.empty((sample_size, self.spatial_dimension))
+        xx = np.random.rand(sample_size, self.spatial_dimension)
         # Transform the sample in [0, 1] to the domain of the distribution
         if self.copulas is None:
             # Independent inputs generate sample marginal by marginal
             for idx_dim, marginal in enumerate(self.marginals):
                 xx[:, idx_dim] = univ_input.transform_sample(
-                    marginal, univ_input.get_sample(sample_size)
+                    marginal, xx[:, idx_dim]
                 )
         else:
             raise ValueError("Copulas are not currently supported!")
@@ -109,3 +110,58 @@ class MultivariateInput:
             raise ValueError("Copulas are not currently supported!")
 
         return yy
+
+    def __str__(self):
+
+        # Get the header names
+        header_names = get_repr_names(self.marginals[0])
+        header_names = [name.capitalize() for name in header_names]
+        header_names.insert(0, "No.")
+
+        # Get the values for each field as a list
+        list_values = get_values_as_list(self.marginals)
+
+        return tabulate(
+            list_values,
+            headers=header_names,
+            stralign="center"
+        )
+
+    def _repr_html_(self):
+        # Get the header names
+        header_names = get_repr_names(self.marginals[0])
+        header_names = [name.capitalize() for name in header_names]
+        header_names.insert(0, "No.")
+
+        # Get the values for each field as a list
+        list_values = get_values_as_list(self.marginals)
+
+        return tabulate(
+            list_values,
+            headers=header_names,
+            stralign="center",
+            tablefmt="html"
+        )
+
+
+def get_repr_names(univariate_input: UnivariateInput):
+    """Get the field names of UnivariateInput w/ repr attribute set to True."""
+    repr_names = []
+    for univariate_field in fields(univariate_input):
+        if univariate_field.repr:
+            repr_names.append(univariate_field.name)
+
+    return repr_names
+
+
+def get_values_as_list(univariate_inputs: list):
+    """"""
+    list_values = []
+    for i, marginal in enumerate(univariate_inputs):
+        values = [i+1]
+        for marginal_field in fields(marginal):
+            if marginal_field.repr:
+                values.append(getattr(marginal, marginal_field.name))
+        list_values.append(values)
+
+    return list_values
