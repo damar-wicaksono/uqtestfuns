@@ -1,7 +1,7 @@
 """
 
 """
-from . import wing_weight
+from . import wing_weight, ishigami
 
 
 def get_default_args(fun_name: str):
@@ -10,6 +10,8 @@ def get_default_args(fun_name: str):
 
     if fun_name == "wing weight":
         mod_name = wing_weight
+    elif fun_name == "ishigami":
+        mod_name = ishigami
     else:
         raise ValueError("Test function name is not supported!")
 
