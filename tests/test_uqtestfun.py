@@ -2,8 +2,10 @@ import numpy as np
 import pytest
 from inspect import signature
 
-from uqtestfuns import UQTestFun, MultivariateInput
-from conftest import assert_call, create_random_input_dicts
+from uqtestfuns import UQTestFun, MultivariateInput, get_default_args
+from conftest import (
+    assert_call, create_random_input_dicts, create_random_alphanumeric
+)
 
 
 @pytest.fixture
@@ -56,3 +58,9 @@ def test_str(uqtestfun):
               f"{signature(uqtestfun_instance.evaluate)}"
 
     assert uqtestfun_instance.__str__() == str_ref
+
+
+def test_unsupported_fun():
+    """Test getting the default arguments of an unsupported test function."""
+    with pytest.raises(ValueError):
+        get_default_args(create_random_alphanumeric(10))

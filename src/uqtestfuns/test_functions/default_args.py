@@ -10,6 +10,8 @@ def get_default_args(fun_name: str):
 
     if fun_name == "wing weight":
         mod_name = wing_weight
+    else:
+        raise ValueError("Test function name is not supported!")
 
     default_args = {
         "name": mod_name.DEFAULT_NAME,
