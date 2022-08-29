@@ -1,0 +1,19 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+parts:
+- caption: Introduction
+  chapters:
+    - file: markdown
+    - file: notebooks
+    - file: markdown-notebooks
+- caption: Test Functions
+  chapters:
+    - file: test_functions/wing_weight
+- caption: Reference
+  chapters:
+  - file: api
+    sections:
+    - file: api/wing_weight
