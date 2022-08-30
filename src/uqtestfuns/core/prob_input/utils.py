@@ -2,17 +2,21 @@
 Utility module for probabilistic input modeling.
 """
 
-from .univariate_distributions import uniform
+from .univariate_distributions import uniform, lognormal
 
-SUPPORTED_MARGINALS = ["uniform"] #, "normal", "lognormal"]
+SUPPORTED_MARGINALS = {
+    "uniform": uniform,
+    "lognormal": lognormal
+}
 
 
 def get_distribution_module(distribution: str):  # pragma: no cover
     """Get the relevant module corresponding to the distribution."""
-    if distribution == "uniform":
-        distribution_module = uniform
+
+    distribution_module = SUPPORTED_MARGINALS[distribution]
 
     return distribution_module
+
 
 def verify_distribution(distribution: str):
     """Verify the type of distribution.
@@ -58,7 +62,7 @@ def verify_parameters(distribution, parameters):
     distribution_module.verify_parameters(parameters)
 
 
-def get_pdf_values(xx, distribution, parameters):
+def get_pdf_values(xx, distribution, parameters, lower_bound, upper_bound):
     """Get the PDF values of the distribution on a set of sample points.
 
     Notes
@@ -67,10 +71,10 @@ def get_pdf_values(xx, distribution, parameters):
     """
     distribution_module = get_distribution_module(distribution)
 
-    return distribution_module.pdf(xx, parameters)
+    return distribution_module.pdf(xx, parameters, lower_bound, upper_bound)
 
 
-def get_cdf_values(xx, distribution, parameters):
+def get_cdf_values(xx, distribution, parameters, lower_bound, upper_bound):
     """Get the CDF values of the distribution on a set of sample points.
 
     Notes
@@ -79,10 +83,10 @@ def get_cdf_values(xx, distribution, parameters):
     """
     distribution_module = get_distribution_module(distribution)
 
-    return distribution_module.cdf(xx, parameters)
+    return distribution_module.cdf(xx, parameters, lower_bound, upper_bound)
 
 
-def get_icdf_values(xx, distribution, parameters):
+def get_icdf_values(xx, distribution, parameters, lower_bound, upper_bound):
     """Get the inverse CDF values of the distribution on a set of sample points.
 
     Notes
@@ -92,4 +96,4 @@ def get_icdf_values(xx, distribution, parameters):
     """
     distribution_module = get_distribution_module(distribution)
 
-    return distribution_module.icdf(xx, parameters)
+    return distribution_module.icdf(xx, parameters, lower_bound, upper_bound)

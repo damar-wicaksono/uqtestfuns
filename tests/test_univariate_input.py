@@ -1,40 +1,46 @@
+"""
+Test module for UnivariateInput instances.
+"""
 import pytest
 import numpy as np
-import random
 
 from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 from conftest import create_random_alphanumeric
 
 
-def test_create_instance_numpy_parameters():
-    """Test the creation of UnivariateInput instance with np.array as params."""
+MARGINALS = list(SUPPORTED_MARGINALS.keys())
+
+
+@pytest.fixture(params=MARGINALS)
+def univariate_input(request):
+    """Test fixture, an instance of UnivariateInput"""
     name = create_random_alphanumeric(8)
-    distribution = random.choice(SUPPORTED_MARGINALS)
-    parameters = np.sort(np.random.rand(2))
+    distribution = request.param
+    if request.param == "uniform":
+        parameters = np.sort(np.random.rand(2))
+    else:
+        parameters = [5 * np.random.rand(1), 1 + 5 * np.random.rand(1)]
 
-    my_univariate_input = UnivariateInput(
-        name=name, distribution=distribution, parameters=parameters
-    )
+    specs = {
+        "name": name,
+        "distribution": distribution,
+        "parameters": parameters
+    }
 
-    assert my_univariate_input.name == name
-    assert my_univariate_input.distribution == distribution.lower()
-    assert np.allclose(my_univariate_input.parameters, parameters)
+    my_univariate_input = UnivariateInput(**specs)
+
+    return my_univariate_input, specs
 
 
-def test_create_instance_list_parameters():
-    """Test the creation of UnivariateInput instance with list as params."""
-    name = create_random_alphanumeric(10)
-    distribution = random.choice(SUPPORTED_MARGINALS)
-    parameters = list(np.sort(np.random.rand(2)))
+def test_create_instance(univariate_input):
+    """Test the creation of UnivariateInput instance with np.array as params."""
 
-    my_univariate_input = UnivariateInput(
-        name=name, distribution=distribution, parameters=parameters
-    )
+    my_univariate_input, specs = univariate_input
 
-    assert my_univariate_input.name == name
-    assert my_univariate_input.distribution == distribution.lower()
-    assert np.allclose(my_univariate_input.parameters, parameters)
+    assert my_univariate_input.name == specs["name"]
+    assert my_univariate_input.distribution == specs["distribution"].lower()
+    assert np.allclose(my_univariate_input.parameters, specs["parameters"])
 
 
 def test_create_instance_unsupported_marginal():
@@ -43,68 +49,52 @@ def test_create_instance_unsupported_marginal():
     distribution = create_random_alphanumeric(10)
     parameters = list(np.sort(np.random.rand(2)))
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         UnivariateInput(
             name=name, distribution=distribution, parameters=parameters
         )
 
 
-def test_failed_parameter_verification():
-    name = create_random_alphanumeric(5)
-    distribution = random.choice(SUPPORTED_MARGINALS)
-    parameters = np.array([10., 4.])
-
-    with pytest.raises(ValueError) as e_info:
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
-
-
-def test_generate_sample():
+def test_generate_sample(univariate_input):
     """Test sample generation from an instance of UnivariateInput."""
-    name = create_random_alphanumeric(10)
-    distribution = "uniform"
-    parameters = list(np.sort(np.random.rand(2)))
 
-    my_univariate_input = UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
+    my_univariate_input, _ = univariate_input
 
-    sample_size = 124
+    sample_size = 1000
     xx = my_univariate_input.get_sample(sample_size)
 
-    assert len(xx) == sample_size # Test the length
+    assert len(xx) == sample_size  # Test the length
     assert np.min(xx) >= my_univariate_input.lower  # Test the lower bound
     assert np.max(xx) <= my_univariate_input.upper  # Test the upper bound
 
 
-def test_get_pdf_values():
+def test_get_pdf_values(univariate_input):
     """Test the PDF values from an instance of UnivariateInput."""
-    name = create_random_alphanumeric(10)
-    distribution = "uniform"
-    parameters = list(np.sort(np.random.rand(2)))
 
-    my_univariate_input = UnivariateInput(
-        name=name, distribution=distribution, parameters=parameters
-    )
+    my_univariate_input, _ = univariate_input
 
     sample_size = 1000
     xx = my_univariate_input.get_sample(sample_size)
 
     # Assertions
-    assert np.min(xx) >= my_univariate_input.lower
-    assert np.max(xx) <= my_univariate_input.upper
-
-
-def test_get_cdf_values():
-    """Test the CDF values from an instance of UnivariateInput."""
-    name = create_random_alphanumeric(10)
-    distribution = "uniform"
-    parameters = list(np.sort(np.random.rand(2)))
-
-    my_univariate_input = UnivariateInput(
-        name=name, distribution=distribution, parameters=parameters
+    assert my_univariate_input.pdf(my_univariate_input.lower-0.1) <= 1e-15
+    assert my_univariate_input.pdf(my_univariate_input.upper+0.1) <= 1e-15
+    assert np.all(
+        np.logical_and(
+            my_univariate_input.pdf(xx) >= my_univariate_input.pdf(
+                my_univariate_input.lower
+            ),
+            my_univariate_input.pdf(xx) >= my_univariate_input.pdf(
+                my_univariate_input.upper
+            )
+        )
     )
+
+
+def test_get_cdf_values(univariate_input):
+    """Test the CDF values from an instance of UnivariateInput."""
+
+    my_univariate_input, _ = univariate_input
 
     sample_size = 10000
     xx = my_univariate_input.get_sample(sample_size)
@@ -121,18 +111,12 @@ def test_get_cdf_values():
     )  # Test the upper bound of CDF
 
 
-def test_get_icdf_values():
+def test_get_icdf_values(univariate_input):
     """Test the inverse CDF values from an instance of UnivariateInput."""
-    name = create_random_alphanumeric(10)
-    distribution = "uniform"
-    parameters = np.sort(np.random.rand(2))
-
-    my_univariate_input = UnivariateInput(
-        name=name, distribution=distribution, parameters=parameters
-    )
+    my_univariate_input, _ = univariate_input
 
     sample_size = 10000
-    xx = my_univariate_input.get_sample(sample_size)
+    xx = np.random.rand(sample_size)
     icdf_values = my_univariate_input.icdf(xx)
 
     # Assertions
@@ -148,6 +132,7 @@ def test_get_icdf_values():
     assert np.isclose(
         my_univariate_input.icdf(1.0), my_univariate_input.upper
     )
+
 
 def test_transform_sample():
     """Test the transformation of sample values from one dist. to another."""
@@ -171,7 +156,7 @@ def test_transform_sample():
     )
 
     xx_trans = my_univariate_input_1.transform_sample(
-        my_univariate_input_2, xx
+        xx, my_univariate_input_2
     )
 
     # Assertions
@@ -192,7 +177,5 @@ def test_failed_transform_sample():
     sample_size = 1000
     xx = my_univariate_input.get_sample(sample_size)
 
-    with pytest.raises(TypeError) as e_info:
-        my_univariate_input.transform_sample(
-            [], xx
-        )
+    with pytest.raises(TypeError):
+        my_univariate_input.transform_sample(xx, [])

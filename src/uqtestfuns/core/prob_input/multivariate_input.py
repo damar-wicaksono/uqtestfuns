@@ -61,7 +61,7 @@ class MultivariateInput:
             for idx_dim, (marginal_self, marginal_other) in \
                     enumerate(zip(self.marginals, other.marginals)):
                 xx_trans[:, idx_dim] = marginal_self.transform_sample(
-                    marginal_other, xx[:, idx_dim]
+                    xx[:, idx_dim], marginal_other
                 )
         else:
             raise ValueError("Copulas are not currently supported!")
@@ -81,7 +81,7 @@ class MultivariateInput:
             # Independent inputs generate sample marginal by marginal
             for idx_dim, marginal in enumerate(self.marginals):
                 xx[:, idx_dim] = univ_input.transform_sample(
-                    marginal, xx[:, idx_dim]
+                    xx[:, idx_dim], marginal
                 )
         else:
             raise ValueError("Copulas are not currently supported!")
