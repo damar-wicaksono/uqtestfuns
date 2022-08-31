@@ -1,17 +1,18 @@
 """
 
 """
-from . import wing_weight, ishigami
+from . import wing_weight, ishigami, borehole
 from ..core import UQTestFun
 
 
-__all__ = ["get_default_args", "create_from_default"]
+__all__ = ["get_default_args", "create_from_default", "AVAILABLE_FUNCTIONS"]
 
 
 # Register all the test functions with implementations here
 AVAILABLE_FUNCTIONS = {
-    "ishigami": ishigami,
-    "wing weight": wing_weight,
+    borehole.DEFAULT_NAME.lower(): borehole,
+    ishigami.DEFAULT_NAME.lower(): ishigami,
+    wing_weight.DEFAULT_NAME.lower(): wing_weight,
 }
 
 

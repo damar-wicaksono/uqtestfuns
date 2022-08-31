@@ -1,5 +1,5 @@
 """
-Test module specifically for UnivariateInput instances with Lognormal dist.
+Test module specifically for UnivariateInput instances with lognormal dist.
 """
 import pytest
 import numpy as np
@@ -9,7 +9,7 @@ from conftest import create_random_alphanumeric
 
 
 def test_wrong_number_of_parameters():
-    """Test the failure of specifying the parameters wrongly."""
+    """Test the failure of specifying invalid parameter values."""
     name = create_random_alphanumeric(5)
     distribution = "lognormal"
     # Lognormal distribution expects 2 parameters not 3!
