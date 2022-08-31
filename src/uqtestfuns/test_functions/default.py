@@ -5,7 +5,7 @@ from . import wing_weight, ishigami, borehole
 from ..core import UQTestFun
 
 
-__all__ = ["get_default_args", "create_from_default"]
+__all__ = ["get_default_args", "create_from_default", "AVAILABLE_FUNCTIONS"]
 
 
 # Register all the test functions with implementations here
