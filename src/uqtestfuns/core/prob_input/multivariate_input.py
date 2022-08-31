@@ -7,7 +7,7 @@ the UnivariateInput class.
 """
 import numpy as np
 from tabulate import tabulate
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union, Tuple
 from dataclasses import dataclass, InitVar, field, fields
 
 from .univariate_input import UnivariateInput
@@ -36,15 +36,16 @@ class MultivariateInput:
         List of dictionaries that defines each of the univariate inputs.
     """
     spatial_dimension: int = field(init=False)
-    marginals: List[UnivariateInput] = field(init=False)
-    univariate_inputs: InitVar[List[Dict]] = None
+    marginals: Tuple[UnivariateInput] = field(init=False)
+    univariate_inputs: InitVar[Union[List[Dict], Tuple[Dict]]] = None
     copulas: Any = None
 
-    def __post_init__(self, univariate_inputs: List[Dict]):
+    def __post_init__(self, univariate_inputs: Union[List[Dict], Tuple[Dict]]):
         self.spatial_dimension = len(univariate_inputs)
-        self.marginals = []
+        marginals = []
         for univariate_input in univariate_inputs:
-            self.marginals.append(UnivariateInput(**univariate_input))
+            marginals.append(UnivariateInput(**univariate_input))
+        self.marginals = tuple(marginals)
 
     def transform_sample(self, other, xx: np.ndarray):
         """Transform a sample from the distribution to another."""
@@ -60,7 +61,7 @@ class MultivariateInput:
             for idx_dim, (marginal_self, marginal_other) in \
                     enumerate(zip(self.marginals, other.marginals)):
                 xx_trans[:, idx_dim] = marginal_self.transform_sample(
-                    marginal_other, xx[:, idx_dim]
+                    xx[:, idx_dim], marginal_other
                 )
         else:
             raise ValueError("Copulas are not currently supported!")
@@ -80,7 +81,7 @@ class MultivariateInput:
             # Independent inputs generate sample marginal by marginal
             for idx_dim, marginal in enumerate(self.marginals):
                 xx[:, idx_dim] = univ_input.transform_sample(
-                    marginal, xx[:, idx_dim]
+                    xx[:, idx_dim], marginal
                 )
         else:
             raise ValueError("Copulas are not currently supported!")
