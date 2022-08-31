@@ -2,11 +2,12 @@
 Utility module for probabilistic input modeling.
 """
 
-from .univariate_distributions import uniform, lognormal
+from .univariate_distributions import uniform, lognormal, normal
 
 SUPPORTED_MARGINALS = {
-    "uniform": uniform,
-    "lognormal": lognormal
+    uniform.DISTRIBUTION_NAME: uniform,
+    lognormal.DISTRIBUTION_NAME: lognormal,
+    normal.DISTRIBUTION_NAME: normal
 }
 
 
