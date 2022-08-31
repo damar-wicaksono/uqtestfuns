@@ -62,5 +62,5 @@ def test_str(uqtestfun):
 
 def test_unsupported_fun():
     """Test getting the default arguments of an unsupported test function."""
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         get_default_args(create_random_alphanumeric(10))

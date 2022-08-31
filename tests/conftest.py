@@ -10,6 +10,8 @@ from typing import List, Dict
 
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 
+MARGINALS = list(SUPPORTED_MARGINALS.keys())
+
 
 def create_random_alphanumeric(length: int) -> str:
     """Create a random alphanumeric string of a given length.
@@ -50,8 +52,8 @@ def create_random_input_dicts(length: int) -> List[Dict]:
     for i in range(length):
         input_dicts.append(
             {"name": f"X{i+1}",
-             "distribution": random.choice(SUPPORTED_MARGINALS),
-             "parameters": np.sort(np.random.rand(2)),
+             "distribution": random.choice(MARGINALS),
+             "parameters": np.sort(1 + 2 * np.random.rand(2)),
              "description": create_random_alphanumeric(10)
              }
         )

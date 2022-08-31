@@ -1,17 +1,15 @@
 import numpy as np
 import pytest
 
-from uqtestfuns import UQTestFun, get_default_args
+from uqtestfuns import create_from_default
 from uqtestfuns.test_functions import wing_weight as wing_weight_mod
 from conftest import assert_call
 
 
 @pytest.fixture
 def wing_weight_fun():
-    default_args = get_default_args("wing weight")
-    wing_weight = UQTestFun(**default_args)
 
-    return wing_weight
+    return create_from_default("wing weight")
 
 
 def test_create_instance(wing_weight_fun):
