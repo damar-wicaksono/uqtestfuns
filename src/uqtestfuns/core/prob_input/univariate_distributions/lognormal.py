@@ -14,7 +14,10 @@ import numpy as np
 from scipy.stats import lognorm
 
 
-def verify_parameters(parameters: np.ndarray) -> float:
+DISTRIBUTION_NAME = "lognormal"
+
+
+def verify_parameters(parameters: np.ndarray):
     """Verify the parameters of a lognormal distribution.
 
     Parameters
@@ -31,7 +34,8 @@ def verify_parameters(parameters: np.ndarray) -> float:
     Raises
     ------
     ValueError
-        If any of the parameter values are invalid or the shapes
+        If any of the parameter values are invalid
+        or the shapes are inconsistent.
     """
     if parameters.size != 2:
         raise ValueError(

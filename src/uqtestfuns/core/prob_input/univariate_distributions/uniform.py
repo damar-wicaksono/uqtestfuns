@@ -1,10 +1,13 @@
 """
-Module with computations involving uniform density functions.
+Module with routines involving uniform density functions.
 
 The uniform distribution in UQTestFuns is parametrized by its lower and upper
 bounds.
 """
 import numpy as np
+
+
+DISTRIBUTION_NAME = "uniform"
 
 
 def verify_parameters(parameters: np.ndarray):
@@ -23,7 +26,8 @@ def verify_parameters(parameters: np.ndarray):
     Raises
     ------
     ValueError
-        If any of the parameter values are invalid.
+        If any of the parameter values are invalid
+        or the shapes are inconsistent.
     """
     if parameters.size != 2:
         raise ValueError(
