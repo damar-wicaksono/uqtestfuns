@@ -1,6 +1,7 @@
 import pytest
 import numpy as np
 from tabulate import tabulate
+from typing import List, Any
 
 from uqtestfuns.core.prob_input.multivariate_input import MultivariateInput
 from conftest import create_random_input_dicts
@@ -23,9 +24,8 @@ def test_create_instance_numpy_parameters(spatial_dimension):
         assert input_dicts[i]["distribution"] == \
                my_multivariate_input.marginals[i].distribution
         # Test the parameter values
-        assert np.allclose(
-            input_dicts[i]["parameters"],
-            my_multivariate_input.marginals[i].parameters
+        assert np.all(
+            input_dicts[i]["parameters"] == my_multivariate_input.marginals[i].parameters
         )
 
 
@@ -149,13 +149,15 @@ def test_str():
 
     # Create the reference string
     header_names = ["name", "distribution", "parameters", "description"]
-    str_ref = [
-        [i+1] + list(map(input_dict.get, header_names)) for
-        i, input_dict in enumerate(input_dicts)
-    ]
+    str_ref_list: List[List] = []
+    for i, input_dict in enumerate(input_dicts):
+        str_ref_placeholder: List[Any] = [i+1]
+        for header_name in header_names:
+            str_ref_placeholder.append(input_dict.get(header_name))
+        str_ref_list.append(str_ref_placeholder)
     header_names.insert(0, "No.")
     str_ref = tabulate(
-        str_ref,
+        str_ref_list,
         headers=list(map(str.capitalize, header_names)),
         stralign="center"
     )
@@ -172,14 +174,17 @@ def test_repr_html():
     my_multivariate_input = MultivariateInput(input_dicts)
 
     # Create the reference string
+    # Create the reference string
     header_names = ["name", "distribution", "parameters", "description"]
-    str_ref = [
-        [i+1] + list(map(input_dict.get, header_names)) for
-        i, input_dict in enumerate(input_dicts)
-    ]
+    str_ref_list: List[List] = []
+    for i, input_dict in enumerate(input_dicts):
+        str_ref_placeholder: List[Any] = [i+1]
+        for header_name in header_names:
+            str_ref_placeholder.append(input_dict.get(header_name))
+        str_ref_list.append(str_ref_placeholder)
     header_names.insert(0, "No.")
     str_ref = tabulate(
-        str_ref,
+        str_ref_list,
         headers=list(map(str.capitalize, header_names)),
         stralign="center",
         tablefmt="html"

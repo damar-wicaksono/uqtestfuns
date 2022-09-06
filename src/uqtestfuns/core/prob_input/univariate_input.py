@@ -6,7 +6,7 @@ Each input has a probability distribution and the associated parameters.
 """
 import numpy as np
 from dataclasses import dataclass, field
-from typing import List, Union
+from typing import List, Optional, Union, Sequence
 
 from .utils import (
     verify_distribution,
@@ -30,13 +30,13 @@ class UnivariateInput:
         Name of the input variable.
     distribution : str
         Type of probability distribution.
-    parameters : Union[List, np.ndarray]
+    parameters : Union[List[float, ...], np.ndarray, List[np.ndarray, ...]]
         Parameters of the probability distribution.
     """
     name: str
     distribution: str
-    parameters: Union[List, np.ndarray]
-    description: str = None
+    parameters: Union[Sequence[Union[int, float, np.ndarray]], np.ndarray]
+    description: Optional[str] = None
     lower: float = field(init=False, repr=False)
     upper: float = field(init=False, repr=False)
 

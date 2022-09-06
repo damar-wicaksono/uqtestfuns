@@ -20,7 +20,8 @@ def univariate_input(request):
     if request.param == "uniform":
         parameters = np.sort(np.random.rand(2))
     else:
-        parameters = [5 * np.random.rand(1), 1 + 5 * np.random.rand(1)]
+        parameters = 5 * np.random.rand(2)
+        parameters[1] += 1.0
 
     specs = {
         "name": name,

@@ -9,7 +9,7 @@ import numpy as np
 
 from .utils import create_canonical_uniform_input
 from .prob_input.multivariate_input import MultivariateInput
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 from inspect import signature
 
 __all__ = ["UQTestFun"]
@@ -46,7 +46,7 @@ class UQTestFun:
     evaluate: Callable
     input: MultivariateInput
     spatial_dimension: int = field(init=False)
-    name: str = None
+    name: Optional[str] = None
     parameters: Any = None
 
     def __post_init__(self):
