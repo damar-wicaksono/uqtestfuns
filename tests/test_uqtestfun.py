@@ -13,14 +13,23 @@ def uqtestfun():
     """Create an instance of UQTestFun."""
     input_dicts = create_random_input_dicts(1)
 
+    evaluate = lambda x, p: x + 1
+
     my_args = {
         "name": "Test function",
-        "evaluate": lambda x, p: x + 1,
+        "evaluate": evaluate,
         "input": MultivariateInput(input_dicts),
         "parameters": 10
     }
 
-    return UQTestFun(**my_args), my_args
+    uqtestfun_instance = UQTestFun(
+        name="Test function",
+        evaluate= evaluate,
+        input=MultivariateInput(input_dicts),
+        parameters=10
+    )
+
+    return uqtestfun_instance, my_args
 
 
 def test_create_instance(uqtestfun):

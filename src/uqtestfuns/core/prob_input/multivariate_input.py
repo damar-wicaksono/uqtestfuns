@@ -36,7 +36,7 @@ class MultivariateInput:
         List of dictionaries that defines each of the univariate inputs.
     """
     spatial_dimension: int = field(init=False)
-    marginals: Tuple[UnivariateInput] = field(init=False)
+    marginals: Tuple[UnivariateInput, ...] = field(init=False)
     univariate_inputs: InitVar[Union[List[Dict], Tuple[Dict]]] = None
     copulas: Any = None
 
@@ -155,7 +155,7 @@ def get_repr_names(univariate_input: UnivariateInput):
     return repr_names
 
 
-def get_values_as_list(univariate_inputs: list):
+def get_values_as_list(univariate_inputs: Tuple[UnivariateInput, ...]):
     """"""
     list_values = []
     for i, marginal in enumerate(univariate_inputs):
