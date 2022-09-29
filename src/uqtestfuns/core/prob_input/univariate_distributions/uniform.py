@@ -1,8 +1,8 @@
 """
 Module with routines involving uniform density functions.
 
-The uniform distribution in UQTestFuns is parametrized by its lower and upper
-bounds.
+The uniform distribution in UQTestFuns is parametrized by two parameters:
+the lower and upper bounds.
 """
 import numpy as np
 
@@ -43,12 +43,12 @@ def verify_parameters(parameters: np.ndarray):
 
 
 def lower(parameters: np.ndarray) -> float:
-    """Get the lower bound of the uniform distribution.
+    """Get the lower bound of a uniform distribution.
 
     Parameters
     ----------
     parameters : np.ndarray
-        The parameters of the uniform distribution.
+        The parameters of a uniform distribution.
 
     Returns
     -------
@@ -61,12 +61,12 @@ def lower(parameters: np.ndarray) -> float:
 
 
 def upper(parameters: np.ndarray) -> float:
-    """Get the upper bound of the uniform distribution.
+    """Get the upper bound of a uniform distribution.
 
     Parameters
     ----------
     parameters : np.ndarray
-        The parameters of the uniform distribution.
+        The parameters of a uniform distribution.
 
     Returns
     -------
@@ -104,12 +104,12 @@ def pdf(
 
     Notes
     -----
-    - The sample values `xx` themselves are not used in the computation of
-      density value (it is a constant), but required nevertheless as
+    - The sample values ``xx`` themselves are not used in the computation of
+      density value (it is, after all, a constant), but required nevertheless as
       the function is vectorized.
-      Given a vector input it should return the PDF values of the same length
-      as the input. Furthermore, this signature is consistent with
-      the other distributions.
+      Given a vector input, the function should return the PDF values of the
+      same length as the input.
+      Moreover, this signature is consistent with the other distributions.
     - The values outside the bounds are set to 0.0.
     """
     yy = np.zeros(xx.shape)
@@ -176,7 +176,7 @@ def icdf(
     xx : np.ndarray
         Sample values (realizations) in the [0, 1] domain.
     parameters : np.ndarray
-        Parameters of the uniform distribution.
+        Parameters of a uniform distribution.
     lower_bound : float
         Lower bound of the uniform distribution.
         This parameter is not used but must appear for interface consistency.
