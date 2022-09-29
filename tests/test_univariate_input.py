@@ -14,11 +14,13 @@ MARGINALS = list(SUPPORTED_MARGINALS.keys())
 
 @pytest.fixture(params=MARGINALS)
 def univariate_input(request):
-    """Test fixture, an instance of UnivariateInput"""
+    """Test fixture, an instance of UnivariateInput."""
     name = create_random_alphanumeric(8)
     distribution = request.param
     if request.param == "uniform":
         parameters = np.sort(np.random.rand(2))
+    elif request.param == "beta":
+        parameters = np.sort(np.random.rand(4))
     else:
         parameters = 5 * np.random.rand(2)
         parameters[1] += 1.0
@@ -80,16 +82,6 @@ def test_get_pdf_values(univariate_input):
     # Assertions
     assert my_univariate_input.pdf(my_univariate_input.lower-0.1) <= 1e-15
     assert my_univariate_input.pdf(my_univariate_input.upper+0.1) <= 1e-15
-    assert np.all(
-        np.logical_and(
-            my_univariate_input.pdf(xx) >= my_univariate_input.pdf(
-                my_univariate_input.lower
-            ),
-            my_univariate_input.pdf(xx) >= my_univariate_input.pdf(
-                my_univariate_input.upper
-            )
-        )
-    )
 
 
 def test_get_cdf_values(univariate_input):
