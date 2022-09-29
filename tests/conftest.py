@@ -50,11 +50,17 @@ def create_random_input_dicts(length: int) -> List[Dict]:
     input_dicts = []
 
     for i in range(length):
+        distribution = random.choice(MARGINALS)
+        if distribution == "beta":
+            parameters = np.sort(1 + 2 * np.random.rand(4))
+        else:
+            parameters = np.sort(1 + 2 * np.random.rand(2))
         input_dicts.append(
-            {"name": f"X{i+1}",
-             "distribution": random.choice(MARGINALS),
-             "parameters": np.sort(1 + 2 * np.random.rand(2)),
-             "description": create_random_alphanumeric(10)
+            {
+                "name": f"X{i+1}",
+                "distribution": distribution,
+                "parameters": parameters,
+                "description": create_random_alphanumeric(10)
              }
         )
 
@@ -71,3 +77,4 @@ def assert_call(fct, *args, **kwargs):
             f"The function was not called properly. "
             f"It raised the exception:\n\n {e.__class__.__name__}: {e}"
         )
+

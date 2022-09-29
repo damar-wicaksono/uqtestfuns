@@ -1,5 +1,5 @@
 """
-Module with an implementation of UnivariateInput class.
+Module with an implementation of the ``UnivariateInput`` class.
 
 The UnivariateInput class represents a univariate probabilistic input.
 Each input has a probability distribution and the associated parameters.

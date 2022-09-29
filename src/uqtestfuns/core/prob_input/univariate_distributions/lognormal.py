@@ -1,14 +1,15 @@
 """
-Module with routines involving lognormal density functions.
+Module with routines involving the lognormal probability distribution.
 
-The lognormal distribution in UQTestFuns is parametrized by the parameters
+The lognormal distribution in UQTestFuns is parametrized by two parameters:
 lambda and xi, the mean and standard deviation of the corresponding normal
 distribution, respectively.
 
-The underlying implementation used the implementation from scipy.stats.
-In scipy convention, the shape distribution ``s`` corresponds to the normal
-distribution standard deviation, while the scale parameters corresponds to
-the exponent of the normal distribution mean.
+The underlying implementation is based on the implementation from scipy.stats.
+In the SciPy convention, the shape distribution ``s`` corresponds to standard
+deviation of the corresponding normal distribution, while the scale parameter
+corresponds to the exponent of the mean of the corresponding normal
+distribution.
 """
 import numpy as np
 from scipy.stats import lognorm
@@ -51,23 +52,23 @@ def verify_parameters(parameters: np.ndarray):
 
 
 def lower(parameters: np.ndarray) -> float:
-    """Get the lower bound of the uniform distribution.
+    """Get the lower bound of a lognormal distribution.
 
     Parameters
     ----------
     parameters : np.ndarray
-        The parameters of the lognormal distribution.
+        The parameters of a lognormal distribution.
 
     Returns
     -------
     float
-        The lower bound of the uniform distribution.
+        The lower bound of the lognormal distribution.
 
     Notes
     -----
     - The parameters are not used in determining the lower bound of
       the distribution; it must, however, appear for interface consistency.
-      The lower bound of a lognormal distribution is 0.0 and it is finite.
+      The lower bound of a lognormal distribution is finite and it is 0.0.
     """
     lower_bound = 0.0
 
@@ -75,17 +76,17 @@ def lower(parameters: np.ndarray) -> float:
 
 
 def upper(parameters: np.ndarray) -> float:
-    """Get the upper bound of the lognormal distribution.
+    """Get the upper bound of a lognormal distribution.
 
     Parameters
     ----------
     parameters : np.ndarray
-        The parameters of the uniform distribution
+        The parameters of a lognormal distribution.
 
     Returns
     -------
     float
-        The upper bound of the uniform distribution.
+        The upper bound of the lognormal distribution.
 
     Notes
     -----
@@ -106,7 +107,7 @@ def pdf(
         lower_bound: float,
         upper_bound: float
 ) -> np.ndarray:
-    """Get the PDF values of the lognormal distribution.
+    """Get the PDF values of a lognormal distribution.
 
     Parameters
     ----------
@@ -143,7 +144,7 @@ def cdf(
         lower_bound: float,
         upper_bound: float
 ) -> np.ndarray:
-    """Get the CDF values of the lognormal distribution.
+    """Get the CDF values of a lognormal distribution.
 
     Parameters
     ----------
@@ -195,7 +196,7 @@ def icdf(
     xx : np.ndarray
         Sample values (realizations) in the [0, 1] domain.
     parameters : np.ndarray
-        Parameters of the lognormal distribution.
+        Parameters of a lognormal distribution.
     lower_bound : np.ndarray
         Lower bound of the lognormal distribution.
     upper_bound : np.ndarray
