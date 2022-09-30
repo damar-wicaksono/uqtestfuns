@@ -1,5 +1,5 @@
 """
-Module with routines involving normal density functions.
+Module with routines involving the normal (Gaussian) probability distribution.
 
 The normal distribution in UQTestFuns is parametrized by two parameters:
 mu and sigma, the mean and standard deviation, respectively.
