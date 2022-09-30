@@ -80,7 +80,7 @@ def test_estimate_mean():
 
     my_univariate_input = UnivariateInput(name, distribution, parameters)
 
-    sample_size = 10000
+    sample_size = 100000
     xx = my_univariate_input.get_sample(sample_size)
 
     # Estimated result
@@ -90,7 +90,7 @@ def test_estimate_mean():
     mean_ref = _mean(parameters)
     
     # Assertion
-    np.allclose(mean, mean_ref)
+    assert np.isclose(mean, mean_ref, rtol=1e-03, atol=1e-04)
 
 
 def test_estimate_std():
@@ -103,7 +103,7 @@ def test_estimate_std():
 
     my_univariate_input = UnivariateInput(name, distribution, parameters)
 
-    sample_size = 10000
+    sample_size = 100000
     xx = my_univariate_input.get_sample(sample_size)
 
     # Estimated result
@@ -113,4 +113,4 @@ def test_estimate_std():
     std_ref = _std(parameters)
 
     # Assertion
-    np.allclose(std, std_ref)
+    assert np.allclose(std, std_ref, rtol=1e-03, atol=1e-04)
