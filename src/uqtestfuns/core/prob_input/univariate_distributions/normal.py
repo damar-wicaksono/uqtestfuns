@@ -1,10 +1,12 @@
 """
-Module with routines involving normal density functions.
+Module with routines involving the normal (Gaussian) probability distribution.
 
-The normal distribution in UQTestFuns is parametrized by the parameters
+The normal distribution in UQTestFuns is parametrized by two parameters:
 mu and sigma, the mean and standard deviation, respectively.
 
-The underlying implementation is based on the implementation from scicpy.stats.
+The underlying implementation is based on the implementation from scipy.stats.
+In the SciPy convention, the mean (mu) corresponds to the ``loc`` parameter,
+while the standard deviation (sigma) corresponds to the ``scale`` parameter.
 """
 import numpy as np
 from scipy.stats import norm
@@ -19,7 +21,7 @@ def verify_parameters(parameters: np.ndarray):
     Parameters
     ----------
     parameters : np.ndarray
-        The parameters of the normal distribution
+        The parameters of a normal distribution
         (i.e., the mean and standard deviation).
 
     Returns
@@ -60,8 +62,8 @@ def lower(parameters: np.ndarray) -> float:
 
     Notes
     -----
-    - Strictly speaking, a normal distribution is unbounded on the left
-      (and right). However, for numerical reason a lower bound is set.
+    - Strictly speaking, a normal distribution is unbounded on the left.
+      However, for numerical reason a lower bound is set.
     - The lower bound of the normal distribution is chosen such that
       the difference between 1.0 and the CDF from the lower bound to the upper
       bound is smaller than 1e-15.
@@ -108,13 +110,13 @@ def pdf(
     Parameters
     ----------
     xx : np.ndarray
-        Sample values (realizations) of a lognormal distribution.
+        Sample values (realizations) of a normal distribution.
     parameters : np.ndarray
-        Parameters of a lognormal distribution.
+        Parameters of the normal distribution.
     lower_bound : np.ndarray
-        Lower bound of a lognormal distribution.
+        Lower bound of the normal distribution.
     upper_bound : np.ndarray
-        Upper bound of a lognormal distribution.
+        Upper bound of the normal distribution.
 
     Returns
     -------
@@ -145,11 +147,11 @@ def cdf(
     xx : np.ndarray
         Sample values (realizations) of a normal distribution.
     parameters : np.ndarray
-        Parameters of a normal distribution.
+        Parameters of the normal distribution.
     lower_bound : np.ndarray
-        Lower bound of a normal distribution.
+        Lower bound of the normal distribution.
     upper_bound : np.ndarray
-        Upper bound of a normal distribution.
+        Upper bound of the normal distribution.
 
     Returns
     -------
@@ -190,7 +192,7 @@ def icdf(
     xx : np.ndarray
         Sample values (realizations) in the [0, 1] domain.
     parameters : np.ndarray
-        Parameters of the normal distribution.
+        Parameters of a normal distribution.
     lower_bound : np.ndarray
         Lower bound of the normal distribution.
     upper_bound : np.ndarray
@@ -199,7 +201,7 @@ def icdf(
     Returns
     -------
     np.ndarray
-        Transformed values in the domain of the lognormal distribution.
+        Transformed values in the domain of the normal distribution.
 
     Notes
     -----
