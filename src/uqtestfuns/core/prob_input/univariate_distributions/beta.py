@@ -5,19 +5,19 @@ The Beta distribution in UQTestFuns is parameterized by four parameters:
 r, s, a, and b. r and s are the shape parameters, while a and b are the lower
 and upper bounds, respectively.
 
-The underlying implementation is based the implementation from scipy.stats.
-In the SciPy convention, the Beta distribution is parameterized by four
-parameters: a, b, loc, and scale.
-a and b are the shape parameters, while loc and scale are the shifting and
-scaling parameters, respectively.
+The underlying implementation is based on the implementation of scipy.stats.
+In the SciPy implementation, the Beta distribution is parameterized also
+by four parameters: ``a``, ``b``, ``loc``, and ``scale``.
+``a`` and ``b`` are the shape parameters, while ``loc`` and ``scale`` are
+the shifting and scaling parameters, respectively.
 
-Below is the translation of the parameterization of the SciPy implementation
-to the parameterization of UQTestFuns:
+The translation between parameterization of the distribution in UQTestFuns
+and SciPy is as follows:
 
-- a is r
-- b is s
-- loc is a
-- scale is (b-a)
+- ``a`` = ``r``
+- ``b`` = ``s``
+- ``loc`` = ``a``
+- ``scale`` = ``(b-a)``
 """
 import numpy as np
 from scipy.stats import beta

@@ -1,15 +1,21 @@
 """
 Module with routines involving the lognormal probability distribution.
 
-The lognormal distribution in UQTestFuns is parametrized by two parameters:
-lambda and xi, the mean and standard deviation of the corresponding normal
+The lognormal distribution in UQTestFuns is parameterized by two parameters:
+``lambda`` and ``xi``, the mean and standard deviation of the underlying normal
 distribution, respectively.
 
-The underlying implementation is based on the implementation from scipy.stats.
-In the SciPy convention, the shape distribution ``s`` corresponds to standard
-deviation of the corresponding normal distribution, while the scale parameter
-corresponds to the exponent of the mean of the corresponding normal
-distribution.
+The underlying implementation is based on the implementation of scipy.stats.
+In the SciPy implementation, the lognormal distribution is parameterized by
+two parameters: ``s`` and ``scale``, the shape and scaling parameters,
+respectively. The shape parameter ``s`` corresponds to the standard deviation
+of the underlying normal distribution.
+
+The translation between parameterization of the distribution in UQTestFuns
+and SciPy is as follows:
+
+- ``s`` = ``xi``
+- ``scale`` = ``np.exp(lambda)``
 """
 import numpy as np
 from scipy.stats import lognorm

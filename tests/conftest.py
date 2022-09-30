@@ -53,8 +53,18 @@ def create_random_input_dicts(length: int) -> List[Dict]:
         distribution = random.choice(MARGINALS)
         if distribution == "beta":
             parameters = np.sort(1 + 2 * np.random.rand(4))
+        elif distribution == "truncnormal":
+            # mu must be inside the bounds
+            parameters = np.sort(1 + 2 * np.random.rand(3))
+            parameters[[0, 1]] = parameters[[1, 0]]
+            # Insert sigma as the second parameter
+            parameters = np.insert(parameters, 1, np.random.rand(1))
+        elif distribution == "lognormal":
+            # Limit the size of the parameters
+            parameters = 1 + np.random.rand(2)
         else:
             parameters = np.sort(1 + 2 * np.random.rand(2))
+
         input_dicts.append(
             {
                 "name": f"X{i+1}",
