@@ -109,11 +109,12 @@ def test_create_instance(uqmetafunspec):
 
 
 @pytest.mark.parametrize("spatial_dimension", [1, 2, 3, 4, 5, 10])
-def test_create_instance_default(spatial_dimension):
+@pytest.mark.parametrize("input_id", [None, 0, 1, 2, 3, 4, 5, 6, 7])
+def test_create_instance_default(spatial_dimension, input_id):
     """Test for creating a default instance."""
 
     # Create an instance from default
-    my_metafun = UQMetaTestFun.from_default(spatial_dimension)
+    my_metafun = UQMetaTestFun.from_default(spatial_dimension, input_id)
 
     if spatial_dimension == 1:
         effects_keys_ref = [1]

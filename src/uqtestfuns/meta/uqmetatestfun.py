@@ -158,7 +158,11 @@ class UQMetaTestFun:
         return sample
 
     @classmethod
-    def from_default(cls, spatial_dimension: Union[int, Sized]):
+    def from_default(
+            cls,
+            spatial_dimension: Union[int, Sized],
+            input_id: Optional[int] = None
+    ):
         """Create a metafunction with parameters according to Becker (2019).
 
         Parameters
@@ -182,9 +186,21 @@ class UQMetaTestFun:
             3: math.floor(0.2 * spatial_dimension)
         }
 
+        if input_id is None:
+            input_id = np.random.randint(0, 8)
+
         inputs = [
-            {"distribution": "uniform", "parameters": [0, 1]}
+            {"distribution": "uniform", "parameters": [0, 1]},
+            {"distribution": "truncnormal", "parameters": [0.5, 0.15, 0., 1.]},
+            {"distribution": "beta", "parameters": [8., 2., 0., 1.]},
+            {"distribution": "beta", "parameters": [2., 8., 0., 1.]},
+            {"distribution": "beta", "parameters": [2., 0.8, 0., 1.]},
+            {"distribution": "beta", "parameters": [0.8, 2., 0., 1.]},
+            {"distribution": "logitnormal", "parameters": [0., 3.16]}
         ]
+
+        if input_id < 7:
+            inputs = [inputs[input_id]]
 
         metafun_spec = UQMetaFunSpec(
             spatial_dimension=spatial_dimension,
