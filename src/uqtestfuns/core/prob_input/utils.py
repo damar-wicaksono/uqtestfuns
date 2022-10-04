@@ -3,7 +3,7 @@ Utility module for probabilistic input modeling.
 """
 
 from .univariate_distributions import (
-    uniform, lognormal, normal, beta, truncnormal
+    uniform, lognormal, normal, beta, truncnormal, logitnormal
 )
 
 SUPPORTED_MARGINALS = {
@@ -12,6 +12,7 @@ SUPPORTED_MARGINALS = {
     normal.DISTRIBUTION_NAME: normal,
     beta.DISTRIBUTION_NAME: beta,
     truncnormal.DISTRIBUTION_NAME: truncnormal,
+    logitnormal.DISTRIBUTION_NAME: logitnormal,
 }
 
 
