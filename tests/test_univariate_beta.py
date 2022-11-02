@@ -84,7 +84,7 @@ def test_estimate_mean():
 
     my_univariate_input = UnivariateInput(name, distribution, parameters)
 
-    sample_size = 1000000
+    sample_size = 100000
     xx = my_univariate_input.get_sample(sample_size)
 
     # Estimated result
@@ -107,7 +107,7 @@ def test_estimate_std():
 
     my_univariate_input = UnivariateInput(name, distribution, parameters)
 
-    sample_size = 1000000
+    sample_size = 100000
     xx = my_univariate_input.get_sample(sample_size)
 
     # Estimated result

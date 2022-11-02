@@ -2,10 +2,10 @@
 This module contains the classes that implement specification
 for a meta and the resulting test function.
 """
-import math
 import numpy as np
 import itertools
 from dataclasses import dataclass, field, InitVar
+from scipy.special import comb
 from typing import Dict, Callable, Tuple, Optional, Union, List
 
 
@@ -46,7 +46,8 @@ def _preprocess_effects(
     for key in list(effects_dict):
         if key <= spatial_dimension and effects_dict[key] != 0:
             if effects_dict[key] is None:
-                effects[key] = math.comb(spatial_dimension, key)
+                # NOTE: scipy.special.comb returns a flot
+                effects[key] = int(comb(spatial_dimension, key))
             else:
                 effects[key] = effects_dict[key]  # type: ignore
 

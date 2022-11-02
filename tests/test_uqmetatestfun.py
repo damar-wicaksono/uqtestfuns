@@ -1,9 +1,10 @@
 """
 Test module for instances of UQMetaTestFun (meta).
 """
-import math
 import numpy as np
 import pytest
+
+from scipy.special import comb
 
 from uqtestfuns import UQMetaTestFun, UQTestFun, UQMetaFunSpec
 from uqtestfuns.meta.metaspec import UQTestFunSpec
@@ -22,7 +23,7 @@ def _create_args_effects_dict(spatial_dimension):
     effects_dict = dict()
 
     for i in range(1, spatial_dimension + 1):
-        max_num = math.comb(spatial_dimension, i)
+        max_num = int(comb(spatial_dimension, i))
         effects_dict[i] = np.random.randint(1, max_num + 1)
 
     return effects_dict

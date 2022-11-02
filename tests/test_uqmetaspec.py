@@ -2,10 +2,11 @@
 Test module for instances of meta and random test function specs.
 """
 import itertools
-import math
 import numpy as np
 import pytest
 import random
+
+from scipy.special import comb
 
 from uqtestfuns.meta.metaspec import UQTestFunSpec, UQMetaFunSpec
 from conftest import create_random_input_dicts
@@ -91,7 +92,7 @@ def test_create_instance_uqmetafunspec():
     }
 
     effects_ref = {
-        1: math.comb(spatial_dimension, 1),
+        1: int(comb(spatial_dimension, 1)),
         2: 1,
     }
 
@@ -118,7 +119,7 @@ def _create_args_effects_dict(spatial_dimension):
     effects_dict = dict()
 
     for i in range(1, spatial_dimension + 1):
-        max_num = math.comb(spatial_dimension, i)
+        max_num = int(comb(spatial_dimension, i))
         effects_dict[i] = np.random.randint(1, max_num + 1)
 
     return effects_dict
