@@ -3,7 +3,12 @@ Utility module for probabilistic input modeling.
 """
 
 from .univariate_distributions import (
-    uniform, lognormal, normal, beta, truncnormal, logitnormal
+    uniform,
+    lognormal,
+    normal,
+    beta,
+    truncnormal,
+    logitnormal,
 )
 
 SUPPORTED_MARGINALS = {
@@ -93,7 +98,7 @@ def get_cdf_values(xx, distribution, parameters, lower_bound, upper_bound):
 
 
 def get_icdf_values(xx, distribution, parameters, lower_bound, upper_bound):
-    """Get the inverse CDF values of the distribution on a set of sample points.
+    """Get the inverse CDF values of the dist. on a set of sample points.
 
     Notes
     -----

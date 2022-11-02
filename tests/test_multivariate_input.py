@@ -19,13 +19,18 @@ def test_create_instance_numpy_parameters(spatial_dimension):
     assert my_multivariate_input.spatial_dimension == spatial_dimension
     for i in range(spatial_dimension):
         # Test the name of the marginals
-        assert input_dicts[i]["name"] == my_multivariate_input.marginals[i].name
+        assert (
+            input_dicts[i]["name"] == my_multivariate_input.marginals[i].name
+        )
         # Test the type of distributions
-        assert input_dicts[i]["distribution"] == \
-               my_multivariate_input.marginals[i].distribution
+        assert (
+            input_dicts[i]["distribution"]
+            == my_multivariate_input.marginals[i].distribution
+        )
         # Test the parameter values
         assert np.all(
-            input_dicts[i]["parameters"] == my_multivariate_input.marginals[i].parameters
+            input_dicts[i]["parameters"]
+            == my_multivariate_input.marginals[i].parameters
         )
 
 
@@ -57,7 +62,7 @@ def test_generate_dependent_sample():
     my_multivariate_input = MultivariateInput(input_dicts)
     my_multivariate_input.copulas = []
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         my_multivariate_input.get_sample(1000)
 
 
@@ -84,7 +89,7 @@ def test_get_dependent_pdf_values():
     my_multivariate_input = MultivariateInput(input_dicts)
     my_multivariate_input.copulas = []
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         my_multivariate_input.pdf(np.random.rand(2, 5))
 
 
@@ -121,7 +126,7 @@ def test_failed_transform_sample():
     sample_size = 5000
     xx = my_multivariate_input_1.get_sample(sample_size)
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         my_multivariate_input_1.transform_sample(my_multivariate_input_2, xx)
 
 
@@ -135,7 +140,7 @@ def test_transform_dependent_sample():
 
     xx = np.random.rand(2, 5)
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         my_multivariate_input_1.copulas = []
         my_multivariate_input_1.transform_sample(my_multivariate_input_2, xx)
 
@@ -151,7 +156,7 @@ def test_str():
     header_names = ["name", "distribution", "parameters", "description"]
     str_ref_list: List[List] = []
     for i, input_dict in enumerate(input_dicts):
-        str_ref_placeholder: List[Any] = [i+1]
+        str_ref_placeholder: List[Any] = [i + 1]
         for header_name in header_names:
             str_ref_placeholder.append(input_dict.get(header_name))
         str_ref_list.append(str_ref_placeholder)
@@ -159,7 +164,7 @@ def test_str():
     str_ref = tabulate(
         str_ref_list,
         headers=list(map(str.capitalize, header_names)),
-        stralign="center"
+        stralign="center",
     )
 
     # Assertion
@@ -174,11 +179,10 @@ def test_repr_html():
     my_multivariate_input = MultivariateInput(input_dicts)
 
     # Create the reference string
-    # Create the reference string
     header_names = ["name", "distribution", "parameters", "description"]
     str_ref_list: List[List] = []
     for i, input_dict in enumerate(input_dicts):
-        str_ref_placeholder: List[Any] = [i+1]
+        str_ref_placeholder: List[Any] = [i + 1]
         for header_name in header_names:
             str_ref_placeholder.append(input_dict.get(header_name))
         str_ref_list.append(str_ref_placeholder)
@@ -187,11 +191,12 @@ def test_repr_html():
         str_ref_list,
         headers=list(map(str.capitalize, header_names)),
         stralign="center",
-        tablefmt="html"
+        tablefmt="html",
     )
 
     # Assertion
     assert my_multivariate_input._repr_html_() == str_ref
+
 
 #
 # def test_get_cdf_values():

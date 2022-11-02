@@ -54,14 +54,14 @@ def null(xx: np.ndarray) -> np.ndarray:
 
 def non_monotonic(xx: np.ndarray) -> np.ndarray:
     """Compute the parabola function on a set of 1-dimensional points."""
-    yy = 4 * (xx - 0.5)**2
+    yy = 4 * (xx - 0.5) ** 2
 
     return yy
 
 
 def inverse(xx: np.ndarray) -> np.ndarray:
     """Compute the inverse function on a set of 1-dimensional points."""
-    yy = (10 - 1/1.1)**(-1) * (xx + 0.1)**(-1)
+    yy = (10 - 1 / 1.1) ** (-1) * (xx + 0.1) ** (-1)
 
     return yy
 

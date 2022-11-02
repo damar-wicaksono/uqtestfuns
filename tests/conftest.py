@@ -28,7 +28,8 @@ def create_random_alphanumeric(length: int) -> str:
     """
 
     out = "".join(
-        random.choice(string.ascii_letters+string.digits) for _ in range(length)
+        random.choice(string.ascii_letters + string.digits)
+        for _ in range(length)
     )
 
     return out
@@ -70,8 +71,8 @@ def create_random_input_dicts(length: int) -> List[Dict]:
                 "name": f"X{i+1}",
                 "distribution": distribution,
                 "parameters": parameters,
-                "description": create_random_alphanumeric(10)
-             }
+                "description": create_random_alphanumeric(10),
+            }
         )
 
     return input_dicts
@@ -87,4 +88,3 @@ def assert_call(fct, *args, **kwargs):
             f"The function was not called properly. "
             f"It raised the exception:\n\n {e.__class__.__name__}: {e}"
         )
-

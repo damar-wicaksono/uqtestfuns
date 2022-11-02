@@ -3,7 +3,8 @@ Test module for the Ishigami test function.
 
 Notes
 -----
-- The tests defined in this module deals with the correctness of the evaluation.
+- The tests defined in this module deals with
+  the correctness of the evaluation.
 """
 
 import numpy as np
@@ -11,7 +12,6 @@ import pytest
 
 from uqtestfuns import UQTestFun, get_default_args
 from uqtestfuns.test_functions import ishigami as ishigami_mod
-from conftest import assert_call
 
 
 # Test for different parameters to the Ishigami function
@@ -25,7 +25,7 @@ def ishigami_fun(request):
         name=default_args["name"],
         evaluate=default_args["evaluate"],
         input=default_args["input"],
-        parameters=request.param
+        parameters=request.param,
     )
 
     return ishigami
@@ -58,7 +58,7 @@ def test_compute_variance(ishigami_fun):
 
     # Analytical mean
     a, b = ishigami_fun.parameters
-    var_ref = a**2 / 8 + b * np.pi**4/5 + b**2 * np.pi**8/18 + 0.5
+    var_ref = a**2 / 8 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 18 + 0.5
 
     # Assertion
     assert np.allclose(var_mc, var_ref, rtol=1e-2)

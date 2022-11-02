@@ -10,19 +10,23 @@ from conftest import create_random_alphanumeric
 
 def _mean(parameters: np.ndarray) -> float:
     """Compute the analytical mean of a Beta distribution."""
-    mean = parameters[2] + (parameters[3] - parameters[2]) * \
-           (parameters[0] / (parameters[0] + parameters[1]))
+    mean = parameters[2] + (parameters[3] - parameters[2]) * (
+        (parameters[0] / (parameters[0] + parameters[1]))
+    )
 
     return mean
 
 
 def _std(parameters: np.ndarray) -> float:
     """Compute the analytical standard deviation of a Beta distribution."""
-    std = (parameters[3] - parameters[2]) / (parameters[0] + parameters[1]) * \
-           np.sqrt(
-               (parameters[0] * parameters[1]) /
-               (parameters[0] + parameters[1] + 1)
-           )
+    std = (
+        (parameters[3] - parameters[2])
+        / (parameters[0] + parameters[1])
+        * np.sqrt(
+            (parameters[0] * parameters[1])
+            / (parameters[0] + parameters[1] + 1)
+        )
+    )
 
     return std
 
@@ -80,7 +84,7 @@ def test_estimate_mean():
 
     my_univariate_input = UnivariateInput(name, distribution, parameters)
 
-    sample_size = 100000
+    sample_size = 1000000
     xx = my_univariate_input.get_sample(sample_size)
 
     # Estimated result
@@ -88,9 +92,9 @@ def test_estimate_mean():
 
     # Analytical result
     mean_ref = _mean(parameters)
-    
+
     # Assertion
-    assert np.isclose(mean, mean_ref, rtol=1e-03, atol=1e-04)
+    assert np.isclose(mean, mean_ref, rtol=5e-03, atol=5e-04)
 
 
 def test_estimate_std():
@@ -103,7 +107,7 @@ def test_estimate_std():
 
     my_univariate_input = UnivariateInput(name, distribution, parameters)
 
-    sample_size = 100000
+    sample_size = 1000000
     xx = my_univariate_input.get_sample(sample_size)
 
     # Estimated result
@@ -113,4 +117,4 @@ def test_estimate_std():
     std_ref = _std(parameters)
 
     # Assertion
-    assert np.allclose(std, std_ref, rtol=1e-03, atol=1e-04)
+    assert np.allclose(std, std_ref, rtol=5e-03, atol=5e-04)

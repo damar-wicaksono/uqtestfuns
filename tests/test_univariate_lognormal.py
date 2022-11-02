@@ -48,11 +48,9 @@ def test_get_pdf_values():
     # Assertions (PDF values of zero at the boundaries)
     assert np.all(
         np.logical_and(
-            my_univariate_input.pdf(xx) >= my_univariate_input.pdf(
-                my_univariate_input.lower
-            ),
-            my_univariate_input.pdf(xx) >= my_univariate_input.pdf(
-                my_univariate_input.upper
-            )
+            my_univariate_input.pdf(xx)
+            >= my_univariate_input.pdf(my_univariate_input.lower),
+            my_univariate_input.pdf(xx)
+            >= my_univariate_input.pdf(my_univariate_input.upper),
         )
     )

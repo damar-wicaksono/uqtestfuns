@@ -35,6 +35,7 @@ class MultivariateInput:
     univariate_inputs : List[Dict]
         List of dictionaries that defines each of the univariate inputs.
     """
+
     spatial_dimension: int = field(init=False)
     marginals: Tuple[UnivariateInput, ...] = field(init=False)
     univariate_inputs: InitVar[Union[List[Dict], Tuple[Dict]]] = None
@@ -58,8 +59,9 @@ class MultivariateInput:
         xx_trans = xx.copy()
         if self.copulas is None:
             # Independent inputs, transform marginal by marginal
-            for idx_dim, (marginal_self, marginal_other) in \
-                    enumerate(zip(self.marginals, other.marginals)):
+            for idx_dim, (marginal_self, marginal_other) in enumerate(
+                zip(self.marginals, other.marginals)
+            ):
                 xx_trans[:, idx_dim] = marginal_self.transform_sample(
                     xx[:, idx_dim], marginal_other
                 )
@@ -122,11 +124,7 @@ class MultivariateInput:
         # Get the values for each field as a list
         list_values = get_values_as_list(self.marginals)
 
-        return tabulate(
-            list_values,
-            headers=header_names,
-            stralign="center"
-        )
+        return tabulate(list_values, headers=header_names, stralign="center")
 
     def _repr_html_(self):
         # Get the header names
@@ -141,7 +139,7 @@ class MultivariateInput:
             list_values,
             headers=header_names,
             stralign="center",
-            tablefmt="html"
+            tablefmt="html",
         )
 
 
@@ -159,7 +157,7 @@ def get_values_as_list(univariate_inputs: Tuple[UnivariateInput, ...]):
     """"""
     list_values = []
     for i, marginal in enumerate(univariate_inputs):
-        values = [i+1]
+        values = [i + 1]
         for marginal_field in fields(marginal):
             if marginal_field.repr:
                 values.append(getattr(marginal, marginal_field.name))

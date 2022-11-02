@@ -79,10 +79,10 @@ def upper(parameters: np.ndarray) -> float:
 
 
 def pdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the PDF values of a uniform distribution.
 
@@ -105,8 +105,8 @@ def pdf(
     Notes
     -----
     - The sample values ``xx`` themselves are not used in the computation of
-      density value (it is, after all, a constant), but required nevertheless as
-      the function is vectorized.
+      density value (it is, after all, a constant),
+      but required nevertheless as the function is vectorized.
       Given a vector input, the function should return the PDF values of the
       same length as the input.
       Moreover, this signature is consistent with the other distributions.
@@ -121,10 +121,10 @@ def pdf(
 
 
 def cdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the CDF values of a uniform distribution.
 
@@ -164,10 +164,10 @@ def cdf(
 
 
 def icdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the inverse CDF values of a uniform distribution.
 

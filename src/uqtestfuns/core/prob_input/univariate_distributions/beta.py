@@ -103,10 +103,10 @@ def upper(parameters: np.ndarray) -> float:
 
 
 def pdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the PDF values of a Beta distribution.
 
@@ -137,17 +137,17 @@ def pdf(
         a=parameters[0],
         b=parameters[1],
         loc=parameters[2],
-        scale=parameters[3]-parameters[2]
+        scale=parameters[3] - parameters[2],
     )
 
     return yy
 
 
 def cdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the CDF values of the Beta distribution.
 
@@ -186,17 +186,17 @@ def cdf(
         a=parameters[0],
         b=parameters[1],
         loc=parameters[2],
-        scale=parameters[3]-parameters[2]
+        scale=parameters[3] - parameters[2],
     )
 
     return yy
 
 
 def icdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the inverse CDF values of a Beta distribution.
 
@@ -233,7 +233,7 @@ def icdf(
         a=parameters[0],
         b=parameters[1],
         loc=parameters[2],
-        scale=parameters[3]-parameters[2]
+        scale=parameters[3] - parameters[2],
     )
 
     return yy

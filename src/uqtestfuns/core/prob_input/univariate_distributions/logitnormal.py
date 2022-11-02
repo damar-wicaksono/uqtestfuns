@@ -9,8 +9,9 @@ mu and sigma, the mean and standard deviation of the underlying normal
 distribution, respectively.
 
 The underlying implementation is based on the implementation from scipy.stats.
-In the SciPy implementation, the mean (mu) corresponds to the ``loc`` parameter,
-while the standard deviation (sigma) corresponds to the ``scale`` parameter.
+In the SciPy implementation, the mean (mu) corresponds
+to the ``loc`` parameter, while the standard deviation (sigma) corresponds
+to the ``scale`` parameter.
 """
 import numpy as np
 from scipy.stats import norm
@@ -102,10 +103,10 @@ def upper(parameters: np.ndarray) -> float:
 
 
 def pdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the PDF values of a logit-normal distribution.
 
@@ -132,17 +133,20 @@ def pdf(
     xx_trans = logit(xx)
     yy = np.zeros(xx.shape)
     idx = np.logical_and(xx > 0.0, xx < 1.0)
-    yy[idx] = norm.pdf(xx_trans[idx], loc=parameters[0], scale=parameters[1]) \
-              / xx[idx] / (1 - xx[idx])
+    yy[idx] = (
+        norm.pdf(xx_trans[idx], loc=parameters[0], scale=parameters[1])
+        / xx[idx]
+        / (1 - xx[idx])
+    )
 
     return yy
 
 
 def cdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the CDF values of a logit-normal distribution.
 
@@ -164,8 +168,8 @@ def cdf(
 
     Notes
     -----
-    - The CDF for sample with values smaller (resp. larger) than the lower bound
-      (resp. upper bound) are set to 0.0 (resp. 1.0).
+    - The CDF for sample with values smaller (resp. larger)
+      than the lower bound (resp. upper bound) are set to 0.0 (resp. 1.0).
     """
     xx_trans = logit(xx)
     yy = np.empty(xx.shape)
@@ -185,10 +189,10 @@ def cdf(
 
 
 def icdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the inverse CDF values of a normal distribution.
 

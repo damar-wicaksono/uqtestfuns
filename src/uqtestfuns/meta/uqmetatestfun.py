@@ -10,7 +10,8 @@ References
 
 1. William Becker, “Metafunctions for benchmarking in sensitivity analysis,”
    Reliability Engineering & System Safety, vol. 204, p. 107189, 2020,
-   doi: `10.1016/j.ress.2020.107189 <https://doi.org/10.1016/j.ress.2020.107189>`_.
+   doi:
+   `10.1016/j.ress.2020.107189 <https://doi.org/10.1016/j.ress.2020.107189>`_.
 """
 import math
 import numpy as np
@@ -27,13 +28,15 @@ __all__ = ["UQMetaTestFun", "default_coeffs_gen"]
 
 
 def default_coeffs_gen(sample_size: int) -> np.ndarray:
-    """Generate coefficient values for each effect term using the default.
+    r"""Generate coefficient values for each effect term using the default.
 
     The default coefficient values generator is a Gaussian mixture distribution
     as proposed in [1] with the following form:
 
     .. math::
-       \mathcal{GM}(\phi, \mu_1, \sigma_1, \mu_2, \sigma_2) = \phi \mathcal{N}(\mu_1, \sigma_1) + (1 - \phi) \mathcal{N}(\mu_2, \sigma_2)
+       \mathcal{GM}(\phi, \mu_1, \sigma_1, \mu_2, \sigma_2) =
+       \phi \mathcal{N}(\mu_1, \sigma_1)
+       + (1 - \phi) \mathcal{N}(\mu_2, \sigma_2)
 
     where :math:`\phi = 0.7`, :math:`\mu_1 = 0`, :math:`\mu_2 = 0`,
     :math:`\sigma_1 = \sqrt{0.5}`, and :math:`\sigma_2 = \sqrt{5}`.
@@ -62,9 +65,9 @@ def default_coeffs_gen(sample_size: int) -> np.ndarray:
 
 
 def _evaluate_test_function(
-        xx: np.ndarray, uqtestfun_spec: UQTestFunSpec
+    xx: np.ndarray, uqtestfun_spec: UQTestFunSpec
 ) -> np.ndarray:
-    """"""
+    """Alternative way to evaluate metafunction realizations."""
 
     basis_functions = uqtestfun_spec.basis_functions
     selected_basis = uqtestfun_spec.selected_basis
@@ -103,10 +106,11 @@ class UQMetaTestFun:
         An instance of meta specification that fully defines a
         meta.
     """
+
     metafun_spec: UQMetaFunSpec
 
     def get_sample(
-            self, sample_size=1
+        self, sample_size=1
     ) -> Optional[Union[UQTestFun, List[UQTestFun]]]:
         """Generate realizations of test function.
 
@@ -151,17 +155,15 @@ class UQMetaTestFun:
             # Assign the realized spec as a parameter
             parameters = testfun_specs[i]
 
-            sample.append(
-                UQTestFun(evaluate, inputs, name, parameters)
-            )
+            sample.append(UQTestFun(evaluate, inputs, name, parameters))
 
         return sample
 
     @classmethod
     def from_default(
-            cls,
-            spatial_dimension: Union[int, Sized],
-            input_id: Optional[int] = None
+        cls,
+        spatial_dimension: Union[int, Sized],
+        input_id: Optional[int] = None,
     ):
         """Create a metafunction with parameters according to Becker (2019).
 
@@ -171,7 +173,7 @@ class UQMetaTestFun:
             Number of dimensions of the test functions generated
             by the meta. If a set of values are given, a single value
             will be selected at random.
-            
+
         Returns
         -------
         UQMetaTestFun
@@ -183,7 +185,7 @@ class UQMetaTestFun:
         effects_dict = {
             1: None,  # Take all
             2: math.floor(0.5 * spatial_dimension),
-            3: math.floor(0.2 * spatial_dimension)
+            3: math.floor(0.2 * spatial_dimension),
         }
 
         if input_id is None:
@@ -191,12 +193,15 @@ class UQMetaTestFun:
 
         inputs = [
             {"distribution": "uniform", "parameters": [0, 1]},
-            {"distribution": "truncnormal", "parameters": [0.5, 0.15, 0., 1.]},
-            {"distribution": "beta", "parameters": [8., 2., 0., 1.]},
-            {"distribution": "beta", "parameters": [2., 8., 0., 1.]},
-            {"distribution": "beta", "parameters": [2., 0.8, 0., 1.]},
-            {"distribution": "beta", "parameters": [0.8, 2., 0., 1.]},
-            {"distribution": "logitnormal", "parameters": [0., 3.16]}
+            {
+                "distribution": "truncnormal",
+                "parameters": [0.5, 0.15, 0.0, 1.0],
+            },
+            {"distribution": "beta", "parameters": [8.0, 2.0, 0.0, 1.0]},
+            {"distribution": "beta", "parameters": [2.0, 8.0, 0.0, 1.0]},
+            {"distribution": "beta", "parameters": [2.0, 0.8, 0.0, 1.0]},
+            {"distribution": "beta", "parameters": [0.8, 2.0, 0.0, 1.0]},
+            {"distribution": "logitnormal", "parameters": [0.0, 3.16]},
         ]
 
         if input_id < 7:
@@ -207,7 +212,7 @@ class UQMetaTestFun:
             basis_functions=BASIS_BY_ID,
             effects_dict=effects_dict,
             inputs=inputs,
-            coeffs_generator=default_coeffs_gen
+            coeffs_generator=default_coeffs_gen,
         )
 
         return cls(metafun_spec)
