@@ -28,20 +28,20 @@ DEFAULT_INPUT_DICTS = [
         "name": "X1",
         "distribution": "uniform",
         "parameters": [-np.pi, np.pi],
-        "description": "None"
+        "description": "None",
     },
     {
         "name": "X2",
         "distribution": "uniform",
         "parameters": [-np.pi, np.pi],
-        "description": "None"
+        "description": "None",
     },
     {
         "name": "X2",
         "distribution": "uniform",
         "parameters": [-np.pi, np.pi],
-        "description": "None"
-    }
+        "description": "None",
+    },
 ]
 
 DEFAULT_INPUT = MultivariateInput(DEFAULT_INPUT_DICTS)
@@ -72,8 +72,8 @@ def evaluate(xx: np.ndarray, params: tuple = DEFAULT_PARAMETERS) -> np.ndarray:
 
     # Compute the Ishigami function
     term_1 = np.sin(xx[:, 0])
-    term_2 = params[0] * np.sin(xx[:, 1])**2
-    term_3 = params[1] * xx[:, 2]**4 * np.sin(xx[:, 0])
+    term_2 = params[0] * np.sin(xx[:, 1]) ** 2
+    term_3 = params[1] * xx[:, 2] ** 4 * np.sin(xx[:, 0])
 
     yy = term_1 + term_2 + term_3
 

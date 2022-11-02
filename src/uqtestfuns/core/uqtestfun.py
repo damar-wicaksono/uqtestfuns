@@ -43,6 +43,7 @@ class UQTestFun:
         The number of spatial dimension (i.e., input variables) to the test
         function.
     """
+
     evaluate: Callable
     input: MultivariateInput
     spatial_dimension: int = field(init=False)
@@ -60,10 +61,10 @@ class UQTestFun:
             return self.evaluate(xx, self.parameters)
 
     def transform_inputs(
-            self,
-            xx: np.ndarray,
-            min_value: float = -1.0,
-            max_value: float = 1.0
+        self,
+        xx: np.ndarray,
+        min_value: float = -1.0,
+        max_value: float = 1.0,
     ) -> np.ndarray:
         """Transform sample values from a uniform domain to the function domain.
 
@@ -96,8 +97,10 @@ class UQTestFun:
         return xx_trans
 
     def __str__(self):
-        out = f"Name              : {self.name}\n" \
-              f"Spatial dimension : {self.spatial_dimension}\n" \
-              f"Evaluate          : {get_fun_str(self.evaluate)}"
+        out = (
+            f"Name              : {self.name}\n"
+            f"Spatial dimension : {self.spatial_dimension}\n"
+            f"Evaluate          : {get_fun_str(self.evaluate)}"
+        )
 
         return out

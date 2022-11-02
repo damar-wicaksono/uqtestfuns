@@ -33,6 +33,7 @@ class UnivariateInput:
     parameters : Union[List[float, ...], np.ndarray, List[np.ndarray, ...]]
         Parameters of the probability distribution.
     """
+
     name: str
     distribution: str
     parameters: Union[Sequence[Union[int, float, np.ndarray]], np.ndarray]
@@ -72,7 +73,7 @@ class UnivariateInput:
             other.distribution,
             other.parameters,
             other.lower,
-            other.upper
+            other.upper,
         )
 
     def get_sample(self, sample_size: int = 1):

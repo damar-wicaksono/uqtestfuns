@@ -79,10 +79,10 @@ def upper(parameters: np.ndarray) -> float:
 
 
 def pdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the PDF values of a uniform distribution.
 
@@ -121,10 +121,10 @@ def pdf(
 
 
 def cdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the CDF values of a uniform distribution.
 
@@ -164,10 +164,10 @@ def cdf(
 
 
 def icdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the inverse CDF values of a uniform distribution.
 

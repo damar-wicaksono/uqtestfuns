@@ -10,19 +10,23 @@ from conftest import create_random_alphanumeric
 
 def _mean(parameters: np.ndarray) -> float:
     """Compute the analytical mean of a Beta distribution."""
-    mean = parameters[2] + (parameters[3] - parameters[2]) * \
-           (parameters[0] / (parameters[0] + parameters[1]))
+    mean = parameters[2] + (parameters[3] - parameters[2]) * (
+        (parameters[0] / (parameters[0] + parameters[1]))
+    )
 
     return mean
 
 
 def _std(parameters: np.ndarray) -> float:
     """Compute the analytical standard deviation of a Beta distribution."""
-    std = (parameters[3] - parameters[2]) / (parameters[0] + parameters[1]) * \
-           np.sqrt(
-               (parameters[0] * parameters[1]) /
-               (parameters[0] + parameters[1] + 1)
-           )
+    std = (
+        (parameters[3] - parameters[2])
+        / (parameters[0] + parameters[1])
+        * np.sqrt(
+            (parameters[0] * parameters[1])
+            / (parameters[0] + parameters[1] + 1)
+        )
+    )
 
     return std
 
@@ -88,7 +92,7 @@ def test_estimate_mean():
 
     # Analytical result
     mean_ref = _mean(parameters)
-    
+
     # Assertion
     assert np.isclose(mean, mean_ref, rtol=1e-03, atol=1e-04)
 

@@ -5,7 +5,7 @@ from .prob_input import MultivariateInput
 
 
 def create_canonical_uniform_input(
-        spatial_dimension: int, min_value: float, max_value: float
+    spatial_dimension: int, min_value: float, max_value: float
 ) -> MultivariateInput:
     """Create a MultivariateInput in a canonical domain of [-1, 1]"""
     input_dicts = []
@@ -14,7 +14,7 @@ def create_canonical_uniform_input(
             {
                 "name": f"X{i+1}",
                 "distribution": "uniform",
-                "parameters": [min_value, max_value]
+                "parameters": [min_value, max_value],
             }
         )
 
