@@ -160,8 +160,8 @@ def cdf(
 
     Notes
     -----
-    - The CDF for sample with values smaller (resp. larger) than the lower bound
-      (resp. upper bound) are set to 0.0 (resp. 1.0).
+    - The CDF for sample with values smaller (resp. larger)
+      than the lower bound (resp. upper bound) are set to 0.0 (resp. 1.0).
     """
     yy = np.empty(xx.shape)
     idx_lower = xx < lower_bound

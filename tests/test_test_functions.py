@@ -21,7 +21,7 @@ AVAILABLE_FUNCTION_KEYS = list(AVAILABLE_FUNCTIONS.keys())
 
 @pytest.fixture(params=AVAILABLE_FUNCTION_KEYS)
 def default_testfun(request):
-    """Fixture for the tests, an instance from the available test functions."""
+    """Fixture for the tests, an instance from the avail. test functions."""
     testfun = create_from_default(request.param)
     testfun_mod = AVAILABLE_FUNCTIONS[request.param]
 
@@ -29,7 +29,7 @@ def default_testfun(request):
 
 
 def test_create_instance(default_testfun):
-    """Test the creation of the default instance of available test functions."""
+    """Test the creation of the default instance of avail. test functions."""
 
     testfun, testfun_mod = default_testfun
 
@@ -54,7 +54,7 @@ def test_call_instance(default_testfun):
 
 
 def test_transform_input(default_testfun):
-    """Test transforming a set of input values in the default uniform domain."""
+    """Test transforming a set of input values in the default unif. domain."""
 
     testfun, _ = default_testfun
 

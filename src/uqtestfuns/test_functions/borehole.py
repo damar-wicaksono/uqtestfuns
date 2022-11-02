@@ -10,14 +10,15 @@ The unit of the output is [m^3/year].
 References
 ----------
 
-1. W. V. Harper and S. K. Gupta, “Sensitivity/Uncertainty Analysis of a Borehole
-   Scenario Comparing Latin Hypercube Sampling and Deterministic Sensitivity
-   Approaches”, Office of Nuclear Waste Isolation, Battelle Memorial Institute,
-   Columbus, Ohio, BMI/ONWI-516, 1983.
+1. W. V. Harper and S. K. Gupta, “Sensitivity/Uncertainty Analysis of
+   a Borehole Scenario Comparing Latin Hypercube Sampling and
+   Deterministic Sensitivity Approaches”, Office of Nuclear Waste
+   Isolation, Battelle Memorial Institute, Columbus, Ohio,
+   BMI/ONWI-516, 1983.
    URL: https://inldigitallibrary.inl.gov/PRR/84393.pdf
-2. M. D. Morris, T. J. Mitchell, and D. Ylvisaker, “Bayesian design and analysis
-   of computer experiments: Use of derivatives in surface prediction,”
-   Technometrics, vol. 35, no. 3, pp. 243–255, 1993.
+2. M. D. Morris, T. J. Mitchell, and D. Ylvisaker, “Bayesian design and
+   analysis of computer experiments: Use of derivatives in surface
+   prediction,” Technometrics, vol. 35, no. 3, pp. 243–255, 1993.
    DOI:10.1080/00401706.1993.10485320
 """
 import numpy as np

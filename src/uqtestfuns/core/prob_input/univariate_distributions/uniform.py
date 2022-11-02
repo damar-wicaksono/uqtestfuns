@@ -105,8 +105,8 @@ def pdf(
     Notes
     -----
     - The sample values ``xx`` themselves are not used in the computation of
-      density value (it is, after all, a constant), but required nevertheless as
-      the function is vectorized.
+      density value (it is, after all, a constant),
+      but required nevertheless as the function is vectorized.
       Given a vector input, the function should return the PDF values of the
       same length as the input.
       Moreover, this signature is consistent with the other distributions.

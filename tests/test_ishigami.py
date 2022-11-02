@@ -3,7 +3,8 @@ Test module for the Ishigami test function.
 
 Notes
 -----
-- The tests defined in this module deals with the correctness of the evaluation.
+- The tests defined in this module deals with
+  the correctness of the evaluation.
 """
 
 import numpy as np
@@ -11,7 +12,6 @@ import pytest
 
 from uqtestfuns import UQTestFun, get_default_args
 from uqtestfuns.test_functions import ishigami as ishigami_mod
-from conftest import assert_call
 
 
 # Test for different parameters to the Ishigami function

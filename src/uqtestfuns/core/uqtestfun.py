@@ -66,7 +66,7 @@ class UQTestFun:
         min_value: float = -1.0,
         max_value: float = 1.0,
     ) -> np.ndarray:
-        """Transform sample values from a uniform domain to the function domain.
+        """Transform sample values from a unif. domain to the function domain.
 
         Parameters
         ----------

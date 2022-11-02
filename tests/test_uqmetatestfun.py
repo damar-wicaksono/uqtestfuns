@@ -133,7 +133,7 @@ def test_create_instance_default(spatial_dimension, input_id):
 
 
 def test_create_instance_default_ranges():
-    """Test for creating a default instance with ranges as spatial dimension."""
+    """Test for creating a default instance with ranges as the dimension."""
 
     # Create an instance from default
     my_metafun = UQMetaTestFun.from_default(np.arange(1, 11))

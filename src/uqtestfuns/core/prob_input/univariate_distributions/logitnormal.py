@@ -9,8 +9,9 @@ mu and sigma, the mean and standard deviation of the underlying normal
 distribution, respectively.
 
 The underlying implementation is based on the implementation from scipy.stats.
-In the SciPy implementation, the mean (mu) corresponds to the ``loc`` parameter,
-while the standard deviation (sigma) corresponds to the ``scale`` parameter.
+In the SciPy implementation, the mean (mu) corresponds
+to the ``loc`` parameter, while the standard deviation (sigma) corresponds
+to the ``scale`` parameter.
 """
 import numpy as np
 from scipy.stats import norm
@@ -167,8 +168,8 @@ def cdf(
 
     Notes
     -----
-    - The CDF for sample with values smaller (resp. larger) than the lower bound
-      (resp. upper bound) are set to 0.0 (resp. 1.0).
+    - The CDF for sample with values smaller (resp. larger)
+      than the lower bound (resp. upper bound) are set to 0.0 (resp. 1.0).
     """
     xx_trans = logit(xx)
     yy = np.empty(xx.shape)
