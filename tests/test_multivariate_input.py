@@ -19,13 +19,18 @@ def test_create_instance_numpy_parameters(spatial_dimension):
     assert my_multivariate_input.spatial_dimension == spatial_dimension
     for i in range(spatial_dimension):
         # Test the name of the marginals
-        assert input_dicts[i]["name"] == my_multivariate_input.marginals[i].name
+        assert (
+            input_dicts[i]["name"] == my_multivariate_input.marginals[i].name
+        )
         # Test the type of distributions
-        assert input_dicts[i]["distribution"] == \
-               my_multivariate_input.marginals[i].distribution
+        assert (
+            input_dicts[i]["distribution"]
+            == my_multivariate_input.marginals[i].distribution
+        )
         # Test the parameter values
         assert np.all(
-            input_dicts[i]["parameters"] == my_multivariate_input.marginals[i].parameters
+            input_dicts[i]["parameters"]
+            == my_multivariate_input.marginals[i].parameters
         )
 
 
@@ -151,7 +156,7 @@ def test_str():
     header_names = ["name", "distribution", "parameters", "description"]
     str_ref_list: List[List] = []
     for i, input_dict in enumerate(input_dicts):
-        str_ref_placeholder: List[Any] = [i+1]
+        str_ref_placeholder: List[Any] = [i + 1]
         for header_name in header_names:
             str_ref_placeholder.append(input_dict.get(header_name))
         str_ref_list.append(str_ref_placeholder)
@@ -159,7 +164,7 @@ def test_str():
     str_ref = tabulate(
         str_ref_list,
         headers=list(map(str.capitalize, header_names)),
-        stralign="center"
+        stralign="center",
     )
 
     # Assertion
@@ -174,11 +179,10 @@ def test_repr_html():
     my_multivariate_input = MultivariateInput(input_dicts)
 
     # Create the reference string
-    # Create the reference string
     header_names = ["name", "distribution", "parameters", "description"]
     str_ref_list: List[List] = []
     for i, input_dict in enumerate(input_dicts):
-        str_ref_placeholder: List[Any] = [i+1]
+        str_ref_placeholder: List[Any] = [i + 1]
         for header_name in header_names:
             str_ref_placeholder.append(input_dict.get(header_name))
         str_ref_list.append(str_ref_placeholder)
@@ -187,11 +191,12 @@ def test_repr_html():
         str_ref_list,
         headers=list(map(str.capitalize, header_names)),
         stralign="center",
-        tablefmt="html"
+        tablefmt="html",
     )
 
     # Assertion
     assert my_multivariate_input._repr_html_() == str_ref
+
 
 #
 # def test_get_cdf_values():

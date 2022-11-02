@@ -25,62 +25,62 @@ DEFAULT_INPUT_DICTS = [
         "name": "Sw",
         "distribution": "uniform",
         "parameters": [150, 200],
-        "description": "wing area [ft^2]"
+        "description": "wing area [ft^2]",
     },
     {
         "name": "Wfw",
         "distribution": "uniform",
         "parameters": [220, 300],
-        "description": "weight of fuel in the wing [lb]"
+        "description": "weight of fuel in the wing [lb]",
     },
     {
         "name": "A",
         "distribution": "uniform",
         "parameters": [6, 10],
-        "description": "aspect ratio [-]"
+        "description": "aspect ratio [-]",
     },
     {
         "name": "Lambda",
         "distribution": "uniform",
         "parameters": [-10, 10],
-        "description": "quarter-chord sweep [degrees]"
+        "description": "quarter-chord sweep [degrees]",
     },
     {
         "name": "q",
         "distribution": "uniform",
         "parameters": [16, 45],
-        "description": "dynamic pressure at cruise [lb/ft^2]"
+        "description": "dynamic pressure at cruise [lb/ft^2]",
     },
     {
         "name": "lambda",
         "distribution": "uniform",
         "parameters": [0.5, 1.0],
-        "description": "taper ratio [-]"
+        "description": "taper ratio [-]",
     },
     {
         "name": "tc",
         "distribution": "uniform",
         "parameters": [0.08, 0.18],
-        "description": "aerofoil thickness to chord ratio [-]"
+        "description": "aerofoil thickness to chord ratio [-]",
     },
     {
         "name": "Nz",
         "distribution": "uniform",
         "parameters": [2.5, 6.0],
-        "description": "ultimate load factor [-]"
+        "description": "ultimate load factor [-]",
     },
     {
         "name": "Wdg",
         "distribution": "uniform",
         "parameters": [1700, 2500],
-        "description": "flight design gross weight [lb]"
+        "description": "flight design gross weight [lb]",
     },
     {
         "name": "Wp",
         "distribution": "uniform",
         "parameters": [0.025, 0.08],
-        "description": "paint weight [lb/ft^2]"
-    }
+        "description": "paint weight [lb/ft^2]",
+    },
 ]
 
 DEFAULT_INPUT = MultivariateInput(DEFAULT_INPUT_DICTS)

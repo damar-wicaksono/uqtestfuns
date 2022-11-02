@@ -25,7 +25,7 @@ def ishigami_fun(request):
         name=default_args["name"],
         evaluate=default_args["evaluate"],
         input=default_args["input"],
-        parameters=request.param
+        parameters=request.param,
     )
 
     return ishigami
@@ -58,7 +58,7 @@ def test_compute_variance(ishigami_fun):
 
     # Analytical mean
     a, b = ishigami_fun.parameters
-    var_ref = a**2 / 8 + b * np.pi**4/5 + b**2 * np.pi**8/18 + 0.5
+    var_ref = a**2 / 8 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 18 + 0.5
 
     # Assertion
     assert np.allclose(var_mc, var_ref, rtol=1e-2)

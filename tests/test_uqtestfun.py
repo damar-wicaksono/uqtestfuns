@@ -4,7 +4,9 @@ from inspect import signature
 
 from uqtestfuns import UQTestFun, MultivariateInput, get_default_args
 from conftest import (
-    assert_call, create_random_input_dicts, create_random_alphanumeric
+    assert_call,
+    create_random_input_dicts,
+    create_random_alphanumeric,
 )
 
 
@@ -19,14 +21,14 @@ def uqtestfun():
         "name": "Test function",
         "evaluate": evaluate,
         "input": MultivariateInput(input_dicts),
-        "parameters": 10
+        "parameters": 10,
     }
 
     uqtestfun_instance = UQTestFun(
         name="Test function",
-        evaluate= evaluate,
+        evaluate=evaluate,
         input=MultivariateInput(input_dicts),
-        parameters=10
+        parameters=10,
     )
 
     return uqtestfun_instance, my_args
@@ -40,8 +42,10 @@ def test_create_instance(uqtestfun):
     # Assertions
     assert uqtestfun_instance.name == uqtestfun_dict["name"]
     assert uqtestfun_instance.evaluate == uqtestfun_dict["evaluate"]
-    assert uqtestfun_instance.spatial_dimension == \
-           uqtestfun_dict["input"].spatial_dimension
+    assert (
+        uqtestfun_instance.spatial_dimension
+        == uqtestfun_dict["input"].spatial_dimension
+    )
     assert uqtestfun_instance.parameters == uqtestfun_dict["parameters"]
 
 
@@ -60,11 +64,13 @@ def test_str(uqtestfun):
     """Test the __str__ method of UQTestFun."""
     uqtestfun_instance, _ = uqtestfun
 
-    str_ref = f"Name              : {uqtestfun_instance.name}\n" \
-              f"Spatial dimension : {uqtestfun_instance.spatial_dimension}\n" \
-              f"Evaluate          : {uqtestfun_instance.evaluate.__module__}." \
-              f"{uqtestfun_instance.evaluate.__name__}" \
-              f"{signature(uqtestfun_instance.evaluate)}"
+    str_ref = (
+        f"Name              : {uqtestfun_instance.name}\n"
+        f"Spatial dimension : {uqtestfun_instance.spatial_dimension}\n"
+        f"Evaluate          : {uqtestfun_instance.evaluate.__module__}."
+        f"{uqtestfun_instance.evaluate.__name__}"
+        f"{signature(uqtestfun_instance.evaluate)}"
+    )
 
     assert uqtestfun_instance.__str__() == str_ref
 

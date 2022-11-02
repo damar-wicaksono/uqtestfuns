@@ -102,10 +102,10 @@ def upper(parameters: np.ndarray) -> float:
 
 
 def pdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the PDF values of a logit-normal distribution.
 
@@ -132,17 +132,20 @@ def pdf(
     xx_trans = logit(xx)
     yy = np.zeros(xx.shape)
     idx = np.logical_and(xx > 0.0, xx < 1.0)
-    yy[idx] = norm.pdf(xx_trans[idx], loc=parameters[0], scale=parameters[1]) \
-              / xx[idx] / (1 - xx[idx])
+    yy[idx] = (
+        norm.pdf(xx_trans[idx], loc=parameters[0], scale=parameters[1])
+        / xx[idx]
+        / (1 - xx[idx])
+    )
 
     return yy
 
 
 def cdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the CDF values of a logit-normal distribution.
 
@@ -185,10 +188,10 @@ def cdf(
 
 
 def icdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the inverse CDF values of a normal distribution.
 

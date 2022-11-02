@@ -104,8 +104,7 @@ def verify_parameters(parameters: np.ndarray):
 
     if lb >= mu or ub <= mu:
         raise ValueError(
-            f"The mean {mu} "
-            f"must be between the bounds [{lb}, {ub}]!"
+            f"The mean {mu} must be between the bounds [{lb}, {ub}]!"
         )
 
 
@@ -146,10 +145,10 @@ def upper(parameters: np.ndarray) -> float:
 
 
 def pdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the PDF values of a truncated normal distribution.
 
@@ -183,20 +182,20 @@ def pdf(
 
     yy[idx] = truncnorm.pdf(
         xx[idx],
-        a=(lb_param - mu)/sigma,
-        b=(ub_param - mu)/sigma,
+        a=(lb_param - mu) / sigma,
+        b=(ub_param - mu) / sigma,
         loc=mu,
-        scale=sigma
+        scale=sigma,
     )
 
     return yy
 
 
 def cdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the CDF values of the truncated normal distribution.
 
@@ -237,20 +236,20 @@ def cdf(
     yy[idx_upper] = 1.0
     yy[idx_rest] = truncnorm.cdf(
         xx[idx_rest],
-        a=(lb_param - mu)/sigma,
-        b=(ub_param - mu)/sigma,
+        a=(lb_param - mu) / sigma,
+        b=(ub_param - mu) / sigma,
         loc=mu,
-        scale=sigma
+        scale=sigma,
     )
 
     return yy
 
 
 def icdf(
-        xx: np.ndarray,
-        parameters: np.ndarray,
-        lower_bound: float,
-        upper_bound: float
+    xx: np.ndarray,
+    parameters: np.ndarray,
+    lower_bound: float,
+    upper_bound: float,
 ) -> np.ndarray:
     """Get the inverse CDF values of a truncated normal distribution.
 
@@ -289,10 +288,10 @@ def icdf(
     yy[idx_upper] = upper_bound
     yy[idx_rest] = truncnorm.ppf(
         xx[idx_rest],
-        a=(lb_param - mu)/sigma,
-        b=(ub_param - mu)/sigma,
+        a=(lb_param - mu) / sigma,
+        b=(ub_param - mu) / sigma,
         loc=mu,
-        scale=sigma
+        scale=sigma,
     )
 
     return yy

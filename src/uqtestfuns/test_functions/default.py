@@ -40,7 +40,7 @@ def get_default_args(fun_name: str) -> dict:
         "name": fun_mod.DEFAULT_NAME,
         "evaluate": fun_mod.evaluate,
         "input": fun_mod.DEFAULT_INPUT,
-        "parameters": fun_mod.DEFAULT_PARAMETERS
+        "parameters": fun_mod.DEFAULT_PARAMETERS,
     }
 
     return default_args

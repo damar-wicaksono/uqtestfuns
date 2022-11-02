@@ -34,8 +34,10 @@ def test_create_instance(default_testfun):
     testfun, testfun_mod = default_testfun
 
     # Assertions
-    assert testfun.spatial_dimension == \
-           testfun_mod.DEFAULT_INPUT.spatial_dimension
+    assert (
+        testfun.spatial_dimension
+        == testfun_mod.DEFAULT_INPUT.spatial_dimension
+    )
     assert testfun.input == testfun_mod.DEFAULT_INPUT
 
 
@@ -93,7 +95,7 @@ def test_wrong_input_dim(default_testfun):
     testfun, _ = default_testfun
 
     # Compute variance via Monte Carlo
-    xx = np.random.rand(10, testfun.spatial_dimension*2)
+    xx = np.random.rand(10, testfun.spatial_dimension * 2)
 
     with pytest.raises(ValueError):
         testfun(xx)

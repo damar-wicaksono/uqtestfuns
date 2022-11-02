@@ -33,50 +33,50 @@ DEFAULT_INPUT_DICTS = [
         "name": "rw",
         "distribution": "normal",
         "parameters": [0.10, 0.0161812],
-        "description": "radius of the borehole [m]"
+        "description": "radius of the borehole [m]",
     },
     {
         "name": "r",
         "distribution": "lognormal",
         "parameters": [7.71, 1.0056],
-        "description": "radius of influence [m]"
+        "description": "radius of influence [m]",
     },
     {
         "name": "Tu",
         "distribution": "uniform",
-        "parameters": [63070., 115600.],
-        "description": "transmissivity of upper aquifer [m^2/year]"
+        "parameters": [63070.0, 115600.0],
+        "description": "transmissivity of upper aquifer [m^2/year]",
     },
     {
         "name": "Hu",
         "distribution": "uniform",
-        "parameters": [990., 1100.],
-        "description": "potentiometric head of upper aquifer [m]"
+        "parameters": [990.0, 1100.0],
+        "description": "potentiometric head of upper aquifer [m]",
     },
     {
         "name": "Tl",
         "distribution": "uniform",
         "parameters": [63.1, 116.0],
-        "description": "transmissivity of lower aquifer [m^2/year]"
+        "description": "transmissivity of lower aquifer [m^2/year]",
     },
     {
         "name": "Hl",
         "distribution": "uniform",
-        "parameters": [700., 820.],
-        "description": "potentiometric head of lower aquifer [m]"
+        "parameters": [700.0, 820.0],
+        "description": "potentiometric head of lower aquifer [m]",
     },
     {
         "name": "L",
         "distribution": "uniform",
-        "parameters": [1120., 1680.],
-        "description": "length of the borehole [m]"
+        "parameters": [1120.0, 1680.0],
+        "description": "length of the borehole [m]",
     },
     {
         "name": "Kw",
         "distribution": "uniform",
-        "parameters": [9985., 12045.],
-        "description": "hydraulic conductivity of the borehole [m/year]"
-    }
+        "parameters": [9985.0, 12045.0],
+        "description": "hydraulic conductivity of the borehole [m/year]",
+    },
 ]
 
 DEFAULT_INPUT = MultivariateInput(DEFAULT_INPUT_DICTS)
@@ -88,14 +88,14 @@ ALTERNATIVE_INPUT_DICTS[0:2] = [
         "name": "rw",
         "distribution": "uniform",
         "parameters": [0.05, 0.15],
-        "description": "radius of the borehole [m]"
+        "description": "radius of the borehole [m]",
     },
     {
         "name": "r",
         "distribution": "uniform",
         "parameters": [100, 50000],
-        "description": "radius of influence [m]"
-    }
+        "description": "radius of influence [m]",
+    },
 ]
 
 ALTERNATIVE_INPUT = MultivariateInput(ALTERNATIVE_INPUT_DICTS)
@@ -124,8 +124,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     # Compute the Borehole function
     nom = 2 * np.pi * xx[:, 2] * (xx[:, 3] - xx[:, 5])
     denom_1 = np.log(xx[:, 1] / xx[:, 0])
-    denom_2 = 2 * xx[:, 6] * xx[:, 2] / \
-              (np.log(xx[:, 1] / xx[:, 0]) * xx[:, 0] ** 2 * xx[:, 7])
+    denom_2 = (
+        2
+        * xx[:, 6]
+        * xx[:, 2]
+        / (np.log(xx[:, 1] / xx[:, 0]) * xx[:, 0] ** 2 * xx[:, 7])
+    )
     denom_3 = xx[:, 2] / xx[:, 4]
 
     yy = nom / (denom_1 * (1 + denom_2 + denom_3))

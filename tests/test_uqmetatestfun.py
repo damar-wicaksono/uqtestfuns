@@ -21,9 +21,9 @@ def _create_args_effects_dict(spatial_dimension):
     """
     effects_dict = dict()
 
-    for i in range(1, spatial_dimension+1):
+    for i in range(1, spatial_dimension + 1):
         max_num = math.comb(spatial_dimension, i)
-        effects_dict[i] = np.random.randint(1, max_num+1)
+        effects_dict[i] = np.random.randint(1, max_num + 1)
 
     return effects_dict
 
@@ -55,16 +55,11 @@ def uqmetafunspec(request):
 
     spatial_dimension = request.param
 
-    basis_functions = {
-        0: lambda x: x,
-        1: lambda x: x ** 2
-    }
+    basis_functions = {0: lambda x: x, 1: lambda x: x**2}
 
     effects_dict = _create_args_effects_dict(spatial_dimension)
 
-    inputs = create_random_input_dicts(
-        spatial_dimension
-    )
+    inputs = create_random_input_dicts(spatial_dimension)
 
     coeffs_generator = np.random.rand
 
@@ -73,7 +68,7 @@ def uqmetafunspec(request):
         "basis_functions": basis_functions,
         "effects_dict": effects_dict,
         "inputs": inputs,
-        "coeffs_generator": coeffs_generator
+        "coeffs_generator": coeffs_generator,
     }
 
     my_metafun_spec = UQMetaFunSpec(
@@ -81,7 +76,7 @@ def uqmetafunspec(request):
         basis_functions,
         effects_dict,
         inputs,
-        coeffs_generator
+        coeffs_generator,
     )
 
     return my_metafun_spec, my_args
@@ -96,16 +91,22 @@ def test_create_instance(uqmetafunspec):
     my_metafun = UQMetaTestFun(my_metafun_spec)
 
     # Assertions
-    assert my_metafun.metafun_spec.spatial_dimension == \
-           my_args["spatial_dimension"]
-    assert my_metafun.metafun_spec.basis_functions == \
-            my_args["basis_functions"]
+    assert (
+        my_metafun.metafun_spec.spatial_dimension
+        == my_args["spatial_dimension"]
+    )
+    assert (
+        my_metafun.metafun_spec.basis_functions == my_args["basis_functions"]
+    )
     assert my_metafun.metafun_spec.inputs == my_args["inputs"]
-    assert my_metafun.metafun_spec.coeffs_generator == \
-           my_args["coeffs_generator"]
+    assert (
+        my_metafun.metafun_spec.coeffs_generator == my_args["coeffs_generator"]
+    )
     for key in my_metafun.metafun_spec.effects:
-        assert my_metafun.metafun_spec.effects[key] == \
-               my_args["effects_dict"][key]
+        assert (
+            my_metafun.metafun_spec.effects[key]
+            == my_args["effects_dict"][key]
+        )
 
 
 @pytest.mark.parametrize("spatial_dimension", [1, 2, 3, 4, 5, 10])
@@ -207,7 +208,7 @@ def test_evaluate_sample(spatial_dimension):
         basis_functions,
         effects_dict,
         inputs,
-        coeffs_generator
+        coeffs_generator,
     )
     my_metafun = UQMetaTestFun(my_metafun_spec)
 

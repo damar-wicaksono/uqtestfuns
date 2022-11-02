@@ -37,7 +37,7 @@ def univariate_input(request):
     specs = {
         "name": name,
         "distribution": distribution,
-        "parameters": parameters
+        "parameters": parameters,
     }
 
     my_univariate_input = UnivariateInput(**specs)
@@ -89,8 +89,8 @@ def test_get_pdf_values(univariate_input):
     xx = my_univariate_input.get_sample(sample_size)
 
     # Assertions
-    assert my_univariate_input.pdf(my_univariate_input.lower-0.1) <= 1e-15
-    assert my_univariate_input.pdf(my_univariate_input.upper+0.1) <= 1e-15
+    assert my_univariate_input.pdf(my_univariate_input.lower - 0.1) <= 1e-15
+    assert my_univariate_input.pdf(my_univariate_input.upper + 0.1) <= 1e-15
 
 
 def test_get_cdf_values(univariate_input):
@@ -127,13 +127,9 @@ def test_get_icdf_values(univariate_input):
     # Test the upper bound of sampled ICDF
     assert np.max(icdf_values) <= my_univariate_input.upper
     # Test the lower bound of ICDF
-    assert np.isclose(
-        my_univariate_input.icdf(0.0), my_univariate_input.lower
-    )
+    assert np.isclose(my_univariate_input.icdf(0.0), my_univariate_input.lower)
     # Test the upper bound of ICDF
-    assert np.isclose(
-        my_univariate_input.icdf(1.0), my_univariate_input.upper
-    )
+    assert np.isclose(my_univariate_input.icdf(1.0), my_univariate_input.upper)
 
 
 def test_transform_sample():

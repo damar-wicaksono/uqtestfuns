@@ -17,8 +17,8 @@ def _calc_mean(parameters: np.ndarray) -> float:
     """Compute the analytical mean of a given truncated normal distribution."""
     mu, sigma, lb, ub = parameters[:]
 
-    alpha = (lb - mu)/sigma
-    beta = (ub - mu)/sigma
+    alpha = (lb - mu) / sigma
+    beta = (ub - mu) / sigma
     phi_alpha = norm.pdf(alpha)
     phi_beta = norm.pdf(beta)
     z = norm.cdf(beta) - norm.cdf(alpha)
@@ -41,7 +41,7 @@ def _calc_std(parameters: np.ndarray) -> float:
     term_1 = 1
     term_2 = (beta * phi_beta - alpha * phi_alpha) / z
     term_3 = ((phi_beta - phi_alpha) / z) ** 2
-    var = sigma ** 2 * (term_1 - term_2 - term_3)
+    var = sigma**2 * (term_1 - term_2 - term_3)
 
     return np.sqrt(var)
 
