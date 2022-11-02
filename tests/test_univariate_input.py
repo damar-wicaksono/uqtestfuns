@@ -46,7 +46,7 @@ def univariate_input(request):
 
 
 def test_create_instance(univariate_input):
-    """Test the creation of UnivariateInput instance with np.array as params."""
+    """Test the creation of instance with np.array as params."""
 
     my_univariate_input, specs = univariate_input
 
@@ -84,9 +84,6 @@ def test_get_pdf_values(univariate_input):
     """Test the PDF values from an instance of UnivariateInput."""
 
     my_univariate_input, _ = univariate_input
-
-    sample_size = 1000
-    xx = my_univariate_input.get_sample(sample_size)
 
     # Assertions
     assert my_univariate_input.pdf(my_univariate_input.lower - 0.1) <= 1e-15

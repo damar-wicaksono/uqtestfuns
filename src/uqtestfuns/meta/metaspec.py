@@ -18,10 +18,10 @@ def _preprocess_effects(
     """Preprocess the effects dictionary.
 
     It will do the following things:
-    - If a value is None, replace it with the number of all possible interaction
-      terms.
-    - If a value is larger than the dimension of the test function or it's zero
-      exclude the key.
+    - If a value is None, replace it with the number of all possible
+      interaction terms.
+    - If a value is larger than the dimension of the test function
+      or it's zero, then exclude the key.
 
     >>> effects_dict = {1: None, 2: 3, 3: None, 4: 10}
     >>> spatial_dimension = 3
@@ -31,8 +31,8 @@ def _preprocess_effects(
     Parameters
     ----------
     effects_dict : Dict[int, Optional[int]]
-        Specified effects with the corresponding length to take into account in
-        a realization of test function.
+        Specified effects with the corresponding length to take into account
+        in a realization of test function.
     spatial_dimension : int
         Number of dimensions of the test function.
 
@@ -56,10 +56,10 @@ def _preprocess_effects(
 def _select_basis(spatial_dimension: int, num_basis: int) -> Tuple[int, ...]:
     """Select basis of a certain length from a selection of basis.
 
-    For example, with spatial dimension of 3 and number of basis functions of 9,
-    the output may be a tuple of integers: (7, 3, 8) which means the first,
-    second, and third dimension has the 7th, 3rd, and 8th basis function,
-    respectively.
+    For example, with spatial dimension of 3 and number of basis functions
+    of 9, the output may be a tuple of integers: (7, 3, 8) which means
+    the first, second, and third dimension has the 7th, 3rd,
+    and 8th basis function, respectively.
 
     Parameters
     ----------
@@ -199,8 +199,8 @@ def _select_inputs(
     Parameters
     ----------
     inputs : Union[List[Dict], Tuple[Dict, ...]]
-        List of available marginals to construct a probabilistic input model for
-        a test function realization.
+        List of available marginals to construct a probabilistic input model
+        for a test function realization.
     spatial_dimension : int
         Number of dimensions of the test function.
 
@@ -272,8 +272,8 @@ class UQMetaFunSpec:
     basis_functions : Dict[int, Callable]
         Collection of basis functions to choose from.
     effects : Dict[int, Optional[int]]
-        Specified effects with the corresponding length to take into account for
-        all the test function realizations.
+        Specified effects with the corresponding length to take into account
+        for all the test function realizations.
     inputs : Union[List[Dict], Tuple[Dict, ...]]
         List of available input marginals to construct a multi-dimensional
         probabilistic input of the test function realizations.

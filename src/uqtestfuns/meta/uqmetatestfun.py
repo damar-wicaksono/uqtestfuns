@@ -10,7 +10,8 @@ References
 
 1. William Becker, “Metafunctions for benchmarking in sensitivity analysis,”
    Reliability Engineering & System Safety, vol. 204, p. 107189, 2020,
-   doi: `10.1016/j.ress.2020.107189 <https://doi.org/10.1016/j.ress.2020.107189>`_.
+   doi:
+   `10.1016/j.ress.2020.107189 <https://doi.org/10.1016/j.ress.2020.107189>`_.
 """
 import math
 import numpy as np
@@ -27,13 +28,15 @@ __all__ = ["UQMetaTestFun", "default_coeffs_gen"]
 
 
 def default_coeffs_gen(sample_size: int) -> np.ndarray:
-    """Generate coefficient values for each effect term using the default.
+    r"""Generate coefficient values for each effect term using the default.
 
     The default coefficient values generator is a Gaussian mixture distribution
     as proposed in [1] with the following form:
 
     .. math::
-       \mathcal{GM}(\phi, \mu_1, \sigma_1, \mu_2, \sigma_2) = \phi \mathcal{N}(\mu_1, \sigma_1) + (1 - \phi) \mathcal{N}(\mu_2, \sigma_2)
+       \mathcal{GM}(\phi, \mu_1, \sigma_1, \mu_2, \sigma_2) =
+       \phi \mathcal{N}(\mu_1, \sigma_1)
+       + (1 - \phi) \mathcal{N}(\mu_2, \sigma_2)
 
     where :math:`\phi = 0.7`, :math:`\mu_1 = 0`, :math:`\mu_2 = 0`,
     :math:`\sigma_1 = \sqrt{0.5}`, and :math:`\sigma_2 = \sqrt{5}`.

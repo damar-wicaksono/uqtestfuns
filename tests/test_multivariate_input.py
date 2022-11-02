@@ -62,7 +62,7 @@ def test_generate_dependent_sample():
     my_multivariate_input = MultivariateInput(input_dicts)
     my_multivariate_input.copulas = []
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         my_multivariate_input.get_sample(1000)
 
 
@@ -89,7 +89,7 @@ def test_get_dependent_pdf_values():
     my_multivariate_input = MultivariateInput(input_dicts)
     my_multivariate_input.copulas = []
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         my_multivariate_input.pdf(np.random.rand(2, 5))
 
 
@@ -126,7 +126,7 @@ def test_failed_transform_sample():
     sample_size = 5000
     xx = my_multivariate_input_1.get_sample(sample_size)
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         my_multivariate_input_1.transform_sample(my_multivariate_input_2, xx)
 
 
@@ -140,7 +140,7 @@ def test_transform_dependent_sample():
 
     xx = np.random.rand(2, 5)
 
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError):
         my_multivariate_input_1.copulas = []
         my_multivariate_input_1.transform_sample(my_multivariate_input_2, xx)
 
