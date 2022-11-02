@@ -15,7 +15,8 @@ def uqtestfun():
     """Create an instance of UQTestFun."""
     input_dicts = create_random_input_dicts(1)
 
-    evaluate = lambda x, p: x + 1
+    def evaluate(x, p):
+        x + 1
 
     my_args = {
         "name": "Test function",
