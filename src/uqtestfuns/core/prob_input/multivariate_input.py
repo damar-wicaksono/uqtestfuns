@@ -38,7 +38,7 @@ class MultivariateInput:
 
     spatial_dimension: int = field(init=False)
     marginals: Tuple[UnivariateInput, ...] = field(init=False)
-    univariate_inputs: InitVar[Union[List[Dict], Tuple[Dict]]] = None
+    univariate_inputs: InitVar[Union[List[Dict], Tuple[Dict, ...]]] = None
     copulas: Any = None
 
     def __post_init__(self, univariate_inputs: Union[List[Dict], Tuple[Dict]]):

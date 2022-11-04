@@ -5,6 +5,8 @@ The UnivariateInput class represents a univariate probabilistic input.
 Each input has a probability distribution and the associated parameters.
 """
 import numpy as np
+
+from numpy.typing import ArrayLike
 from dataclasses import dataclass, field
 from typing import List, Optional, Union, Sequence
 
@@ -84,7 +86,7 @@ class UnivariateInput:
             xx, self.distribution, self.parameters, self.lower, self.upper
         )
 
-    def pdf(self, xx: np.ndarray):
+    def pdf(self, xx: ArrayLike):
         """Compute the PDF of the distribution on a set of values."""
         # Convert input to an np.array
         xx = np.asarray(xx)
