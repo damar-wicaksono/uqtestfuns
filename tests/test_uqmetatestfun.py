@@ -216,6 +216,9 @@ def test_evaluate_sample(spatial_dimension):
     # Get sample 0
     my_testfun = my_metafun.get_sample()
 
+    # Assertion
+    assert isinstance(my_testfun, UQTestFun)
+
     sample_size = 1000
     xx = my_testfun.input.get_sample(sample_size)
     yy = my_testfun(xx)

@@ -42,7 +42,14 @@ def uqtestfunspec():
         "inputs": inputs,
     }
 
-    uqtestfunspec_instance = UQTestFunSpec(**my_args)
+    uqtestfunspec_instance = UQTestFunSpec(
+        spatial_dimension=spatial_dimension,
+        basis_functions=basis_functions,
+        selected_basis=selected_basis,
+        effects_tuples=effects_tuples,
+        effects_coeffs=effects_coeffs,
+        inputs=inputs,
+    )
 
     return uqtestfunspec_instance, my_args
 
@@ -166,12 +173,15 @@ def test_get_sample_uqmetafunspec(spatial_dimension):
 
     # Get 1 sample
     testfun_spec = metafun_spec.get_sample()
+    # Assertion
+    assert isinstance(testfun_spec, UQTestFunSpec)
 
     selected_basis = testfun_spec.selected_basis
     effects_tuples, effects_coeffs = _create_effects_tuples_coeffs(
         spatial_dimension, coeffs_generator
     )
 
+    # Comparison with test function specification created separately
     testfun_spec_ref = UQTestFunSpec(
         spatial_dimension,
         basis_functions,
@@ -180,6 +190,7 @@ def test_get_sample_uqmetafunspec(spatial_dimension):
         effects_coeffs,
         inputs,
     )
+
     # Assertions
     assert testfun_spec.spatial_dimension == testfun_spec_ref.spatial_dimension
     assert testfun_spec.inputs == testfun_spec_ref.inputs

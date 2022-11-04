@@ -17,7 +17,8 @@ import math
 import numpy as np
 
 from dataclasses import dataclass
-from typing import Sized, Optional, Union, List
+from numpy.typing import ArrayLike
+from typing import Optional, Union, List
 
 from .metaspec import UQMetaFunSpec, UQTestFunSpec
 from .basis_functions import BASIS_BY_ID
@@ -94,11 +95,11 @@ def _evaluate_test_function(
 
 @dataclass
 class UQMetaTestFun:
-    """Implementation of the meta.
+    """Implementation of the metafunction.
 
-    A meta is a test-function-generating function.
+    A metafunction is a test-function-generating function.
     A random realization of a test function can be generated
-    from a meta.
+    from a metafunction.
 
     Parameters
     ----------
@@ -141,6 +142,8 @@ class UQMetaTestFun:
         evaluate = _evaluate_test_function
 
         if sample_size == 1:
+            assert testfun_specs is not None
+            assert not isinstance(testfun_specs, list)
             # Create an instance of inputs
             inputs = MultivariateInput(testfun_specs.inputs)
             # Assign the realized spec as a parameter
@@ -151,6 +154,7 @@ class UQMetaTestFun:
         sample = []
         for i in range(sample_size):
             # Create an instance of inputs
+            assert isinstance(testfun_specs, list)
             inputs = MultivariateInput(testfun_specs[i].inputs)
             # Assign the realized spec as a parameter
             parameters = testfun_specs[i]
@@ -162,7 +166,7 @@ class UQMetaTestFun:
     @classmethod
     def from_default(
         cls,
-        spatial_dimension: Union[int, Sized],
+        spatial_dimension: ArrayLike,
         input_id: Optional[int] = None,
     ):
         """Create a metafunction with parameters according to Becker (2019).
@@ -179,8 +183,10 @@ class UQMetaTestFun:
         UQMetaTestFun
             An instance of metafunction with the default parameters.
         """
-        if isinstance(spatial_dimension, Sized):
-            spatial_dimension = np.random.choice(spatial_dimension)
+        # Select a single spatial dimension randomly
+        if not isinstance(spatial_dimension, int):
+            spatial_dimension = np.asarray(spatial_dimension)
+            spatial_dimension = int(np.random.choice(spatial_dimension))
 
         effects_dict = {
             1: None,  # Take all
