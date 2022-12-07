@@ -51,10 +51,17 @@ class UQTestFun:
     parameters: Any = None
 
     def __post_init__(self):
+        if isinstance(self.input, list):
+            self.input = MultivariateInput(self.input)
+
         self.spatial_dimension = self.input.spatial_dimension
 
     def __call__(self, xx: np.ndarray):
         """Evaluation of the test function by calling the instance."""
+
+        # Verify the shape of the input
+        _verify_input(xx, self.spatial_dimension)
+
         if self.parameters is None:
             return self.evaluate(xx)
         else:
@@ -104,3 +111,27 @@ class UQTestFun:
         )
 
         return out
+
+
+def _verify_input(xx: np.ndarray, num_cols: int):
+    """Verify the number of columns of the input array.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        Array of input values with a shape of N-by-M, where N is the number
+        of realizations and M is the spatial dimension.
+    num_cols : int
+        The expected number of columns in the input.
+
+    Raises
+    ------
+    ValueError
+        If the number of columns in the input is not equal to the expected
+        number of columns.
+    """
+    if xx.shape[1] != num_cols:
+        raise ValueError(
+            f"Wrong dimensionality of the input array!"
+            f"Expected {num_cols}, got {xx.shape[1]}."
+        )

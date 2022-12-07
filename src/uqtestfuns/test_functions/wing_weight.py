@@ -13,13 +13,10 @@ References
 """
 import numpy as np
 
-from ..core import MultivariateInput
-from .utils import deg2rad, verify_input
-
+from .utils import deg2rad, verify_spatial_dimension
 
 DEFAULT_NAME = "Wing Weight"
 
-# Define the default input of the Wing Weight test function
 DEFAULT_INPUT_DICTS = [
     {
         "name": "Sw",
@@ -83,9 +80,20 @@ DEFAULT_INPUT_DICTS = [
     },
 ]
 
-DEFAULT_INPUT = MultivariateInput(DEFAULT_INPUT_DICTS)
-
 DEFAULT_PARAMETERS = None
+
+SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS)
+
+
+def get_default_input(spatial_dimension: int = None):
+    """Get the default list of dictionaries to construct the Input instance."""
+    verify_spatial_dimension(
+        spatial_dimension,
+        SPATIAL_DIMENSION,
+        DEFAULT_NAME,
+    )
+
+    return DEFAULT_INPUT_DICTS
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
@@ -103,8 +111,6 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
         The output of the Wing Weight function evaluated on the input values.
         The output is a 1-dimensional array of length N.
     """
-    # Verify the shape of the input
-    verify_input(xx, DEFAULT_INPUT.spatial_dimension)
 
     # Compute the Wing Weight function
     term_1 = 0.036 * xx[:, 0] ** 0.758 * xx[:, 1] ** 0.0035

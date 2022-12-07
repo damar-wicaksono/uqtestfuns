@@ -1,7 +1,7 @@
 """
 Module with an implementation of the Borehole function.
 
-The Borehole test function [1] is a 8-dimensional scalar-valued function
+The Borehole test function [1] is an 8-dimensional scalar-valued function
 that models water flow through a borehole that is drilled from
 the ground surface through two aquifers.
 
@@ -23,8 +23,7 @@ References
 """
 import numpy as np
 
-from ..core import MultivariateInput
-from .utils import verify_input
+from .utils import verify_spatial_dimension
 
 DEFAULT_NAME = "Borehole"
 
@@ -80,8 +79,6 @@ DEFAULT_INPUT_DICTS = [
     },
 ]
 
-DEFAULT_INPUT = MultivariateInput(DEFAULT_INPUT_DICTS)
-
 # From Ref. 2
 ALTERNATIVE_INPUT_DICTS = [_.copy() for _ in DEFAULT_INPUT_DICTS]
 ALTERNATIVE_INPUT_DICTS[0:2] = [
@@ -99,9 +96,20 @@ ALTERNATIVE_INPUT_DICTS[0:2] = [
     },
 ]
 
-ALTERNATIVE_INPUT = MultivariateInput(ALTERNATIVE_INPUT_DICTS)
-
 DEFAULT_PARAMETERS = None
+
+SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS)
+
+
+def get_default_input(spatial_dimension: int = None):
+    """Get the default list of dictionaries to construct the Input instance."""
+    verify_spatial_dimension(
+        spatial_dimension,
+        SPATIAL_DIMENSION,
+        DEFAULT_NAME,
+    )
+
+    return DEFAULT_INPUT_DICTS
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
@@ -119,9 +127,6 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
         The output of the Borehole function evaluated on the input values.
         The output is a 1-dimensional array of length N.
     """
-    # Verify the shape of the input
-    verify_input(xx, DEFAULT_INPUT.spatial_dimension)
-
     # Compute the Borehole function
     nom = 2 * np.pi * xx[:, 2] * (xx[:, 3] - xx[:, 5])
     denom_1 = np.log(xx[:, 1] / xx[:, 0])
