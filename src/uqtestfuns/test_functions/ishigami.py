@@ -18,8 +18,7 @@ References
 """
 import numpy as np
 
-from ..core import MultivariateInput
-from .utils import verify_input
+from .utils import verify_spatial_dimension
 
 DEFAULT_NAME = "Ishigami"
 
@@ -37,20 +36,31 @@ DEFAULT_INPUT_DICTS = [
         "description": "None",
     },
     {
-        "name": "X2",
+        "name": "X3",
         "distribution": "uniform",
         "parameters": [-np.pi, np.pi],
         "description": "None",
     },
 ]
 
-DEFAULT_INPUT = MultivariateInput(DEFAULT_INPUT_DICTS)
-
 # The parameter set is from [2].
 DEFAULT_PARAMETERS = (7, 0.05)
 
+SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS)
 
-def evaluate(xx: np.ndarray, params: tuple = DEFAULT_PARAMETERS) -> np.ndarray:
+
+def get_default_input(spatial_dimension: int = None):
+    """Get the default list of dictionaries to construct the Input instance."""
+    verify_spatial_dimension(
+        spatial_dimension,
+        SPATIAL_DIMENSION,
+        DEFAULT_NAME,
+    )
+
+    return DEFAULT_INPUT_DICTS
+
+
+def evaluate(xx: np.ndarray, params: tuple) -> np.ndarray:
     """Evaluate the Ishigami function on a set of input values.
 
     Parameters
@@ -67,8 +77,6 @@ def evaluate(xx: np.ndarray, params: tuple = DEFAULT_PARAMETERS) -> np.ndarray:
         The output of the Ishigami function evaluated on the input values.
         The output is a 1-dimensional array of length N.
     """
-    # Verify the shape of the input
-    verify_input(xx, DEFAULT_INPUT.spatial_dimension)
 
     # Compute the Ishigami function
     term_1 = np.sin(xx[:, 0])

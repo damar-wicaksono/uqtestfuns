@@ -6,7 +6,6 @@ Notes
 - The tests defined in this module deals with
   the correctness of the evaluation.
 """
-
 import numpy as np
 import pytest
 
@@ -62,3 +61,9 @@ def test_compute_variance(ishigami_fun):
 
     # Assertion
     assert np.allclose(var_mc, var_ref, rtol=1e-2)
+
+
+def test_wrong_dimension():
+    """The Ishigami function is strictly three-dimensional."""
+    with pytest.raises(ValueError):
+        get_default_args("ishigami", 10)
