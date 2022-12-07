@@ -63,9 +63,10 @@ def evaluate(xx: np.ndarray, params: tuple) -> np.ndarray:
 
     m = xx.shape[1]
     a, b, c = params
+
     # Compute the Ackley function
     term_1 = -1 * a * np.exp(-1 * b * np.sqrt(np.sum(xx**2, axis=1) / m))
-    term_2 = - np.exp(np.sum(np.cos(c * xx), axis=1) / m)
+    term_2 = -1 * np.exp(np.sum(np.cos(c * xx), axis=1) / m)
 
     yy = term_1 + term_2 + a + np.exp(1)
 

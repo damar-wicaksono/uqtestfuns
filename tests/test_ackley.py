@@ -14,7 +14,7 @@ from uqtestfuns.test_functions import ackley as ackley_mod
 
 
 # Test for different parameters to the Ackley function
-parameters = [ackley_mod.DEFAULT_PARAMETERS, (10., 0.1, 2 * np.pi)]
+parameters = [ackley_mod.DEFAULT_PARAMETERS, (10.0, 0.1, 2 * np.pi)]
 
 
 @pytest.fixture(params=parameters)

@@ -52,8 +52,8 @@ def get_default_args(fun_name: str, spatial_dimension: int = None) -> dict:
 
 
 def create_from_default(
-        fun_name: str,
-        spatial_dimension: int = None,
+    fun_name: str,
+    spatial_dimension: int = None,
 ) -> UQTestFun:
     """Create an instance of UQTestFun from the available defaults.
 
