@@ -49,8 +49,8 @@ def get_default_args(
         available, the function returns an error.
     param_selection : str, optional
         When applicable, the keyword for selecting the parameters set of
-        a test function. Some test functions may have different parameter values
-        based on the available literature.
+        a test function. Some test functions may have different parameter
+        values based on the available literature.
         With 'None', the default will be used; if the selection is not
         available, the function returns an error.
 
@@ -73,9 +73,7 @@ def get_default_args(
         "name": fun_mod.DEFAULT_NAME,
         "evaluate": fun_mod.evaluate,
         "input": _get_default_input(
-            fun_mod,
-            input_selection,
-            spatial_dimension
+            fun_mod, input_selection, spatial_dimension
         ),
         "parameters": _get_default_parameters(
             fun_mod,
@@ -111,8 +109,8 @@ def create_from_default(
         available, the function returns an error.
     param_selection : str, optional
         When applicable, the keyword for selecting the parameters set of
-        a test function. Some test functions may have different parameter values
-        based on the available literature.
+        a test function. Some test functions may have different parameter
+        values based on the available literature.
         With 'None', the default will be used; if the selection is not
         available, the function returns an error.
 
@@ -135,7 +133,7 @@ def create_from_default(
 def _get_default_input(
     fun_module: ModuleType,
     selection: str = None,
-    spatial_dimension: int = None
+    spatial_dimension: int = None,
 ) -> dict:
     """Get the input specification of a test function from the module.
 
@@ -191,7 +189,7 @@ def _get_default_input(
 def _get_default_parameters(
     fun_module: ModuleType,
     selection: str = None,
-    spatial_dimension: int = None
+    spatial_dimension: int = None,
 ) -> tuple:
     """Get the default parameters used in the evaluation of the function.
 
@@ -247,7 +245,7 @@ def _get_default_parameters(
     default_parameters = fun_module.DEFAULT_PARAMETERS[selection]
 
     if isinstance(default_parameters, Callable):
-        default_parameters =  default_parameters(spatial_dimension)
+        default_parameters = default_parameters(spatial_dimension)
 
     return default_parameters
 
@@ -265,7 +263,7 @@ def _get_spatial_dimension(fun_module: ModuleType) -> int:
     int
         The spatial dimension as specified in the module.
     """
-    if fun_module.SPATIAL_DIMENSION == None:
+    if fun_module.SPATIAL_DIMENSION is None:
         spatial_dimension = fun_module.DEFAULT_DIMENSION
     else:
         spatial_dimension = fun_module.SPATIAL_DIMENSION
@@ -299,7 +297,8 @@ def _verify_spatial_dimension(spatial_dimension: int, fun_module: ModuleType):
     default_spatial_dimension = fun_module.SPATIAL_DIMENSION
 
     if default_spatial_dimension is not None:
-        assert spatial_dimension == default_spatial_dimension,\
-            f"The spatial dimension for the '{fun_name}' test function "\
-            f"is fixed to {default_spatial_dimension} "\
+        assert spatial_dimension == default_spatial_dimension, (
+            f"The spatial dimension for the '{fun_name}' test function "
+            f"is fixed to {default_spatial_dimension} "
             f"(but specified {spatial_dimension})."
+        )

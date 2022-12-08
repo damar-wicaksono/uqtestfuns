@@ -35,6 +35,7 @@ def _ackley_input(spatial_dimension: int):
 
     return input_dicts
 
+
 DEFAULT_INPUTS = {
     "ackley": _ackley_input,
 }
