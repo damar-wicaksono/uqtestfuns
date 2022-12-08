@@ -39,7 +39,7 @@ def test_create_instance(default_testfun):
         testfun_mod.DEFAULT_INPUT_SELECTION
     ]
 
-    if isinstance(default_input, Callable):
+    if isinstance(default_input, Callable):  # type: ignore
         default_input_dicts = default_input(testfun_mod.DEFAULT_DIMENSION)
     else:
         default_input_dicts = default_input

@@ -5,7 +5,7 @@ A default function means that the input specification, parameters, and
 spatial dimension (when applicable) used to create the function are taken from
 the available built-in default values.
 """
-from typing import Callable
+from typing import Callable, Any
 from types import ModuleType
 
 from . import wing_weight, ishigami, borehole, ackley
@@ -180,7 +180,7 @@ def _get_default_input(
 
     default_input = fun_module.DEFAULT_INPUTS[selection]
 
-    if isinstance(default_input, Callable):
+    if isinstance(default_input, Callable):  # type: ignore
         return default_input(spatial_dimension)
 
     return default_input
@@ -190,7 +190,7 @@ def _get_default_parameters(
     fun_module: ModuleType,
     selection: str = None,
     spatial_dimension: int = None,
-) -> tuple:
+) -> Any:
     """Get the default parameters used in the evaluation of the function.
 
     Parameters
@@ -244,7 +244,7 @@ def _get_default_parameters(
 
     default_parameters = fun_module.DEFAULT_PARAMETERS[selection]
 
-    if isinstance(default_parameters, Callable):
+    if isinstance(default_parameters, Callable):  # type: ignore
         default_parameters = default_parameters(spatial_dimension)
 
     return default_parameters
