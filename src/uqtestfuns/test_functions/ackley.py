@@ -15,23 +15,16 @@ import numpy as np
 
 DEFAULT_NAME = "Ackley"
 
-DEFAULT_DIMENSION = 2
 
-DEFAULT_PARAMETERS = (20, 0.2, 2 * np.pi)
+def _ackley_input(spatial_dimension: int):
+    """
 
-SPATIAL_DIMENSION = None
-
-
-def get_default_input(spatial_dimension: int = None):
-    """Construct the default input object for the Ackley function."""
-
-    # Set the default dimension
-    if spatial_dimension is None:
-        spatial_dimension = DEFAULT_DIMENSION
-
-    default_input_dicts = []
+    :param spatial_dimension:
+    :return:
+    """
+    input_dicts = []
     for i in range(spatial_dimension):
-        default_input_dicts.append(
+        input_dicts.append(
             {
                 "name": f"X{i + 1}",
                 "distribution": "uniform",
@@ -40,7 +33,22 @@ def get_default_input(spatial_dimension: int = None):
             }
         )
 
-    return default_input_dicts
+    return input_dicts
+
+
+DEFAULT_INPUTS = {
+    "ackley": _ackley_input,
+}
+
+DEFAULT_INPUT_SELECTION = "ackley"
+
+DEFAULT_PARAMETERS = {"ackley": (20, 0.2, 2 * np.pi)}
+
+DEFAULT_PARAMETERS_SELECTION = "ackley"
+
+SPATIAL_DIMENSION = None  # Variable dimension
+
+DEFAULT_DIMENSION = 2
 
 
 def evaluate(xx: np.ndarray, params: tuple) -> np.ndarray:

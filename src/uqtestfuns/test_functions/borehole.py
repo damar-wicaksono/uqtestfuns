@@ -23,12 +23,10 @@ References
 """
 import numpy as np
 
-from .utils import verify_spatial_dimension
-
 DEFAULT_NAME = "Borehole"
 
 # From Ref. 1
-DEFAULT_INPUT_DICTS = [
+DEFAULT_INPUT_DICTS_1 = [
     {
         "name": "rw",
         "distribution": "normal",
@@ -80,8 +78,8 @@ DEFAULT_INPUT_DICTS = [
 ]
 
 # From Ref. 2
-ALTERNATIVE_INPUT_DICTS = [_.copy() for _ in DEFAULT_INPUT_DICTS]
-ALTERNATIVE_INPUT_DICTS[0:2] = [
+DEFAULT_INPUT_DICTS_2 = [_.copy() for _ in DEFAULT_INPUT_DICTS_1]
+DEFAULT_INPUT_DICTS_2[0:2] = [
     {
         "name": "rw",
         "distribution": "uniform",
@@ -96,20 +94,16 @@ ALTERNATIVE_INPUT_DICTS[0:2] = [
     },
 ]
 
+DEFAULT_INPUTS = {
+    "harper": DEFAULT_INPUT_DICTS_1,
+    "morris": DEFAULT_INPUT_DICTS_2,
+}
+
+DEFAULT_INPUT_SELECTION = "harper"
+
 DEFAULT_PARAMETERS = None
 
-SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS)
-
-
-def get_default_input(spatial_dimension: int = None):
-    """Get the default list of dictionaries to construct the Input instance."""
-    verify_spatial_dimension(
-        spatial_dimension,
-        SPATIAL_DIMENSION,
-        DEFAULT_NAME,
-    )
-
-    return DEFAULT_INPUT_DICTS
+SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS_1)
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:

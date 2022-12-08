@@ -13,9 +13,9 @@ References
 """
 import numpy as np
 
-from .utils import deg2rad, verify_spatial_dimension
+from .utils import deg2rad
 
-DEFAULT_NAME = "Wing Weight"
+DEFAULT_NAME = "Wing-Weight"
 
 DEFAULT_INPUT_DICTS = [
     {
@@ -80,20 +80,15 @@ DEFAULT_INPUT_DICTS = [
     },
 ]
 
+DEFAULT_INPUTS = {
+    "forrester": DEFAULT_INPUT_DICTS,
+}
+
+DEFAULT_INPUT_SELECTION = "forrester"
+
 DEFAULT_PARAMETERS = None
 
 SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS)
-
-
-def get_default_input(spatial_dimension: int = None):
-    """Get the default list of dictionaries to construct the Input instance."""
-    verify_spatial_dimension(
-        spatial_dimension,
-        SPATIAL_DIMENSION,
-        DEFAULT_NAME,
-    )
-
-    return DEFAULT_INPUT_DICTS
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
