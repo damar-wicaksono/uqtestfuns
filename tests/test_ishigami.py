@@ -9,12 +9,13 @@ Notes
 import numpy as np
 import pytest
 
+import uqtestfuns
 from uqtestfuns import UQTestFun, get_default_args
 from uqtestfuns.test_functions import ishigami as ishigami_mod
 
 
 # Test for different parameters to the Ishigami function
-parameters = [ishigami_mod.DEFAULT_PARAMETERS, (7.0, 0.05)]
+parameters = list(ishigami_mod.DEFAULT_PARAMETERS.values()) + [(7.0, 0.05)]
 
 
 @pytest.fixture(params=parameters)
@@ -63,7 +64,27 @@ def test_compute_variance(ishigami_fun):
     assert np.allclose(var_mc, var_ref, rtol=1e-2)
 
 
+@pytest.mark.parametrize("param_selection", ["marrel", "sobol-levitan"])
+def test_different_parameters(param_selection):
+    """Test selecting different built-in parameters."""
+
+    # Create an instance of Ishigami function with a specified param. selection
+    my_testfun = uqtestfuns.create_from_default(
+        "ishigami",
+        param_selection=param_selection
+    )
+
+    # Assertion
+    assert my_testfun.parameters == ishigami_mod.DEFAULT_PARAMETERS[param_selection]
+
+
 def test_wrong_dimension():
     """The Ishigami function is strictly three-dimensional."""
-    with pytest.raises(ValueError):
+    with pytest.raises(AssertionError):
         get_default_args("ishigami", 10)
+
+
+def test_wrong_param_selection():
+    """Test a wrong selection of the parameters."""
+    with pytest.raises(ValueError):
+        uqtestfuns.create_from_default("ishigami", param_selection="marrelli1")

@@ -18,8 +18,6 @@ References
 """
 import numpy as np
 
-from .utils import verify_spatial_dimension
-
 DEFAULT_NAME = "Ishigami"
 
 DEFAULT_INPUT_DICTS = [
@@ -43,21 +41,20 @@ DEFAULT_INPUT_DICTS = [
     },
 ]
 
-# The parameter set is from [2].
-DEFAULT_PARAMETERS = (7, 0.05)
+DEFAULT_INPUTS = {
+    "ishigami": DEFAULT_INPUT_DICTS,
+}
+
+DEFAULT_INPUT_SELECTION = "ishigami"
+
+DEFAULT_PARAMETERS = {
+    "marrel": (7, 0.1),
+    "sobol-levitan": (7, 0.05),  # from [2].
+}
+
+DEFAULT_PARAMETERS_SELECTION = "sobol-levitan"
 
 SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS)
-
-
-def get_default_input(spatial_dimension: int = None):
-    """Get the default list of dictionaries to construct the Input instance."""
-    verify_spatial_dimension(
-        spatial_dimension,
-        SPATIAL_DIMENSION,
-        DEFAULT_NAME,
-    )
-
-    return DEFAULT_INPUT_DICTS
 
 
 def evaluate(xx: np.ndarray, params: tuple) -> np.ndarray:

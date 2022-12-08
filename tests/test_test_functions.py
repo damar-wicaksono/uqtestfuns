@@ -11,6 +11,8 @@ Notes
 import numpy as np
 import pytest
 
+from typing import Callable
+
 from uqtestfuns import create_from_default
 from conftest import assert_call
 
@@ -33,7 +35,14 @@ def test_create_instance(default_testfun):
 
     testfun, testfun_mod = default_testfun
 
-    default_input_dicts = testfun_mod.get_default_input()
+    default_input = testfun_mod.DEFAULT_INPUTS[
+        testfun_mod.DEFAULT_INPUT_SELECTION
+    ]
+
+    if isinstance(default_input, Callable):
+        default_input_dicts = default_input(testfun_mod.DEFAULT_DIMENSION)
+    else:
+        default_input_dicts = default_input
 
     # Assertions
     assert testfun.spatial_dimension == len(default_input_dicts)
@@ -99,3 +108,10 @@ def test_wrong_input_dim(default_testfun):
 
     with pytest.raises(ValueError):
         testfun(xx)
+
+
+@pytest.mark.parametrize("test_function", AVAILABLE_FUNCTION_KEYS)
+def test_invalid_input_params_selection(test_function):
+    """"""
+    with pytest.raises(ValueError):
+        create_from_default(test_function, input_selection="qlej2")
