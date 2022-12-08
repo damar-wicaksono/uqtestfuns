@@ -5,7 +5,7 @@ A default function means that the input specification, parameters, and
 spatial dimension (when applicable) used to create the function are taken from
 the available built-in default values.
 """
-from typing import Callable, Any
+from typing import Callable, Any, Optional
 from types import ModuleType
 
 from . import wing_weight, ishigami, borehole, ackley
@@ -25,9 +25,9 @@ AVAILABLE_FUNCTIONS = {
 
 def get_default_args(
     fun_name: str,
-    spatial_dimension: int = None,
-    input_selection: str = None,
-    param_selection: str = None,
+    spatial_dimension: Optional[int] = None,
+    input_selection: Optional[str] = None,
+    param_selection: Optional[str] = None,
 ) -> dict:
     """Get the arguments to instantiate a UQTestFun from the default selection.
 
@@ -87,9 +87,9 @@ def get_default_args(
 
 def create_from_default(
     fun_name: str,
-    spatial_dimension: int = None,
-    input_selection: str = None,
-    param_selection: str = None,
+    spatial_dimension: Optional[int] = None,
+    input_selection: Optional[str] = None,
+    param_selection: Optional[str] = None,
 ) -> UQTestFun:
     """Create an instance of UQTestFun from the available defaults.
 
@@ -132,8 +132,8 @@ def create_from_default(
 
 def _get_default_input(
     fun_module: ModuleType,
-    selection: str = None,
-    spatial_dimension: int = None,
+    selection: Optional[str] = None,
+    spatial_dimension: Optional[int] = None,
 ) -> dict:
     """Get the input specification of a test function from the module.
 
@@ -188,8 +188,8 @@ def _get_default_input(
 
 def _get_default_parameters(
     fun_module: ModuleType,
-    selection: str = None,
-    spatial_dimension: int = None,
+    selection: Optional[str] = None,
+    spatial_dimension: Optional[int] = None,
 ) -> Any:
     """Get the default parameters used in the evaluation of the function.
 

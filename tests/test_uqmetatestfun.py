@@ -129,7 +129,6 @@ def test_create_instance_default(spatial_dimension, input_id):
     assert isinstance(my_metafun.metafun_spec, UQMetaFunSpec)
     assert my_metafun.metafun_spec.spatial_dimension == spatial_dimension
     assert effects_keys_ref == list(my_metafun.metafun_spec.effects)
-    assert my_metafun.metafun_spec.coeffs_generator
     assert_call(my_metafun.metafun_spec.coeffs_generator, 10)
 
 
