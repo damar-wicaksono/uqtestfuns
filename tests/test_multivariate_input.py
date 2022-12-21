@@ -4,32 +4,31 @@ from tabulate import tabulate
 from typing import List, Any
 
 from uqtestfuns.core.prob_input.multivariate_input import MultivariateInput
-from conftest import create_random_input_dicts
+from conftest import create_random_marginals
 
 
 @pytest.mark.parametrize("spatial_dimension", [1, 2, 10, 100])
 def test_create_instance_numpy_parameters(spatial_dimension):
-    """Test the creation of MultivariateInput instance."""
-    input_dicts = create_random_input_dicts(spatial_dimension)
+    """Test the creation of a MultivariateInput instance."""
+    marginals = create_random_marginals(spatial_dimension)
 
-    my_multivariate_input = MultivariateInput(input_dicts)
+    my_multivariate_input = MultivariateInput(marginals)
 
     # Assertions
     # Test the dimensionality
     assert my_multivariate_input.spatial_dimension == spatial_dimension
     for i in range(spatial_dimension):
         # Test the name of the marginals
-        assert (
-            input_dicts[i]["name"] == my_multivariate_input.marginals[i].name
-        )
+        assert marginals[i].name == my_multivariate_input.marginals[i].name
+
         # Test the type of distributions
         assert (
-            input_dicts[i]["distribution"]
+            marginals[i].distribution
             == my_multivariate_input.marginals[i].distribution
         )
         # Test the parameter values
         assert np.all(
-            input_dicts[i]["parameters"]
+            marginals[i].parameters
             == my_multivariate_input.marginals[i].parameters
         )
 
@@ -37,9 +36,9 @@ def test_create_instance_numpy_parameters(spatial_dimension):
 @pytest.mark.parametrize("spatial_dimension", [1, 2, 10, 100])
 def test_generate_sample(spatial_dimension):
     """Test sample generation from an instance of MultivariateInput."""
-    input_dicts = create_random_input_dicts(spatial_dimension)
+    marginals = create_random_marginals(spatial_dimension)
 
-    my_multivariate_input = MultivariateInput(input_dicts)
+    my_multivariate_input = MultivariateInput(marginals)
 
     sample_size = 5325
     xx = my_multivariate_input.get_sample(sample_size)
@@ -56,11 +55,11 @@ def test_generate_sample(spatial_dimension):
 
 
 def test_generate_dependent_sample():
-    """Test dependent sample generation (not yet supported)."""
-    input_dicts = create_random_input_dicts(5)
+    """Test dependent sample generation (not yet supported; raise error)."""
+    marginals = create_random_marginals(5)
 
-    my_multivariate_input = MultivariateInput(input_dicts)
-    my_multivariate_input.copulas = []
+    my_multivariate_input = MultivariateInput(marginals)
+    my_multivariate_input.copulas = "a"
 
     with pytest.raises(ValueError):
         my_multivariate_input.get_sample(1000)
@@ -69,9 +68,9 @@ def test_generate_dependent_sample():
 @pytest.mark.parametrize("spatial_dimension", [1, 5])
 def test_get_pdf_values(spatial_dimension):
     """Test the PDF values from an instance of MultivariateInput."""
-    input_dicts = create_random_input_dicts(spatial_dimension)
+    marginals = create_random_marginals(spatial_dimension)
 
-    my_multivariate_input = MultivariateInput(input_dicts)
+    my_multivariate_input = MultivariateInput(marginals)
 
     sample_size = 100
     xx = my_multivariate_input.get_sample(sample_size)
@@ -84,10 +83,10 @@ def test_get_pdf_values(spatial_dimension):
 
 def test_get_dependent_pdf_values():
     """Test dependent PDF value computation (not yet supported)."""
-    input_dicts = create_random_input_dicts(5)
+    marginals = create_random_marginals(5)
 
-    my_multivariate_input = MultivariateInput(input_dicts)
-    my_multivariate_input.copulas = []
+    my_multivariate_input = MultivariateInput(marginals)
+    my_multivariate_input.copulas = "b"
 
     with pytest.raises(ValueError):
         my_multivariate_input.pdf(np.random.rand(2, 5))
@@ -96,14 +95,14 @@ def test_get_dependent_pdf_values():
 @pytest.mark.parametrize("spatial_dimension", [1, 2, 10])
 def test_transform_sample(spatial_dimension):
     """Test the transformation of sample values from one dist. to another."""
-    input_dicts_1 = create_random_input_dicts(spatial_dimension)
-    my_multivariate_input_1 = MultivariateInput(input_dicts_1)
+    marginals_1 = create_random_marginals(spatial_dimension)
+    my_multivariate_input_1 = MultivariateInput(marginals_1)
 
     sample_size = 5000
     xx = my_multivariate_input_1.get_sample(sample_size)
 
-    input_dicts_2 = create_random_input_dicts(spatial_dimension)
-    my_multivariate_input_2 = MultivariateInput(input_dicts_2)
+    marginals_2 = create_random_marginals(spatial_dimension)
+    my_multivariate_input_2 = MultivariateInput(marginals_2)
 
     xx_trans = my_multivariate_input_1.transform_sample(
         my_multivariate_input_2, xx
@@ -117,31 +116,32 @@ def test_transform_sample(spatial_dimension):
 
 def test_failed_transform_sample():
     """Test the failure of sample transformation for MultiVariateInput."""
-    input_dicts_1 = create_random_input_dicts(5)
-    my_multivariate_input_1 = MultivariateInput(input_dicts_1)
+    marginals_1 = create_random_marginals(5)
+    my_multivariate_input_1 = MultivariateInput(marginals_1)
 
-    input_dicts_2 = create_random_input_dicts(10)
-    my_multivariate_input_2 = MultivariateInput(input_dicts_2)
+    marginals_2 = create_random_marginals(10)
+    my_multivariate_input_2 = MultivariateInput(marginals_2)
 
     sample_size = 5000
     xx = my_multivariate_input_1.get_sample(sample_size)
 
+    # Transformation between two random variables of different dimensions
     with pytest.raises(ValueError):
         my_multivariate_input_1.transform_sample(my_multivariate_input_2, xx)
 
 
 def test_transform_dependent_sample():
-    """Test dependent transformation (not yet supported)."""
-    input_dicts_1 = create_random_input_dicts(5)
-    my_multivariate_input_1 = MultivariateInput(input_dicts_1)
+    """Test dependent transformation (not yet supported; raise an error)."""
+    marginals_1 = create_random_marginals(5)
+    my_multivariate_input_1 = MultivariateInput(marginals_1)
 
-    input_dicts_2 = create_random_input_dicts(5)
-    my_multivariate_input_2 = MultivariateInput(input_dicts_2)
+    marginals_2 = create_random_marginals(5)
+    my_multivariate_input_2 = MultivariateInput(marginals_2)
 
     xx = np.random.rand(2, 5)
 
     with pytest.raises(ValueError):
-        my_multivariate_input_1.copulas = []
+        my_multivariate_input_1.copulas = "a"
         my_multivariate_input_1.transform_sample(my_multivariate_input_2, xx)
 
 
@@ -149,16 +149,16 @@ def test_str():
     """Test __str__ method of an instance of MultivariateInput."""
 
     # Create a test instance
-    input_dicts = create_random_input_dicts(2)
-    my_multivariate_input = MultivariateInput(input_dicts)
+    marginals = create_random_marginals(2)
+    my_multivariate_input = MultivariateInput(marginals)
 
     # Create the reference string
     header_names = ["name", "distribution", "parameters", "description"]
     str_ref_list: List[List] = []
-    for i, input_dict in enumerate(input_dicts):
+    for i, marginal in enumerate(marginals):
         str_ref_placeholder: List[Any] = [i + 1]
         for header_name in header_names:
-            str_ref_placeholder.append(input_dict.get(header_name))
+            str_ref_placeholder.append(getattr(marginal, header_name))
         str_ref_list.append(str_ref_placeholder)
     header_names.insert(0, "No.")
     str_ref = tabulate(
@@ -175,16 +175,16 @@ def test_repr_html():
     """Test _repr_html_ method of an instance of MultivariateInput."""
 
     # Create a test instance
-    input_dicts = create_random_input_dicts(5)
-    my_multivariate_input = MultivariateInput(input_dicts)
+    marginals = create_random_marginals(5)
+    my_multivariate_input = MultivariateInput(marginals)
 
     # Create the reference string
     header_names = ["name", "distribution", "parameters", "description"]
     str_ref_list: List[List] = []
-    for i, input_dict in enumerate(input_dicts):
+    for i, marginal in enumerate(marginals):
         str_ref_placeholder: List[Any] = [i + 1]
         for header_name in header_names:
-            str_ref_placeholder.append(input_dict.get(header_name))
+            str_ref_placeholder.append(getattr(marginal, header_name))
         str_ref_list.append(str_ref_placeholder)
     header_names.insert(0, "No.")
     str_ref = tabulate(

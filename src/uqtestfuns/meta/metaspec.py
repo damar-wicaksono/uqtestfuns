@@ -8,6 +8,7 @@ from dataclasses import dataclass, field, InitVar
 from scipy.special import comb
 from typing import Dict, Callable, Tuple, Optional, Union, List
 
+from ..core import UnivariateInput
 
 __all__ = ["UQMetaFunSpec", "UQTestFunSpec"]
 
@@ -192,11 +193,11 @@ def _generate_effect_coeffs(
     return coeffs
 
 
-def _select_inputs(
-    inputs: Union[List[Dict], Tuple[Dict, ...]], spatial_dimension: int
+def _select_marginals(
+    marginals: Union[List[Dict], Tuple[Dict, ...]], spatial_dimension: int
 ) -> Union[List[Dict], Tuple[Dict, ...]]:
     """Randomly select marginals of a given dimension from a set of inputs.
-
+    # TODO: Update the description and the type hints
     Parameters
     ----------
     inputs : Union[List[Dict], Tuple[Dict, ...]]
@@ -211,21 +212,27 @@ def _select_inputs(
         List of selected marginals to construct a probabilistic input model of
         the given dimension for a test function realization.
     """
-    inputs_list = []
+    selected_marginals = []
     indices = np.random.randint(
-        low=0, high=len(inputs), size=spatial_dimension
+        low=0, high=len(marginals), size=spatial_dimension
     )
 
     for num, idx in enumerate(indices):
-        # Create an independent copy to avoid unintended mutation
-        selected_input = inputs[idx].copy()
-        # Provide default name if not provided
-        if selected_input.get("name", None) is None:
-            selected_input["name"] = f"X{num}"
+        selected_marginal = marginals[idx]
+        name = getattr(selected_marginal, "name", None)
+        if name is None:
+            name = f"X{num + 1}"
+        # Create a new instance (now with a name)
+        selected_marginal = UnivariateInput(
+            name=name,
+            distribution=selected_marginal.distribution,
+            parameters=selected_marginal.parameters,
+            description=selected_marginal.description,
+        )
 
-        inputs_list.append(selected_input)
+        selected_marginals.append(selected_marginal)
 
-    return inputs_list
+    return selected_marginals
 
 
 @dataclass(frozen=True)
@@ -249,7 +256,7 @@ class UQTestFunSpec:
         in the test function.
     effects_coeffs : Dict[int, np.ndarray]
         Coefficients that appear in each of the terms in the test function.
-    inputs : Union[List[Dict], Tuple[Dict, ...]]
+    inputs : Union[List[Dict], Tuple[Dict, ...]]  # TODO: Update this
         Input marginals to construct a multi-dimensional probabilistic input of
         the test function.
     """
@@ -259,7 +266,7 @@ class UQTestFunSpec:
     selected_basis: Tuple[int, ...]
     effects_tuples: Dict[int, Tuple[Tuple[int, ...], ...]]
     effects_coeffs: Dict[int, np.ndarray]
-    inputs: Union[List[Dict], Tuple[Dict, ...]]
+    inputs: Union[List[UnivariateInput], Tuple[UnivariateInput, ...]]
 
 
 @dataclass
@@ -275,7 +282,7 @@ class UQMetaFunSpec:
     effects : Dict[int, Optional[int]]
         Specified effects with the corresponding length to take into account
         for all the test function realizations.
-    inputs : Union[List[Dict], Tuple[Dict, ...]]
+    inputs : Union[List[Dict], Tuple[Dict, ...]]  # TODO: Update this
         List of available input marginals to construct a multi-dimensional
         probabilistic input of the test function realizations.
     coeffs_generator : Callable
@@ -286,7 +293,7 @@ class UQMetaFunSpec:
     basis_functions: Dict[int, Callable]
     effects: Dict[int, int] = field(init=False)
     effects_dict: InitVar[Dict[int, Optional[int]]]
-    inputs: Union[List[Dict], Tuple[Dict, ...]]
+    input_marginals: Union[List[UnivariateInput], Tuple[UnivariateInput, ...]]
     coeffs_generator: Callable
     _effects_tuples: Optional[Dict[int, Tuple[Tuple[int, ...], ...]]] = field(
         init=False, repr=False
@@ -354,7 +361,9 @@ class UQMetaFunSpec:
             )
 
             # Randomly select input marginals and create an instance
-            inputs = _select_inputs(self.inputs, self.spatial_dimension)
+            selected_input_marginals = _select_marginals(
+                self.input_marginals, self.spatial_dimension
+            )
 
             # Create an instance of UQTestFunSpec
             uqtestfun_spec = UQTestFunSpec(
@@ -363,7 +372,7 @@ class UQMetaFunSpec:
                 selected_basis,
                 effects_tuples,
                 effects_coeffs,
-                inputs,
+                selected_input_marginals,
             )
 
             sample.append(uqtestfun_spec)

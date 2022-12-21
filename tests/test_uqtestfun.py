@@ -5,7 +5,7 @@ from inspect import signature
 from uqtestfuns import UQTestFun, MultivariateInput, get_default_args
 from conftest import (
     assert_call,
-    create_random_input_dicts,
+    create_random_marginals,
     create_random_alphanumeric,
 )
 
@@ -13,7 +13,7 @@ from conftest import (
 @pytest.fixture
 def uqtestfun():
     """Create an instance of UQTestFun."""
-    input_dicts = create_random_input_dicts(1)
+    input_marginals = create_random_marginals(1)
 
     def evaluate(x, p):
         x + 1
@@ -21,14 +21,14 @@ def uqtestfun():
     my_args = {
         "name": "Test function",
         "evaluate": evaluate,
-        "input": MultivariateInput(input_dicts),
+        "input": MultivariateInput(input_marginals),
         "parameters": 10,
     }
 
     uqtestfun_instance = UQTestFun(
         name="Test function",
         evaluate=evaluate,
-        input=MultivariateInput(input_dicts),
+        input=MultivariateInput(input_marginals),
         parameters=10,
     )
 

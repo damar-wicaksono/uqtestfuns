@@ -13,27 +13,29 @@ References
 """
 import numpy as np
 
+from ..core import UnivariateInput
+
 DEFAULT_NAME = "Ackley"
 
 
 def _ackley_input(spatial_dimension: int):
     """
-
+    # TODO: complete the description here
     :param spatial_dimension:
     :return:
     """
-    input_dicts = []
+    marginals = []
     for i in range(spatial_dimension):
-        input_dicts.append(
-            {
-                "name": f"X{i + 1}",
-                "distribution": "uniform",
-                "parameters": [-32.768, 32.768],
-                "description": "None",
-            }
+        marginals.append(
+            UnivariateInput(
+                name=f"X{i + 1}",
+                distribution="uniform",
+                parameters=[-32.768, 32.768],
+                description="None",
+            )
         )
 
-    return input_dicts
+    return marginals
 
 
 DEFAULT_INPUTS = {

@@ -109,7 +109,9 @@ def test_estimate_mean():
     # Insert sigma as the second parameter
     parameters = np.insert(parameters, 1, np.random.rand(1))
 
-    my_univariate_input = UnivariateInput(name, distribution, parameters)
+    my_univariate_input = UnivariateInput(
+        name=name, distribution=distribution, parameters=parameters
+    )
 
     sample_size = 100000
     xx = my_univariate_input.get_sample(sample_size)
@@ -136,7 +138,9 @@ def test_estimate_std():
     # Insert sigma as the second parameter
     parameters = np.insert(parameters, 1, np.random.rand(1))
 
-    my_univariate_input = UnivariateInput(name, distribution, parameters)
+    my_univariate_input = UnivariateInput(
+        name=name, distribution=distribution, parameters=parameters
+    )
 
     sample_size = 1000000
     xx = my_univariate_input.get_sample(sample_size)

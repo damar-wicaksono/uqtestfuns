@@ -22,7 +22,7 @@ from typing import Optional, Union, List
 
 from .metaspec import UQMetaFunSpec, UQTestFunSpec
 from .basis_functions import BASIS_BY_ID
-from ..core import UQTestFun, MultivariateInput
+from ..core import UQTestFun, MultivariateInput, UnivariateInput
 
 
 __all__ = ["UQMetaTestFun", "default_coeffs_gen"]
@@ -197,27 +197,37 @@ class UQMetaTestFun:
         if input_id is None:
             input_id = np.random.randint(0, 8)
 
-        inputs = [
-            {"distribution": "uniform", "parameters": [0, 1]},
-            {
-                "distribution": "truncnormal",
-                "parameters": [0.5, 0.15, 0.0, 1.0],
-            },
-            {"distribution": "beta", "parameters": [8.0, 2.0, 0.0, 1.0]},
-            {"distribution": "beta", "parameters": [2.0, 8.0, 0.0, 1.0]},
-            {"distribution": "beta", "parameters": [2.0, 0.8, 0.0, 1.0]},
-            {"distribution": "beta", "parameters": [0.8, 2.0, 0.0, 1.0]},
-            {"distribution": "logitnormal", "parameters": [0.0, 3.16]},
+        input_marginals = [
+            UnivariateInput(distribution="uniform", parameters=[0, 1]),
+            UnivariateInput(
+                distribution="truncnormal",
+                parameters=[0.5, 0.15, 0.0, 1.0],
+            ),
+            UnivariateInput(
+                distribution="beta", parameters=[8.0, 2.0, 0.0, 1.0]
+            ),
+            UnivariateInput(
+                distribution="beta", parameters=[2.0, 8.0, 0.0, 1.0]
+            ),
+            UnivariateInput(
+                distribution="beta", parameters=[2.0, 0.8, 0.0, 1.0]
+            ),
+            UnivariateInput(
+                distribution="beta", parameters=[0.8, 2.0, 0.0, 1.0]
+            ),
+            UnivariateInput(
+                distribution="logitnormal", parameters=[0.0, 3.16]
+            ),
         ]
 
         if input_id < 7:
-            inputs = [inputs[input_id]]
+            input_marginals = [input_marginals[input_id]]
 
         metafun_spec = UQMetaFunSpec(
             spatial_dimension=spatial_dimension,
             basis_functions=BASIS_BY_ID,
             effects_dict=effects_dict,
-            inputs=inputs,
+            input_marginals=input_marginals,
             coeffs_generator=default_coeffs_gen,
         )
 

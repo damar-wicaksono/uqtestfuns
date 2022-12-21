@@ -23,87 +23,89 @@ References
 """
 import numpy as np
 
+from ..core import UnivariateInput
+
 DEFAULT_NAME = "Borehole"
 
 # From Ref. 1
-DEFAULT_INPUT_DICTS_1 = [
-    {
-        "name": "rw",
-        "distribution": "normal",
-        "parameters": [0.10, 0.0161812],
-        "description": "radius of the borehole [m]",
-    },
-    {
-        "name": "r",
-        "distribution": "lognormal",
-        "parameters": [7.71, 1.0056],
-        "description": "radius of influence [m]",
-    },
-    {
-        "name": "Tu",
-        "distribution": "uniform",
-        "parameters": [63070.0, 115600.0],
-        "description": "transmissivity of upper aquifer [m^2/year]",
-    },
-    {
-        "name": "Hu",
-        "distribution": "uniform",
-        "parameters": [990.0, 1100.0],
-        "description": "potentiometric head of upper aquifer [m]",
-    },
-    {
-        "name": "Tl",
-        "distribution": "uniform",
-        "parameters": [63.1, 116.0],
-        "description": "transmissivity of lower aquifer [m^2/year]",
-    },
-    {
-        "name": "Hl",
-        "distribution": "uniform",
-        "parameters": [700.0, 820.0],
-        "description": "potentiometric head of lower aquifer [m]",
-    },
-    {
-        "name": "L",
-        "distribution": "uniform",
-        "parameters": [1120.0, 1680.0],
-        "description": "length of the borehole [m]",
-    },
-    {
-        "name": "Kw",
-        "distribution": "uniform",
-        "parameters": [9985.0, 12045.0],
-        "description": "hydraulic conductivity of the borehole [m/year]",
-    },
+DEFAULT_INPUT_MARGINALS_1 = [
+    UnivariateInput(
+        name="rw",
+        distribution="normal",
+        parameters=[0.10, 0.0161812],
+        description="radius of the borehole [m]",
+    ),
+    UnivariateInput(
+        name="r",
+        distribution="lognormal",
+        parameters=[7.71, 1.0056],
+        description="radius of influence [m]",
+    ),
+    UnivariateInput(
+        name="Tu",
+        distribution="uniform",
+        parameters=[63070.0, 115600.0],
+        description="transmissivity of upper aquifer [m^2/year]",
+    ),
+    UnivariateInput(
+        name="Hu",
+        distribution="uniform",
+        parameters=[990.0, 1100.0],
+        description="potentiometric head of upper aquifer [m]",
+    ),
+    UnivariateInput(
+        name="Tl",
+        distribution="uniform",
+        parameters=[63.1, 116.0],
+        description="transmissivity of lower aquifer [m^2/year]",
+    ),
+    UnivariateInput(
+        name="Hl",
+        distribution="uniform",
+        parameters=[700.0, 820.0],
+        description="potentiometric head of lower aquifer [m]",
+    ),
+    UnivariateInput(
+        name="L",
+        distribution="uniform",
+        parameters=[1120.0, 1680.0],
+        description="length of the borehole [m]",
+    ),
+    UnivariateInput(
+        name="Kw",
+        distribution="uniform",
+        parameters=[9985.0, 12045.0],
+        description="hydraulic conductivity of the borehole [m/year]",
+    ),
 ]
 
 # From Ref. 2
-DEFAULT_INPUT_DICTS_2 = [_.copy() for _ in DEFAULT_INPUT_DICTS_1]
-DEFAULT_INPUT_DICTS_2[0:2] = [
-    {
-        "name": "rw",
-        "distribution": "uniform",
-        "parameters": [0.05, 0.15],
-        "description": "radius of the borehole [m]",
-    },
-    {
-        "name": "r",
-        "distribution": "uniform",
-        "parameters": [100, 50000],
-        "description": "radius of influence [m]",
-    },
+DEFAULT_INPUT_MARGINALS_2 = list(DEFAULT_INPUT_MARGINALS_1)
+DEFAULT_INPUT_MARGINALS_2[0:2] = [
+    UnivariateInput(
+        name="rw",
+        distribution="uniform",
+        parameters=[0.05, 0.15],
+        description="radius of the borehole [m]",
+    ),
+    UnivariateInput(
+        name="r",
+        distribution="uniform",
+        parameters=[100, 50000],
+        description="radius of influence [m]",
+    ),
 ]
 
 DEFAULT_INPUTS = {
-    "harper": DEFAULT_INPUT_DICTS_1,
-    "morris": DEFAULT_INPUT_DICTS_2,
+    "harper": DEFAULT_INPUT_MARGINALS_1,
+    "morris": DEFAULT_INPUT_MARGINALS_2,
 }
 
 DEFAULT_INPUT_SELECTION = "harper"
 
 DEFAULT_PARAMETERS = None
 
-SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS_1)
+SPATIAL_DIMENSION = len(DEFAULT_INPUT_MARGINALS_1)
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:

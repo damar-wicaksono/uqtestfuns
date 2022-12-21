@@ -42,7 +42,9 @@ def test_get_pdf_values():
     distribution = "logitnormal"
     parameters = np.sort(np.random.rand(2))
 
-    my_univariate_input = UnivariateInput(name, distribution, parameters)
+    my_univariate_input = UnivariateInput(
+        name=name, distribution=distribution, parameters=parameters
+    )
 
     sample_size = 1000
     xx = my_univariate_input.get_sample(sample_size)
@@ -64,7 +66,9 @@ def test_median():
     distribution = "logitnormal"
     parameters = np.sort(np.random.rand(2))
 
-    my_univariate_input = UnivariateInput(name, distribution, parameters)
+    my_univariate_input = UnivariateInput(
+        name=name, distribution=distribution, parameters=parameters
+    )
 
     sample_size = 1000000
     xx = my_univariate_input.get_sample(sample_size)

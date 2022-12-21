@@ -6,9 +6,10 @@ All global fixtures are defined here.
 import numpy as np
 import random
 import string
-from typing import List, Dict
+from typing import List
 
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
+from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
 
 MARGINALS = list(SUPPORTED_MARGINALS.keys())
 
@@ -35,8 +36,8 @@ def create_random_alphanumeric(length: int) -> str:
     return out
 
 
-def create_random_input_dicts(length: int) -> List[Dict]:
-    """Create a random multivariate input dictionaries.
+def create_random_marginals(length: int) -> List[UnivariateInput]:
+    """Create a random list of univariate input.
 
     Parameters
     ----------
@@ -45,10 +46,10 @@ def create_random_input_dicts(length: int) -> List[Dict]:
 
     Returns
     -------
-    List[Dict]
+    List[UnivariateInput]
         List of dictionaries to specify a MultivariateInput class.
     """
-    input_dicts = []
+    marginals = []
 
     for i in range(length):
         distribution = random.choice(MARGINALS)
@@ -66,16 +67,16 @@ def create_random_input_dicts(length: int) -> List[Dict]:
         else:
             parameters = np.sort(1 + 2 * np.random.rand(2))
 
-        input_dicts.append(
-            {
-                "name": f"X{i+1}",
-                "distribution": distribution,
-                "parameters": parameters,
-                "description": create_random_alphanumeric(10),
-            }
+        marginals.append(
+            UnivariateInput(
+                name=f"X{i+1}",
+                distribution=distribution,
+                parameters=parameters,
+                description=create_random_alphanumeric(10),
+            )
         )
 
-    return input_dicts
+    return marginals
 
 
 def assert_call(fct, *args, **kwargs):
