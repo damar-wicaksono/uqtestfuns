@@ -7,13 +7,14 @@ import numpy as np
 from scipy.stats import norm
 
 from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
+from uqtestfuns.global_settings import ARRAY_FLOAT
 from conftest import create_random_alphanumeric
 
 
 DISTRIBUTION_NAME = "truncnormal"
 
 
-def _calc_mean(parameters: np.ndarray) -> float:
+def _calc_mean(parameters: ARRAY_FLOAT) -> float:
     """Compute the analytical mean of a given truncated normal distribution."""
     mu, sigma, lb, ub = parameters[:]
 
@@ -25,10 +26,10 @@ def _calc_mean(parameters: np.ndarray) -> float:
 
     mean = mu - (phi_beta - phi_alpha) / z * sigma
 
-    return mean
+    return float(mean)
 
 
-def _calc_std(parameters: np.ndarray) -> float:
+def _calc_std(parameters: ARRAY_FLOAT) -> float:
     """Compute the analytical standard deviation of a given trunc. normal."""
     mu, sigma, lb, ub = parameters[:]
 
@@ -43,10 +44,10 @@ def _calc_std(parameters: np.ndarray) -> float:
     term_3 = ((phi_beta - phi_alpha) / z) ** 2
     var = sigma**2 * (term_1 - term_2 - term_3)
 
-    return np.sqrt(var)
+    return float(np.sqrt(var))
 
 
-def test_wrong_number_of_parameters():
+def test_wrong_number_of_parameters() -> None:
     """Test the failure when specifying invalid number of parameters."""
     name = create_random_alphanumeric(5)
     distribution = DISTRIBUTION_NAME
@@ -59,7 +60,7 @@ def test_wrong_number_of_parameters():
         )
 
 
-def test_failed_parameter_verification():
+def test_failed_parameter_verification() -> None:
     """Test the failure when specifying the wrong parameter values"""
     name = create_random_alphanumeric(10)
     distribution = DISTRIBUTION_NAME
@@ -97,7 +98,7 @@ def test_failed_parameter_verification():
         )
 
 
-def test_estimate_mean():
+def test_estimate_mean() -> None:
     """Test the mean estimation of a truncated normal distribution."""
 
     # Create an instance of a truncated normal UnivariateInput
@@ -126,7 +127,7 @@ def test_estimate_mean():
     assert np.isclose(mean, mean_ref, rtol=5e-03, atol=5e-04)
 
 
-def test_estimate_std():
+def test_estimate_std() -> None:
     """Test the standard deviation estimation of a trunc. normal dist."""
 
     # Create an instance of a truncated normal UnivariateInput

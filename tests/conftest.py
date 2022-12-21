@@ -6,7 +6,7 @@ All global fixtures are defined here.
 import numpy as np
 import random
 import string
-from typing import List
+from typing import List, Callable, Any
 
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
@@ -79,7 +79,7 @@ def create_random_marginals(length: int) -> List[UnivariateInput]:
     return marginals
 
 
-def assert_call(fct, *args, **kwargs):
+def assert_call(fct: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
     """Assert that a call runs as expected."""
     try:
         fct(*args, **kwargs)

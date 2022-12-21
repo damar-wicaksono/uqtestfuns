@@ -1,6 +1,9 @@
 """
 Utility module for probabilistic input modeling.
 """
+from numpy.typing import ArrayLike
+from types import ModuleType
+from typing import Tuple
 
 from .univariate_distributions import (
     uniform,
@@ -10,6 +13,7 @@ from .univariate_distributions import (
     truncnormal,
     logitnormal,
 )
+from ...global_settings import ARRAY_FLOAT
 
 SUPPORTED_MARGINALS = {
     uniform.DISTRIBUTION_NAME: uniform,
@@ -21,7 +25,9 @@ SUPPORTED_MARGINALS = {
 }
 
 
-def get_distribution_module(distribution: str):  # pragma: no cover
+def get_distribution_module(
+    distribution: str,
+) -> ModuleType:  # pragma: no cover
     """Get the relevant module corresponding to the distribution."""
 
     distribution_module = SUPPORTED_MARGINALS[distribution]
@@ -29,7 +35,7 @@ def get_distribution_module(distribution: str):  # pragma: no cover
     return distribution_module
 
 
-def verify_distribution(distribution: str):
+def verify_distribution(distribution: str) -> None:
     """Verify the type of distribution.
 
     Parameters
@@ -52,7 +58,9 @@ def verify_distribution(distribution: str):
         )
 
 
-def get_distribution_bounds(distribution, parameters):
+def get_distribution_bounds(
+    distribution: str, parameters: ArrayLike
+) -> Tuple[float, float]:
     """Get the bounds of the distribution given the parameters.
 
     While the support of many continuous density functions are unbounded,
@@ -66,14 +74,20 @@ def get_distribution_bounds(distribution, parameters):
     return lower, upper
 
 
-def verify_parameters(distribution, parameters):
+def verify_parameters(distribution: str, parameters: ArrayLike) -> None:
     """Verify the parameter values of the distribution"""
     distribution_module = get_distribution_module(distribution)
 
     distribution_module.verify_parameters(parameters)
 
 
-def get_pdf_values(xx, distribution, parameters, lower_bound, upper_bound):
+def get_pdf_values(
+    xx: ArrayLike,
+    distribution: str,
+    parameters: ArrayLike,
+    lower_bound: float,
+    upper_bound: float,
+) -> ARRAY_FLOAT:
     """Get the PDF values of the distribution on a set of sample points.
 
     Notes
@@ -81,11 +95,20 @@ def get_pdf_values(xx, distribution, parameters, lower_bound, upper_bound):
     - PDF stands for "probability density function".
     """
     distribution_module = get_distribution_module(distribution)
+    out: ARRAY_FLOAT = distribution_module.pdf(
+        xx, parameters, lower_bound, upper_bound
+    )
 
-    return distribution_module.pdf(xx, parameters, lower_bound, upper_bound)
+    return out
 
 
-def get_cdf_values(xx, distribution, parameters, lower_bound, upper_bound):
+def get_cdf_values(
+    xx: ArrayLike,
+    distribution: str,
+    parameters: ArrayLike,
+    lower_bound: float,
+    upper_bound: float,
+) -> ARRAY_FLOAT:
     """Get the CDF values of the distribution on a set of sample points.
 
     Notes
@@ -93,11 +116,20 @@ def get_cdf_values(xx, distribution, parameters, lower_bound, upper_bound):
     - CDF stands for "cumulative distribution function".
     """
     distribution_module = get_distribution_module(distribution)
+    out: ARRAY_FLOAT = distribution_module.cdf(
+        xx, parameters, lower_bound, upper_bound
+    )
 
-    return distribution_module.cdf(xx, parameters, lower_bound, upper_bound)
+    return out
 
 
-def get_icdf_values(xx, distribution, parameters, lower_bound, upper_bound):
+def get_icdf_values(
+    xx: ArrayLike,
+    distribution: str,
+    parameters: ArrayLike,
+    lower_bound: float,
+    upper_bound: float,
+) -> ARRAY_FLOAT:
     """Get the inverse CDF values of the dist. on a set of sample points.
 
     Notes
@@ -106,5 +138,8 @@ def get_icdf_values(xx, distribution, parameters, lower_bound, upper_bound):
     - ICDF stands for "inverse cumulative distribution function".
     """
     distribution_module = get_distribution_module(distribution)
+    out: ARRAY_FLOAT = distribution_module.icdf(
+        xx, parameters, lower_bound, upper_bound
+    )
 
-    return distribution_module.icdf(xx, parameters, lower_bound, upper_bound)
+    return out

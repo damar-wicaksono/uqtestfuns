@@ -11,22 +11,24 @@ while the standard deviation (sigma) corresponds to the ``scale`` parameter.
 import numpy as np
 from scipy.stats import norm
 
+from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "normal"
 
 
-def verify_parameters(parameters: np.ndarray):
+def verify_parameters(parameters: ARRAY_FLOAT) -> None:
     """Verify the parameters of a normal distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a normal distribution
         (i.e., the mean and standard deviation).
 
     Returns
     ------
     None
+        The function exits without any return value when nothing is wrong.
 
     Raises
     ------
@@ -47,12 +49,12 @@ def verify_parameters(parameters: np.ndarray):
         )
 
 
-def lower(parameters: np.ndarray) -> float:
+def lower(parameters: ARRAY_FLOAT) -> float:
     """Get the lower bound of a normal distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a normal distribution.
 
     Returns
@@ -68,17 +70,17 @@ def lower(parameters: np.ndarray) -> float:
       the difference between 1.0 and the CDF from the lower bound to the upper
       bound is smaller than 1e-15.
     """
-    lower_bound = -8.22 * parameters[1] + parameters[0]
+    lower_bound = float(-8.22 * parameters[1] + parameters[0])
 
     return lower_bound
 
 
-def upper(parameters: np.ndarray) -> float:
+def upper(parameters: ARRAY_FLOAT) -> float:
     """Get the upper bound of a normal distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a normal distribution
 
     Returns
@@ -94,28 +96,28 @@ def upper(parameters: np.ndarray) -> float:
       the difference between 1.0 and the CDF from the lower bound to the upper
       bound is smaller than 1e-15.
     """
-    upper_bound = 8.22 * parameters[1] + parameters[0]
+    upper_bound = float(8.22 * parameters[1] + parameters[0])
 
     return upper_bound
 
 
 def pdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the PDF values of a normal distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) of a normal distribution.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of the normal distribution.
-    lower_bound : np.ndarray
+    lower_bound : float
         Lower bound of the normal distribution.
-    upper_bound : np.ndarray
+    upper_bound : float
         Upper bound of the normal distribution.
 
     Returns
@@ -135,27 +137,27 @@ def pdf(
 
 
 def cdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the CDF values of a normal distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) of a normal distribution.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of the normal distribution.
-    lower_bound : np.ndarray
+    lower_bound : float
         Lower bound of the normal distribution.
-    upper_bound : np.ndarray
+    upper_bound : float
         Upper bound of the normal distribution.
 
     Returns
     -------
-    np.ndarray
+    ARRAY_FLOAT
         CDF values of the normal distribution on the sample values.
 
     Notes
@@ -180,27 +182,27 @@ def cdf(
 
 
 def icdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the inverse CDF values of a normal distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) in the [0, 1] domain.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of a normal distribution.
-    lower_bound : np.ndarray
+    lower_bound : float
         Lower bound of the normal distribution.
-    upper_bound : np.ndarray
+    upper_bound : float
         Upper bound of the normal distribution.
 
     Returns
     -------
-    np.ndarray
+    ARRAY_FLOAT
         Transformed values in the domain of the normal distribution.
 
     Notes

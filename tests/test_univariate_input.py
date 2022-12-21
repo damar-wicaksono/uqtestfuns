@@ -4,6 +4,9 @@ Test module for UnivariateInput instances.
 import pytest
 import numpy as np
 
+from typing import Tuple, Dict, Union, Any
+from numpy.typing import ArrayLike
+
 from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 from conftest import create_random_alphanumeric
@@ -13,7 +16,9 @@ MARGINALS = list(SUPPORTED_MARGINALS.keys())
 
 
 @pytest.fixture(params=MARGINALS)
-def univariate_input(request):
+def univariate_input(
+    request: Any,
+) -> Tuple[UnivariateInput, Dict[str, Union[str, ArrayLike]]]:
     """Test fixture, an instance of UnivariateInput."""
     name = create_random_alphanumeric(8)
     distribution = request.param
@@ -45,7 +50,7 @@ def univariate_input(request):
     return my_univariate_input, specs
 
 
-def test_create_instance(univariate_input):
+def test_create_instance(univariate_input: Any) -> None:
     """Test the creation of instance with np.array as params."""
 
     my_univariate_input, specs = univariate_input
@@ -55,7 +60,7 @@ def test_create_instance(univariate_input):
     assert np.allclose(my_univariate_input.parameters, specs["parameters"])
 
 
-def test_create_instance_unsupported_marginal():
+def test_create_instance_unsupported_marginal() -> None:
     """Test the creation of an instance with an unsupported marginal."""
     name = create_random_alphanumeric(10)
     distribution = create_random_alphanumeric(10)
@@ -67,7 +72,7 @@ def test_create_instance_unsupported_marginal():
         )
 
 
-def test_generate_sample(univariate_input):
+def test_generate_sample(univariate_input: Any) -> None:
     """Test sample generation from an instance of UnivariateInput."""
 
     my_univariate_input, _ = univariate_input
@@ -80,7 +85,7 @@ def test_generate_sample(univariate_input):
     assert np.max(xx) <= my_univariate_input.upper  # Test the upper bound
 
 
-def test_get_pdf_values(univariate_input):
+def test_get_pdf_values(univariate_input: Any) -> None:
     """Test the PDF values from an instance of UnivariateInput."""
 
     my_univariate_input, _ = univariate_input
@@ -90,7 +95,7 @@ def test_get_pdf_values(univariate_input):
     assert my_univariate_input.pdf(my_univariate_input.upper + 0.1) <= 1e-15
 
 
-def test_get_cdf_values(univariate_input):
+def test_get_cdf_values(univariate_input: Any) -> None:
     """Test the CDF values from an instance of UnivariateInput."""
 
     my_univariate_input, _ = univariate_input
@@ -110,7 +115,7 @@ def test_get_cdf_values(univariate_input):
     )  # Test the upper bound of CDF
 
 
-def test_get_icdf_values(univariate_input):
+def test_get_icdf_values(univariate_input: Any) -> None:
     """Test the inverse CDF values from an instance of UnivariateInput."""
     my_univariate_input, _ = univariate_input
 
@@ -129,7 +134,7 @@ def test_get_icdf_values(univariate_input):
     assert np.isclose(my_univariate_input.icdf(1.0), my_univariate_input.upper)
 
 
-def test_transform_sample():
+def test_transform_sample() -> None:
     """Test the transformation of sample values from one dist. to another."""
     name_1 = create_random_alphanumeric(5)
     distribution_1 = "uniform"
@@ -159,7 +164,7 @@ def test_transform_sample():
     assert np.max(xx_trans) <= my_univariate_input_2.upper
 
 
-def test_failed_transform_sample():
+def test_failed_transform_sample() -> None:
     """Test the failure of sample transformation."""
     name = create_random_alphanumeric(5)
     distribution = "uniform"
@@ -173,4 +178,4 @@ def test_failed_transform_sample():
     xx = my_univariate_input.get_sample(sample_size)
 
     with pytest.raises(TypeError):
-        my_univariate_input.transform_sample(xx, [])
+        my_univariate_input.transform_sample(xx, [])  # type: ignore

@@ -10,7 +10,7 @@ from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
 from conftest import create_random_alphanumeric
 
 
-def test_wrong_number_of_parameters():
+def test_wrong_number_of_parameters() -> None:
     """Test the failure of specifying invalid parameter values."""
     name = create_random_alphanumeric(5)
     distribution = "logitnormal"
@@ -23,7 +23,7 @@ def test_wrong_number_of_parameters():
         )
 
 
-def test_failed_parameter_verification():
+def test_failed_parameter_verification() -> None:
     name = create_random_alphanumeric(10)
     distribution = "logitnormal"
     # The 2nd parameter of the lognormal distribution must be stricly positive!
@@ -35,7 +35,7 @@ def test_failed_parameter_verification():
         )
 
 
-def test_get_pdf_values():
+def test_get_pdf_values() -> None:
     """Test the PDF values from an instance of UnivariateInput."""
 
     name = create_random_alphanumeric(5)
@@ -60,7 +60,7 @@ def test_get_pdf_values():
     )
 
 
-def test_median():
+def test_median() -> None:
     """Test the median values from an instance of UnivariateInput."""
     name = create_random_alphanumeric(5)
     distribution = "logitnormal"
