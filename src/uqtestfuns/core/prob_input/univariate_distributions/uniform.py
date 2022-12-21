@@ -6,22 +6,24 @@ the lower and upper bounds.
 """
 import numpy as np
 
+from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "uniform"
 
 
-def verify_parameters(parameters: np.ndarray):
+def verify_parameters(parameters: ARRAY_FLOAT) -> None:
     """Verify the parameters of a uniform distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of the uniform distribution
         (i.e., lower and upper bounds).
 
     Returns
     ------
     None
+        The function exits without any return value when nothing is wrong.
 
     Raises
     ------
@@ -42,12 +44,12 @@ def verify_parameters(parameters: np.ndarray):
         )
 
 
-def lower(parameters: np.ndarray) -> float:
+def lower(parameters: ARRAY_FLOAT) -> float:
     """Get the lower bound of a uniform distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a uniform distribution.
 
     Returns
@@ -55,17 +57,17 @@ def lower(parameters: np.ndarray) -> float:
     float
         The lower bound of the uniform distribution.
     """
-    lower_bound = parameters[0]
+    lower_bound = float(parameters[0])
 
     return lower_bound
 
 
-def upper(parameters: np.ndarray) -> float:
+def upper(parameters: ARRAY_FLOAT) -> float:
     """Get the upper bound of a uniform distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a uniform distribution.
 
     Returns
@@ -73,24 +75,24 @@ def upper(parameters: np.ndarray) -> float:
     float
         The upper bound of the uniform distribution.
     """
-    upper_bound = parameters[1]
+    upper_bound = float(parameters[1])
 
     return upper_bound
 
 
 def pdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the PDF values of a uniform distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) of a uniform distribution.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of the uniform distribution.
     lower_bound: float
         Lower bound of the uniform distribution.
@@ -99,7 +101,7 @@ def pdf(
 
     Returns
     -------
-    np.ndarray
+    ARRAY_FLOAT
         The PDF values of the uniform distribution.
 
     Notes
@@ -109,7 +111,7 @@ def pdf(
       but required nevertheless as the function is vectorized.
       Given a vector input, the function should return the PDF values of the
       same length as the input.
-      Moreover, this signature is consistent with the other distributions.
+      Moreover, this signature must be consistent with the other distributions.
     - The values outside the bounds are set to 0.0.
     """
     yy = np.zeros(xx.shape)
@@ -121,18 +123,18 @@ def pdf(
 
 
 def cdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the CDF values of a uniform distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) of a uniform distribution.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of the uniform distribution.
     lower_bound : float
         Lower bound of the uniform distribution
@@ -141,7 +143,7 @@ def cdf(
 
     Returns
     -------
-    np.ndarray
+    ARRAY_FLOAT
         The CDF values of the uniform distribution.
 
     Notes
@@ -164,22 +166,21 @@ def cdf(
 
 
 def icdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the inverse CDF values of a uniform distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) in the [0, 1] domain.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of a uniform distribution.
     lower_bound : float
         Lower bound of the uniform distribution.
-        This parameter is not used but must appear for interface consistency.
     upper_bound : float
         Upper bound of the uniform distribution.
         This parameter is not used but must appear for interface consistency.
@@ -189,6 +190,6 @@ def icdf(
     np.ndarray
         Transformed values in the domain of the uniform distribution.
     """
-    yy = parameters[0] + np.diff(parameters) * xx
+    yy = lower_bound + np.diff(parameters) * xx
 
     return yy

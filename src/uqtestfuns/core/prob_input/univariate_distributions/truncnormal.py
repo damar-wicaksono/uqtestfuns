@@ -33,46 +33,52 @@ where lb and ub are the desired lower and upper bounds of the truncated
 normal distribution, respectively.
 """
 import numpy as np
-from scipy.stats import truncnorm
 
+from scipy.stats import truncnorm
+from typing import Tuple
+
+from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "truncnormal"
 
 
-def _get_parameters(parameters: np.ndarray) -> tuple:
+def _get_parameters(
+    parameters: ARRAY_FLOAT,
+) -> Tuple[float, float, float, float]:
     """Get the parameters of a truncated normal dist. w/ intuitive names.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a truncated normal distribution.
 
     Returns
     -------
-    tuple
+    Tuple[float, float, float, float]
         The mean, standard deviation, lower bound, and upper bound of the
         truncated normal distribution.
     """
-    mu = parameters[0]
-    sigma = parameters[1]
-    lb = parameters[2]
-    ub = parameters[3]
+    mu = float(parameters[0])
+    sigma = float(parameters[1])
+    lb = float(parameters[2])
+    ub = float(parameters[3])
 
     return mu, sigma, lb, ub
 
 
-def verify_parameters(parameters: np.ndarray):
+def verify_parameters(parameters: ARRAY_FLOAT) -> None:
     """Verify the parameters of a truncated normal distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a truncated normal distribution
         (i.e., the mean, standard deviation, and the lower and upper bounds).
 
     Returns
     ------
     None
+        The function exits without any return value if nothing is wrong.
 
     Raises
     ------
@@ -108,12 +114,12 @@ def verify_parameters(parameters: np.ndarray):
         )
 
 
-def lower(parameters: np.ndarray) -> float:
+def lower(parameters: ARRAY_FLOAT) -> float:
     """Get the lower bound of a truncated normal distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a truncated normal distribution.
 
     Returns
@@ -126,12 +132,12 @@ def lower(parameters: np.ndarray) -> float:
     return lower_bound
 
 
-def upper(parameters: np.ndarray) -> float:
+def upper(parameters: ARRAY_FLOAT) -> float:
     """Get the upper bound of a truncated normal distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a truncated normal distribution
 
     Returns
@@ -145,18 +151,18 @@ def upper(parameters: np.ndarray) -> float:
 
 
 def pdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the PDF values of a truncated normal distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) of a truncated normal distribution.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of the truncated normal distribution.
     lower_bound : float
         Lower bound of the truncated normal distribution.
@@ -165,7 +171,7 @@ def pdf(
 
     Returns
     -------
-    np.ndarray
+    ARRAY_FLOAT
         PDF values of the truncated normal distribution on the sample values.
 
     Notes
@@ -192,27 +198,27 @@ def pdf(
 
 
 def cdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the CDF values of the truncated normal distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) of a truncated normal distribution.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of the truncated normal distribution.
-    lower_bound : np.ndarray
+    lower_bound : float
         Lower bound of the truncated normal distribution.
-    upper_bound : np.ndarray
+    upper_bound : float
         Upper bound of the truncated normal distribution.
 
     Returns
     -------
-    np.ndarray
+    ARRAY_FLOAT
         CDF values of the truncated normal distribution on the sample values.
 
     Notes
@@ -246,11 +252,11 @@ def cdf(
 
 
 def icdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the inverse CDF values of a truncated normal distribution.
 
     Parameters
@@ -266,7 +272,7 @@ def icdf(
 
     Returns
     -------
-    np.ndarray
+    ARRAY_FLOAT
         Transformed values in the domain of the truncated normal distribution.
 
     Notes
@@ -276,6 +282,7 @@ def icdf(
     - ``lower_bound`` and ``upper_bound`` in the function parameters are the
       same as the ones in ``parameters``. For a truncated normal distribution,
       the bounds are part of the parameterization.
+    TODO: values outside [0, 1] must either be an error or NaN
     """
     yy = np.zeros(xx.shape)
     idx_lower = xx == 0.0

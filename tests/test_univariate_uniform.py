@@ -8,7 +8,7 @@ from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
 from conftest import create_random_alphanumeric
 
 
-def test_wrong_parameters():
+def test_wrong_parameters() -> None:
     """Test the failure of specifying wrong number of parameters."""
     name = create_random_alphanumeric(5)
     distribution = "uniform"
@@ -21,7 +21,7 @@ def test_wrong_parameters():
         )
 
 
-def test_failed_parameter_verification():
+def test_failed_parameter_verification() -> None:
     """Test the failure of specifying invalid parameter values."""
     name = create_random_alphanumeric(10)
     distribution = "uniform"
@@ -34,7 +34,7 @@ def test_failed_parameter_verification():
         )
 
 
-def test_get_pdf_values():
+def test_get_pdf_values() -> None:
     """Test the PDF values from an instance of UnivariateInput."""
 
     name = create_random_alphanumeric(5)

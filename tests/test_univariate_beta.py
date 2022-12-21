@@ -5,21 +5,24 @@ import pytest
 import numpy as np
 
 from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
+from uqtestfuns.global_settings import ARRAY_FLOAT
 from conftest import create_random_alphanumeric
 
 
-def _mean(parameters: np.ndarray) -> float:
+def _mean(parameters: ARRAY_FLOAT) -> float:
     """Compute the analytical mean of a Beta distribution."""
-    mean = parameters[2] + (parameters[3] - parameters[2]) * (
-        (parameters[0] / (parameters[0] + parameters[1]))
+    mean = float(
+        parameters[2]
+        + (parameters[3] - parameters[2])
+        * (parameters[0] / (parameters[0] + parameters[1]))
     )
 
     return mean
 
 
-def _std(parameters: np.ndarray) -> float:
+def _std(parameters: ARRAY_FLOAT) -> float:
     """Compute the analytical standard deviation of a Beta distribution."""
-    std = (
+    std = float(
         (parameters[3] - parameters[2])
         / (parameters[0] + parameters[1])
         * np.sqrt(
@@ -31,7 +34,7 @@ def _std(parameters: np.ndarray) -> float:
     return std
 
 
-def test_wrong_number_of_parameters():
+def test_wrong_number_of_parameters() -> None:
     """Test the failure when specifying invalid number of parameters."""
     name = create_random_alphanumeric(5)
     distribution = "beta"
@@ -44,7 +47,7 @@ def test_wrong_number_of_parameters():
         )
 
 
-def test_failed_parameter_verification():
+def test_failed_parameter_verification() -> None:
     """Test the failure when specifying the wrong parameter values"""
     name = create_random_alphanumeric(10)
     distribution = "beta"
@@ -74,7 +77,7 @@ def test_failed_parameter_verification():
         )
 
 
-def test_estimate_mean():
+def test_estimate_mean() -> None:
     """Test the mean estimation of a Beta distribution."""
 
     # Create an instance of a Beta UnivariateInput
@@ -99,7 +102,7 @@ def test_estimate_mean():
     assert np.isclose(mean, mean_ref, rtol=5e-03, atol=5e-04)
 
 
-def test_estimate_std():
+def test_estimate_std() -> None:
     """Test the standard deviation estimation of a Beta distribution."""
 
     # Create an instance of a Beta UnivariateInput

@@ -18,22 +18,24 @@ from scipy.stats import norm
 from scipy.special import logit
 from scipy.special import expit as logistic
 
+from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "logitnormal"
 
 
-def verify_parameters(parameters: np.ndarray):
+def verify_parameters(parameters: ARRAY_FLOAT) -> None:
     """Verify the parameters of a logit-normal distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a logit-normal distribution
         (i.e., the mean and standard deviation).
 
     Returns
     ------
     None
+        The function exits without any return value when nothing is wrong.
 
     Raises
     ------
@@ -54,13 +56,13 @@ def verify_parameters(parameters: np.ndarray):
         )
 
 
-def lower(parameters: np.ndarray) -> float:
-    """Get the lower bound of a normal distribution.
+def lower(parameters: ARRAY_FLOAT) -> float:
+    """Get the lower bound of a logit-normal distribution.
 
     Parameters
     ----------
     parameters : np.ndarray
-        The parameters of a logit-normal distribution.
+        The parameters of a logit-normal distribution (not used).
 
     Returns
     -------
@@ -78,12 +80,12 @@ def lower(parameters: np.ndarray) -> float:
     return lower_bound
 
 
-def upper(parameters: np.ndarray) -> float:
+def upper(parameters: ARRAY_FLOAT) -> float:
     """Get the upper bound of a logit-normal distribution.
 
     Parameters
     ----------
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         The parameters of a logit-normal distribution
 
     Returns
@@ -103,27 +105,27 @@ def upper(parameters: np.ndarray) -> float:
 
 
 def pdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the PDF values of a logit-normal distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) of a logit-normal distribution.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of the logit-normal distribution.
-    lower_bound : np.ndarray
+    lower_bound : float
         Lower bound of the logit-normal distribution.
-    upper_bound : np.ndarray
+    upper_bound : float
         Upper bound of the logit-normal distribution.
 
     Returns
     -------
-    np.ndarray
+    ARRAY_FLOAT
         PDF values of the logit-normal distribution on the sample values.
 
     Notes
@@ -143,27 +145,27 @@ def pdf(
 
 
 def cdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the CDF values of a logit-normal distribution.
 
     Parameters
     ----------
-    xx : np.ndarray
+    xx : ARRAY_FLOAT
         Sample values (realizations) of a logit-normal distribution.
-    parameters : np.ndarray
+    parameters : ARRAY_FLOAT
         Parameters of the logit-normal distribution.
-    lower_bound : np.ndarray
+    lower_bound : float
         Lower bound of the logit-normal distribution.
-    upper_bound : np.ndarray
+    upper_bound : float
         Upper bound of the logit-normal distribution.
 
     Returns
     -------
-    np.ndarray
+    ARRAY_FLOAT
         CDF values of the logit-normal distribution on the sample values.
 
     Notes
@@ -189,28 +191,28 @@ def cdf(
 
 
 def icdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
-    """Get the inverse CDF values of a normal distribution.
+) -> ARRAY_FLOAT:
+    """Get the inverse CDF values of a logit-normal distribution.
 
     Parameters
     ----------
     xx : np.ndarray
         Sample values (realizations) in the [0, 1] domain.
     parameters : np.ndarray
-        Parameters of a normal distribution.
+        Parameters of a logit-normal distribution.
     lower_bound : np.ndarray
-        Lower bound of the normal distribution.
+        Lower bound of the logit-normal distribution.
     upper_bound : np.ndarray
-        Upper bound of the normal distribution.
+        Upper bound of the logit-normal distribution.
 
     Returns
     -------
     np.ndarray
-        Transformed values in the domain of the normal distribution.
+        Transformed values in the domain of the logit-normal distribution.
 
     Notes
     -----

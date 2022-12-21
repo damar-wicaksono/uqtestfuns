@@ -8,7 +8,7 @@ from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
 from conftest import create_random_alphanumeric
 
 
-def test_wrong_number_of_parameters():
+def test_wrong_number_of_parameters() -> None:
     """Test the failure of specifying wrong number of parameters."""
     name = create_random_alphanumeric(5)
     distribution = "normal"
@@ -21,11 +21,11 @@ def test_wrong_number_of_parameters():
         )
 
 
-def test_failed_parameter_verification():
+def test_failed_parameter_verification() -> None:
     """Test the failure of specifying invalid parameter values."""
     name = create_random_alphanumeric(10)
     distribution = "normal"
-    # The 2nd parameter of the normal distribution must be stricly positive!
+    # The 2nd parameter of the normal distribution must be strictly positive!
     parameters = [7.71, -1]
 
     with pytest.raises(ValueError):
@@ -34,7 +34,7 @@ def test_failed_parameter_verification():
         )
 
 
-def test_get_pdf_values():
+def test_get_pdf_values() -> None:
     """Test the PDF values from an instance of UnivariateInput."""
 
     name = create_random_alphanumeric(5)

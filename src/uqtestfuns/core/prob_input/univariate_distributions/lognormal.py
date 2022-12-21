@@ -20,11 +20,12 @@ and SciPy is as follows:
 import numpy as np
 from scipy.stats import lognorm
 
+from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "lognormal"
 
 
-def verify_parameters(parameters: np.ndarray):
+def verify_parameters(parameters: ARRAY_FLOAT) -> None:
     """Verify the parameters of a lognormal distribution.
 
     Parameters
@@ -37,6 +38,7 @@ def verify_parameters(parameters: np.ndarray):
     Returns
     ------
     None
+        The function exits without any return value when nothing is wrong.
 
     Raises
     ------
@@ -57,7 +59,7 @@ def verify_parameters(parameters: np.ndarray):
         )
 
 
-def lower(parameters: np.ndarray) -> float:
+def lower(parameters: ARRAY_FLOAT) -> float:
     """Get the lower bound of a lognormal distribution.
 
     Parameters
@@ -74,14 +76,14 @@ def lower(parameters: np.ndarray) -> float:
     -----
     - The parameters are not used in determining the lower bound of
       the distribution; it must, however, appear for interface consistency.
-      The lower bound of a lognormal distribution is finite and it is 0.0.
+      The lower bound of a lognormal distribution is finite; it is 0.0.
     """
     lower_bound = 0.0
 
     return lower_bound
 
 
-def upper(parameters: np.ndarray) -> float:
+def upper(parameters: ARRAY_FLOAT) -> float:
     """Get the upper bound of a lognormal distribution.
 
     Parameters
@@ -108,11 +110,11 @@ def upper(parameters: np.ndarray) -> float:
 
 
 def pdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the PDF values of a lognormal distribution.
 
     Parameters
@@ -121,9 +123,9 @@ def pdf(
         Sample values (realizations) of a lognormal distribution.
     parameters : np.ndarray
         Parameters of the lognormal distribution.
-    lower_bound : np.ndarray
+    lower_bound : float
         Lower bound of the lognormal distribution.
-    upper_bound : np.ndarray
+    upper_bound : float
         Upper bound of the lognormal distribution.
 
     Returns
@@ -145,11 +147,11 @@ def pdf(
 
 
 def cdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the CDF values of a lognormal distribution.
 
     Parameters
@@ -158,9 +160,9 @@ def cdf(
         Sample values (realizations) of a lognormal distribution.
     parameters : np.ndarray
         Parameters of the lognormal distribution.
-    lower_bound : np.ndarray
+    lower_bound : float
         Lower bound of the lognormal distribution.
-    upper_bound : np.ndarray
+    upper_bound : float
         Upper bound of the lognormal distribution.
 
     Returns
@@ -190,11 +192,11 @@ def cdf(
 
 
 def icdf(
-    xx: np.ndarray,
-    parameters: np.ndarray,
+    xx: ARRAY_FLOAT,
+    parameters: ARRAY_FLOAT,
     lower_bound: float,
     upper_bound: float,
-) -> np.ndarray:
+) -> ARRAY_FLOAT:
     """Get the inverse CDF values of a lognormal distribution.
 
     Parameters
@@ -203,9 +205,9 @@ def icdf(
         Sample values (realizations) in the [0, 1] domain.
     parameters : np.ndarray
         Parameters of a lognormal distribution.
-    lower_bound : np.ndarray
+    lower_bound : float
         Lower bound of the lognormal distribution.
-    upper_bound : np.ndarray
+    upper_bound : float
         Upper bound of the lognormal distribution.
 
     Returns
