@@ -8,7 +8,7 @@ import numpy as np
 
 from numpy.typing import ArrayLike
 from dataclasses import dataclass, field
-from typing import List, Optional, Union, Sequence
+from typing import Optional, Union, Sequence
 
 from .utils import (
     verify_distribution,
@@ -21,8 +21,11 @@ from .utils import (
 
 __all__ = ["UnivariateInput"]
 
+# Ordered field names for printing purpose
+FIELD_NAMES = ["name", "distribution", "parameters", "description"]
 
-@dataclass
+
+@dataclass(frozen=True)
 class UnivariateInput:
     """A class for univariate input variables.
 
@@ -34,23 +37,25 @@ class UnivariateInput:
         Type of probability distribution.
     parameters : Union[List[float, ...], np.ndarray, List[np.ndarray, ...]]
         Parameters of the probability distribution.
+    description : str, optional
+        The text description of the input variable.
     """
 
-    name: str
     distribution: str
     parameters: Union[Sequence[Union[int, float, np.ndarray]], np.ndarray]
+    name: Optional[str] = None
     description: Optional[str] = None
     lower: float = field(init=False, repr=False)
     upper: float = field(init=False, repr=False)
 
     def __post_init__(self):
 
+        # Because frozen=True, post init must access self via setattr
         # Make sure the distribution is lower-case
-        self.distribution = self.distribution.lower()
+        object.__setattr__(self, "distribution", self.distribution.lower())
 
         # Convert parameters as list to a numpy array
-        if isinstance(self.parameters, List):
-            self.parameters = np.array(self.parameters)
+        object.__setattr__(self, "parameters", np.array(self.parameters))
 
         # Verify the selected univariate distribution type
         verify_distribution(self.distribution)
@@ -58,10 +63,12 @@ class UnivariateInput:
         # Verify the value of the parameters
         verify_parameters(self.distribution, self.parameters)
 
-        # Get the lower and upper bounds
-        self.lower, self.upper = get_distribution_bounds(
+        # Get and set the lower and upper bounds
+        _lower, _upper = get_distribution_bounds(
             self.distribution, self.parameters
         )
+        object.__setattr__(self, "lower", _lower)
+        object.__setattr__(self, "upper", _upper)
 
     def transform_sample(self, xx: np.ndarray, other):
         """Transform a sample from a given distribution to another."""

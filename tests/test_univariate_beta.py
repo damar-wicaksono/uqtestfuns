@@ -82,7 +82,9 @@ def test_estimate_mean():
     distribution = "beta"
     parameters = np.sort(2 * np.random.rand(4))
 
-    my_univariate_input = UnivariateInput(name, distribution, parameters)
+    my_univariate_input = UnivariateInput(
+        name=name, distribution=distribution, parameters=parameters
+    )
 
     sample_size = 100000
     xx = my_univariate_input.get_sample(sample_size)
@@ -105,7 +107,9 @@ def test_estimate_std():
     distribution = "beta"
     parameters = np.sort(2 * np.random.rand(4))
 
-    my_univariate_input = UnivariateInput(name, distribution, parameters)
+    my_univariate_input = UnivariateInput(
+        name=name, distribution=distribution, parameters=parameters
+    )
 
     sample_size = 100000
     xx = my_univariate_input.get_sample(sample_size)

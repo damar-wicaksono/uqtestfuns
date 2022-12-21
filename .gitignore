@@ -23,6 +23,9 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# Sphinx documentation
+docs/_build/
+
 # Unit test / coverage
 .coverage
 .tox

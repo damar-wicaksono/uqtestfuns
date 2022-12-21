@@ -18,31 +18,33 @@ References
 """
 import numpy as np
 
+from ..core import UnivariateInput
+
 DEFAULT_NAME = "Ishigami"
 
-DEFAULT_INPUT_DICTS = [
-    {
-        "name": "X1",
-        "distribution": "uniform",
-        "parameters": [-np.pi, np.pi],
-        "description": "None",
-    },
-    {
-        "name": "X2",
-        "distribution": "uniform",
-        "parameters": [-np.pi, np.pi],
-        "description": "None",
-    },
-    {
-        "name": "X3",
-        "distribution": "uniform",
-        "parameters": [-np.pi, np.pi],
-        "description": "None",
-    },
+DEFAULT_INPUT_MARGINALS = [
+    UnivariateInput(
+        name="X1",
+        distribution="uniform",
+        parameters=[-np.pi, np.pi],
+        description="None",
+    ),
+    UnivariateInput(
+        name="X2",
+        distribution="uniform",
+        parameters=[-np.pi, np.pi],
+        description="None",
+    ),
+    UnivariateInput(
+        name="X3",
+        distribution="uniform",
+        parameters=[-np.pi, np.pi],
+        description="None",
+    ),
 ]
 
 DEFAULT_INPUTS = {
-    "ishigami": DEFAULT_INPUT_DICTS,
+    "ishigami": DEFAULT_INPUT_MARGINALS,
 }
 
 DEFAULT_INPUT_SELECTION = "ishigami"
@@ -54,7 +56,7 @@ DEFAULT_PARAMETERS = {
 
 DEFAULT_PARAMETERS_SELECTION = "sobol-levitan"
 
-SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS)
+SPATIAL_DIMENSION = len(DEFAULT_INPUT_MARGINALS)
 
 
 def evaluate(xx: np.ndarray, params: tuple) -> np.ndarray:

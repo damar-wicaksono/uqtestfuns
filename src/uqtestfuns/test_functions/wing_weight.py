@@ -14,81 +14,82 @@ References
 import numpy as np
 
 from .utils import deg2rad
+from ..core import UnivariateInput
 
 DEFAULT_NAME = "Wing-Weight"
 
-DEFAULT_INPUT_DICTS = [
-    {
-        "name": "Sw",
-        "distribution": "uniform",
-        "parameters": [150, 200],
-        "description": "wing area [ft^2]",
-    },
-    {
-        "name": "Wfw",
-        "distribution": "uniform",
-        "parameters": [220, 300],
-        "description": "weight of fuel in the wing [lb]",
-    },
-    {
-        "name": "A",
-        "distribution": "uniform",
-        "parameters": [6, 10],
-        "description": "aspect ratio [-]",
-    },
-    {
-        "name": "Lambda",
-        "distribution": "uniform",
-        "parameters": [-10, 10],
-        "description": "quarter-chord sweep [degrees]",
-    },
-    {
-        "name": "q",
-        "distribution": "uniform",
-        "parameters": [16, 45],
-        "description": "dynamic pressure at cruise [lb/ft^2]",
-    },
-    {
-        "name": "lambda",
-        "distribution": "uniform",
-        "parameters": [0.5, 1.0],
-        "description": "taper ratio [-]",
-    },
-    {
-        "name": "tc",
-        "distribution": "uniform",
-        "parameters": [0.08, 0.18],
-        "description": "aerofoil thickness to chord ratio [-]",
-    },
-    {
-        "name": "Nz",
-        "distribution": "uniform",
-        "parameters": [2.5, 6.0],
-        "description": "ultimate load factor [-]",
-    },
-    {
-        "name": "Wdg",
-        "distribution": "uniform",
-        "parameters": [1700, 2500],
-        "description": "flight design gross weight [lb]",
-    },
-    {
-        "name": "Wp",
-        "distribution": "uniform",
-        "parameters": [0.025, 0.08],
-        "description": "paint weight [lb/ft^2]",
-    },
+DEFAULT_INPUT_MARGINALS = [
+    UnivariateInput(
+        name="Sw",
+        distribution="uniform",
+        parameters=[150.0, 200.0],
+        description="wing area [ft^2]",
+    ),
+    UnivariateInput(
+        name="Wfw",
+        distribution="uniform",
+        parameters=[220.0, 300.0],
+        description="weight of fuel in the wing [lb]",
+    ),
+    UnivariateInput(
+        name="A",
+        distribution="uniform",
+        parameters=[6.0, 10.0],
+        description="aspect ratio [-]",
+    ),
+    UnivariateInput(
+        name="Lambda",
+        distribution="uniform",
+        parameters=[-10.0, 10.0],
+        description="quarter-chord sweep [degrees]",
+    ),
+    UnivariateInput(
+        name="q",
+        distribution="uniform",
+        parameters=[16.0, 45.0],
+        description="dynamic pressure at cruise [lb/ft^2]",
+    ),
+    UnivariateInput(
+        name="lambda",
+        distribution="uniform",
+        parameters=[0.5, 1.0],
+        description="taper ratio [-]",
+    ),
+    UnivariateInput(
+        name="tc",
+        distribution="uniform",
+        parameters=[0.08, 0.18],
+        description="aerofoil thickness to chord ratio [-]",
+    ),
+    UnivariateInput(
+        name="Nz",
+        distribution="uniform",
+        parameters=[2.5, 6.0],
+        description="ultimate load factor [-]",
+    ),
+    UnivariateInput(
+        name="Wdg",
+        distribution="uniform",
+        parameters=[1700, 2500],
+        description="flight design gross weight [lb]",
+    ),
+    UnivariateInput(
+        name="Wp",
+        distribution="uniform",
+        parameters=[0.025, 0.08],
+        description="paint weight [lb/ft^2]",
+    ),
 ]
 
 DEFAULT_INPUTS = {
-    "forrester": DEFAULT_INPUT_DICTS,
+    "forrester": DEFAULT_INPUT_MARGINALS,
 }
 
 DEFAULT_INPUT_SELECTION = "forrester"
 
 DEFAULT_PARAMETERS = None
 
-SPATIAL_DIMENSION = len(DEFAULT_INPUT_DICTS)
+SPATIAL_DIMENSION = len(DEFAULT_INPUT_MARGINALS)
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:

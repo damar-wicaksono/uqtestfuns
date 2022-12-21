@@ -6,10 +6,10 @@ import pytest
 
 from scipy.special import comb
 
-from uqtestfuns import UQMetaTestFun, UQTestFun, UQMetaFunSpec
+from uqtestfuns import UQMetaTestFun, UQTestFun, UQMetaFunSpec, UnivariateInput
 from uqtestfuns.meta.metaspec import UQTestFunSpec
 from uqtestfuns.meta.basis_functions import BASIS_BY_ID
-from conftest import create_random_input_dicts, assert_call
+from conftest import create_random_marginals, assert_call
 
 
 def _create_args_effects_dict(spatial_dimension):
@@ -60,7 +60,7 @@ def uqmetafunspec(request):
 
     effects_dict = _create_args_effects_dict(spatial_dimension)
 
-    inputs = create_random_input_dicts(spatial_dimension)
+    inputs = create_random_marginals(spatial_dimension)
 
     coeffs_generator = np.random.rand
 
@@ -99,7 +99,7 @@ def test_create_instance(uqmetafunspec):
     assert (
         my_metafun.metafun_spec.basis_functions == my_args["basis_functions"]
     )
-    assert my_metafun.metafun_spec.inputs == my_args["inputs"]
+    assert my_metafun.metafun_spec.input_marginals == my_args["inputs"]
     assert (
         my_metafun.metafun_spec.coeffs_generator == my_args["coeffs_generator"]
     )
@@ -198,7 +198,9 @@ def test_evaluate_sample(spatial_dimension):
 
     effects_dict = _create_args_effects_dict(spatial_dimension)
 
-    inputs = [{"distribution": "uniform", "parameters": [0, 1]}]
+    input_marginals = [
+        UnivariateInput(distribution="uniform", parameters=[0, 1]),
+    ]
 
     coeffs_generator = np.random.rand
 
@@ -207,7 +209,7 @@ def test_evaluate_sample(spatial_dimension):
         spatial_dimension,
         basis_functions,
         effects_dict,
-        inputs,
+        input_marginals,
         coeffs_generator,
     )
     my_metafun = UQMetaTestFun(my_metafun_spec)

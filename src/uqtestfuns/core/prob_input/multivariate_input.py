@@ -7,10 +7,10 @@ the UnivariateInput class.
 """
 import numpy as np
 from tabulate import tabulate
-from typing import List, Dict, Any, Union, Tuple
-from dataclasses import dataclass, InitVar, field, fields
+from typing import List, Any, Union, Tuple
+from dataclasses import dataclass, field
 
-from .univariate_input import UnivariateInput
+from .univariate_input import UnivariateInput, FIELD_NAMES
 
 
 __all__ = ["MultivariateInput"]
@@ -29,24 +29,16 @@ class MultivariateInput:
     copulas : Any
         Copulas between univariate inputs that define dependence structure
         (currently not used).
-
-    Parameters
-    ----------
-    univariate_inputs : List[Dict]
-        List of dictionaries that defines each of the univariate inputs.
     """
 
     spatial_dimension: int = field(init=False)
-    marginals: Tuple[UnivariateInput, ...] = field(init=False)
-    univariate_inputs: InitVar[Union[List[Dict], Tuple[Dict, ...]]] = None
+    marginals: Union[List[UnivariateInput], Tuple[UnivariateInput, ...]]
     copulas: Any = None
 
-    def __post_init__(self, univariate_inputs: Union[List[Dict], Tuple[Dict]]):
-        self.spatial_dimension = len(univariate_inputs)
-        marginals = []
-        for univariate_input in univariate_inputs:
-            marginals.append(UnivariateInput(**univariate_input))
-        self.marginals = tuple(marginals)
+    def __post_init__(self):
+        self.spatial_dimension = len(self.marginals)
+        # Protect marginals by making it immutable
+        self.marginals = tuple(self.marginals)
 
     def transform_sample(self, other, xx: np.ndarray):
         """Transform a sample from the distribution to another."""
@@ -57,7 +49,7 @@ class MultivariateInput:
             )
 
         xx_trans = xx.copy()
-        if self.copulas is None:
+        if not self.copulas:
             # Independent inputs, transform marginal by marginal
             for idx_dim, (marginal_self, marginal_other) in enumerate(
                 zip(self.marginals, other.marginals)
@@ -79,7 +71,7 @@ class MultivariateInput:
 
         xx = np.random.rand(sample_size, self.spatial_dimension)
         # Transform the sample in [0, 1] to the domain of the distribution
-        if self.copulas is None:
+        if not self.copulas:
             # Independent inputs generate sample marginal by marginal
             for idx_dim, marginal in enumerate(self.marginals):
                 xx[:, idx_dim] = univ_input.transform_sample(
@@ -103,7 +95,7 @@ class MultivariateInput:
         np.ndarray
             PDF values of the distribution on the sample values.
         """
-        if self.copulas is None:
+        if not self.copulas:
             yy = np.empty(xx.shape)
             for i, marginal in enumerate(self.marginals):
                 yy[:, i] = marginal.pdf(xx[:, i])
@@ -117,23 +109,21 @@ class MultivariateInput:
     def __str__(self):
 
         # Get the header names
-        header_names = get_repr_names(self.marginals[0])
-        header_names = [name.capitalize() for name in header_names]
+        header_names = [name.capitalize() for name in FIELD_NAMES]
         header_names.insert(0, "No.")
 
         # Get the values for each field as a list
-        list_values = get_values_as_list(self.marginals)
+        list_values = _get_values_as_list(self.marginals)
 
         return tabulate(list_values, headers=header_names, stralign="center")
 
     def _repr_html_(self):
         # Get the header names
-        header_names = get_repr_names(self.marginals[0])
-        header_names = [name.capitalize() for name in header_names]
+        header_names = [name.capitalize() for name in FIELD_NAMES]
         header_names.insert(0, "No.")
 
         # Get the values for each field as a list
-        list_values = get_values_as_list(self.marginals)
+        list_values = _get_values_as_list(self.marginals)
 
         return tabulate(
             list_values,
@@ -143,24 +133,17 @@ class MultivariateInput:
         )
 
 
-def get_repr_names(univariate_input: UnivariateInput):
-    """Get the field names of UnivariateInput w/ repr attribute set to True."""
-    repr_names = []
-    for univariate_field in fields(univariate_input):
-        if univariate_field.repr:
-            repr_names.append(univariate_field.name)
-
-    return repr_names
-
-
-def get_values_as_list(univariate_inputs: Tuple[UnivariateInput, ...]):
-    """"""
+def _get_values_as_list(univariate_inputs: Tuple[UnivariateInput, ...]):
+    """
+    TODO: Fill in the description
+    :param univariate_inputs:
+    :return:
+    """
     list_values = []
     for i, marginal in enumerate(univariate_inputs):
         values = [i + 1]
-        for marginal_field in fields(marginal):
-            if marginal_field.repr:
-                values.append(getattr(marginal, marginal_field.name))
+        for field_name in FIELD_NAMES:
+            values.append(getattr(marginal, field_name))
         list_values.append(values)
 
     return list_values
