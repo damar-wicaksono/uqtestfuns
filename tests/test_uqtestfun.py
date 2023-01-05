@@ -84,7 +84,7 @@ def test_invalid_input(uqtestfun):
     uqtestfun_dict["input"] = "Test"
 
     with pytest.raises(TypeError):
-        UQTestFun(**uqtesfun_dict)
+        UQTestFun(**uqtestfun_dict)
 
 
 def test_unsupported_fun():
