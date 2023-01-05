@@ -105,7 +105,7 @@ def test_transform_sample(spatial_dimension):
     my_multivariate_input_2 = MultivariateInput(marginals_2)
 
     xx_trans = my_multivariate_input_1.transform_sample(
-        my_multivariate_input_2, xx
+        xx, my_multivariate_input_2
     )
 
     # Assertions
@@ -127,7 +127,7 @@ def test_failed_transform_sample():
 
     # Transformation between two random variables of different dimensions
     with pytest.raises(ValueError):
-        my_multivariate_input_1.transform_sample(my_multivariate_input_2, xx)
+        my_multivariate_input_1.transform_sample(xx, my_multivariate_input_2)
 
 
 def test_transform_dependent_sample():
@@ -142,7 +142,7 @@ def test_transform_dependent_sample():
 
     with pytest.raises(ValueError):
         my_multivariate_input_1.copulas = "a"
-        my_multivariate_input_1.transform_sample(my_multivariate_input_2, xx)
+        my_multivariate_input_1.transform_sample(xx, my_multivariate_input_2)
 
 
 def test_str():

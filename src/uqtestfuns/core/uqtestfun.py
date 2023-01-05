@@ -99,7 +99,7 @@ class UQTestFun:
         )
 
         # Transform the sampled value to the function domain
-        xx_trans = canonical_input.transform_sample(self.input, xx)
+        xx_trans = canonical_input.transform_sample(xx, self.input)
 
         return xx_trans
 

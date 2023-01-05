@@ -5,6 +5,8 @@ The MultivariateInput class represents a multivariate probabilistic input.
 Each multivariate input has a set of marginals defined by an instance of
 the UnivariateInput class.
 """
+from __future__ import annotations
+
 import numpy as np
 from tabulate import tabulate
 from typing import List, Any, Union, Tuple
@@ -40,7 +42,7 @@ class MultivariateInput:
         # Protect marginals by making it immutable
         self.marginals = tuple(self.marginals)
 
-    def transform_sample(self, other, xx: np.ndarray):
+    def transform_sample(self, xx: np.ndarray, other: MultivariateInput):
         """Transform a sample from the distribution to another."""
         # Make sure the dimensionality is consistent
         if self.spatial_dimension != other.spatial_dimension:
