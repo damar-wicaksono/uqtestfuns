@@ -109,13 +109,12 @@ class MultivariateInput:
         return yy
 
     def __str__(self):
-
         # Get the header names
         header_names = [name.capitalize() for name in FIELD_NAMES]
         header_names.insert(0, "No.")
 
         # Get the values for each field as a list
-        list_values = _get_values_as_list(self.marginals)
+        list_values = _get_values_as_list(self.marginals, FIELD_NAMES)
 
         return tabulate(list_values, headers=header_names, stralign="center")
 
@@ -125,7 +124,7 @@ class MultivariateInput:
         header_names.insert(0, "No.")
 
         # Get the values for each field as a list
-        list_values = _get_values_as_list(self.marginals)
+        list_values = _get_values_as_list(self.marginals, FIELD_NAMES)
 
         return tabulate(
             list_values,
@@ -135,16 +134,30 @@ class MultivariateInput:
         )
 
 
-def _get_values_as_list(univariate_inputs: Tuple[UnivariateInput, ...]):
-    """
-    TODO: Fill in the description
-    :param univariate_inputs:
-    :return:
+def _get_values_as_list(
+    univ_inputs: Union[List[UnivariateInput], Tuple[UnivariateInput, ...]],
+    field_names: List[str],
+) -> list:
+    """Get the values from each field from a list of UnivariateInput
+
+    Parameters
+    ----------
+    univ_inputs : Union[List[UnivariateInput], Tuple[UnivariateInput, ...]]
+        A list or a tuple of UnivariateInput representing
+        the marginal distribution.
+    field_names : List[str]
+        A list of field names from each UnivariateInput to access
+        (and its value grabbed).
+
+    Return
+    ------
+    list
+        List of values.
     """
     list_values = []
-    for i, marginal in enumerate(univariate_inputs):
+    for i, marginal in enumerate(univ_inputs):
         values = [i + 1]
-        for field_name in FIELD_NAMES:
+        for field_name in field_names:
             values.append(getattr(marginal, field_name))
         list_values.append(values)
 
