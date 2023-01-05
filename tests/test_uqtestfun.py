@@ -76,6 +76,17 @@ def test_str(uqtestfun):
     assert uqtestfun_instance.__str__() == str_ref
 
 
+def test_invalid_input(uqtestfun):
+    """Test using an invalid input to construct a UQTestFun instance."""
+    _, uqtestfun_dict = uqtestfun
+
+    # Using an invalid type of input for the test function
+    uqtestfun_dict["input"] = "Test"
+
+    with pytest.raises(TypeError):
+        UQTestFun(**uqtesfun_dict)
+
+
 def test_unsupported_fun():
     """Test getting the default arguments of an unsupported test function."""
     with pytest.raises(KeyError):

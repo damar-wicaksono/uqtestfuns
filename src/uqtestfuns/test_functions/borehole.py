@@ -23,7 +23,7 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput
+from ..core import UnivariateInput, MultivariateInput
 
 DEFAULT_NAME = "Borehole"
 
@@ -97,8 +97,8 @@ DEFAULT_INPUT_MARGINALS_2[0:2] = [
 ]
 
 DEFAULT_INPUTS = {
-    "harper": DEFAULT_INPUT_MARGINALS_1,
-    "morris": DEFAULT_INPUT_MARGINALS_2,
+    "harper": MultivariateInput(DEFAULT_INPUT_MARGINALS_1),
+    "morris": MultivariateInput(DEFAULT_INPUT_MARGINALS_2),
 }
 
 DEFAULT_INPUT_SELECTION = "harper"

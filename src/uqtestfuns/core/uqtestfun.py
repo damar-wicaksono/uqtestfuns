@@ -31,7 +31,7 @@ class UQTestFun:
     evaluate : Callable
         Implementation of the a test function as a Callable.
     input : MultivariateInput
-        Probabilistic input model.
+        Multivariate probabilistic input model.
     name : str, optional
         Name of the instance.
     parameters : Any, optional
@@ -42,6 +42,11 @@ class UQTestFun:
     spatial_dimension : int
         The number of spatial dimension (i.e., input variables) to the test
         function.
+
+    Notes
+    -----
+    - Even if the probabilistic input model consists of only one marginal,
+      a MultivariateInput instance must always be passed.
     """
 
     evaluate: Callable
@@ -51,8 +56,12 @@ class UQTestFun:
     parameters: Any = None
 
     def __post_init__(self):
-        if isinstance(self.input, list):
-            self.input = MultivariateInput(self.input)
+
+        if not isinstance(self.input, MultivariateInput):
+            raise TypeError(
+                f"Input must be of 'MultivariateInput' type, "
+                f"instead of {type(self.input)}!"
+            )
 
         self.spatial_dimension = self.input.spatial_dimension
 
