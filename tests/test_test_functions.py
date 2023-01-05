@@ -40,12 +40,12 @@ def test_create_instance(default_testfun):
     ]
 
     if isinstance(default_input, Callable):  # type: ignore
-        default_input_dicts = default_input(testfun_mod.DEFAULT_DIMENSION)
+        default_input = default_input(testfun_mod.DEFAULT_DIMENSION)
     else:
-        default_input_dicts = default_input
+        default_input = default_input
 
     # Assertions
-    assert testfun.spatial_dimension == len(default_input_dicts)
+    assert testfun.spatial_dimension == default_input.spatial_dimension
 
     # TODO: Implement a better equality for the input dataclass
     # assert testfun.input == testfun_mod.DEFAULT_INPUT

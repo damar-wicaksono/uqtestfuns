@@ -14,7 +14,7 @@ References
 import numpy as np
 
 from .utils import deg2rad
-from ..core import UnivariateInput
+from ..core import UnivariateInput, MultivariateInput
 
 DEFAULT_NAME = "Wing-Weight"
 
@@ -82,7 +82,7 @@ DEFAULT_INPUT_MARGINALS = [
 ]
 
 DEFAULT_INPUTS = {
-    "forrester": DEFAULT_INPUT_MARGINALS,
+    "forrester": MultivariateInput(DEFAULT_INPUT_MARGINALS),
 }
 
 DEFAULT_INPUT_SELECTION = "forrester"

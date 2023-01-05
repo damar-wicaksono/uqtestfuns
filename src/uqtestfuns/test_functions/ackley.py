@@ -13,7 +13,7 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput
+from ..core import UnivariateInput, MultivariateInput
 
 DEFAULT_NAME = "Ackley"
 
@@ -35,7 +35,7 @@ def _ackley_input(spatial_dimension: int):
             )
         )
 
-    return marginals
+    return MultivariateInput(marginals)
 
 
 DEFAULT_INPUTS = {

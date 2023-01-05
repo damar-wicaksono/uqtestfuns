@@ -18,7 +18,7 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput
+from ..core import UnivariateInput, MultivariateInput
 
 DEFAULT_NAME = "Ishigami"
 
@@ -44,7 +44,7 @@ DEFAULT_INPUT_MARGINALS = [
 ]
 
 DEFAULT_INPUTS = {
-    "ishigami": DEFAULT_INPUT_MARGINALS,
+    "ishigami": MultivariateInput(DEFAULT_INPUT_MARGINALS),
 }
 
 DEFAULT_INPUT_SELECTION = "ishigami"
