@@ -104,7 +104,9 @@ def test_transform_sample(spatial_dimension):
     marginals_2 = create_random_marginals(spatial_dimension)
     my_multivariate_input_2 = MultivariateInput(marginals_2)
 
-    xx_trans = my_multivariate_input_1.transform_sample(xx, my_multivariate_input_2)
+    xx_trans = my_multivariate_input_1.transform_sample(
+        xx, my_multivariate_input_2
+    )
 
     # Assertions
     for i, marginal in enumerate(my_multivariate_input_2.marginals):
