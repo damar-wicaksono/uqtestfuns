@@ -29,3 +29,6 @@ docs/_build/
 # Unit test / coverage
 .coverage
 .tox
+
+# MacOS specific
+.DS_Store
