@@ -35,3 +35,4 @@ parts:
   - caption: Development
     chapters:
       - file: development/about
+      - file: development/code-of-conduct
