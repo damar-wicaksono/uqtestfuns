@@ -56,8 +56,6 @@ DEFAULT_PARAMETERS = {
 
 DEFAULT_PARAMETERS_SELECTION = "sobol-levitan"
 
-SPATIAL_DIMENSION = len(DEFAULT_INPUT_MARGINALS)
-
 
 def evaluate(xx: np.ndarray, params: tuple) -> np.ndarray:
     """Evaluate the Ishigami function on a set of input values.

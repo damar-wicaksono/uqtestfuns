@@ -9,7 +9,7 @@ from typing import Callable, Any, Optional
 from types import ModuleType
 
 from . import wing_weight, ishigami, borehole, ackley
-from ..core import UQTestFun
+from ..core import UQTestFun, MultivariateInput
 
 __all__ = ["get_default_args", "create_from_default", "AVAILABLE_FUNCTIONS"]
 
@@ -159,13 +159,7 @@ def _get_default_input(
         The default input specification as a dictionary stored / created
         from the relevant implementation module.
     """
-
-    # Get the default dimension
-    if spatial_dimension is None:
-        spatial_dimension = _get_spatial_dimension(fun_module)
-    else:
-        _verify_spatial_dimension(spatial_dimension, fun_module)
-
+    # Get the default input specification
     if selection is None:
         selection = fun_module.DEFAULT_INPUT_SELECTION
 
@@ -179,6 +173,15 @@ def _get_default_input(
         )
 
     default_input = fun_module.DEFAULT_INPUTS[selection]
+
+    # Get the default dimension
+    if _is_variable_dimension(fun_module):
+        if spatial_dimension is None:
+            spatial_dimension = fun_module.DEFAULT_DIMENSION
+    else:
+        _verify_spatial_dimension(
+            spatial_dimension, default_input, fun_module.DEFAULT_NAME
+        )
 
     if isinstance(default_input, Callable):  # type: ignore
         return default_input(spatial_dimension)
@@ -214,13 +217,6 @@ def _get_default_parameters(
     tuple
         The selected parameters.
     """
-
-    # Get the default dimension
-    if spatial_dimension is None:
-        spatial_dimension = _get_spatial_dimension(fun_module)
-    else:
-        _verify_spatial_dimension(spatial_dimension, fun_module)
-
     if fun_module.DEFAULT_PARAMETERS is None:
         if selection is not None:
             raise ValueError(
@@ -244,43 +240,53 @@ def _get_default_parameters(
 
     default_parameters = fun_module.DEFAULT_PARAMETERS[selection]
 
+    # Get the default dimension
+    if _is_variable_dimension(fun_module):
+        if spatial_dimension is None:
+            spatial_dimension = fun_module.DEFAULT_DIMENSION
+
     if isinstance(default_parameters, Callable):  # type: ignore
         default_parameters = default_parameters(spatial_dimension)
 
     return default_parameters
 
 
-def _get_spatial_dimension(fun_module: ModuleType) -> int:
-    """Get the default spatial dimension specified at the module-level.
+def _is_variable_dimension(fun_module: ModuleType) -> bool:
+    """Check if the test function is of variable dimension.
 
     Parameters
     ----------
     fun_module : ModuleType
         The module in which a test function was implemented.
+        The information regarding default dimension is stored therein.
 
     Returns
     -------
-    int
-        The spatial dimension as specified in the module.
+    bool
+        True if the test function is of variable dimension; False otherwise.
     """
-    if fun_module.SPATIAL_DIMENSION is None:
-        spatial_dimension = fun_module.DEFAULT_DIMENSION
-    else:
-        spatial_dimension = fun_module.SPATIAL_DIMENSION
+    try:
+        _ = fun_module.DEFAULT_DIMENSION
+        return True
+    except AttributeError:
+        return False
 
-    return spatial_dimension
 
-
-def _verify_spatial_dimension(spatial_dimension: int, fun_module: ModuleType):
+def _verify_spatial_dimension(
+    spatial_dimension: int,
+    default_input: MultivariateInput,
+    fun_name: str,
+):
     """Verify the specified spatial dimension given the default.
 
     Parameters
     ----------
     spatial_dimension : int
         The user-specified spatial dimension.
-    fun_module : ModuleType
-        The module in which a test function was implemented.
-        The information regarding default dimension is stored therein.
+    default_input : MultivariateInput
+        The default input specification.
+    fun_name : str
+        The name of the test function.
 
     Returns
     -------
@@ -292,13 +298,11 @@ def _verify_spatial_dimension(spatial_dimension: int, fun_module: ModuleType):
         If the user-specified dimension is not consistent with the dimension
         stored in the module.
     """
+    default_spatial_dimension = default_input.spatial_dimension
 
-    fun_name = fun_module.DEFAULT_NAME
-    default_spatial_dimension = fun_module.SPATIAL_DIMENSION
-
-    if default_spatial_dimension is not None:
+    if spatial_dimension is not None:
         assert spatial_dimension == default_spatial_dimension, (
             f"The spatial dimension for the '{fun_name}' test function "
             f"is fixed to {default_spatial_dimension} "
-            f"(but specified {spatial_dimension})."
+            f"(but {spatial_dimension} is specified instead)."
         )

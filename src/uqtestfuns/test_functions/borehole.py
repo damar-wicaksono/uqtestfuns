@@ -105,8 +105,6 @@ DEFAULT_INPUT_SELECTION = "harper"
 
 DEFAULT_PARAMETERS = None
 
-SPATIAL_DIMENSION = len(DEFAULT_INPUT_MARGINALS_1)
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the Borehole function on a set of input values.
