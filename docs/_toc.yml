@@ -1,0 +1,37 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: index
+parts:
+  - caption: Getting Started
+    chapters:
+      - file: getting-started/obtaining-and-installing
+      - file: getting-started/creating-a-default
+      - file: getting-started/creating-a-custom
+  - caption: Test Functions
+    chapters:
+      - file: test-functions/metamodeling
+        title: Metamodeling
+      - file: test-functions/available
+        title: All Available Functions
+        sections:
+          - file: test-functions/borehole
+            title: Borehole
+          - file: test-functions/ishigami
+            title: Ishigami
+          - file: test-functions/otl-circuit
+            title: OTL Circuit
+          - file: test-functions/piston
+            title: Piston Simulation
+          - file: test-functions/wing-weight
+            title: Wing Weight
+  - caption: Metafunction
+    chapters:
+      - file: metafunction/about
+  - caption: API Reference
+    chapters:
+      - file: api/overview
+  - caption: Development
+    chapters:
+      - file: development/about
