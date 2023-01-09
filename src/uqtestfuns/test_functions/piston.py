@@ -1,12 +1,12 @@
 """
-Module with an implementation of the OTL circuit test function.
+Module with an implementation of the Piston simulation test function.
 
-The OTL circuit test function is a six-dimensional scalar-valued function
-that computes the mid-point voltage
-of an output transformerless (OTL) push-pull circuit.
+The Piston simulation test function is a seven-dimensional scalar-valued
+test function.
+The function computes the cycle time of a piston.
 The function has been used as a test function in metamodeling exercises [1].
 A 20-dimensional variant was used for sensitivity analysis in [2]
-by introducing 14 additional inert input variables.
+by introducing 13 additional inert input variables.
 
 References
 ----------
@@ -27,51 +27,59 @@ from copy import copy
 from ..core import UnivariateInput, MultivariateInput
 
 
-DEFAULT_NAME = "OTL"
+DEFAULT_NAME = "Piston"
 
+# Input specification from [1]
 DEFAULT_INPUT_MARGINALS_BEN_ARI = [
     UnivariateInput(
-        name="Rb1",
+        name="M",
         distribution="uniform",
-        parameters=[50.0, 150.0],
-        description="Resistance b1 [kOhm]",
+        parameters=[30.0, 60.0],
+        description="Piston weight [kg]",
     ),
     UnivariateInput(
-        name="Rb2",
+        name="S",
         distribution="uniform",
-        parameters=[25.0, 70.0],
-        description="Resistance b2 [kOhm]",
+        parameters=[0.005, 0.020],
+        description="Piston surface area [m^2]",
     ),
     UnivariateInput(
-        name="Rf",
+        name="V0",
         distribution="uniform",
-        parameters=[0.5, 3.0],
-        description="Resistance f [kOhm]",
+        parameters=[0.002, 0.010],
+        description="Initial gas volume [m^3]",
     ),
     UnivariateInput(
-        name="Rc1",
+        name="k",
         distribution="uniform",
-        parameters=[1.2, 2.5],
-        description="Resistance c1 [kOhm]",
+        parameters=[1000.0, 5000.0],
+        description="Spring coefficient [N/m]",
     ),
     UnivariateInput(
-        name="Rc2",
+        name="P0",
         distribution="uniform",
-        parameters=[0.25, 1.20],
-        description="Resistance c2 [kOhm]",
+        parameters=[90000.0, 110000.0],
+        description="Atmospheric pressure [N/m^2]",
     ),
     UnivariateInput(
-        name="beta",
+        name="Ta",
         distribution="uniform",
-        parameters=[50.0, 300.0],
-        description="Current gain [A]",
+        parameters=[290.0, 296.0],
+        description="Ambient temperature [K]",
+    ),
+    UnivariateInput(
+        name="T0",
+        distribution="uniform",
+        parameters=[340.0, 360.0],
+        description="Filling gas temperature [K]",
     ),
 ]
 
+# Input specification from [2]
 DEFAULT_INPUT_MARGINALS_MOON = [
     copy(_) for _ in DEFAULT_INPUT_MARGINALS_BEN_ARI
 ]
-for i in range(14):
+for i in range(13):
     DEFAULT_INPUT_MARGINALS_MOON.append(
         UnivariateInput(
             name=f"Inert {i+1}",
@@ -97,14 +105,14 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        (At least) 6-dimensional input values given by N-by-6 arrays
+        (At least) 7-dimensional input values given by N-by-7 arrays
         where N is the number of input values.
 
     Returns
     -------
     np.ndarray
-        The output of the OTL circuit test function,
-        i.e., the mid-point voltage in Volt.
+        The output of the Piston simulation test function,
+        i.e., the cycle time in seconds.
         The output is a one-dimensional array of length N.
 
     Notes
@@ -113,22 +121,28 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
       but they are all taken to be inert and therefore should not affect
       the output.
     """
-    rr_b1 = xx[:, 0]  # Resistance b1
-    rr_b2 = xx[:, 1]  # Resistance b2
-    rr_f = xx[:, 2]  # Resistance f
-    rr_c1 = xx[:, 3]  # Resistance c1
-    rr_c2 = xx[:, 4]  # Resistance c2
-    beta = xx[:, 5]  # Current gain
+    mm = xx[:, 0]  # piston weight
+    ss = xx[:, 1]  # piston surface area
+    vv_0 = xx[:, 2]  # initial gas volume
+    kk = xx[:, 3]  # spring coefficient
+    pp_0 = xx[:, 4]  # atmospheric pressure
+    tt_a = xx[:, 5]  # ambient temperature
+    tt_0 = xx[:, 6]  # filling gas temperature
 
-    # Compute the voltage across b1
-    vb1 = 12 * rr_b1 / (rr_b1 + rr_b2)
+    # Compute the force
+    aa = pp_0 * ss + 19.62 * mm - kk * vv_0 / ss
 
-    # Compute the mid-point voltage
-    denom = beta * (rr_c2 + 9) + rr_f
-    term_1 = ((vb1 + 0.74) * beta * (rr_c2 + 9)) / denom
-    term_2 = 11.35 * rr_f / denom
-    term_3 = 0.74 * rr_f * beta * (rr_c2 + 9) / (rr_c1 * denom)
+    # Compute the force difference
+    daa = np.sqrt(aa**2 + 4.0 * kk * pp_0 * vv_0 * tt_a / tt_0) - aa
 
-    vm = term_1 + term_2 + term_3
+    # Compute the volume difference
+    vv = ss / 2.0 / kk * daa
 
-    return vm
+    # Compute the cycle time
+    cc = (
+        2.0
+        * np.pi
+        * np.sqrt(mm / (ss**2 * pp_0 * vv_0 * tt_a / tt_0 / vv**2))
+    )
+
+    return cc
