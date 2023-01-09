@@ -89,8 +89,6 @@ DEFAULT_INPUT_SELECTION = "forrester"
 
 DEFAULT_PARAMETERS = None
 
-SPATIAL_DIMENSION = len(DEFAULT_INPUT_MARGINALS)
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the Wing Weight function on a set of input values.

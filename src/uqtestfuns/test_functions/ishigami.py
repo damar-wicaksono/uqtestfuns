@@ -15,6 +15,11 @@ References
    in Monte Carlo computations of a global sensitivity index,”
    Computer Physics Communications, vol. 117, no. 1, pp. 52–61, 1999.
    DOI:10.1016/S0010-4655(98)00156-8
+3. A. Marrel, B. Iooss, B. Laurent, and O. Roustant, "Calculations of
+   Sobol indices for the Gaussian process metamodel,”
+   Reliability Engineering & System Safety,
+   vol. 94, no. 3, pp. 742–751, 2009.
+   DOI:10.1016/j.ress.2008.07.008
 """
 import numpy as np
 
@@ -50,13 +55,11 @@ DEFAULT_INPUTS = {
 DEFAULT_INPUT_SELECTION = "ishigami"
 
 DEFAULT_PARAMETERS = {
-    "marrel": (7, 0.1),
     "sobol-levitan": (7, 0.05),  # from [2].
+    "marrel": (7, 0.1),  # from [3].
 }
 
 DEFAULT_PARAMETERS_SELECTION = "sobol-levitan"
-
-SPATIAL_DIMENSION = len(DEFAULT_INPUT_MARGINALS)
 
 
 def evaluate(xx: np.ndarray, params: tuple) -> np.ndarray:

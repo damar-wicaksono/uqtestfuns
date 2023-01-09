@@ -12,24 +12,22 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:borehole)=
-# Borehole Function
+(test-functions:wing-weight)=
+# Wing Weight Function
 
-The Borehole test function is an 8-dimensional scalar-valued function
-{cite}`Harper1983`.
+The Wing Weight test function is a 10-dimensional scalar-valued function {cite}`forresterEngineeringDesignSurrogate2008`.
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 import uqtestfuns
-from uqtestfuns.test_functions import borehole
 ```
 
-Create an instance of the Borehole test function using
+Create an instance of the wing weight test function using
 the built-in default arguments:
 
 ```{code-cell} ipython3
-my_testfun = uqtestfuns.create_from_default("borehole")
+my_testfun = uqtestfuns.create_from_default("wing-weight")
 ```
 
 Check if it has been correctly instantiated:
@@ -38,34 +36,25 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
+
 ## Description
 
 The weight of a light aircraft wing is computed using the following analytical expression:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \frac{2 \, \pi \, T_u \, (H_u - H_l)}{\ln{(r/rw)} \left[1 + \frac{2 \, L \, Tu}{\ln{(r/rw)} \, r_w^2 K_w} + \frac{T_u}{T_l} \right]} 
+\mathcal{M}(\boldsymbol{x}) = 0.036 \, S_w^{0.758} \, W_{fw}^{0.0035} \, \left( \frac{A}{\cos^2{(\Lambda)}} \right)^{0.6} q^{0.006} \lambda^{0.04} \left(\frac{100 t_c}{\cos{(\Lambda)}}\right)^{-0.3} \left( N_z W_{dg} \right)^{0.49} + S_w W_p 
 $$
 
-where $\boldsymbol{x} = \{ r_w, r, T_u, H_u, T_l, H_l, L, K_w\}$ is the vector of input variables defined below.
+where $\boldsymbol{x} = \{ S_w, W_{fw}, A, \Lambda, q, \lambda, t_c, N_z, W_{dg}, W_p\}$ is the vector of input variables defined below.
 
 +++
 
 ## Inputs
 
-The original eight input variables of the Borehole function
-(from {cite}`Harper1983`) are modeled as independent random variables
-whose marginals shown in the table below.
+The ten input variables of the wing weight function are modeled as independent uniform random variables with specified ranges shown in the table below.
 
 ```{code-cell} ipython3
 my_testfun.input
-```
-
-In other literature (such as {cite}`Morris1993`),
-the input is slightly simplified to all uniform marginals 
-as shown in the table below:
-
-```{code-cell} ipython3
-borehole.DEFAULT_INPUTS["morris"]
 ```
 
 ## Reference Results
@@ -79,7 +68,7 @@ xx_test = my_testfun.input.get_sample(10000)
 yy_test = my_testfun(xx_test)
 ```
 
-Create a histogram of the raw output (i.e., the water flow rate):
+Create a histogram of the raw output (i.e., the weight of the wing):
 
 ```{code-cell} ipython3
 plt.hist(yy_test, bins="auto");
@@ -91,6 +80,6 @@ plt.xlabel("$\mathcal{M}(\mathbf{X})$");
 ## References
 
 ```{bibliography}
-:style: unsrt
+:style: plain
 :filter: docname in docnames
 ```
