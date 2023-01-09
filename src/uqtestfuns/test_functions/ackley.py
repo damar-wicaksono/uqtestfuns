@@ -48,9 +48,7 @@ DEFAULT_PARAMETERS = {"ackley": (20, 0.2, 2 * np.pi)}
 
 DEFAULT_PARAMETERS_SELECTION = "ackley"
 
-SPATIAL_DIMENSION = None  # Variable dimension
-
-DEFAULT_DIMENSION = 2
+DEFAULT_DIMENSION = 2  # The dimension is variable so a default is given
 
 
 def evaluate(xx: np.ndarray, params: tuple) -> np.ndarray:
