@@ -56,7 +56,7 @@ def verify_distribution(distribution: str) -> None:
     """
     if distribution not in SUPPORTED_MARGINALS:
         raise ValueError(
-            f"Univariate distribution '{distribution}' is not supported!"
+            f"Univariate distribution {distribution!r} is not supported!"
         )
 
 
