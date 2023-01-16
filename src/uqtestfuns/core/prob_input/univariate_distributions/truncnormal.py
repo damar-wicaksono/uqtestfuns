@@ -287,6 +287,7 @@ def icdf(
     yy = np.zeros(xx.shape)
     idx_lower = xx == 0.0
     idx_upper = xx == 1.0
+    # TODO: Double check this
     idx_rest = np.logical_not(idx_upper)
 
     mu, sigma, lb_param, ub_param = _get_parameters(parameters)

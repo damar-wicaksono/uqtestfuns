@@ -6,24 +6,26 @@ from types import ModuleType
 from typing import Tuple
 
 from .univariate_distributions import (
-    uniform,
-    lognormal,
-    normal,
     beta,
+    normal,
+    gumbel,
+    lognormal,
     triangular,
     truncnormal,
     logitnormal,
+    uniform,
 )
 from ...global_settings import ARRAY_FLOAT
 
 SUPPORTED_MARGINALS = {
-    uniform.DISTRIBUTION_NAME: uniform,
+    beta.DISTRIBUTION_NAME: beta,
     lognormal.DISTRIBUTION_NAME: lognormal,
     normal.DISTRIBUTION_NAME: normal,
-    beta.DISTRIBUTION_NAME: beta,
+    gumbel.DISTRIBUTION_NAME: gumbel,
     triangular.DISTRIBUTION_NAME: triangular,
     truncnormal.DISTRIBUTION_NAME: truncnormal,
     logitnormal.DISTRIBUTION_NAME: logitnormal,
+    uniform.DISTRIBUTION_NAME: uniform,
 }
 
 
