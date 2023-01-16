@@ -26,6 +26,12 @@ def univariate_input(
         parameters = np.sort(np.random.rand(2))
     elif request.param == "beta":
         parameters = np.sort(np.random.rand(4))
+    elif distribution == "triangular":
+        parameters = np.sort(1 + 2 * np.random.rand(2))
+        # Append the mid point
+        parameters = np.insert(
+            parameters, 2, np.random.uniform(parameters[0], parameters[1])
+        )
     elif distribution == "truncnormal":
         # mu must be inside the bounds
         parameters = np.sort(1 + 2 * np.random.rand(3))
