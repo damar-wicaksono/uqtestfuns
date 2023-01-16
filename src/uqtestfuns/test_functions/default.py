@@ -168,10 +168,10 @@ def _get_default_input(
     # Check if the selection is valid
     if selection not in fun_module.DEFAULT_INPUTS:
         raise ValueError(
-            f"Selected input specification ('{selection}') is not available!\n"
+            f"Selected input specification ({selection!r}) is not available!\n"
             f"Either specify 'None' (use the default) or one of "
             f"{list(fun_module.DEFAULT_INPUTS.keys())} \n"
-            f"for the '{fun_module.DEFAULT_NAME}' test function."
+            f"for the {fun_module.DEFAULT_NAME!r} test function."
         )
 
     default_input = fun_module.DEFAULT_INPUTS[selection]
@@ -223,7 +223,7 @@ def _get_default_parameters(
         if selection is not None:
             raise ValueError(
                 f"There is only one parametrization of "
-                f"the '{fun_module.DEFAULT_NAME}' test function."
+                f"the {fun_module.DEFAULT_NAME!r} test function."
             )
 
         return None
@@ -234,10 +234,10 @@ def _get_default_parameters(
     # Check if the selection is valid
     if selection not in fun_module.DEFAULT_PARAMETERS:
         raise ValueError(
-            f"Selected parameters ('{selection}') is not available!\n"
+            f"Selected parameters ({selection!r}) is not available!\n"
             f"Either specify 'None' (use the default) or one of "
             f"{list(fun_module.DEFAULT_PARAMETERS.keys())} \n"
-            f"for the '{fun_module.DEFAULT_NAME}' test function."
+            f"for the {fun_module.DEFAULT_NAME!r} test function."
         )
 
     default_parameters = fun_module.DEFAULT_PARAMETERS[selection]
@@ -304,7 +304,7 @@ def _verify_spatial_dimension(
 
     if spatial_dimension is not None:
         assert spatial_dimension == default_spatial_dimension, (
-            f"The spatial dimension for the '{fun_name}' test function "
+            f"The spatial dimension for the {fun_name!r} test function "
             f"is fixed to {default_spatial_dimension} "
             f"(but {spatial_dimension} is specified instead)."
         )

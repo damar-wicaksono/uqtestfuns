@@ -10,6 +10,7 @@ from .univariate_distributions import (
     lognormal,
     normal,
     beta,
+    triangular,
     truncnormal,
     logitnormal,
 )
@@ -20,6 +21,7 @@ SUPPORTED_MARGINALS = {
     lognormal.DISTRIBUTION_NAME: lognormal,
     normal.DISTRIBUTION_NAME: normal,
     beta.DISTRIBUTION_NAME: beta,
+    triangular.DISTRIBUTION_NAME: triangular,
     truncnormal.DISTRIBUTION_NAME: truncnormal,
     logitnormal.DISTRIBUTION_NAME: logitnormal,
 }
@@ -54,7 +56,7 @@ def verify_distribution(distribution: str) -> None:
     """
     if distribution not in SUPPORTED_MARGINALS:
         raise ValueError(
-            f"Univariate distribution '{distribution}' is not supported!"
+            f"Univariate distribution {distribution!r} is not supported!"
         )
 
 
