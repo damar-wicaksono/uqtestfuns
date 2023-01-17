@@ -11,7 +11,7 @@ from uqtestfuns.global_settings import ARRAY_FLOAT
 from conftest import create_random_alphanumeric
 
 
-DISTRIBUTION_NAME = "truncnormal"
+DISTRIBUTION_NAME = "trunc-normal"
 
 
 def _calc_mean(parameters: ARRAY_FLOAT) -> float:
