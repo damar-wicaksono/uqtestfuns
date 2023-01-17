@@ -8,7 +8,15 @@ the available built-in default values.
 from typing import Callable, Any, Optional
 from types import ModuleType
 
-from . import wing_weight, ishigami, borehole, ackley, otl_circuit, piston
+from . import (
+    ackley,
+    borehole,
+    flood,
+    ishigami,
+    otl_circuit,
+    piston,
+    wing_weight,
+)
 from ..core import UQTestFun, MultivariateInput
 
 __all__ = ["get_default_args", "create_from_default", "AVAILABLE_FUNCTIONS"]
@@ -16,12 +24,13 @@ __all__ = ["get_default_args", "create_from_default", "AVAILABLE_FUNCTIONS"]
 
 # Register all the test functions with implementations here
 AVAILABLE_FUNCTIONS = {
-    borehole.DEFAULT_NAME.lower(): borehole,
-    ishigami.DEFAULT_NAME.lower(): ishigami,
-    wing_weight.DEFAULT_NAME.lower(): wing_weight,
     ackley.DEFAULT_NAME.lower(): ackley,
+    borehole.DEFAULT_NAME.lower(): borehole,
+    flood.DEFAULT_NAME.lower(): flood,
+    ishigami.DEFAULT_NAME.lower(): ishigami,
     otl_circuit.DEFAULT_NAME.lower(): otl_circuit,
     piston.DEFAULT_NAME.lower(): piston,
+    wing_weight.DEFAULT_NAME.lower(): wing_weight,
 }
 
 
