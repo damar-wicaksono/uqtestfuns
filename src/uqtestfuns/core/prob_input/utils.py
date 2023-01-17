@@ -11,7 +11,8 @@ from .univariate_distributions import (
     gumbel,
     lognormal,
     triangular,
-    truncnormal,
+    trunc_gumbel,
+    trunc_normal,
     logitnormal,
     uniform,
 )
@@ -23,7 +24,8 @@ SUPPORTED_MARGINALS = {
     normal.DISTRIBUTION_NAME: normal,
     gumbel.DISTRIBUTION_NAME: gumbel,
     triangular.DISTRIBUTION_NAME: triangular,
-    truncnormal.DISTRIBUTION_NAME: truncnormal,
+    trunc_gumbel.DISTRIBUTION_NAME: trunc_gumbel,
+    trunc_normal.DISTRIBUTION_NAME: trunc_normal,
     logitnormal.DISTRIBUTION_NAME: logitnormal,
     uniform.DISTRIBUTION_NAME: uniform,
 }

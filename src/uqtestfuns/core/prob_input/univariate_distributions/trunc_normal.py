@@ -39,7 +39,7 @@ from typing import Tuple
 
 from ....global_settings import ARRAY_FLOAT
 
-DISTRIBUTION_NAME = "truncnormal"
+DISTRIBUTION_NAME = "trunc-normal"
 
 
 def _get_parameters(

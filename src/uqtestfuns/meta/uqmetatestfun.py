@@ -200,7 +200,7 @@ class UQMetaTestFun:
         input_marginals = [
             UnivariateInput(distribution="uniform", parameters=[0, 1]),
             UnivariateInput(
-                distribution="truncnormal",
+                distribution="trunc-normal",
                 parameters=[0.5, 0.15, 0.0, 1.0],
             ),
             UnivariateInput(

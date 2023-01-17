@@ -60,11 +60,11 @@ def create_random_marginals(length: int) -> List[UnivariateInput]:
             parameters = np.insert(
                 parameters, 2, np.random.uniform(parameters[0], parameters[1])
             )
-        elif distribution == "truncnormal":
+        elif distribution in ["trunc-normal", "trunc-gumbel"]:
             # mu must be inside the bounds
             parameters = np.sort(1 + 2 * np.random.rand(3))
             parameters[[0, 1]] = parameters[[1, 0]]
-            # Insert sigma as the second parameter
+            # Insert sigma/beta as the second parameter
             parameters = np.insert(parameters, 1, np.random.rand(1))
         elif distribution == "lognormal":
             # Limit the size of the parameters
