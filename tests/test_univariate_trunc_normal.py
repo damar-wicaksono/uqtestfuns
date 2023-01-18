@@ -154,3 +154,39 @@ def test_estimate_std() -> None:
 
     # Assertion
     assert np.isclose(std, std_ref, rtol=5e-03, atol=5e-04)
+
+
+def test_untruncated() -> None:
+    """When the bounds are set to inf, it must be the same to normal one."""
+
+    # Create an instance of a truncated normal UnivariateInput
+    name = create_random_alphanumeric(10)
+    distribution = DISTRIBUTION_NAME
+    parameters = [10, 2, -np.inf, np.inf]
+
+    my_univariate_input = UnivariateInput(
+        name=name, distribution=distribution, parameters=parameters
+    )
+
+    # Create a reference normal distribution
+    my_univariate_input_ref = UnivariateInput(
+        distribution="normal", parameters=parameters[:2]
+    )
+
+    # Assertion
+    # PDF
+    xx = np.linspace(0, 20, 10000)
+    yy = my_univariate_input.pdf(xx)
+    yy_ref = my_univariate_input_ref.pdf(xx)
+    assert np.allclose(yy, yy_ref)
+
+    # CDF
+    yy = my_univariate_input.cdf(xx)
+    yy_ref = my_univariate_input_ref.cdf(xx)
+    assert np.allclose(yy, yy_ref)
+
+    # ICDF
+    xx = np.linspace(0, 1, 10000)
+    quantiles = my_univariate_input.icdf(xx)
+    quantiles_ref = my_univariate_input_ref.icdf(xx)
+    assert np.allclose(quantiles, quantiles_ref)
