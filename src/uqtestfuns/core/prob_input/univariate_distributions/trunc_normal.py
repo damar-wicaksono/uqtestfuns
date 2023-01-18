@@ -37,6 +37,7 @@ import numpy as np
 from scipy.stats import truncnorm
 from typing import Tuple
 
+from . import normal
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "trunc-normal"
@@ -129,6 +130,12 @@ def lower(parameters: ARRAY_FLOAT) -> float:
     """
     _, _, lower_bound, _ = _get_parameters(parameters)
 
+    # Get the lower bound of the normal distribution
+    lb_normal = normal.lower(parameters[:2])
+    if lower_bound < lb_normal:
+        # Use the corresponding normal lower bound instead
+        return lb_normal
+
     return lower_bound
 
 
@@ -146,6 +153,12 @@ def upper(parameters: ARRAY_FLOAT) -> float:
         The upper bound of the truncated normal distribution.
     """
     _, _, _, upper_bound = _get_parameters(parameters)
+
+    # Get the upper bound of the normal distribution
+    ub_normal = normal.upper(parameters[:2])
+    if upper_bound > ub_normal:
+        # Use the corresponding normal upper bound instead
+        return ub_normal
 
     return upper_bound
 
@@ -290,14 +303,16 @@ def icdf(
     # TODO: Double check this
     idx_rest = np.logical_not(idx_upper)
 
-    mu, sigma, lb_param, ub_param = _get_parameters(parameters)
+    # NOTE: Don't use the original bounds as "lower_bound" and "upper_bound"
+    # may have been further truncated for numerical reason.
+    mu, sigma, _, _ = _get_parameters(parameters)
 
     yy[idx_lower] = lower_bound
     yy[idx_upper] = upper_bound
     yy[idx_rest] = truncnorm.ppf(
         xx[idx_rest],
-        a=(lb_param - mu) / sigma,
-        b=(ub_param - mu) / sigma,
+        a=(lower_bound - mu) / sigma,
+        b=(upper_bound - mu) / sigma,
         loc=mu,
         scale=sigma,
     )
