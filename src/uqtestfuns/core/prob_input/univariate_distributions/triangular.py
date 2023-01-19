@@ -11,6 +11,7 @@ the distribution is 1.0.
 """
 import numpy as np
 
+from .utils import postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "triangular"
@@ -208,6 +209,10 @@ def icdf(
     -------
     ARRAY_FLOAT
         Transformed values in the domain of the triangular distribution.
+
+    Notes
+    -----
+    - ICDF for sample values outside [0.0, 1.0] is set to NaN.
     """
     mid_point = parameters[2]
     mid_point_quantile = (mid_point - lower_bound) / (
@@ -215,6 +220,7 @@ def icdf(
     )
     idx_below_mid = np.logical_and(xx >= 0.0, xx <= mid_point_quantile)
     idx_above_mid = np.logical_and(xx > mid_point_quantile, xx <= 1.0)
+    idx_nan = np.logical_not(np.logical_or(idx_below_mid, idx_above_mid))
 
     yy = np.empty(xx.shape)
     yy[idx_below_mid] = lower_bound + np.sqrt(
@@ -228,5 +234,10 @@ def icdf(
         * (upper_bound - lower_bound)
         * (upper_bound - mid_point)
     )
+
+    yy[idx_nan] = np.nan
+
+    # Check if values are within the set bounds
+    yy = postprocess_icdf(yy, lower_bound, upper_bound)
 
     return yy

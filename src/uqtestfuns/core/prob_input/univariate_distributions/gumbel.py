@@ -14,6 +14,7 @@ import numpy as np
 
 from scipy.stats import gumbel_r
 
+from .utils import postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "gumbel"
@@ -228,8 +229,8 @@ def icdf(
 
     Notes
     -----
-    - ICDF for sample with values of 0.0 and 1.0 are automatically set to the
-      lower bound and upper bound, respectively.
+    - ICDF for sample values outside [0.0, 1.0] is set to NaN according to
+      the underlying SciPy implementation.
     """
     # Get the parameters
     mu = parameters[0]
@@ -239,13 +240,6 @@ def icdf(
     yy = gumbel_r.ppf(xx, loc=mu, scale=beta)
 
     # Check if values are within the set bounds
-    if yy.ndim != 0:
-        yy[yy < lower_bound] = lower_bound
-        yy[yy > upper_bound] = upper_bound
-    else:
-        if yy < lower_bound:
-            return np.asarray(lower_bound)
-        if yy > upper_bound:
-            return np.asarray(upper_bound)
+    yy = postprocess_icdf(yy, lower_bound, upper_bound)
 
     return yy

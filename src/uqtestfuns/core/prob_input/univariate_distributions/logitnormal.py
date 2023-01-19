@@ -18,6 +18,7 @@ from scipy.stats import norm
 from scipy.special import logit
 from scipy.special import expit as logistic
 
+from .utils import postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "logitnormal"
@@ -216,20 +217,14 @@ def icdf(
 
     Notes
     -----
-    - The ICDF for sample with values of 0.0 and 1.0 are automatically set
-      to the lower bound and upper bound, respectively.
+    - ICDF for sample values outside [0.0, 1.0] is set to NaN according to
+      the underlying SciPy implementation.
     """
-    yy = np.zeros(xx.shape)
-    idx_lower = xx == 0.0
-    idx_upper = xx == 1.0
-    idx_rest = np.logical_and(
-        np.logical_not(idx_lower), np.logical_not(idx_upper)
-    )
 
-    yy[idx_lower] = lower_bound
-    yy[idx_upper] = upper_bound
-    yy[idx_rest] = logistic(
-        norm.ppf(xx[idx_rest], loc=parameters[0], scale=parameters[1])
-    )
+    # Compute the ICDF
+    yy = logistic(norm.ppf(xx, loc=parameters[0], scale=parameters[1]))
+
+    # Check if values are within the set bounds
+    yy = postprocess_icdf(yy, lower_bound, upper_bound)
 
     return yy
