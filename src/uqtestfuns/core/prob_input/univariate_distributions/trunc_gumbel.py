@@ -48,7 +48,7 @@ def _compute_normalizing_factor(
     mu: float,
     beta: float,
     lb: float,
-    ub: float
+    ub: float,
 ) -> float:
     """Compute the normalizing factor of the truncated distribution.
 
