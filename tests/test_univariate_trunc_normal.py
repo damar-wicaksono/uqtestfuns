@@ -157,7 +157,16 @@ def test_estimate_std() -> None:
 
 
 def test_untruncated() -> None:
-    """When the bounds are set to inf, it must be the same to normal one."""
+    """When the bounds are set to inf, it must be the same to normal one.
+
+    Notes
+    -----
+    - Strictly speaking, the values are not exactly the same because the
+      truncated distribution is rescaled to the numerical bounds while
+      the untruncated distribution is simply cut at the numerical bounds.
+      However, these values suppose to be close as the numerical bounds
+      are selected such that the cut probability is less than 1e-15.
+    """
 
     # Create an instance of a truncated normal UnivariateInput
     name = create_random_alphanumeric(10)
@@ -174,8 +183,10 @@ def test_untruncated() -> None:
     )
 
     # Assertion
+    lb = my_univariate_input.lower
+    ub = my_univariate_input.upper
     # PDF
-    xx = np.linspace(0, 20, 10000)
+    xx = np.linspace(ub, lb, 100000)
     yy = my_univariate_input.pdf(xx)
     yy_ref = my_univariate_input_ref.pdf(xx)
     assert np.allclose(yy, yy_ref)
@@ -186,7 +197,7 @@ def test_untruncated() -> None:
     assert np.allclose(yy, yy_ref)
 
     # ICDF
-    xx = np.linspace(0, 1, 10000)
+    xx = np.linspace(0, 1, 100000)
     quantiles = my_univariate_input.icdf(xx)
     quantiles_ref = my_univariate_input_ref.icdf(xx)
     assert np.allclose(quantiles, quantiles_ref)

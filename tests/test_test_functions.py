@@ -56,7 +56,7 @@ def test_call_instance(default_testfun):
 
     testfun, _ = default_testfun
 
-    xx = np.random.rand(10, testfun.spatial_dimension)
+    xx = testfun.input.get_sample(10)
 
     # Assertions
     assert_call(testfun, xx)

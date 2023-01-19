@@ -130,14 +130,20 @@ def test_get_icdf_values(univariate_input: Any) -> None:
     icdf_values = my_univariate_input.icdf(xx)
 
     # Assertions
+    lb = my_univariate_input.lower
+    ub = my_univariate_input.upper
     # Test the lower bound of sampled ICDF
-    assert np.min(icdf_values) >= my_univariate_input.lower
+    assert np.min(icdf_values) >= lb
     # Test the upper bound of sampled ICDF
-    assert np.max(icdf_values) <= my_univariate_input.upper
+    assert np.max(icdf_values) <= ub
     # Test the lower bound of ICDF
-    assert np.isclose(my_univariate_input.icdf(0.0), my_univariate_input.lower)
+    assert np.isclose(my_univariate_input.icdf(0.0), lb)
     # Test the upper bound of ICDF
-    assert np.isclose(my_univariate_input.icdf(1.0), my_univariate_input.upper)
+    assert np.isclose(my_univariate_input.icdf(1.0), ub)
+
+    # NOTE: Accuracy in ICDF below 1e-15 but above 1e-16.
+    assert my_univariate_input.icdf(0.0 + 5e-16) >= lb
+    assert my_univariate_input.icdf(1.0 - 5e-16) <= ub
 
 
 def test_transform_sample() -> None:
@@ -185,3 +191,26 @@ def test_failed_transform_sample() -> None:
 
     with pytest.raises(TypeError):
         my_univariate_input.transform_sample(xx, [])  # type: ignore
+
+
+def test_cdf_monotonously_increasing(univariate_input: Any) -> None:
+    """Test that CDF and ICDF are monotonously increasing."""
+    my_univariate_input, _ = univariate_input
+
+    # Compute the CDF between the lower and upper bounds
+    xx = np.linspace(
+        my_univariate_input.lower, my_univariate_input.upper, 100000
+    )
+    yy = my_univariate_input.cdf(xx)
+    yy_diff = np.diff(yy)
+
+    # Assertion
+    assert np.all(yy_diff >= 0.0)
+
+    # Compute the ICDF between the lower and upper bounds
+    xx = np.linspace(0.0, 1.0, 100000)
+    yy = my_univariate_input.cdf(xx)
+    yy_diff = np.diff(yy)
+
+    # Assertion
+    assert np.all(yy_diff >= 0.0)

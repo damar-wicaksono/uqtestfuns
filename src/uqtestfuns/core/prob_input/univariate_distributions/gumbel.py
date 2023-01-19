@@ -2,12 +2,13 @@
 Module with routines involving the Gumbel maximum probability distribution.
 
 The Gumbel distribution in UQTestFuns is parameterized by two parameters:
-mu and beta.
+``mu`` and ``beta``.
 
 The underlying implementation is based on the implementation from scipy.stats
 (specifically, ``gumbel_r``  the right-skewed Gumbel).
-In the SciPy convention, the parameter mu corresponds to the ``loc`` parameter,
-while the parameter beta corresponds to the ``scale`` parameter.
+In the SciPy convention, the parameter ``mu`` corresponds
+to the ``loc`` parameter, while the parameter ``beta``
+corresponds to the ``scale`` parameter.
 """
 import numpy as np
 
@@ -69,13 +70,13 @@ def lower(parameters: ARRAY_FLOAT):
     - Strictly speaking, a Gumbel (max.) distribution is unbounded on both
       sides. However, for numerical reason a lower bound is set.
     - The probability mass contained up to the lower bound of the Gumbel (max.)
-      distribution is smaller than 1e-15.
+      distribution is at most 1e-15.
     - The difference between 1.0 and the probability mass between lower and
-      upper bounds is smaller than 1e-15.
+      upper bounds is at most 1e-15.
     """
-    # 3.6 is picked such that the probability mass (of a standard Gumbel)
-    # up to the bound is less than 1e-15.
-    lower_bound = float(parameters[0] - 3.6 * parameters[1])
+    # 3.606621167487737 is the quantile values with probability of 1e-16
+    # for the standard Gumbel (max.) distribution (mu = 0.0, beta = 1.0)
+    lower_bound = float(parameters[0] - 3.606621167487737 * parameters[1])
 
     return lower_bound
 
@@ -102,9 +103,9 @@ def upper(parameters: ARRAY_FLOAT):
     - The difference between 1.0 and the probability mass between lower and
       upper bounds is smaller than 1e-15.
     """
-    # 36 is picked such that the probability mass (of a standard Gumbel)
-    # above the upper bound is less than 1e-15.
-    upper_bound = float(parameters[0] + 36 * parameters[1])
+    # 36.7368005696771 is the quantile values with probability of 1-1e-16
+    # for the standard Gumbel (max.) distribution (mu = 0.0, beta = 1.0)
+    upper_bound = float(parameters[0] + 36.7368005696771 * parameters[1])
 
     return upper_bound
 
@@ -139,10 +140,11 @@ def pdf(
     """
     idx_non_zero = np.logical_and(xx >= lower_bound, xx <= upper_bound)
 
-    yy = np.zeros(xx.shape)
+    # Get the parameters
     mu = parameters[0]
     beta = parameters[1]
 
+    yy = np.zeros(xx.shape)
     yy[idx_non_zero] = gumbel_r.pdf(xx[idx_non_zero], loc=mu, scale=beta)
 
     return yy
@@ -177,18 +179,24 @@ def cdf(
     - CDF for sample with values smaller (resp. larger) than the lower bound
       (resp. upper bound) are set to 0.0 (resp. 1.0).
     """
-    idx_lower = xx < lower_bound
-    idx_upper = xx > upper_bound
-    idx_rest = np.logical_and(
-        np.logical_not(idx_lower), np.logical_not(idx_upper)
-    )
 
+    # Get the parameters
     mu = parameters[0]
     beta = parameters[1]
 
     yy = np.empty(xx.shape)
+
+    # Set CDF to 0.0 for values below the lower bound
+    idx_lower = xx < lower_bound
     yy[idx_lower] = 0.0
+
+    # Set CDF to 1.0 for values above the upper bound
+    idx_upper = xx > upper_bound
     yy[idx_upper] = 1.0
+
+    idx_rest = np.logical_and(
+        np.logical_not(idx_lower), np.logical_not(idx_upper)
+    )
     yy[idx_rest] = gumbel_r.cdf(xx[idx_rest], loc=mu, scale=beta)
 
     return yy
@@ -222,20 +230,22 @@ def icdf(
     -----
     - ICDF for sample with values of 0.0 and 1.0 are automatically set to the
       lower bound and upper bound, respectively.
-    TODO: values outside [0, 1] must either be an error or NaN
     """
-    idx_lower = xx == 0.0
-    idx_upper = xx == 1.0
-    idx_rest = np.logical_and(
-        np.logical_not(idx_lower), np.logical_not(idx_upper)
-    )
-
+    # Get the parameters
     mu = parameters[0]
     beta = parameters[1]
 
-    yy = np.empty(xx.shape)
-    yy[idx_lower] = lower_bound
-    yy[idx_upper] = upper_bound
-    yy[idx_rest] = gumbel_r.ppf(xx[idx_rest], loc=mu, scale=beta)
+    # Compute the ICDF
+    yy = gumbel_r.ppf(xx, loc=mu, scale=beta)
+
+    # Check if values are within the set bounds
+    if yy.ndim != 0:
+        yy[yy < lower_bound] = lower_bound
+        yy[yy > upper_bound] = upper_bound
+    else:
+        if yy < lower_bound:
+            return np.asarray(lower_bound)
+        if yy > upper_bound:
+            return np.asarray(upper_bound)
 
     return yy
