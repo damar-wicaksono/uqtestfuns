@@ -145,6 +145,10 @@ def test_get_icdf_values(univariate_input: Any) -> None:
     assert my_univariate_input.icdf(0.0 + 5e-16) >= lb
     assert my_univariate_input.icdf(1.0 - 5e-16) <= ub
 
+    # Values outside [0.0, 1.0] should return NaN
+    assert np.isnan(my_univariate_input.icdf(0.0 - 1e-15))
+    assert np.isnan(my_univariate_input.icdf(1.0 + 1e-15))
+
 
 def test_transform_sample() -> None:
     """Test the transformation of sample values from one dist. to another."""

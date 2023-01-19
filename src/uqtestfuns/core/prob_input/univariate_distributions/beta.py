@@ -2,8 +2,8 @@
 Module with routines involving the Beta probability distribution.
 
 The Beta distribution in UQTestFuns is parameterized by four parameters:
-r, s, a, and b. r and s are the shape parameters, while a and b are the lower
-and upper bounds, respectively.
+``r``, ``s``, ``a``, and ``b``. ``r`` and ``s`` are the shape parameters,
+while ``a`` and ``b`` are the lower and upper bounds, respectively.
 
 The underlying implementation is based on the implementation of scipy.stats.
 In the SciPy implementation, the Beta distribution is parameterized also
@@ -14,15 +14,16 @@ the shifting and scaling parameters, respectively.
 The translation between parameterization of the distribution in UQTestFuns
 and SciPy is as follows:
 
-- ``a`` = ``r``
-- ``b`` = ``s``
-- ``loc`` = ``a``
-- ``scale`` = ``(b-a)``
+- ``a`` == ``r``
+- ``b`` == ``s``
+- ``loc`` == ``a``
+- ``scale`` == ``(b-a)``
 """
 import numpy as np
 
 from scipy.stats import beta
 
+from .utils import postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 
@@ -222,22 +223,16 @@ def icdf(
 
     Notes
     -----
-    - ICDF for sample with values of 0.0 and 1.0 are automatically set to the
-      lower bound and upper bound, respectively.
+    - ICDF for sample values outside [0.0, 1.0] is set to NaN according to
+      the underlying SciPy implementation.
     """
-    yy = np.zeros(xx.shape)
-    idx_lower = xx == 0.0
-    idx_upper = xx == 1.0
-    idx_rest = np.logical_not(idx_upper)
+    # Get the parameters
+    r, s, a, b = parameters[:]
 
-    yy[idx_lower] = lower_bound
-    yy[idx_upper] = upper_bound
-    yy[idx_rest] = beta.ppf(
-        xx[idx_rest],
-        a=parameters[0],
-        b=parameters[1],
-        loc=parameters[2],
-        scale=parameters[3] - parameters[2],
-    )
+    # Compute the ICDF
+    yy = beta.ppf(xx, a=r, b=s, loc=a, scale=b - a)
+
+    # Check if values are within the set bounds
+    yy = postprocess_icdf(yy, lower_bound, upper_bound)
 
     return yy

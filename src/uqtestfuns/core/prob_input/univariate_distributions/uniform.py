@@ -6,6 +6,7 @@ the lower and upper bounds.
 """
 import numpy as np
 
+from .utils import postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "uniform"
@@ -189,7 +190,17 @@ def icdf(
     -------
     np.ndarray
         Transformed values in the domain of the uniform distribution.
+    Notes
+    -----
+    - ICDF for sample values outside [0.0, 1.0] is set to NaN.
     """
+    xx[xx < 0.0] = np.nan
+    xx[xx > 1.0] = np.nan
+
+    # Compute the ICDF
     yy = lower_bound + np.diff(parameters) * xx
+
+    # Check if values are within the set bounds
+    yy = postprocess_icdf(yy, lower_bound, upper_bound)
 
     return yy

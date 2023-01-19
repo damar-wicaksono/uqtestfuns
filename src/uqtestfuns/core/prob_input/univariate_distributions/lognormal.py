@@ -20,6 +20,7 @@ and SciPy is as follows:
 import numpy as np
 from scipy.stats import lognorm
 
+from .utils import postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "lognormal"
@@ -221,18 +222,14 @@ def icdf(
 
     Notes
     -----
-    - ICDF for sample with values of 0.0 and 1.0 are automatically set to the
-      lower bound and upper bound, respectively.
+    - ICDF for sample values outside [0.0, 1.0] is set to NaN according to
+      the underlying SciPy implementation.
     """
-    yy = np.zeros(xx.shape)
-    idx_lower = xx == 0.0
-    idx_upper = xx == 1.0
-    idx_rest = np.logical_not(idx_upper)
 
-    yy[idx_lower] = lower_bound
-    yy[idx_upper] = upper_bound
-    yy[idx_rest] = lognorm.ppf(
-        xx[idx_rest], s=parameters[1], scale=np.exp(parameters[0])
-    )
+    # Compute the ICDF
+    yy = lognorm.ppf(xx, s=parameters[1], scale=np.exp(parameters[0]))
+
+    # Check if values are within the set bounds
+    yy = postprocess_icdf(yy, lower_bound, upper_bound)
 
     return yy

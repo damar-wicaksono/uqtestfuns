@@ -38,6 +38,7 @@ from scipy.stats import truncnorm
 from typing import Tuple
 
 from . import normal
+from .utils import postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "trunc-normal"
@@ -296,32 +297,27 @@ def icdf(
 
     Notes
     -----
-    - ICDF for sample with values of 0.0 and 1.0 are automatically set to the
-      lower bound and upper bound, respectively.
+    - ICDF for sample values outside [0.0, 1.0] is set to NaN according to
+      the underlying SciPy implementation.
     - ``lower_bound`` and ``upper_bound`` in the function parameters may not
       be the same as the ones in ``parameters`` as the former are already
       processed setting the numerical bounds when the given bounds are outside
       them.
-    TODO: values outside [0, 1] must either be an error or NaN
     """
-    yy = np.zeros(xx.shape)
-    idx_lower = xx == 0.0
-    idx_upper = xx == 1.0
-    # TODO: Double check this
-    idx_rest = np.logical_not(idx_upper)
-
     # NOTE: Don't use the original bounds as "lower_bound" and "upper_bound"
     # may have been further truncated for numerical reason.
     mu, sigma, _, _ = _get_parameters(parameters)
 
-    yy[idx_lower] = lower_bound
-    yy[idx_upper] = upper_bound
-    yy[idx_rest] = truncnorm.ppf(
-        xx[idx_rest],
+    # Compute the ICDF
+    yy = truncnorm.ppf(
+        xx,
         a=(lower_bound - mu) / sigma,
         b=(upper_bound - mu) / sigma,
         loc=mu,
         scale=sigma,
     )
+
+    # Check if values are within the set bounds
+    yy = postprocess_icdf(yy, lower_bound, upper_bound)
 
     return yy

@@ -14,6 +14,7 @@ from scipy.stats import gumbel_r
 from typing import Tuple
 
 from . import gumbel
+from .utils import postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "trunc-gumbel"
@@ -292,11 +293,6 @@ def icdf(
       of the regular Gumbel.
     TODO: values outside [0, 1] must either be an error or NaN
     """
-    idx_lower = xx == 0.0
-    idx_upper = xx == 1.0
-    # idx_rest = np.logical_and(
-    #    np.logical_not(idx_lower), np.logical_not(idx_upper)
-    # )
 
     # Get the parameters
     mu, beta, _, _ = _get_parameters(parameters)
@@ -307,24 +303,17 @@ def icdf(
         mu, beta, lower_bound, upper_bound
     )
 
+    # Make sure values outside [0.0, 1.0] are set to NaN
+    xx[xx < 0.0] = np.nan
+    xx[xx > 1.0] = np.nan
+
     # Compute the ICDF
-    yy = np.empty(xx.shape)
-    yy[idx_lower] = lower_bound
-    yy[idx_upper] = upper_bound
     cdf_values = (
         gumbel_r.cdf(lower_bound, loc=mu, scale=beta) + normalizing_factor * xx
     )
-    # yy[idx_rest] = gumbel_r.ppf(cdf_values[idx_rest], loc=mu, scale=beta)
     yy = gumbel.icdf(cdf_values, parameters[:2], lower_bound, upper_bound)
 
-    # print(normalizing_factor)
-
-    # a = gumbel_r.cdf(lower_bound, mu, beta)
-    # b = gumbel_r.cdf(upper_bound, mu, beta)
-    # q = (b - a) * xx + a
-    #
-    # print(b-a)
-    #
-    # yy = gumbel.icdf(q, parameters[:2], lower_bound, upper_bound)
+    # Check if values are within the set bounds
+    yy = postprocess_icdf(yy, lower_bound, upper_bound)
 
     return yy
