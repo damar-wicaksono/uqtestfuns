@@ -44,7 +44,12 @@ def _get_parameters(
     return mu, beta, lb, ub
 
 
-def _compute_normalizing_factor(parameters: ARRAY_FLOAT) -> float:
+def _compute_normalizing_factor(
+    mu: float,
+    beta: float,
+    lb: float,
+    ub: float
+) -> float:
     """Compute the normalizing factor of the truncated distribution.
 
     Parameters
@@ -57,7 +62,6 @@ def _compute_normalizing_factor(parameters: ARRAY_FLOAT) -> float:
     float
         The normalizing factor for the truncated distribution.
     """
-    mu, beta, lb, ub = _get_parameters(parameters)
 
     lb_quantile = gumbel_r.cdf(lb, loc=mu, scale=beta)
     ub_quantile = gumbel_r.cdf(ub, loc=mu, scale=beta)
@@ -110,6 +114,12 @@ def lower(parameters: ARRAY_FLOAT) -> float:
     """
     _, _, lower_bound, _ = _get_parameters(parameters)
 
+    # Get the upper bound of the untruncated Gumbel distribution
+    lb_gumbel = gumbel.lower(parameters[:2])
+    if lower_bound < lb_gumbel:
+        # Use the corresponding normal lower bound instead
+        return lb_gumbel
+
     return lower_bound
 
 
@@ -127,6 +137,12 @@ def upper(parameters: ARRAY_FLOAT) -> float:
         The upper bound of the truncated Gumbel (max.) distribution.
     """
     _, _, _, upper_bound = _get_parameters(parameters)
+
+    # Get the upper bound of the untruncated Gumbel distribution
+    ub_gumbel = gumbel.upper(parameters[:2])
+    if upper_bound > ub_gumbel:
+        # Use the corresponding Gumbel upper bound instead
+        return ub_gumbel
 
     return upper_bound
 
@@ -170,7 +186,9 @@ def pdf(
     idx_non_zero = np.logical_and(xx >= lower_bound, xx <= upper_bound)
 
     # Compute the normalizing factor
-    normalizing_factor = _compute_normalizing_factor(parameters)
+    normalizing_factor = _compute_normalizing_factor(
+        mu, beta, lower_bound, upper_bound
+    )
 
     # Compute the PDF
     yy = np.zeros(xx.shape)
@@ -224,7 +242,9 @@ def cdf(
     )
 
     # Compute the normalizing factor
-    normalizing_factor = _compute_normalizing_factor(parameters)
+    normalizing_factor = _compute_normalizing_factor(
+        mu, beta, lower_bound, upper_bound
+    )
 
     # Compute the CDF
     yy = np.empty(xx.shape)
@@ -266,21 +286,45 @@ def icdf(
     -----
     - ICDF for sample with values of 0.0 and 1.0 are automatically set to the
       lower bound and upper bound, respectively.
-    - ``lower_bound`` and ``upper_bound`` in the function parameters are the
-      same as the ones in ``parameters``. For a truncated  Gumbel (max.)
-      distribution, the bounds are part of the parameterization.
+    - ``lower_bound`` and ``upper_bound`` in the function parameters may not
+      be the same as the ones in ``parameters``. If one of the bounds is
+      initially set to inf, then it would be automatically set to the bounds
+      of the regular Gumbel.
     TODO: values outside [0, 1] must either be an error or NaN
     """
+    idx_lower = xx == 0.0
+    idx_upper = xx == 1.0
+    # idx_rest = np.logical_and(
+    #    np.logical_not(idx_lower), np.logical_not(idx_upper)
+    # )
+
     # Get the parameters
     mu, beta, _, _ = _get_parameters(parameters)
 
     # Compute the normalizing factor
-    normalizing_factor = _compute_normalizing_factor(parameters)
+    # NOTE: Use the processed bounds
+    normalizing_factor = _compute_normalizing_factor(
+        mu, beta, lower_bound, upper_bound
+    )
 
     # Compute the ICDF
+    yy = np.empty(xx.shape)
+    yy[idx_lower] = lower_bound
+    yy[idx_upper] = upper_bound
     cdf_values = (
         gumbel_r.cdf(lower_bound, loc=mu, scale=beta) + normalizing_factor * xx
     )
-    yy = gumbel_r.ppf(cdf_values, loc=mu, scale=beta)
+    # yy[idx_rest] = gumbel_r.ppf(cdf_values[idx_rest], loc=mu, scale=beta)
+    yy = gumbel.icdf(cdf_values, parameters[:2], lower_bound, upper_bound)
+
+    # print(normalizing_factor)
+
+    # a = gumbel_r.cdf(lower_bound, mu, beta)
+    # b = gumbel_r.cdf(upper_bound, mu, beta)
+    # q = (b - a) * xx + a
+    #
+    # print(b-a)
+    #
+    # yy = gumbel.icdf(q, parameters[:2], lower_bound, upper_bound)
 
     return yy

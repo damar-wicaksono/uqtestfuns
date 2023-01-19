@@ -67,10 +67,12 @@ def lower(parameters: ARRAY_FLOAT) -> float:
     - Strictly speaking, a normal distribution is unbounded on the left.
       However, for numerical reason a lower bound is set.
     - The lower bound of the normal distribution is chosen such that
-      the difference between 1.0 and the CDF from the lower bound to the upper
-      bound is smaller than 1e-15.
+      the probability mass between the lower and upper bound is at least
+      1 - 1e.15.
     """
-    lower_bound = float(-8.22 * parameters[1] + parameters[0])
+    # -8.222082216130435 is the quantile values with probability of 1e-16
+    # for the standard Normal distribution (mu = 0.0, sigma = 1.0)
+    lower_bound = float(-8.222082216130435 * parameters[1] + parameters[0])
 
     return lower_bound
 
@@ -93,10 +95,12 @@ def upper(parameters: ARRAY_FLOAT) -> float:
     - Strictly speaking, a normal distribution is unbounded on the right.
       However, for numerical reason an upper bound is set.
     - The upper bound of the normal distribution is chosen such that
-      the difference between 1.0 and the CDF from the lower bound to the upper
-      bound is smaller than 1e-15.
+      tbe probability mass between the lower and upper bound is at least
+      1 - 1e-15.
     """
-    upper_bound = float(8.22 * parameters[1] + parameters[0])
+    # 8.209536151601387 is the quantile values with probability of 1-1e-16
+    # for the standard Normal distribution (mu = 0.0, sigma = 1.0)
+    upper_bound = float(8.209536151601387 * parameters[1] + parameters[0])
 
     return upper_bound
 

@@ -190,19 +190,22 @@ def pdf(
     Notes
     -----
     - The values outside the bounds are set to 0.0.
-    - ``lower_bound`` and ``upper_bound`` in the function parameters are the
-      same as the ones in ``parameters``. For a truncated normal distribution,
-      the bounds are part of the parameterization.
+    - ``lower_bound`` and ``upper_bound`` in the function parameters may not
+      be the same as the ones in ``parameters`` as the former are already
+      processed setting the numerical bounds when the given bounds are outside
+      them.
     """
     yy = np.zeros(xx.shape)
     idx = np.logical_and(xx >= lower_bound, xx <= upper_bound)
 
-    mu, sigma, lb_param, ub_param = _get_parameters(parameters)
+    # NOTE: Don't use the original bounds as "lower_bound" and "upper_bound"
+    # may have been further truncated for numerical reason.
+    mu, sigma, _, _ = _get_parameters(parameters)
 
     yy[idx] = truncnorm.pdf(
         xx[idx],
-        a=(lb_param - mu) / sigma,
-        b=(ub_param - mu) / sigma,
+        a=(lower_bound - mu) / sigma,
+        b=(upper_bound - mu) / sigma,
         loc=mu,
         scale=sigma,
     )
@@ -238,9 +241,10 @@ def cdf(
     -----
     - CDF for sample with values smaller (resp. larger) than the lower bound
       (resp. upper bound) are set to 0.0 (resp. 1.0).
-    - ``lower_bound`` and ``upper_bound`` in the function parameters are the
-      same as the ones in ``parameters``. For a truncated normal distribution,
-      the bounds are part of the parameterization.
+    - ``lower_bound`` and ``upper_bound`` in the function parameters may not
+      be the same as the ones in ``parameters`` as the former are already
+      processed setting the numerical bounds when the given bounds are outside
+      them.
     """
     yy = np.empty(xx.shape)
     idx_lower = xx < lower_bound
@@ -249,14 +253,16 @@ def cdf(
         np.logical_not(idx_lower), np.logical_not(idx_upper)
     )
 
-    mu, sigma, lb_param, ub_param = _get_parameters(parameters)
+    # NOTE: Don't use the original bounds as "lower_bound" and "upper_bound"
+    # may have been further truncated for numerical reason.
+    mu, sigma, _, _ = _get_parameters(parameters)
 
     yy[idx_lower] = 0.0
     yy[idx_upper] = 1.0
     yy[idx_rest] = truncnorm.cdf(
         xx[idx_rest],
-        a=(lb_param - mu) / sigma,
-        b=(ub_param - mu) / sigma,
+        a=(lower_bound - mu) / sigma,
+        b=(upper_bound - mu) / sigma,
         loc=mu,
         scale=sigma,
     )
@@ -292,9 +298,10 @@ def icdf(
     -----
     - ICDF for sample with values of 0.0 and 1.0 are automatically set to the
       lower bound and upper bound, respectively.
-    - ``lower_bound`` and ``upper_bound`` in the function parameters are the
-      same as the ones in ``parameters``. For a truncated normal distribution,
-      the bounds are part of the parameterization.
+    - ``lower_bound`` and ``upper_bound`` in the function parameters may not
+      be the same as the ones in ``parameters`` as the former are already
+      processed setting the numerical bounds when the given bounds are outside
+      them.
     TODO: values outside [0, 1] must either be an error or NaN
     """
     yy = np.zeros(xx.shape)

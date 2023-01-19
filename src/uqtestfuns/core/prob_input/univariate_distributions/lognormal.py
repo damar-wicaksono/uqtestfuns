@@ -101,10 +101,14 @@ def upper(parameters: ARRAY_FLOAT) -> float:
     - Strictly speaking, a lognormal distribution is unbounded on the right.
       However, for numerical reason an upper bound is set.
     - The upper bound of the lognormal distribution is chosen such that
-      the difference between 1.0 and the CDF from the lower bound to the upper
-      bound is smaller than 1e-15.
+      the probability mass between 0.0 (the lower bound) and the upper bound
+      is at least 1 - 1e-15.
     """
-    upper_bound = float(np.exp(8.22 * parameters[1] + parameters[0]))
+    # 8.209536151601387 is the quantile values with probability of 1-1e-16
+    # for the corresponding standard Normal dist. (mu = 0.0, beta = 1.0)
+    upper_bound = float(
+        np.exp(8.209536151601387 * parameters[1] + parameters[0])
+    )
 
     return upper_bound
 
@@ -219,7 +223,6 @@ def icdf(
     -----
     - ICDF for sample with values of 0.0 and 1.0 are automatically set to the
       lower bound and upper bound, respectively.
-
     """
     yy = np.zeros(xx.shape)
     idx_lower = xx == 0.0
