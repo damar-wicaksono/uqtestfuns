@@ -1,20 +1,15 @@
 """
 Module with an implementation of the flood model.
 
-The flood model from [1] is a 8-dimensional scalar-valued function that
+The flood model from [1] is an 8-dimensional scalar-valued function that
 computes maximum annual underflow of a river (in [m]).
 A negative value indicates that an overflow (flooding) occurs.
 The model is used in the context of sensitivity analysis in [1] and [2]
 and has become a canonical example of the OpenTURNS package [3].
 
 The model is based on a simplification of the one-dimensional hydro-dynamical
-equations of St. Venant under the assumption of uniform and constant flowrate
+equations of St. Venant under the assumption of uniform and constant flow rate
 and a large rectangular section.
-
-Notes
------
-- A variant function similar to this test function but related to the cost of
-  flooding appears both in [1] and [2] is also available.
 
 References
 ----------
@@ -112,7 +107,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Returns
     -------
     np.ndarray
-        The output of the flood model test function has, i.e.,
+        The output of the flood model test function, i.e.,
         the height of a river.
         The output is a one-dimensional array of length N.
     """
