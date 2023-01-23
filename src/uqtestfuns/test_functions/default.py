@@ -11,6 +11,7 @@ from types import ModuleType
 from . import (
     ackley,
     borehole,
+    damped_oscillator,
     flood,
     ishigami,
     otl_circuit,
@@ -26,6 +27,7 @@ __all__ = ["get_default_args", "create_from_default", "AVAILABLE_FUNCTIONS"]
 AVAILABLE_FUNCTIONS = {
     ackley.DEFAULT_NAME.lower(): ackley,
     borehole.DEFAULT_NAME.lower(): borehole,
+    damped_oscillator.DEFAULT_NAME.lower(): damped_oscillator,
     flood.DEFAULT_NAME.lower(): flood,
     ishigami.DEFAULT_NAME.lower(): ishigami,
     otl_circuit.DEFAULT_NAME.lower(): otl_circuit,
