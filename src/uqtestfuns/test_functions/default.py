@@ -16,6 +16,7 @@ from . import (
     ishigami,
     otl_circuit,
     piston,
+    sulfur,
     wing_weight,
 )
 from ..core import UQTestFun, MultivariateInput
@@ -32,6 +33,7 @@ AVAILABLE_FUNCTIONS = {
     ishigami.DEFAULT_NAME.lower(): ishigami,
     otl_circuit.DEFAULT_NAME.lower(): otl_circuit,
     piston.DEFAULT_NAME.lower(): piston,
+    sulfur.DEFAULT_NAME.lower(): sulfur,
     wing_weight.DEFAULT_NAME.lower(): wing_weight,
 }
 
