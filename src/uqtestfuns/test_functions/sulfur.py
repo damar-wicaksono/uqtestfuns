@@ -52,8 +52,8 @@ References
     no. 1, 2011.
     DOI: 10.1029/2010GL045777.
 [5] M. Pidwirny, “Introduction to the Oceans,”
-    Fundamentals of Physical Geography, 2nd Edition, (accessed Jan. 25, 2023),
-    2006.
+    Fundamentals of Physical Geography, 2nd Edition, 2006.
+    Accessed: Jan. 25, 2023
     URL: http://www.physicalgeography.net/fundamentals/8o.html.
 """
 import numpy as np
@@ -61,7 +61,7 @@ import numpy as np
 from ..core import UnivariateInput, MultivariateInput
 
 
-DEFAULT_NAME = "sulfur"
+DEFAULT_NAME = "Sulfur"
 
 DEFAULT_INPUT_MARGINALS_PENNER = [  # From [3] (Table 2)
     UnivariateInput(
@@ -148,23 +148,23 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
         The output of the Sulfur model test function, i.e.,
         the direct radiative forcing by sulfate aerosols.
     """
-    # Global input flux of anthropogenic sulfur
+    # Source strength of anthropogenic Sulfur
     qq = xx[:, 0] * 1e12
-    # The fraction of SO2 oxidized to SO4(2-)
+    # Fraction of SO2 oxidized to SO4(2-) aerosol
     yy = xx[:, 1]
-    # Sulfate lifetime in the atmosphere
-    ll = xx[:, 2]  #
-    # Mass scattering efficiency
-    psi_e = xx[:, 3]  #
-    # Backscattered fraction
-    beta = xx[:, 4]  #
-    # Relative humidity dependent correction factor for the mass scattering eff
-    ff_psi = xx[:, 5]  #
-    # Transmittance of the atmospheric layer above the aerosol layer
-    tt_sq = xx[:, 6]  #
-    # Complement of the fractional cloud cover
+    # Average lifetime of atmospheric SO4(2-)
+    ll = xx[:, 2]
+    # Aerosol mass scattering efficiency
+    psi_e = xx[:, 3]
+    # Fraction of light scattered upward hemisphere
+    beta = xx[:, 4]
+    # Fractional increase in aerosol scattering eff. due to hygroscopic growth
+    ff_psi = xx[:, 5]
+    # Square of atmospheric transmittance above aerosol layer
+    tt_sq = xx[:, 6]
+    # Fraction of earth not covered by cloud
     aa_c_complement = xx[:, 7]
-    # Complement of the mean albedo of the underlying surface
+    # Square of surface coalbedo
     co_rr_s_sq = xx[:, 8]
 
     # Sulfate burden (Eq. (5) in [1], notation from [2])
