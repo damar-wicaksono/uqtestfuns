@@ -57,7 +57,7 @@ def evaluate(xx: np.ndarray, params: tuple) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        M-Dimensional input values given by N-by-M arrays where
+        M-Dimensional input values given by an N-by-M array where
         N is the number of input values.
     params : tuple
         A tuple of length 3 for the parameters of the Ackley function.

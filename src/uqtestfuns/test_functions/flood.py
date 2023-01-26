@@ -33,7 +33,7 @@ import numpy as np
 from ..core import UnivariateInput, MultivariateInput
 
 
-DEFAULT_NAME = "flood"
+DEFAULT_NAME = "Flood"
 
 DEFAULT_INPUT_MARGINALS_IOOSS = [
     UnivariateInput(

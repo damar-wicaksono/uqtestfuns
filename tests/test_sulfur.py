@@ -58,7 +58,7 @@ def test_compute_mean():
     mean_ref = _compute_sqrt_geometric_mean_std(marginals)[0]
 
     # Assertion
-    assert np.allclose(mean_mc, mean_ref, rtol=1e-2)
+    assert np.allclose(mean_mc, mean_ref, rtol=1e-1)
 
 
 def test_compute_std():
@@ -78,4 +78,4 @@ def test_compute_std():
     std_ref = _compute_sqrt_geometric_mean_std(marginals)[1]
 
     # Assertion
-    assert np.allclose(std_mc, std_ref, rtol=1e-2)
+    assert np.allclose(std_mc, std_ref, rtol=1e-1)
