@@ -126,15 +126,6 @@ class MultivariateInput:
 
     def _repr_html_(self):
 
-        # table = (
-        #     f"<p><b>Name</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbs;"
-        #     f"&nbsp;&nbsp;&nbsp;&nbsp;: {self.name}\n</p>"
-        # )
-        # table += (
-        #     f"<p><b>Spatial Dim.</b>&nbsp;: {self.spatial_dimension}\n</p>"
-        # )
-        # table += f"<p><b>Description</b>&nbsp;&nbsp;: {self.description}\n</p>"
-        # table += "<p><b>Marginals</b>&nbsp;&nbsp;&nbsp;&nbsp;:\n\n</p>"
         table = "<p><b>Name</b>\n</p>"
         table += f"<p>&nbsp;&nbsp;&nbsp;{self.name}\n</p>"
         table += "<p><b>Spatial Dimension</b>\n</p>"
