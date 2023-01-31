@@ -49,14 +49,14 @@ where $\boldsymbol{x} = \{ r_w, r, T_u, H_u, T_l, H_l, L, K_w\}$ is the vector o
 
 +++
 
-## Inputs
+## Probabilistic input
 
 The original eight input variables of the Borehole function
 (from {cite}`Harper1983`) are modeled as independent random variables
 whose marginals shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.input
+my_testfun.prob_input
 ```
 
 There is another input specification from the literature listed in the table below.
@@ -76,7 +76,7 @@ For example, to create a Borehole test function using the input specification by
 
 ```{code-cell} ipython3
 my_testfun_alt = uqtestfuns.create_from_default("borehole", input_selection="morris")
-my_testfun_alt.input
+my_testfun_alt.prob_input
 ```
 
 ## Reference Results
@@ -86,7 +86,7 @@ my_testfun_alt.input
 Generate a random sample of input/output pairs:
 
 ```{code-cell} ipython3
-xx_test = my_testfun.input.get_sample(10000)
+xx_test = my_testfun.prob_input.get_sample(10000)
 yy_test = my_testfun(xx_test)
 ```
 

@@ -24,7 +24,7 @@ def ishigami_fun(request):
     ishigami = UQTestFun(
         name=default_args["name"],
         evaluate=default_args["evaluate"],
-        input=default_args["input"],
+        prob_input=default_args["prob_input"],
         parameters=request.param,
     )
 
@@ -35,7 +35,7 @@ def test_compute_mean(ishigami_fun):
     """Test the mean computation as the result is analytical."""
 
     # Compute mean via Monte Carlo
-    xx = ishigami_fun.input.get_sample(1000000)
+    xx = ishigami_fun.prob_input.get_sample(1000000)
     yy = ishigami_fun(xx)
 
     mean_mc = np.mean(yy)
@@ -51,7 +51,7 @@ def test_compute_variance(ishigami_fun):
     """Test the variance computation as the result is analytical."""
 
     # Compute variance via Monte Carlo
-    xx = ishigami_fun.input.get_sample(1000000)
+    xx = ishigami_fun.prob_input.get_sample(1000000)
     yy = ishigami_fun(xx)
 
     var_mc = np.var(yy)

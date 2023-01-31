@@ -27,7 +27,7 @@ def uqtestfun():
     uqtestfun_instance = UQTestFun(
         name="Test function",
         evaluate=evaluate,
-        input=MultivariateInput(input_marginals),
+        prob_input=MultivariateInput(input_marginals),
         parameters=10,
     )
 
@@ -53,7 +53,7 @@ def test_call_instance(uqtestfun):
     """Test calling an instance of UQTestFun."""
     uqtestfun_instance, _ = uqtestfun
 
-    xx = uqtestfun_instance.input.get_sample(1000)
+    xx = uqtestfun_instance.prob_input.get_sample(1000)
 
     # Assertions
     assert_call(uqtestfun_instance, xx)

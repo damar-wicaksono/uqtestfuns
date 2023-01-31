@@ -18,8 +18,8 @@ def test_inert_inputs():
 
     # Generate sample and compare both
     num_sample = 1000000
-    xx_otl_ben_ari = otl_ben_ari.input.get_sample(num_sample)
-    xx_otl_moon = otl_moon.input.get_sample(num_sample)
+    xx_otl_ben_ari = otl_ben_ari.prob_input.get_sample(num_sample)
+    xx_otl_moon = otl_moon.prob_input.get_sample(num_sample)
 
     yy_otl_ben_ari = otl_ben_ari(xx_otl_ben_ari)
     yy_otl_moon = otl_moon(xx_otl_moon)
