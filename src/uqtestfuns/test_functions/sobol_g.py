@@ -44,23 +44,28 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput, MultivariateInput
+from typing import List
+
+from ..core import UnivariateInput
 
 DEFAULT_NAME = "Sobol-G"
 
+TAGS = ["sensitivity-analysis"]
 
-def _create_sobol_input(spatial_dimension: int) -> MultivariateInput:
+
+def _create_sobol_input(spatial_dimension: int) -> List[UnivariateInput]:
     """Construct an input instance for a given dimension according to [1].
 
     Parameters
     ----------
     spatial_dimension : int
-        The number of spatial dimension of the MultivariateInput.
+        The number of marginals to be created.
 
     Returns
     -------
-    MultivariateInput
-        M-dimensional MultivariateInput instance for the Sobol-G function.
+    List[UnivariateInput]
+        A list of M marginals as UnivariateInput instances to construct
+        the MultivariateInput.
     """
     marginals = []
     for i in range(spatial_dimension):
@@ -73,11 +78,19 @@ def _create_sobol_input(spatial_dimension: int) -> MultivariateInput:
             )
         )
 
-    return MultivariateInput(marginals)
+    return marginals
 
 
-DEFAULT_INPUTS = {
-    "sobol": _create_sobol_input,
+AVAILABLE_INPUT_SPECS = {
+    "sobol": {
+        "name": "Sobol-G",
+        "description": (
+            "Probabilistic input model for the Sobol'-G function "
+            "from Sobol' (1998)."
+        ),
+        "marginals": _create_sobol_input,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "sobol"
@@ -138,11 +151,9 @@ def _get_params_sobol_4(spatial_dimension: int) -> np.ndarray:
 
 def _get_params_kucherenko_2a(spatial_dimension: int) -> np.ndarray:
     """Construct a param. array for Sobol-G according to problem 2A in [2]."""
-    yy = 6.52 * np.ones(spatial_dimension)
-    if spatial_dimension >= 1:
-        yy[0] = 0.0
+    yy = np.zeros(spatial_dimension)
     if spatial_dimension >= 2:
-        yy[1] = 0.0
+        yy[2:] = 6.52
 
     return yy
 
@@ -167,7 +178,7 @@ def _get_params_crestaux_2007(spatial_dimension: int) -> np.ndarray:
     return yy
 
 
-DEFAULT_PARAMETERS = {
+AVAILABLE_PARAMETERS = {
     "sobol-1": _get_params_sobol_1,
     "sobol-2": _get_params_sobol_2,
     "sobol-3": _get_params_sobol_3,

@@ -1,7 +1,7 @@
 """
 Module with an implementation of the Borehole function.
 
-The Borehole test function [1] is an 8-dimensional scalar-valued function
+The Borehole test function [1] is an eight-dimensional scalar-valued function
 that models water flow through a borehole that is drilled from
 the ground surface through two aquifers.
 
@@ -16,19 +16,24 @@ References
    Isolation, Battelle Memorial Institute, Columbus, Ohio,
    BMI/ONWI-516, 1983.
    URL: https://inldigitallibrary.inl.gov/PRR/84393.pdf
-2. M. D. Morris, T. J. Mitchell, and D. Ylvisaker, “Bayesian design and
+2. Max D. Morris, T. J. Mitchell, and D. Ylvisaker, “Bayesian design and
    analysis of computer experiments: Use of derivatives in surface
    prediction,” Technometrics, vol. 35, no. 3, pp. 243–255, 1993.
    DOI:10.1080/00401706.1993.10485320
 """
 import numpy as np
 
-from ..core import UnivariateInput, MultivariateInput
+from ..core import UnivariateInput
 
 DEFAULT_NAME = "Borehole"
 
-# From Ref. 1
-DEFAULT_INPUT_MARGINALS_1 = [
+TAGS = [
+    "metamodeling",
+    "sensitivity-analysis",
+]
+
+# From [1]
+INPUT_MARGINALS_HARPER = [
     UnivariateInput(
         name="rw",
         distribution="normal",
@@ -79,9 +84,9 @@ DEFAULT_INPUT_MARGINALS_1 = [
     ),
 ]
 
-# From Ref. 2
-DEFAULT_INPUT_MARGINALS_2 = list(DEFAULT_INPUT_MARGINALS_1)
-DEFAULT_INPUT_MARGINALS_2[0:2] = [
+# From [2]
+INPUT_MARGINALS_MORRIS = list(INPUT_MARGINALS_HARPER)
+INPUT_MARGINALS_MORRIS[0:2] = [
     UnivariateInput(
         name="rw",
         distribution="uniform",
@@ -96,14 +101,30 @@ DEFAULT_INPUT_MARGINALS_2[0:2] = [
     ),
 ]
 
-DEFAULT_INPUTS = {
-    "harper": MultivariateInput(DEFAULT_INPUT_MARGINALS_1),
-    "morris": MultivariateInput(DEFAULT_INPUT_MARGINALS_2),
+AVAILABLE_INPUT_SPECS = {
+    "harper": {
+        "name": "Borehole-Harper",
+        "description": (
+            "Probabilistic input model of the Borehole model "
+            "from Harper and Gupta (1983)."
+        ),
+        "marginals": INPUT_MARGINALS_HARPER,
+        "copulas": None,
+    },
+    "morris": {
+        "name": "Borehole-Morris",
+        "description": (
+            "Probabilistic input model of the Borehole model "
+            "from Morris et al. (1993)."
+        ),
+        "marginals": INPUT_MARGINALS_MORRIS,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "harper"
 
-DEFAULT_PARAMETERS = None
+AVAILABLE_PARAMETERS = None
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:

@@ -16,5 +16,5 @@ def test_wrong_param_selection():
     with pytest.raises(ValueError):
         uqtestfuns.create_from_default(
             "wing-weight",
-            param_selection="marrei1",
+            parameters="marrei1",
         )

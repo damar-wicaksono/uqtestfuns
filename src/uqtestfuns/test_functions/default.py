@@ -5,7 +5,7 @@ A default function means that the input specification, parameters, and
 spatial dimension (when applicable) used to create the function are taken from
 the available built-in default values.
 """
-from typing import Callable, Any, Optional
+from typing import Callable, Any, Optional, Union
 from types import ModuleType
 
 from . import (
@@ -43,8 +43,8 @@ AVAILABLE_FUNCTIONS = {
 def get_default_args(
     fun_name: str,
     spatial_dimension: Optional[int] = None,
-    input_selection: Optional[str] = None,
-    param_selection: Optional[str] = None,
+    prob_input: Optional[Union[str, MultivariateInput]] = None,
+    parameters: Optional[Any] = None,
 ) -> dict:
     """Get the arguments to instantiate a UQTestFun from the default selection.
 
@@ -58,15 +58,21 @@ def get_default_args(
         Some test functions support variable dimension.
         If the test function does not support variable dimension, passing
         inconsistent dimension returns an error.
-    input_selection : str, optional
-        When applicable, the keyword for selecting the input specification of
-        a test function. Some test functions may be delivered with different
+    prob_input : Union[str, MultivariateInput]], optional
+        The probabilistic input model for the test function.
+        When applicable, the input may also be a keyword for selecting
+        one of the available input specifications of a test function delivered
+        in UQTestFuns.
+        Some test functions may be delivered with different
         input specifications based on the available literature.
         With 'None', the default will be used; if the selection is not
         available, the function returns an error.
-    param_selection : str, optional
-        When applicable, the keyword for selecting the parameters set of
-        a test function. Some test functions may have different parameter
+    parameters : Any, optional
+        The parameters set of a test function.
+        When applicable, the parameters may also be a keyword for selecting
+        one of the available parameters set of a test function delivered
+        in UQTestFuns.
+        Some test functions may have different parameter
         values based on the available literature.
         With 'None', the default will be used; if the selection is not
         available, the function returns an error.
@@ -86,17 +92,23 @@ def get_default_args(
 
     fun_mod = AVAILABLE_FUNCTIONS[fun_name]
 
+    if isinstance(prob_input, str) or prob_input is None:
+        prob_input = _get_default_input(fun_mod, prob_input, spatial_dimension)
+    elif isinstance(prob_input, MultivariateInput):
+        pass
+    else:
+        raise TypeError(f"'prob_input' must be {MultivariateInput.__class__}!")
+
+    if isinstance(parameters, str) or parameters is None:
+        parameters = _get_default_parameters(
+            fun_mod, parameters, spatial_dimension
+        )
+
     default_args = {
         "name": fun_mod.DEFAULT_NAME,
         "evaluate": fun_mod.evaluate,
-        "prob_input": _get_default_input(
-            fun_mod, input_selection, spatial_dimension
-        ),
-        "parameters": _get_default_parameters(
-            fun_mod,
-            param_selection,
-            spatial_dimension,
-        ),
+        "prob_input": prob_input,
+        "parameters": parameters,
     }
 
     return default_args
@@ -105,8 +117,8 @@ def get_default_args(
 def create_from_default(
     fun_name: str,
     spatial_dimension: Optional[int] = None,
-    input_selection: Optional[str] = None,
-    param_selection: Optional[str] = None,
+    prob_input: Optional[Union[str, MultivariateInput]] = None,
+    parameters: Optional[Any] = None,
 ) -> UQTestFun:
     """Create an instance of UQTestFun from the available defaults.
 
@@ -118,15 +130,21 @@ def create_from_default(
     spatial_dimension : int
         The spatial dimension of the function, if applicable.
         Some test functions can be defined for an arbitrary spatial dimension.
-    input_selection : str, optional
-        When applicable, the keyword for selecting the input specification of
-        a test function. Some test functions may be delivered with different
+    prob_input : Union[str, MultivariateInput]], optional
+        The probabilistic input model for the test function.
+        When applicable, the input may also be a keyword for selecting
+        one of the available input specifications of a test function delivered
+        in UQTestFuns.
+        Some test functions may be delivered with different
         input specifications based on the available literature.
         With 'None', the default will be used; if the selection is not
         available, the function returns an error.
-    param_selection : str, optional
-        When applicable, the keyword for selecting the parameters set of
-        a test function. Some test functions may have different parameter
+    parameters : Any, optional
+        The parameters set of a test function.
+        When applicable, the parameters may also be a keyword for selecting
+        one of the available parameters set of a test function delivered
+        in UQTestFuns.
+        Some test functions may have different parameter
         values based on the available literature.
         With 'None', the default will be used; if the selection is not
         available, the function returns an error.
@@ -140,8 +158,8 @@ def create_from_default(
     default_args = get_default_args(
         fun_name,
         spatial_dimension,
-        input_selection,
-        param_selection,
+        prob_input,
+        parameters,
     )
 
     return UQTestFun(**default_args)
@@ -151,7 +169,7 @@ def _get_default_input(
     fun_module: ModuleType,
     selection: Optional[str] = None,
     spatial_dimension: Optional[int] = None,
-) -> dict:
+) -> MultivariateInput:
     """Get the input specification of a test function from the module.
 
     Parameters
@@ -181,15 +199,15 @@ def _get_default_input(
         selection = fun_module.DEFAULT_INPUT_SELECTION
 
     # Check if the selection is valid
-    if selection not in fun_module.DEFAULT_INPUTS:
+    if selection not in fun_module.AVAILABLE_INPUT_SPECS:
         raise ValueError(
             f"Selected input specification ({selection!r}) is not available!\n"
             f"Either specify 'None' (use the default) or one of "
-            f"{list(fun_module.DEFAULT_INPUTS.keys())} \n"
+            f"{list(fun_module.AVAILABLE_INPUT_SPECS.keys())} \n"
             f"for the {fun_module.DEFAULT_NAME!r} test function."
         )
 
-    default_input = fun_module.DEFAULT_INPUTS[selection]
+    default_input_specs = fun_module.AVAILABLE_INPUT_SPECS[selection]
 
     # Get the default dimension
     if _is_variable_dimension(fun_module):
@@ -197,11 +215,24 @@ def _get_default_input(
             spatial_dimension = fun_module.DEFAULT_DIMENSION
     else:
         _verify_spatial_dimension(
-            spatial_dimension, default_input, fun_module.DEFAULT_NAME
+            spatial_dimension, default_input_specs, fun_module.DEFAULT_NAME
         )
 
-    if isinstance(default_input, Callable):  # type: ignore
-        return default_input(spatial_dimension)
+    # Get the default values to construct a MultivariateInput
+    default_name = default_input_specs["name"]
+    default_description = default_input_specs["description"]
+    default_marginals = default_input_specs["marginals"]
+    default_copulas = default_input_specs["copulas"]
+
+    if isinstance(default_marginals, Callable):  # type: ignore
+        default_marginals = default_marginals(spatial_dimension)
+
+    default_input = MultivariateInput(
+        name=default_name,
+        description=default_description,
+        marginals=default_marginals,
+        copulas=default_copulas,
+    )
 
     return default_input
 
@@ -234,7 +265,7 @@ def _get_default_parameters(
     tuple
         The selected parameters.
     """
-    if fun_module.DEFAULT_PARAMETERS is None:
+    if fun_module.AVAILABLE_PARAMETERS is None:
         if selection is not None:
             raise ValueError(
                 f"There is only one parametrization of "
@@ -247,15 +278,15 @@ def _get_default_parameters(
         selection = fun_module.DEFAULT_PARAMETERS_SELECTION
 
     # Check if the selection is valid
-    if selection not in fun_module.DEFAULT_PARAMETERS:
+    if selection not in fun_module.AVAILABLE_PARAMETERS:
         raise ValueError(
             f"Selected parameters ({selection!r}) is not available!\n"
             f"Either specify 'None' (use the default) or one of "
-            f"{list(fun_module.DEFAULT_PARAMETERS.keys())} \n"
+            f"{list(fun_module.AVAILABLE_PARAMETERS.keys())} \n"
             f"for the {fun_module.DEFAULT_NAME!r} test function."
         )
 
-    default_parameters = fun_module.DEFAULT_PARAMETERS[selection]
+    default_parameters = fun_module.AVAILABLE_PARAMETERS[selection]
 
     # Get the default dimension
     if _is_variable_dimension(fun_module):
@@ -291,7 +322,7 @@ def _is_variable_dimension(fun_module: ModuleType) -> bool:
 
 def _verify_spatial_dimension(
     spatial_dimension: int,
-    default_input: MultivariateInput,
+    default_input_specs: dict,
     fun_name: str,
 ):
     """Verify the specified spatial dimension given the default.
@@ -315,7 +346,7 @@ def _verify_spatial_dimension(
         If the user-specified dimension is not consistent with the dimension
         stored in the module.
     """
-    default_spatial_dimension = default_input.spatial_dimension
+    default_spatial_dimension = len(default_input_specs["marginals"])
 
     if spatial_dimension is not None:
         assert spatial_dimension == default_spatial_dimension, (

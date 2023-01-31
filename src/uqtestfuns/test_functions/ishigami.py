@@ -23,11 +23,16 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput, MultivariateInput
+from ..core import UnivariateInput
 
 DEFAULT_NAME = "Ishigami"
 
-DEFAULT_INPUT_MARGINALS = [
+TAGS = [
+    "metamodeling",
+    "sensitivity-analysis",
+]
+
+INPUT_MARGINALS_ISHIGAMI = [
     UnivariateInput(
         name="X1",
         distribution="uniform",
@@ -48,13 +53,21 @@ DEFAULT_INPUT_MARGINALS = [
     ),
 ]
 
-DEFAULT_INPUTS = {
-    "ishigami": MultivariateInput(DEFAULT_INPUT_MARGINALS),
+AVAILABLE_INPUT_SPECS = {
+    "ishigami": {
+        "name": "Ishigami",
+        "description": (
+            "Probabilistic input model for the Ishigami function "
+            "from Ishigami and Homma (1991)."
+        ),
+        "marginals": INPUT_MARGINALS_ISHIGAMI,
+        "copulas": None,
+    }
 }
 
 DEFAULT_INPUT_SELECTION = "ishigami"
 
-DEFAULT_PARAMETERS = {
+AVAILABLE_PARAMETERS = {
     "sobol-levitan": (7, 0.05),  # from [2].
     "marrel": (7, 0.1),  # from [3].
 }

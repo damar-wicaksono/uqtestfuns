@@ -13,8 +13,8 @@ from uqtestfuns import create_from_default
 
 def test_inert_inputs():
     """Test whether the inputs from 'Moon' specification are indeed inert."""
-    otl_ben_ari = create_from_default("piston", input_selection="ben-ari")
-    otl_moon = create_from_default("piston", input_selection="moon")
+    otl_ben_ari = create_from_default("piston", prob_input="ben-ari")
+    otl_moon = create_from_default("piston", prob_input="moon")
 
     # Generate sample and compare both
     num_sample = 1000000

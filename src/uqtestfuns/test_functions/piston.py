@@ -24,13 +24,18 @@ import numpy as np
 
 from copy import copy
 
-from ..core import UnivariateInput, MultivariateInput
+from ..core import UnivariateInput
 
 
 DEFAULT_NAME = "Piston"
 
-# Input specification from [1]
-DEFAULT_INPUT_MARGINALS_BEN_ARI = [
+TAGS = [
+    "metamodeling",
+    "sensitivity-analysis",
+]
+
+# Marginals specification from [1]
+INPUT_MARGINALS_BEN_ARI = [
     UnivariateInput(
         name="M",
         distribution="uniform",
@@ -75,12 +80,10 @@ DEFAULT_INPUT_MARGINALS_BEN_ARI = [
     ),
 ]
 
-# Input specification from [2]
-DEFAULT_INPUT_MARGINALS_MOON = [
-    copy(_) for _ in DEFAULT_INPUT_MARGINALS_BEN_ARI
-]
+# Marginals specification from [2]
+INPUT_MARGINALS_MOON = [copy(_) for _ in INPUT_MARGINALS_BEN_ARI]
 for i in range(13):
-    DEFAULT_INPUT_MARGINALS_MOON.append(
+    INPUT_MARGINALS_MOON.append(
         UnivariateInput(
             name=f"Inert {i+1}",
             distribution="uniform",
@@ -89,14 +92,30 @@ for i in range(13):
         )
     )
 
-DEFAULT_INPUTS = {
-    "ben-ari": MultivariateInput(DEFAULT_INPUT_MARGINALS_BEN_ARI),
-    "moon": MultivariateInput(DEFAULT_INPUT_MARGINALS_MOON),
+AVAILABLE_INPUT_SPECS = {
+    "ben-ari": {
+        "name": "Piston-Ben-Ari",
+        "description": (
+            "Probabilistic input model for the Piston simulation model "
+            "from Ben-Ari and Steinberg (2007)."
+        ),
+        "marginals": INPUT_MARGINALS_BEN_ARI,
+        "copulas": None,
+    },
+    "moon": {
+        "name": "Piston-Moon",
+        "description": (
+            "Probabilistic input model for the Piston simulation model "
+            "from Moon (2010)."
+        ),
+        "marginals": INPUT_MARGINALS_MOON,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "ben-ari"
 
-DEFAULT_PARAMETERS = None
+AVAILABLE_PARAMETERS = None
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:

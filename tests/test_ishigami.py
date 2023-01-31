@@ -15,7 +15,7 @@ from uqtestfuns.test_functions import ishigami as ishigami_mod
 
 
 # Test for different parameters to the Ishigami function
-parameters = list(ishigami_mod.DEFAULT_PARAMETERS.values()) + [(7.0, 0.05)]
+parameters = list(ishigami_mod.AVAILABLE_PARAMETERS.values()) + [(7.0, 0.05)]
 
 
 @pytest.fixture(params=parameters)
@@ -70,13 +70,13 @@ def test_different_parameters(param_selection):
 
     # Create an instance of Ishigami function with a specified param. selection
     my_testfun = uqtestfuns.create_from_default(
-        "ishigami", param_selection=param_selection
+        "ishigami", parameters=param_selection
     )
 
     # Assertion
     assert (
         my_testfun.parameters
-        == ishigami_mod.DEFAULT_PARAMETERS[param_selection]
+        == ishigami_mod.AVAILABLE_PARAMETERS[param_selection]
     )
 
 
@@ -89,4 +89,4 @@ def test_wrong_dimension():
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
     with pytest.raises(ValueError):
-        uqtestfuns.create_from_default("ishigami", param_selection="marelli1")
+        uqtestfuns.create_from_default("ishigami", parameters="marelli1")
