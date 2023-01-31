@@ -48,13 +48,13 @@ def test_compute_mean():
     my_fun = uqtestfuns.create_from_default("sulfur")
 
     # Compute mean via Monte Carlo
-    xx = my_fun.input.get_sample(1000000)
+    xx = my_fun.prob_input.get_sample(1000000)
     yy = my_fun(xx)
 
     mean_mc = np.mean(np.log(-1 * yy))
 
     # Analytical mean
-    marginals = my_fun.input.marginals
+    marginals = my_fun.prob_input.marginals
     mean_ref = _compute_sqrt_geometric_mean_std(marginals)[0]
 
     # Assertion
@@ -68,13 +68,13 @@ def test_compute_std():
     my_fun = uqtestfuns.create_from_default("sulfur")
 
     # Compute mean via Monte Carlo
-    xx = my_fun.input.get_sample(1000000)
+    xx = my_fun.prob_input.get_sample(1000000)
     yy = my_fun(xx)
 
     std_mc = np.std(np.log(-1 * yy))
 
     # Analytical standard deviation
-    marginals = my_fun.input.marginals
+    marginals = my_fun.prob_input.marginals
     std_ref = _compute_sqrt_geometric_mean_std(marginals)[1]
 
     # Assertion

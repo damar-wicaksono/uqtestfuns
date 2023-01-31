@@ -89,7 +89,7 @@ def get_default_args(
     default_args = {
         "name": fun_mod.DEFAULT_NAME,
         "evaluate": fun_mod.evaluate,
-        "input": _get_default_input(
+        "prob_input": _get_default_input(
             fun_mod, input_selection, spatial_dimension
         ),
         "parameters": _get_default_parameters(

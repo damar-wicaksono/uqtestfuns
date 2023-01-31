@@ -50,14 +50,14 @@ both are given below.
 
 +++
 
-## Inputs
+## Probabilistic input
 
 The 3 input variables of the wing weight function are modeled
 as independent uniform random variables
 with specified ranges shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.input
+my_testfun.prob_input
 ```
 
 The parameters of the Ishigami function are two real-valued numbers.
@@ -86,7 +86,7 @@ uqtestfuns.create_from_default("ishigami", param_selection="marrel")
 Generate a random sample of input/output pairs:
 
 ```{code-cell} ipython3
-xx_test = my_testfun.input.get_sample(1000000)
+xx_test = my_testfun.prob_input.get_sample(1000000)
 yy_test = my_testfun(xx_test)
 ```
 

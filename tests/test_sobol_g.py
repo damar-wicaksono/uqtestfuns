@@ -61,7 +61,7 @@ def test_compute_mean(spatial_dimension, parameter):
     )
 
     # Compute mean via Monte Carlo
-    xx = my_fun.input.get_sample(500000)
+    xx = my_fun.prob_input.get_sample(500000)
     yy = my_fun(xx)
 
     mean_mc = np.mean(yy)
@@ -89,7 +89,7 @@ def test_compute_variance(spatial_dimension, parameter):
     )
 
     # Compute the variance via Monte Carlo
-    xx = my_fun.input.get_sample(500000)
+    xx = my_fun.prob_input.get_sample(500000)
     yy = my_fun(xx)
 
     var_mc = np.var(yy)

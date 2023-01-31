@@ -56,7 +56,7 @@ def test_call_instance(default_testfun):
 
     testfun, _ = default_testfun
 
-    xx = testfun.input.get_sample(10)
+    xx = testfun.prob_input.get_sample(10)
 
     # Assertions
     assert_call(testfun, xx)
@@ -80,7 +80,7 @@ def test_transform_input(default_testfun):
 
     # Directly sample from the input property
     np.random.seed(315)
-    xx_2 = testfun.input.get_sample(sample_size)
+    xx_2 = testfun.prob_input.get_sample(sample_size)
 
     # Assertion: two sampled values are equal
     assert np.allclose(xx_1, xx_2)
@@ -104,7 +104,7 @@ def test_transform_input_non_default(default_testfun):
 
     # Directly sample from the input property
     np.random.seed(315)
-    xx_2 = testfun.input.get_sample(sample_size)
+    xx_2 = testfun.prob_input.get_sample(sample_size)
 
     # Assertion: two sampled values are equal
     assert np.allclose(xx_1, xx_2)
@@ -135,7 +135,7 @@ def test_wrong_input_domain(default_testfun):
 
     # Create sampled input values from the default and perturb them
     xx = np.empty((100, testfun.spatial_dimension))
-    for i, marginal in enumerate(testfun.input.marginals):
+    for i, marginal in enumerate(testfun.prob_input.marginals):
         lb = marginal.lower + 1000
         ub = marginal.upper - 1000
         xx[:, i] = lb + (ub - lb) * np.random.rand(100)

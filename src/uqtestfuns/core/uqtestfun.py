@@ -23,7 +23,7 @@ class UQTestFun:
     ----------
     evaluate : Callable
         Implementation of the a test function as a Callable.
-    input : MultivariateInput
+    prob_input : MultivariateInput
         Multivariate probabilistic input model.
     name : str, optional
         Name of the instance.
@@ -43,20 +43,20 @@ class UQTestFun:
     """
 
     evaluate: Callable
-    input: MultivariateInput
+    prob_input: MultivariateInput
     spatial_dimension: int = field(init=False)
     name: Optional[str] = None
     parameters: Any = None
 
     def __post_init__(self):
 
-        if not isinstance(self.input, MultivariateInput):
+        if not isinstance(self.prob_input, MultivariateInput):
             raise TypeError(
                 f"Input must be of 'MultivariateInput' type, "
-                f"instead of {type(self.input)}!"
+                f"instead of {type(self.prob_input)}!"
             )
 
-        self.spatial_dimension = self.input.spatial_dimension
+        self.spatial_dimension = self.prob_input.spatial_dimension
 
     def __call__(self, xx: np.ndarray):
         """Evaluation of the test function by calling the instance."""
@@ -65,8 +65,8 @@ class UQTestFun:
         _verify_sample_shape(xx, self.spatial_dimension)
         # Verify the domain of the input
         for dim_idx in range(self.spatial_dimension):
-            lb = self.input.marginals[dim_idx].lower
-            ub = self.input.marginals[dim_idx].upper
+            lb = self.prob_input.marginals[dim_idx].lower
+            ub = self.prob_input.marginals[dim_idx].upper
             _verify_sample_domain(xx[:, dim_idx], min_value=lb, max_value=ub)
 
         if self.parameters is None:
@@ -109,7 +109,7 @@ class UQTestFun:
         )
 
         # Transform the sampled value to the function domain
-        xx_trans = uniform_input.transform_sample(xx, other=self.input)
+        xx_trans = uniform_input.transform_sample(xx, other=self.prob_input)
 
         return xx_trans
 
