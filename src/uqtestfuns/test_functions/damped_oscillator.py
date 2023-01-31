@@ -33,12 +33,12 @@ References
 import numpy as np
 
 from .utils import lognorm2norm_mean, lognorm2norm_std
-from ..core import UnivariateInput, MultivariateInput
+from ..core import UnivariateInput
 
 
 DEFAULT_NAME = "Damped-Oscillator"
 
-DEFAULT_INPUT_MARGINALS_DE_KIUREGHIAN = [  # From [2]
+INPUT_MARGINALS_DE_KIUREGHIAN = [  # From [2]
     UnivariateInput(
         name="Mp",
         distribution="lognormal",
@@ -104,13 +104,21 @@ DEFAULT_INPUT_MARGINALS_DE_KIUREGHIAN = [  # From [2]
     ),
 ]
 
-DEFAULT_INPUTS = {
-    "de-kiureghian": MultivariateInput(DEFAULT_INPUT_MARGINALS_DE_KIUREGHIAN),
+AVAILABLE_INPUT_SPECS = {
+    "de-kiureghian": {
+        "name": "Damped-Oscillator-De-Kiureghian",
+        "description": (
+            "Probabilistic input model for the Damped Oscillator model "
+            "from De Kiureghian and De Stefano (1991)."
+        ),
+        "marginals": INPUT_MARGINALS_DE_KIUREGHIAN,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "de-kiureghian"
 
-DEFAULT_PARAMETERS = None
+AVAILABLE_PARAMETERS = None
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:

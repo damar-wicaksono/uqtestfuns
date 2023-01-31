@@ -75,7 +75,7 @@ to the `input_selection` parameter.
 For example, to create a Borehole test function using the input specification by {cite:t}`Morris1993`:
 
 ```{code-cell} ipython3
-my_testfun_alt = uqtestfuns.create_from_default("borehole", input_selection="morris")
+my_testfun_alt = uqtestfuns.create_from_default("borehole", prob_input="morris")
 my_testfun_alt.prob_input
 ```
 

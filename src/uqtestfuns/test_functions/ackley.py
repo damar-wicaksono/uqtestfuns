@@ -13,9 +13,11 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput, MultivariateInput
+from ..core import UnivariateInput
 
 DEFAULT_NAME = "Ackley"
+
+TAGS = ["metamodeling", "optimization"]
 
 
 def _ackley_input(spatial_dimension: int):
@@ -35,16 +37,24 @@ def _ackley_input(spatial_dimension: int):
             )
         )
 
-    return MultivariateInput(marginals)
+    return marginals
 
 
-DEFAULT_INPUTS = {
-    "ackley": _ackley_input,
+AVAILABLE_INPUT_SPECS = {
+    "ackley": {
+        "name": "Ackley",
+        "description": (
+            "Probabilistic input model for the Ackley function "
+            "from Ackley (1987)."
+        ),
+        "marginals": _ackley_input,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "ackley"
 
-DEFAULT_PARAMETERS = {"ackley": (20, 0.2, 2 * np.pi)}
+AVAILABLE_PARAMETERS = {"ackley": (20, 0.2, 2 * np.pi)}
 
 DEFAULT_PARAMETERS_SELECTION = "ackley"
 

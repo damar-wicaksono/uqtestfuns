@@ -58,12 +58,17 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput, MultivariateInput
+from ..core import UnivariateInput
 
 
 DEFAULT_NAME = "Sulfur"
 
-DEFAULT_INPUT_MARGINALS_PENNER = [  # From [3] (Table 2)
+TAGS = [
+    "metamodeling",
+    "sensitivity-analysis",
+]
+
+INPUT_MARGINALS_PENNER = [  # From [3] (Table 2)
     UnivariateInput(
         name="Q",
         distribution="lognormal",
@@ -122,11 +127,21 @@ DEFAULT_INPUT_MARGINALS_PENNER = [  # From [3] (Table 2)
     ),
 ]
 
-DEFAULT_INPUTS = {"penner": MultivariateInput(DEFAULT_INPUT_MARGINALS_PENNER)}
+AVAILABLE_INPUT_SPECS = {
+    "penner": {
+        "name": "Sulfur-Penner",
+        "description": (
+            "Probabilistic input model for the Sulfur model "
+            "from Penner et al. (1994)."
+        ),
+        "marginals": INPUT_MARGINALS_PENNER,
+        "copulas": None,
+    }
+}
 
 DEFAULT_INPUT_SELECTION = "penner"
 
-DEFAULT_PARAMETERS = None
+AVAILABLE_PARAMETERS = None
 
 SOLAR_CONSTANT = 1361  # [W/m^2] from [4]
 EARTH_AREA = 5.1e14  # [m^2] from [5]

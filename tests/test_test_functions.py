@@ -13,7 +13,7 @@ import pytest
 
 from typing import Callable
 
-from uqtestfuns import create_from_default
+from uqtestfuns import create_from_default, MultivariateInput
 from conftest import assert_call
 
 from uqtestfuns.test_functions.default import AVAILABLE_FUNCTIONS
@@ -35,20 +35,69 @@ def test_create_instance(default_testfun):
 
     testfun, testfun_mod = default_testfun
 
-    default_input = testfun_mod.DEFAULT_INPUTS[
+    default_input_specs = testfun_mod.AVAILABLE_INPUT_SPECS[
         testfun_mod.DEFAULT_INPUT_SELECTION
     ]
 
-    if isinstance(default_input, Callable):  # type: ignore
-        default_input = default_input(testfun_mod.DEFAULT_DIMENSION)
-    else:
-        default_input = default_input
+    default_marginals = default_input_specs["marginals"]
+    if isinstance(default_marginals, Callable):  # type: ignore
+        default_marginals = default_marginals(testfun_mod.DEFAULT_DIMENSION)
+
+    default_input = MultivariateInput(default_marginals)
 
     # Assertions
     assert testfun.spatial_dimension == default_input.spatial_dimension
 
     # TODO: Implement a better equality for the input dataclass
     # assert testfun.input == testfun_mod.DEFAULT_INPUT
+
+
+def test_create_instance_with_prob_input(default_testfun):
+    """Test the creation of the default instance and passing prob input."""
+
+    _, testfun_mod = default_testfun
+
+    default_input_specs = testfun_mod.AVAILABLE_INPUT_SPECS[
+        testfun_mod.DEFAULT_INPUT_SELECTION
+    ]
+
+    default_marginals = default_input_specs["marginals"]
+    if isinstance(default_marginals, Callable):  # type: ignore
+        default_marginals = default_marginals(testfun_mod.DEFAULT_DIMENSION)
+
+    default_input = MultivariateInput(default_marginals)
+
+    assert_call(
+        create_from_default,
+        fun_name=testfun_mod.DEFAULT_NAME,
+        prob_input=default_input,
+    )
+
+    # Non-sensical probabilistic input model
+    with pytest.raises(TypeError):
+        name = testfun_mod.DEFAULT_NAME
+        create_from_default(name, prob_input=10)  # type: ignore
+
+
+def test_create_instance_with_parameters(default_testfun):
+    """Test the creation of the default instance and passing parameters."""
+
+    _, testfun_mod = default_testfun
+
+    available_parameters = testfun_mod.AVAILABLE_PARAMETERS
+
+    if available_parameters is not None:
+        parameters = available_parameters[
+            testfun_mod.DEFAULT_PARAMETERS_SELECTION
+        ]
+    else:
+        parameters = available_parameters
+
+    assert_call(
+        create_from_default,
+        fun_name=testfun_mod.DEFAULT_NAME,
+        parameters=parameters,
+    )
 
 
 def test_call_instance(default_testfun):
@@ -149,4 +198,4 @@ def test_wrong_input_domain(default_testfun):
 def test_invalid_input_params_selection(test_function):
     """"""
     with pytest.raises(ValueError):
-        create_from_default(test_function, input_selection="qlej2")
+        create_from_default(test_function, prob_input="qlej2")

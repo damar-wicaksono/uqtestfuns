@@ -14,41 +14,39 @@ from uqtestfuns.test_functions import sobol_g as sobol_g_mod
 
 
 @pytest.mark.parametrize(
-    "parameter", [None] + list(sobol_g_mod.DEFAULT_PARAMETERS.keys())
+    "parameter", [None] + list(sobol_g_mod.AVAILABLE_PARAMETERS.keys())
 )
 def test_different_parameters(parameter):
     """Test selecting different built-in parameters."""
 
     # Create an instance of a test function with a specified param. selection
-    my_fun = uqtestfuns.create_from_default(
-        "sobol-g", param_selection=parameter
-    )
+    my_fun = uqtestfuns.create_from_default("sobol-g", parameters=parameter)
 
     # Assertion
     if parameter:
-        stored_parameters = sobol_g_mod.DEFAULT_PARAMETERS[parameter](
+        stored_parameters = sobol_g_mod.AVAILABLE_PARAMETERS[parameter](
             my_fun.spatial_dimension
         )
         assert np.allclose(my_fun.parameters, stored_parameters)
     else:
         default_selection = sobol_g_mod.DEFAULT_PARAMETERS_SELECTION
-        stored_parameters = sobol_g_mod.DEFAULT_PARAMETERS[default_selection](
-            sobol_g_mod.DEFAULT_DIMENSION
-        )
+        stored_parameters = sobol_g_mod.AVAILABLE_PARAMETERS[
+            default_selection
+        ](sobol_g_mod.DEFAULT_DIMENSION)
         assert np.allclose(my_fun.parameters, stored_parameters)
 
 
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
     with pytest.raises(ValueError):
-        uqtestfuns.create_from_default("sobol-g", param_selection="marelli1")
+        uqtestfuns.create_from_default("sobol-g", parameters="marelli1")
 
 
 # ATTENTION: some parameters choice (e.g., "sobol-1")
 # can't be estimated properly with low N at high dimension
 @pytest.mark.parametrize("spatial_dimension", [None, 1, 2, 10])
 @pytest.mark.parametrize(
-    "parameter", [None] + list(sobol_g_mod.DEFAULT_PARAMETERS.keys())
+    "parameter", [None] + list(sobol_g_mod.AVAILABLE_PARAMETERS.keys())
 )
 def test_compute_mean(spatial_dimension, parameter):
     """Test the mean computation as the result is analytical."""
@@ -57,7 +55,7 @@ def test_compute_mean(spatial_dimension, parameter):
     my_fun = uqtestfuns.create_from_default(
         "sobol-g",
         spatial_dimension=spatial_dimension,
-        param_selection=parameter,
+        parameters=parameter,
     )
 
     # Compute mean via Monte Carlo
@@ -76,7 +74,7 @@ def test_compute_mean(spatial_dimension, parameter):
 # ATTENTION: parameters with "Sobol-1" is unstable at large dimension >= 15
 @pytest.mark.parametrize("spatial_dimension", [None, 1, 2, 10])
 @pytest.mark.parametrize(
-    "parameter", [None] + list(sobol_g_mod.DEFAULT_PARAMETERS.keys())
+    "parameter", [None] + list(sobol_g_mod.AVAILABLE_PARAMETERS.keys())
 )
 def test_compute_variance(spatial_dimension, parameter):
     """Test the variance computation as the result is analytical."""
@@ -85,7 +83,7 @@ def test_compute_variance(spatial_dimension, parameter):
     my_fun = uqtestfuns.create_from_default(
         "sobol-g",
         spatial_dimension=spatial_dimension,
-        param_selection=parameter,
+        parameters=parameter,
     )
 
     # Compute the variance via Monte Carlo

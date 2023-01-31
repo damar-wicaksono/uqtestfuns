@@ -30,12 +30,18 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput, MultivariateInput
+from ..core import UnivariateInput
 
 
 DEFAULT_NAME = "Flood"
 
-DEFAULT_INPUT_MARGINALS_IOOSS = [
+TAGS = [
+    "metamodeling",
+    "sensitivity-analysis",
+]
+
+
+INPUT_MARGINALS_IOOSS = [  # From Ref. [1]
     UnivariateInput(
         name="Q",
         distribution="trunc-gumbel",
@@ -86,13 +92,21 @@ DEFAULT_INPUT_MARGINALS_IOOSS = [
     ),
 ]
 
-DEFAULT_INPUTS = {
-    "iooss": MultivariateInput(DEFAULT_INPUT_MARGINALS_IOOSS),
+AVAILABLE_INPUT_SPECS = {
+    "iooss": {
+        "name": "Flood-Iooss",
+        "description": (
+            "Probabilistic input model for the Flood model "
+            "from Iooss and Lemaître (2015)."
+        ),
+        "marginals": INPUT_MARGINALS_IOOSS,
+        "copulas": None,
+    }
 }
 
 DEFAULT_INPUT_SELECTION = "iooss"
 
-DEFAULT_PARAMETERS = None
+AVAILABLE_PARAMETERS = None
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:

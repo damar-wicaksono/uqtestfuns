@@ -24,12 +24,17 @@ import numpy as np
 
 from copy import copy
 
-from ..core import UnivariateInput, MultivariateInput
+from ..core import UnivariateInput
 
 
 DEFAULT_NAME = "OTL"
 
-DEFAULT_INPUT_MARGINALS_BEN_ARI = [
+TAGS = [
+    "metamodeling",
+    "sensitivity-analysis",
+]
+
+INPUT_MARGINALS_BEN_ARI = [
     UnivariateInput(
         name="Rb1",
         distribution="uniform",
@@ -68,11 +73,9 @@ DEFAULT_INPUT_MARGINALS_BEN_ARI = [
     ),
 ]
 
-DEFAULT_INPUT_MARGINALS_MOON = [
-    copy(_) for _ in DEFAULT_INPUT_MARGINALS_BEN_ARI
-]
+INPUT_MARGINALS_MOON = [copy(_) for _ in INPUT_MARGINALS_BEN_ARI]
 for i in range(14):
-    DEFAULT_INPUT_MARGINALS_MOON.append(
+    INPUT_MARGINALS_MOON.append(
         UnivariateInput(
             name=f"Inert {i+1}",
             distribution="uniform",
@@ -81,14 +84,30 @@ for i in range(14):
         )
     )
 
-DEFAULT_INPUTS = {
-    "ben-ari": MultivariateInput(DEFAULT_INPUT_MARGINALS_BEN_ARI),
-    "moon": MultivariateInput(DEFAULT_INPUT_MARGINALS_MOON),
+AVAILABLE_INPUT_SPECS = {
+    "ben-ari": {
+        "name": "OTL-Circuit-Ben-Ari",
+        "description": (
+            "Probabilistic input model for the OTL Circuit function "
+            "from Ben-Ari and Steinberg (2007)."
+        ),
+        "marginals": INPUT_MARGINALS_BEN_ARI,
+        "copulas": None,
+    },
+    "moon": {
+        "name": "OTL-Circuit-Moon",
+        "description": (
+            "Probabilistic input model for the OTL Circuit function "
+            "from Moon (2010)."
+        ),
+        "marginals": INPUT_MARGINALS_MOON,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "ben-ari"
 
-DEFAULT_PARAMETERS = None
+AVAILABLE_PARAMETERS = None
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:

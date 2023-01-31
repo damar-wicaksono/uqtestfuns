@@ -14,11 +14,14 @@ References
 import numpy as np
 
 from .utils import deg2rad
-from ..core import UnivariateInput, MultivariateInput
+from ..core import UnivariateInput
 
 DEFAULT_NAME = "Wing-Weight"
 
-DEFAULT_INPUT_MARGINALS = [
+TAGS = ["metamodeling", "sensitivity-analysis"]
+
+
+INPUT_MARGINALS_FORRESTER = [
     UnivariateInput(
         name="Sw",
         distribution="uniform",
@@ -81,13 +84,21 @@ DEFAULT_INPUT_MARGINALS = [
     ),
 ]
 
-DEFAULT_INPUTS = {
-    "forrester": MultivariateInput(DEFAULT_INPUT_MARGINALS),
+AVAILABLE_INPUT_SPECS = {
+    "forrester": {
+        "name": "Wing-Weight-Forrester",
+        "description": (
+            "Probabilistic input model for the Wing Weight model "
+            "from Forrester et al. (2008)."
+        ),
+        "marginals": INPUT_MARGINALS_FORRESTER,
+        "copulas": None,
+    }
 }
 
 DEFAULT_INPUT_SELECTION = "forrester"
 
-DEFAULT_PARAMETERS = None
+AVAILABLE_PARAMETERS = None
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:

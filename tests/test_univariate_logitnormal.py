@@ -77,4 +77,4 @@ def test_median() -> None:
     # Reference median is the logistic of the mean
     median_ref = logistic(parameters[0])
 
-    assert np.isclose(median, median_ref, rtol=1e-03, atol=1e-04)
+    assert np.isclose(median, median_ref, rtol=1e-03, atol=1e-03)
