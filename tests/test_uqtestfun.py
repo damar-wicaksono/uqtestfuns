@@ -20,7 +20,7 @@ def uqtestfun():
     my_args = {
         "name": "Test function",
         "evaluate": evaluate,
-        "input": MultivariateInput(input_marginals),
+        "prob_input": MultivariateInput(input_marginals),
         "parameters": 10,
     }
 
@@ -44,7 +44,7 @@ def test_create_instance(uqtestfun):
     assert uqtestfun_instance.evaluate == uqtestfun_dict["evaluate"]
     assert (
         uqtestfun_instance.spatial_dimension
-        == uqtestfun_dict["input"].spatial_dimension
+        == uqtestfun_dict["prob_input"].spatial_dimension
     )
     assert uqtestfun_instance.parameters == uqtestfun_dict["parameters"]
 
@@ -80,7 +80,7 @@ def test_invalid_input(uqtestfun):
     _, uqtestfun_dict = uqtestfun
 
     # Using an invalid type of input for the test function
-    uqtestfun_dict["input"] = "Test"
+    uqtestfun_dict["prob_input"] = "Test"
 
     with pytest.raises(TypeError):
         UQTestFun(**uqtestfun_dict)

@@ -153,6 +153,10 @@ def test_str():
     my_multivariate_input = MultivariateInput(marginals)
 
     # Create the reference string
+    str_ref = f"Name         : {my_multivariate_input.name}\n"
+    str_ref += f"Spatial Dim. : {my_multivariate_input.spatial_dimension}\n"
+    str_ref += f"Description  : {my_multivariate_input.description}\n"
+    str_ref += "Marginals    :\n\n"
     header_names = ["name", "distribution", "parameters", "description"]
     str_ref_list: List[List] = []
     for i, marginal in enumerate(marginals):
@@ -161,11 +165,12 @@ def test_str():
             str_ref_placeholder.append(getattr(marginal, header_name))
         str_ref_list.append(str_ref_placeholder)
     header_names.insert(0, "No.")
-    str_ref = tabulate(
+    str_ref += tabulate(
         str_ref_list,
         headers=list(map(str.capitalize, header_names)),
         stralign="center",
     )
+    str_ref += f"\n\nCopulas      : {my_multivariate_input.copulas}"
 
     # Assertion
     assert my_multivariate_input.__str__() == str_ref
@@ -179,6 +184,17 @@ def test_repr_html():
     my_multivariate_input = MultivariateInput(marginals)
 
     # Create the reference string
+    str_ref = "<p><b>Name</b>\n</p>"
+    str_ref += f"<p>&nbsp;&nbsp;&nbsp;{my_multivariate_input.name}\n</p>"
+    str_ref += "<p><b>Spatial Dimension</b>\n</p>"
+    str_ref += (
+        f"<p>&nbsp;&nbsp;&nbsp;{my_multivariate_input.spatial_dimension}\n</p>"
+    )
+    str_ref += "<p><b>Description</b>\n</p>"
+    str_ref += (
+        f"<p>&nbsp;&nbsp;&nbsp;{my_multivariate_input.description}\n</p>"
+    )
+    str_ref += "<p><b>Marginals</b>\n\n</p>"
     header_names = ["name", "distribution", "parameters", "description"]
     str_ref_list: List[List] = []
     for i, marginal in enumerate(marginals):
@@ -187,12 +203,15 @@ def test_repr_html():
             str_ref_placeholder.append(getattr(marginal, header_name))
         str_ref_list.append(str_ref_placeholder)
     header_names.insert(0, "No.")
-    str_ref = tabulate(
+    str_ref += tabulate(
         str_ref_list,
         headers=list(map(str.capitalize, header_names)),
         stralign="center",
         tablefmt="html",
     )
+
+    str_ref += "<p>\n\n<b>Copulas</b>\n</p>"
+    str_ref += f"<p>&nbsp;&nbsp;&nbsp;{my_multivariate_input.copulas}</p>"
 
     # Assertion
     assert my_multivariate_input._repr_html_() == str_ref
