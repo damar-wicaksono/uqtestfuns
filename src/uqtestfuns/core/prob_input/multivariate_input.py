@@ -126,15 +126,23 @@ class MultivariateInput:
 
     def _repr_html_(self):
 
-        table = (
-            f"<p><b>Name</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-            f"&nbsp;&nbsp;&nbsp;&nbsp;: {self.name}\n</p>"
-        )
-        table += (
-            f"<p><b>Spatial Dim.</b>&nbsp;: {self.spatial_dimension}\n</p>"
-        )
-        table += f"<p><b>Description</b>&nbsp;&nbsp;: {self.description}\n</p>"
-        table += "<p><b>Marginals</b>&nbsp;&nbsp;&nbsp;&nbsp;:\n\n</p>"
+        # table = (
+        #     f"<p><b>Name</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbs;"
+        #     f"&nbsp;&nbsp;&nbsp;&nbsp;: {self.name}\n</p>"
+        # )
+        # table += (
+        #     f"<p><b>Spatial Dim.</b>&nbsp;: {self.spatial_dimension}\n</p>"
+        # )
+        # table += f"<p><b>Description</b>&nbsp;&nbsp;: {self.description}\n</p>"
+        # table += "<p><b>Marginals</b>&nbsp;&nbsp;&nbsp;&nbsp;:\n\n</p>"
+        table = "<p><b>Name</b>\n</p>"
+        table += f"<p>&nbsp;&nbsp;&nbsp;{self.name}\n</p>"
+        table += "<p><b>Spatial Dimension</b>\n</p>"
+        table += f"<p>&nbsp;&nbsp;&nbsp;{self.spatial_dimension}\n</p>"
+        table += "<p><b>Description</b>\n</p>"
+        table += f"<p>&nbsp;&nbsp;&nbsp;{self.description}\n</p>"
+        table += "<p><b>Marginals</b>\n\n</p>"
+
         # Get the header names
         header_names = [name.capitalize() for name in FIELD_NAMES]
         header_names.insert(0, "No.")
@@ -149,10 +157,8 @@ class MultivariateInput:
             tablefmt="html",
         )
 
-        table += (
-            f"<p>\n\n<b>Copulas</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: "
-            f"{self.copulas}</p>"
-        )
+        table += "<p>\n\n<b>Copulas</b>\n</p>"
+        table += f"<p>&nbsp;&nbsp;&nbsp;{self.copulas}</p>"
 
         return table
 
