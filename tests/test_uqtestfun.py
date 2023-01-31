@@ -54,7 +54,7 @@ def test_call_instance(uqtestfun):
     """Test calling an instance of UQTestFun."""
     uqtestfun_instance, _ = uqtestfun
 
-    xx = np.random.rand(1000, uqtestfun_instance.spatial_dimension)
+    xx = uqtestfun_instance.input.get_sample(1000)
 
     # Assertions
     assert_call(uqtestfun_instance, xx)
