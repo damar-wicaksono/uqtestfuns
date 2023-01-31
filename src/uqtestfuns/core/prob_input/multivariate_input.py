@@ -66,19 +66,13 @@ class MultivariateInput:
 
     def get_sample(self, sample_size: int = 1):
         """Get a random sample from the distribution."""
-        # Create an instance univariate sample
-        univ_input = UnivariateInput(
-            name="X", distribution="uniform", parameters=[0, 1]
-        )
 
-        xx = np.random.rand(sample_size, self.spatial_dimension)
+        xx = np.empty((sample_size, self.spatial_dimension))
         # Transform the sample in [0, 1] to the domain of the distribution
         if not self.copulas:
             # Independent inputs generate sample marginal by marginal
             for idx_dim, marginal in enumerate(self.marginals):
-                xx[:, idx_dim] = univ_input.transform_sample(
-                    xx[:, idx_dim], marginal
-                )
+                xx[:, idx_dim] = marginal.get_sample(sample_size)
         else:
             raise ValueError("Copulas are not currently supported!")
 
