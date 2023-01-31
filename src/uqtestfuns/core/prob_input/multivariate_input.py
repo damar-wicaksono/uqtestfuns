@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import numpy as np
 from tabulate import tabulate
-from typing import List, Any, Union, Tuple
+from typing import Any, List, Optional, Union, Tuple
 from dataclasses import dataclass, field
 
 from .univariate_input import UnivariateInput, FIELD_NAMES
@@ -36,6 +36,8 @@ class MultivariateInput:
     spatial_dimension: int = field(init=False)
     marginals: Union[List[UnivariateInput], Tuple[UnivariateInput, ...]]
     copulas: Any = None
+    name: Optional[str] = None
+    description: Optional[str] = None
 
     def __post_init__(self):
         self.spatial_dimension = len(self.marginals)
@@ -103,6 +105,12 @@ class MultivariateInput:
         return yy
 
     def __str__(self):
+
+        table = f"Name         : {self.name}\n"
+        table += f"Spatial Dim. : {self.spatial_dimension}\n"
+        table += f"Description  : {self.description}\n"
+        table += "Marginals    :\n\n"
+
         # Get the header names
         header_names = [name.capitalize() for name in FIELD_NAMES]
         header_names.insert(0, "No.")
@@ -110,9 +118,23 @@ class MultivariateInput:
         # Get the values for each field as a list
         list_values = _get_values_as_list(self.marginals, FIELD_NAMES)
 
-        return tabulate(list_values, headers=header_names, stralign="center")
+        table += tabulate(list_values, headers=header_names, stralign="center")
+
+        table += f"\n\nCopulas      : {self.copulas}"
+
+        return table
 
     def _repr_html_(self):
+
+        table = (
+            f"<p><b>Name</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            f"&nbsp;&nbsp;&nbsp;&nbsp;: {self.name}\n</p>"
+        )
+        table += (
+            f"<p><b>Spatial Dim.</b>&nbsp;: {self.spatial_dimension}\n</p>"
+        )
+        table += f"<p><b>Description</b>&nbsp;&nbsp;: {self.description}\n</p>"
+        table += "<p><b>Marginals</b>&nbsp;&nbsp;&nbsp;&nbsp;:\n\n</p>"
         # Get the header names
         header_names = [name.capitalize() for name in FIELD_NAMES]
         header_names.insert(0, "No.")
@@ -120,12 +142,19 @@ class MultivariateInput:
         # Get the values for each field as a list
         list_values = _get_values_as_list(self.marginals, FIELD_NAMES)
 
-        return tabulate(
+        table += tabulate(
             list_values,
             headers=header_names,
             stralign="center",
             tablefmt="html",
         )
+
+        table += (
+            f"<p>\n\n<b>Copulas</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: "
+            f"{self.copulas}</p>"
+        )
+
+        return table
 
 
 def _get_values_as_list(
