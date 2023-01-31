@@ -62,7 +62,12 @@ class UQTestFun:
         """Evaluation of the test function by calling the instance."""
 
         # Verify the shape of the input
-        _verify_input(xx, self.spatial_dimension)
+        _verify_sample_shape(xx, self.spatial_dimension)
+        # Verify the domain of the input
+        for dim_idx in range(self.spatial_dimension):
+            lb = self.input.marginals[dim_idx].lower
+            ub = self.input.marginals[dim_idx].upper
+            _verify_sample_domain(xx[:, dim_idx], min_value=lb, max_value=ub)
 
         if self.parameters is None:
             return self.evaluate(xx)
@@ -93,7 +98,10 @@ class UQTestFun:
             Transformed sampled values from the specified uniform domain to
             the domain of the function as defined the `input` property.
         """
-        # TODO: Verify input
+
+        # Verify the sampled input
+        _verify_sample_shape(xx, self.spatial_dimension)
+        _verify_sample_domain(xx, min_value=min_value, max_value=max_value)
 
         # Create an input in the canonical uniform domain
         uniform_input = create_canonical_uniform_input(
@@ -101,7 +109,7 @@ class UQTestFun:
         )
 
         # Transform the sampled value to the function domain
-        xx_trans = uniform_input.transform_sample(xx, self.input)
+        xx_trans = uniform_input.transform_sample(xx, other=self.input)
 
         return xx_trans
 
@@ -115,14 +123,14 @@ class UQTestFun:
         return out
 
 
-def _verify_input(xx: np.ndarray, num_cols: int):
-    """Verify the number of columns of the input array.
+def _verify_sample_shape(xx: np.ndarray, num_cols: int):
+    """Verify the number of columns of the input sample array.
 
     Parameters
     ----------
     xx : np.ndarray
-        Array of input values with a shape of N-by-M, where N is the number
-        of realizations and M is the spatial dimension.
+        Array of sampled input values with a shape of N-by-M, where N is
+        the number of realizations and M is the spatial dimension.
     num_cols : int
         The expected number of columns in the input.
 
@@ -136,6 +144,31 @@ def _verify_input(xx: np.ndarray, num_cols: int):
         raise ValueError(
             f"Wrong dimensionality of the input array!"
             f"Expected {num_cols}, got {xx.shape[1]}."
+        )
+
+
+def _verify_sample_domain(xx: np.ndarray, min_value: float, max_value: float):
+    """Verify whether the sampled input values are within the min and max.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        Array of sampled input values with a shape of N-by-M, where N is
+        the number of realizations and M is the spatial dimension.
+    min_value : float
+        The minimum value of the domain.
+    max_value : float
+        The maximum value of the domain.
+
+    Raises
+    ------
+    ValueError
+        If any of the input values are outside the domain.
+    """
+    if not np.all(np.logical_and(xx >= min_value, xx <= max_value)):
+        raise ValueError(
+            f"One or more values are outside the domain "
+            f"[{min_value}, {max_value}]!"
         )
 
 

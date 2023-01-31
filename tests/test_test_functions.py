@@ -115,10 +115,33 @@ def test_wrong_input_dim(default_testfun):
 
     testfun, _ = default_testfun
 
-    # Compute variance via Monte Carlo
     xx = np.random.rand(10, testfun.spatial_dimension * 2)
 
     with pytest.raises(ValueError):
+        testfun(xx)
+
+
+def test_wrong_input_domain(default_testfun):
+    """Test if an exception is raised when sampled input is of wrong domain."""
+
+    testfun, _ = default_testfun
+
+    # Create a sample in [-2, 2]
+    xx = -2 + 4 * np.random.rand(1000, testfun.spatial_dimension)
+
+    with pytest.raises(ValueError):
+        # By default, the transformation domain is from [-1, 1]
+        testfun.transform_sample(xx)
+
+    # Create sampled input values from the default and perturb them
+    xx = np.empty((100, testfun.spatial_dimension))
+    for i, marginal in enumerate(testfun.input.marginals):
+        lb = marginal.lower + 1000
+        ub = marginal.upper - 1000
+        xx[:, i] = lb + (ub - lb) * np.random.rand(100)
+
+    with pytest.raises(ValueError):
+        # Evaluation will check if the sampled input are within the domain
         testfun(xx)
 
 
