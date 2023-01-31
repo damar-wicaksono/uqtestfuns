@@ -67,14 +67,20 @@ def test_transform_input(default_testfun):
 
     testfun, _ = default_testfun
 
+    sample_size = 100
+
     # Transformation from the default uniform domain to the input domain
     np.random.seed(315)
-    xx_1 = -1 + 2 * np.random.rand(100, testfun.spatial_dimension)
+    # NOTE: Direct sample from the input property is done by column to column,
+    # for reproducibility using the same RNG seed the reference input must be
+    # filled in column by column as well with the. The call to NumPy random
+    # number generators below yields the same effect.
+    xx_1 = -1 + 2 * np.random.rand(testfun.spatial_dimension, sample_size).T
     xx_1 = testfun.transform_inputs(xx_1)
 
     # Directly sample from the input property
     np.random.seed(315)
-    xx_2 = testfun.input.get_sample(100)
+    xx_2 = testfun.input.get_sample(sample_size)
 
     # Assertion: two sampled values are equal
     assert np.allclose(xx_1, xx_2)
@@ -85,14 +91,20 @@ def test_transform_input_non_default(default_testfun):
 
     testfun, _ = default_testfun
 
+    sample_size = 100
+
     # Transformation from non-default uniform domain to the input domain
     np.random.seed(315)
-    xx_1 = np.random.rand(100, testfun.spatial_dimension)
+    # NOTE: Direct sample from the input property is done by column to column,
+    # for reproducibility using the same RNG seed the reference input must be
+    # filled in column by column as well with the. The call to NumPy random
+    # number generators below yields the same effect.
+    xx_1 = np.random.rand(testfun.spatial_dimension, sample_size).T
     xx_1 = testfun.transform_inputs(xx_1, min_value=0.0, max_value=1.0)
 
     # Directly sample from the input property
     np.random.seed(315)
-    xx_2 = testfun.input.get_sample(100)
+    xx_2 = testfun.input.get_sample(sample_size)
 
     # Assertion: two sampled values are equal
     assert np.allclose(xx_1, xx_2)
