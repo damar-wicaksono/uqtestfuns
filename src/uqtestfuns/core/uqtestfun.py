@@ -15,13 +15,6 @@ from inspect import signature
 __all__ = ["UQTestFun"]
 
 
-def get_fun_str(fun: Callable):
-    """Get a string representation of a test function."""
-    out = f"{fun.__module__}.{fun.__name__}{signature(fun)}"
-
-    return out
-
-
 @dataclass
 class UQTestFun:
     """A dataclass for UQ test functions.
@@ -76,7 +69,7 @@ class UQTestFun:
         else:
             return self.evaluate(xx, self.parameters)
 
-    def transform_inputs(
+    def transform_sample(
         self,
         xx: np.ndarray,
         min_value: float = -1.0,
@@ -87,8 +80,8 @@ class UQTestFun:
         Parameters
         ----------
         xx : np.ndarray
-            Sampled input values (realizations) in a uniform domain.
-            By default, the uniform domain is [-1, 1].
+            Sampled input values (realizations) in a uniform bounded domain.
+            By default, the uniform domain is [-1.0, 1.0].
         min_value : float, optional
             Minimum value of the uniform domain. Default value is -1.0.
         max_value : float, optional
@@ -103,12 +96,12 @@ class UQTestFun:
         # TODO: Verify input
 
         # Create an input in the canonical uniform domain
-        canonical_input = create_canonical_uniform_input(
+        uniform_input = create_canonical_uniform_input(
             self.spatial_dimension, min_value, max_value
         )
 
         # Transform the sampled value to the function domain
-        xx_trans = canonical_input.transform_sample(xx, self.input)
+        xx_trans = uniform_input.transform_sample(xx, self.input)
 
         return xx_trans
 
@@ -116,7 +109,7 @@ class UQTestFun:
         out = (
             f"Name              : {self.name}\n"
             f"Spatial dimension : {self.spatial_dimension}\n"
-            f"Evaluate          : {get_fun_str(self.evaluate)}"
+            f"Evaluate          : {_get_fun_str(self.evaluate)}"
         )
 
         return out
@@ -144,3 +137,10 @@ def _verify_input(xx: np.ndarray, num_cols: int):
             f"Wrong dimensionality of the input array!"
             f"Expected {num_cols}, got {xx.shape[1]}."
         )
+
+
+def _get_fun_str(fun: Callable):
+    """Get a string representation of a test function."""
+    out = f"{fun.__module__}.{fun.__name__}{signature(fun)}"
+
+    return out

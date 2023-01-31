@@ -76,7 +76,7 @@ def test_transform_input(default_testfun):
     # filled in column by column as well with the. The call to NumPy random
     # number generators below yields the same effect.
     xx_1 = -1 + 2 * np.random.rand(testfun.spatial_dimension, sample_size).T
-    xx_1 = testfun.transform_inputs(xx_1)
+    xx_1 = testfun.transform_sample(xx_1)
 
     # Directly sample from the input property
     np.random.seed(315)
@@ -100,7 +100,7 @@ def test_transform_input_non_default(default_testfun):
     # filled in column by column as well with the. The call to NumPy random
     # number generators below yields the same effect.
     xx_1 = np.random.rand(testfun.spatial_dimension, sample_size).T
-    xx_1 = testfun.transform_inputs(xx_1, min_value=0.0, max_value=1.0)
+    xx_1 = testfun.transform_sample(xx_1, min_value=0.0, max_value=1.0)
 
     # Directly sample from the input property
     np.random.seed(315)
