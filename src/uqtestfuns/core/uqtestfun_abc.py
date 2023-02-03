@@ -52,8 +52,8 @@ class UQTestFunABC(abc.ABC):
             Multivariate probabilistic input model.
         parameters : Any
             Parameters to the test function. Once set, the parameters are held
-            constant during function evaluation. It may, however, be modified by
-            once an instance has been created.
+            constant during function evaluation. It may, however, be modified
+            (by passing a new value) once an instance has been created.
         name : str, optional
             Name of the instance.
         """
