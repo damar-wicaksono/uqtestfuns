@@ -1,7 +1,8 @@
 """
 Utility module for all the UQ test functions.
 """
-from .prob_input import UnivariateInput, MultivariateInput
+from .prob_input.univariate_input import UnivariateInput
+from .prob_input.multivariate_input import MultivariateInput
 
 
 def create_canonical_uniform_input(

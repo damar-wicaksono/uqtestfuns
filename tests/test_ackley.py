@@ -9,15 +9,16 @@ Notes
 import numpy as np
 import pytest
 
-from uqtestfuns import create_from_default
+from uqtestfuns import Ackley
 
 
 @pytest.mark.parametrize("spatial_dimension", [1, 2, 3, 10])
 def test_optimum_value(spatial_dimension):
     """Test the optimum value; regardless of the dimension."""
-    ackley_fun = create_from_default("ackley", spatial_dimension)
+    ackley_fun = Ackley(spatial_dimension=spatial_dimension)
 
     xx = np.zeros((1, ackley_fun.spatial_dimension))
     yy = ackley_fun(xx)
 
+    # The optima of the Ackley function is at 0.0s
     assert np.allclose(yy, 0.0)

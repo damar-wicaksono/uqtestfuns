@@ -23,16 +23,13 @@ References
 import numpy as np
 
 from copy import copy
+from typing import Optional
 
-from ..core import UnivariateInput
+from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.uqtestfun_abc import UQTestFunABC
+from .available import create_prob_input_from_available
 
-
-DEFAULT_NAME = "OTL"
-
-TAGS = [
-    "metamodeling",
-    "sensitivity-analysis",
-]
+__all__ = ["OTLCircuit"]
 
 INPUT_MARGINALS_BEN_ARI = [
     UnivariateInput(
@@ -107,47 +104,69 @@ AVAILABLE_INPUT_SPECS = {
 
 DEFAULT_INPUT_SELECTION = "ben-ari"
 
-AVAILABLE_PARAMETERS = None
 
+class OTLCircuit(UQTestFunABC):
+    """A concrete implementation of the OTL circuit test function."""
 
-def evaluate(xx: np.ndarray) -> np.ndarray:
-    """Evaluate the OTL circuit test function on a set of input values.
+    tags = ["metamodeling", "sensitivity-analysis"]
 
-    Parameters
-    ----------
-    xx : np.ndarray
-        (At least) 6-dimensional input values given by N-by-6 arrays
-        where N is the number of input values.
+    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    Returns
-    -------
-    np.ndarray
-        The output of the OTL circuit test function,
-        i.e., the mid-point voltage in Volt.
-        The output is a one-dimensional array of length N.
+    available_parameters = None
 
-    Notes
-    -----
-    - The variant of this test function has 14 additional inputs,
-      but they are all taken to be inert and therefore should not affect
-      the output.
-    """
-    rr_b1 = xx[:, 0]  # Resistance b1
-    rr_b2 = xx[:, 1]  # Resistance b2
-    rr_f = xx[:, 2]  # Resistance f
-    rr_c1 = xx[:, 3]  # Resistance c1
-    rr_c2 = xx[:, 4]  # Resistance c2
-    beta = xx[:, 5]  # Current gain
+    default_dimension = 6
 
-    # Compute the voltage across b1
-    vb1 = 12 * rr_b1 / (rr_b1 + rr_b2)
+    def __init__(
+        self,
+        *,
+        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+    ):
 
-    # Compute the mid-point voltage
-    denom = beta * (rr_c2 + 9) + rr_f
-    term_1 = ((vb1 + 0.74) * beta * (rr_c2 + 9)) / denom
-    term_2 = 11.35 * rr_f / denom
-    term_3 = 0.74 * rr_f * beta * (rr_c2 + 9) / (rr_c1 * denom)
+        # --- Arguments processing
+        prob_input = create_prob_input_from_available(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
 
-    vm = term_1 + term_2 + term_3
+        super().__init__(prob_input=prob_input, name=OTLCircuit.__name__)
 
-    return vm
+    def evaluate(self, xx: np.ndarray) -> np.ndarray:
+        """Evaluate the OTL circuit test function on a set of input values.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            (At least) 6-dimensional input values given by N-by-6 arrays
+            where N is the number of input values.
+
+        Returns
+        -------
+        np.ndarray
+            The output of the OTL circuit test function,
+            i.e., the mid-point voltage in Volt.
+            The output is a one-dimensional array of length N.
+
+        Notes
+        -----
+        - The variant of this test function has 14 additional inputs,
+          but they are all taken to be inert and therefore should not affect
+          the output.
+        """
+        rr_b1 = xx[:, 0]  # Resistance b1
+        rr_b2 = xx[:, 1]  # Resistance b2
+        rr_f = xx[:, 2]  # Resistance f
+        rr_c1 = xx[:, 3]  # Resistance c1
+        rr_c2 = xx[:, 4]  # Resistance c2
+        beta = xx[:, 5]  # Current gain
+
+        # Compute the voltage across b1
+        vb1 = 12 * rr_b1 / (rr_b1 + rr_b2)
+
+        # Compute the mid-point voltage
+        denom = beta * (rr_c2 + 9) + rr_f
+        term_1 = ((vb1 + 0.74) * beta * (rr_c2 + 9)) / denom
+        term_2 = 11.35 * rr_f / denom
+        term_3 = 0.74 * rr_f * beta * (rr_c2 + 9) / (rr_c1 * denom)
+
+        vm = term_1 + term_2 + term_3
+
+        return vm

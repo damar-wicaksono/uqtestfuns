@@ -23,16 +23,15 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput
+from typing import Optional
 
-DEFAULT_NAME = "Borehole"
+from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.uqtestfun_abc import UQTestFunABC
+from .available import create_prob_input_from_available
 
-TAGS = [
-    "metamodeling",
-    "sensitivity-analysis",
-]
+__all__ = ["Borehole"]
 
-# From [1]
+# From Ref. [1]
 INPUT_MARGINALS_HARPER = [
     UnivariateInput(
         name="rw",
@@ -84,7 +83,7 @@ INPUT_MARGINALS_HARPER = [
     ),
 ]
 
-# From [2]
+# From Ref. [2]
 INPUT_MARGINALS_MORRIS = list(INPUT_MARGINALS_HARPER)
 INPUT_MARGINALS_MORRIS[0:2] = [
     UnivariateInput(
@@ -124,35 +123,56 @@ AVAILABLE_INPUT_SPECS = {
 
 DEFAULT_INPUT_SELECTION = "harper"
 
-AVAILABLE_PARAMETERS = None
 
+class Borehole(UQTestFunABC):
 
-def evaluate(xx: np.ndarray) -> np.ndarray:
-    """Evaluate the Borehole function on a set of input values.
+    tags = ["metamodeling", "sensitivity-analysis"]
 
-    Parameters
-    ----------
-    xx : np.ndarray
-        8-Dimensional input values given by N-by-8 arrays where
-        N is the number of input values.
+    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    Returns
-    -------
-    np.ndarray
-        The output of the Borehole function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
-    """
-    # Compute the Borehole function
-    nom = 2 * np.pi * xx[:, 2] * (xx[:, 3] - xx[:, 5])
-    denom_1 = np.log(xx[:, 1] / xx[:, 0])
-    denom_2 = (
-        2
-        * xx[:, 6]
-        * xx[:, 2]
-        / (np.log(xx[:, 1] / xx[:, 0]) * xx[:, 0] ** 2 * xx[:, 7])
-    )
-    denom_3 = xx[:, 2] / xx[:, 4]
+    available_parameters = None
 
-    yy = nom / (denom_1 * (1 + denom_2 + denom_3))
+    default_dimension = 8
 
-    return yy
+    def __init__(
+        self,
+        *,
+        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+    ):
+
+        # --- Arguments processing
+        prob_input = create_prob_input_from_available(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+
+        super().__init__(prob_input=prob_input, name=Borehole.__name__)
+
+    def evaluate(self, xx):
+        """Evaluate the Borehole function on a set of input values.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            8-Dimensional input values given by N-by-8 arrays where
+            N is the number of input values.
+
+        Returns
+        -------
+        np.ndarray
+            The output of the Borehole function evaluated on the input values.
+            The output is a 1-dimensional array of length N.
+        """
+        # Compute the Borehole function
+        nom = 2 * np.pi * xx[:, 2] * (xx[:, 3] - xx[:, 5])
+        denom_1 = np.log(xx[:, 1] / xx[:, 0])
+        denom_2 = (
+            2
+            * xx[:, 6]
+            * xx[:, 2]
+            / (np.log(xx[:, 1] / xx[:, 0]) * xx[:, 0] ** 2 * xx[:, 7])
+        )
+        denom_3 = xx[:, 2] / xx[:, 4]
+
+        yy = nom / (denom_1 * (1 + denom_2 + denom_3))
+
+        return yy

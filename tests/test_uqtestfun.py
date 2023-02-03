@@ -1,12 +1,10 @@
+"""
+Test module for UQTestFun class, a generic class for generic UQ test function.
+"""
 import pytest
-from inspect import signature
 
-from uqtestfuns import UQTestFun, MultivariateInput, get_default_args
-from conftest import (
-    assert_call,
-    create_random_marginals,
-    create_random_alphanumeric,
-)
+from uqtestfuns import UQTestFun, MultivariateInput
+from conftest import assert_call, create_random_marginals
 
 
 @pytest.fixture
@@ -15,20 +13,22 @@ def uqtestfun():
     input_marginals = create_random_marginals(1)
 
     def evaluate(x, p):
-        x + 1
+        return p * (x + 1)
+
+    parameters = 10
 
     my_args = {
-        "name": "Test function",
         "evaluate": evaluate,
         "prob_input": MultivariateInput(input_marginals),
-        "parameters": 10,
+        "parameters": parameters,
+        "name": "Test function",
     }
 
     uqtestfun_instance = UQTestFun(
-        name="Test function",
         evaluate=evaluate,
         prob_input=MultivariateInput(input_marginals),
-        parameters=10,
+        parameters=parameters,
+        name="Test function",
     )
 
     return uqtestfun_instance, my_args
@@ -41,7 +41,8 @@ def test_create_instance(uqtestfun):
 
     # Assertions
     assert uqtestfun_instance.name == uqtestfun_dict["name"]
-    assert uqtestfun_instance.evaluate == uqtestfun_dict["evaluate"]
+    # The original evaluate function is stored in a hidden attribute
+    assert uqtestfun_instance._evaluate == uqtestfun_dict["evaluate"]
     assert (
         uqtestfun_instance.spatial_dimension
         == uqtestfun_dict["prob_input"].spatial_dimension
@@ -57,7 +58,6 @@ def test_call_instance(uqtestfun):
 
     # Assertions
     assert_call(uqtestfun_instance, xx)
-    assert_call(uqtestfun_instance.evaluate, xx, uqtestfun_instance.parameters)
 
 
 def test_str(uqtestfun):
@@ -66,10 +66,7 @@ def test_str(uqtestfun):
 
     str_ref = (
         f"Name              : {uqtestfun_instance.name}\n"
-        f"Spatial dimension : {uqtestfun_instance.spatial_dimension}\n"
-        f"Evaluate          : {uqtestfun_instance.evaluate.__module__}."
-        f"{uqtestfun_instance.evaluate.__name__}"
-        f"{signature(uqtestfun_instance.evaluate)}"
+        f"Spatial dimension : {uqtestfun_instance.spatial_dimension}"
     )
 
     assert uqtestfun_instance.__str__() == str_ref
@@ -84,9 +81,3 @@ def test_invalid_input(uqtestfun):
 
     with pytest.raises(TypeError):
         UQTestFun(**uqtestfun_dict)
-
-
-def test_unsupported_fun():
-    """Test getting the default arguments of an unsupported test function."""
-    with pytest.raises(KeyError):
-        get_default_args(create_random_alphanumeric(10))

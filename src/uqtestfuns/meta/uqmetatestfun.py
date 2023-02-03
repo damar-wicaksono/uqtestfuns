@@ -145,21 +145,33 @@ class UQMetaTestFun:
             assert testfun_specs is not None
             assert not isinstance(testfun_specs, list)
             # Create an instance of inputs
-            inputs = MultivariateInput(testfun_specs.inputs)
+            prob_input = MultivariateInput(testfun_specs.inputs)
             # Assign the realized spec as a parameter
             parameters = testfun_specs
 
-            return UQTestFun(evaluate, inputs, name, parameters)
+            return UQTestFun(
+                evaluate=evaluate,
+                prob_input=prob_input,
+                parameters=parameters,
+                name=name,
+            )
 
         sample = []
         for i in range(sample_size):
             # Create an instance of inputs
             assert isinstance(testfun_specs, list)
-            inputs = MultivariateInput(testfun_specs[i].inputs)
+            prob_input = MultivariateInput(testfun_specs[i].inputs)
             # Assign the realized spec as a parameter
             parameters = testfun_specs[i]
 
-            sample.append(UQTestFun(evaluate, inputs, name, parameters))
+            sample.append(
+                UQTestFun(
+                    evaluate=evaluate,
+                    prob_input=prob_input,
+                    parameters=parameters,
+                    name=name,
+                )
+            )
 
         return sample
 

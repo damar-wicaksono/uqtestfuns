@@ -3,118 +3,141 @@ Test module for instances of the available UQ test functions.
 
 Notes
 -----
-- All UQ test functions are instantiated as UQTestFun.
-- The tests in this module only deal with the behavior of the UQTestFun
-  instances associated with the UQ test functions not about the correctness
-  of the computation results.
+- All UQ test functions are derived from UQTestFunABC abstract base class.
+- The tests in this module only deal with the general behaviors of the concrete
+  implementations not about the correctness of computation of a particular
+  implementation.
 """
 import numpy as np
 import pytest
+import copy
 
-from typing import Callable
-
-from uqtestfuns import create_from_default, MultivariateInput
 from conftest import assert_call
+from uqtestfuns.utils import get_available_classes
 
-from uqtestfuns.test_functions.default import AVAILABLE_FUNCTIONS
+from uqtestfuns import test_functions
 
-AVAILABLE_FUNCTION_KEYS = list(AVAILABLE_FUNCTIONS.keys())
-
-
-@pytest.fixture(params=AVAILABLE_FUNCTION_KEYS)
-def default_testfun(request):
-    """Fixture for the tests, an instance from the avail. test functions."""
-    testfun = create_from_default(request.param)
-    testfun_mod = AVAILABLE_FUNCTIONS[request.param]
-
-    return testfun, testfun_mod
+AVAILABLE_FUNCTION_CLASSES = get_available_classes(test_functions)
 
 
-def test_create_instance(default_testfun):
+@pytest.fixture(params=AVAILABLE_FUNCTION_CLASSES)
+def builtin_testfun(request):
+    print(request.param)
+    _, testfun = request.param
+
+    return testfun
+
+
+def test_create_instance(builtin_testfun):
     """Test the creation of the default instance of avail. test functions."""
+    testfun = builtin_testfun
 
-    testfun, testfun_mod = default_testfun
-
-    default_input_specs = testfun_mod.AVAILABLE_INPUT_SPECS[
-        testfun_mod.DEFAULT_INPUT_SELECTION
-    ]
-
-    default_marginals = default_input_specs["marginals"]
-    if isinstance(default_marginals, Callable):  # type: ignore
-        default_marginals = default_marginals(testfun_mod.DEFAULT_DIMENSION)
-
-    default_input = MultivariateInput(default_marginals)
-
-    # Assertions
-    assert testfun.spatial_dimension == default_input.spatial_dimension
-
-    # TODO: Implement a better equality for the input dataclass
-    # assert testfun.input == testfun_mod.DEFAULT_INPUT
+    # Assertion
+    assert_call(testfun)
 
 
-def test_create_instance_with_prob_input(default_testfun):
-    """Test the creation of the default instance and passing prob input."""
+def test_create_instance_with_prob_input(builtin_testfun):
+    """Test the creation of a default instance and passing prob. input.
 
-    _, testfun_mod = default_testfun
+    Notes
+    -----
+    - If non-default probabilistic input is to be specified, first create
+      an instance without probabilistic input then assign the input after
+      construction.
+    """
+    testfun_class = builtin_testfun
 
-    default_input_specs = testfun_mod.AVAILABLE_INPUT_SPECS[
-        testfun_mod.DEFAULT_INPUT_SELECTION
-    ]
+    # Create an instance
+    my_fun = testfun_class()
 
-    default_marginals = default_input_specs["marginals"]
-    if isinstance(default_marginals, Callable):  # type: ignore
-        default_marginals = default_marginals(testfun_mod.DEFAULT_DIMENSION)
+    # Copy the underlying probabilistic input
+    my_prob_input = copy.copy(my_fun.prob_input)
 
-    default_input = MultivariateInput(default_marginals)
+    # Create an instance without probabilistic input
+    if testfun_class.available_inputs is not None:
+        my_fun_2 = testfun_class(prob_input_selection=None)
+        assert my_fun_2.prob_input is None
+        assert my_fun_2.spatial_dimension == testfun_class.default_dimension
 
-    assert_call(
-        create_from_default,
-        fun_name=testfun_mod.DEFAULT_NAME,
-        prob_input=default_input,
-    )
+        # Assign the probabilistic input
+        my_fun_2.prob_input = my_prob_input
+        assert my_fun_2.prob_input is my_prob_input
 
-    # Non-sensical probabilistic input model
-    with pytest.raises(TypeError):
-        name = testfun_mod.DEFAULT_NAME
-        create_from_default(name, prob_input=10)  # type: ignore
+        # Nonsensical probabilistic input model
+        with pytest.raises(TypeError):
+            my_fun_2.prob_input = 10
 
 
-def test_create_instance_with_parameters(default_testfun):
-    """Test the creation of the default instance and passing parameters."""
+def test_create_instance_with_parameters(builtin_testfun):
+    """Test the creation of the default instance and passing parameters.
 
-    _, testfun_mod = default_testfun
+    Notes
+    -----
+    - If non-default parameters are to be specified, first create
+      an instance without parameters then assign the parameters after
+      construction.
+    """
 
-    available_parameters = testfun_mod.AVAILABLE_PARAMETERS
+    testfun_class = builtin_testfun
+
+    my_fun = testfun_class()
+    parameters = my_fun.parameters
+
+    if testfun_class.available_parameters is not None:
+        my_fun_2 = testfun_class(parameters_selection=None)
+        assert my_fun_2.parameters is None
+        my_fun_2.parameters = parameters
+        assert my_fun_2.parameters is parameters
+    else:
+        assert my_fun.parameters is None
+
+
+def test_available_inputs(builtin_testfun):
+    """Test creating test functions with different built-in input specs."""
+
+    testfun_class = builtin_testfun
+
+    available_inputs = testfun_class.available_inputs
+
+    for available_input in available_inputs:
+        assert_call(testfun_class, prob_input_selection=available_input)
+
+
+def test_available_parameters(builtin_testfun):
+    """Test creating test functions with different built-in parameters."""
+
+    testfun_class = builtin_testfun
+
+    available_parameters = testfun_class.available_parameters
 
     if available_parameters is not None:
-        parameters = available_parameters[
-            testfun_mod.DEFAULT_PARAMETERS_SELECTION
-        ]
-    else:
-        parameters = available_parameters
-
-    assert_call(
-        create_from_default,
-        fun_name=testfun_mod.DEFAULT_NAME,
-        parameters=parameters,
-    )
+        for available_parameter in available_parameters:
+            assert_call(
+                testfun_class, parameters_selection=available_parameter
+            )
 
 
-def test_call_instance(default_testfun):
-    """Test calling an instance of the test function."""
+def test_call_instance(builtin_testfun):
+    """Test calling an instance of the test function on input values."""
 
-    testfun, _ = default_testfun
+    testfun = builtin_testfun
 
-    xx = testfun.prob_input.get_sample(10)
+    # Create an instance
+    my_fun = testfun()
+
+    xx = my_fun.prob_input.get_sample(10)
 
     # Assertions
-    assert_call(testfun, xx)
+    assert_call(my_fun, xx)
 
 
-def test_transform_input(default_testfun):
+def test_transform_input(builtin_testfun):
     """Test transforming a set of input values in the default unif. domain."""
 
-    testfun, _ = default_testfun
+    testfun = builtin_testfun
+
+    # Create an instance
+    my_fun = testfun()
 
     sample_size = 100
 
@@ -124,21 +147,24 @@ def test_transform_input(default_testfun):
     # for reproducibility using the same RNG seed the reference input must be
     # filled in column by column as well with the. The call to NumPy random
     # number generators below yields the same effect.
-    xx_1 = -1 + 2 * np.random.rand(testfun.spatial_dimension, sample_size).T
-    xx_1 = testfun.transform_sample(xx_1)
+    xx_1 = -1 + 2 * np.random.rand(my_fun.spatial_dimension, sample_size).T
+    xx_1 = my_fun.transform_sample(xx_1)
 
     # Directly sample from the input property
     np.random.seed(315)
-    xx_2 = testfun.prob_input.get_sample(sample_size)
+    xx_2 = my_fun.prob_input.get_sample(sample_size)
 
     # Assertion: two sampled values are equal
     assert np.allclose(xx_1, xx_2)
 
 
-def test_transform_input_non_default(default_testfun):
+def test_transform_input_non_default(builtin_testfun):
     """Test transforming an input from non-default domain."""
 
-    testfun, _ = default_testfun
+    testfun = builtin_testfun
+
+    # Create an instance
+    my_fun = testfun()
 
     sample_size = 100
 
@@ -148,21 +174,21 @@ def test_transform_input_non_default(default_testfun):
     # for reproducibility using the same RNG seed the reference input must be
     # filled in column by column as well with the. The call to NumPy random
     # number generators below yields the same effect.
-    xx_1 = np.random.rand(testfun.spatial_dimension, sample_size).T
-    xx_1 = testfun.transform_sample(xx_1, min_value=0.0, max_value=1.0)
+    xx_1 = np.random.rand(my_fun.spatial_dimension, sample_size).T
+    xx_1 = my_fun.transform_sample(xx_1, min_value=0.0, max_value=1.0)
 
     # Directly sample from the input property
     np.random.seed(315)
-    xx_2 = testfun.prob_input.get_sample(sample_size)
+    xx_2 = my_fun.prob_input.get_sample(sample_size)
 
     # Assertion: two sampled values are equal
     assert np.allclose(xx_1, xx_2)
 
 
-def test_wrong_input_dim(default_testfun):
+def test_evaluate_wrong_input_dim(builtin_testfun):
     """Test if an exception is raised when input is of wrong dimension."""
 
-    testfun, _ = default_testfun
+    testfun = builtin_testfun()
 
     xx = np.random.rand(10, testfun.spatial_dimension * 2)
 
@@ -170,10 +196,10 @@ def test_wrong_input_dim(default_testfun):
         testfun(xx)
 
 
-def test_wrong_input_domain(default_testfun):
-    """Test if an exception is raised when sampled input is of wrong domain."""
+def test_evaluate_wrong_input_domain(builtin_testfun):
+    """Test if an exception is raised when sampled input is in wrong domain."""
 
-    testfun, _ = default_testfun
+    testfun = builtin_testfun()
 
     # Create a sample in [-2, 2]
     xx = -2 + 4 * np.random.rand(1000, testfun.spatial_dimension)
@@ -194,8 +220,15 @@ def test_wrong_input_domain(default_testfun):
         testfun(xx)
 
 
-@pytest.mark.parametrize("test_function", AVAILABLE_FUNCTION_KEYS)
-def test_invalid_input_params_selection(test_function):
-    """"""
+def test_evaluate_invalid_spatial_dim(builtin_testfun):
+    """Test if an exception is raised if invalid spatial dimension is given."""
+
+    if builtin_testfun.default_dimension is None:
+        with pytest.raises(TypeError):
+            builtin_testfun(spatial_dimension="10")
+
+
+def test_evaluate_invalid_input_selection(builtin_testfun):
+    """Test if an exception is raised if invalid input selection is given."""
     with pytest.raises(ValueError):
-        create_from_default(test_function, prob_input="qlej2")
+        builtin_testfun(prob_input_selection=100)

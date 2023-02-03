@@ -9,24 +9,16 @@ Notes
 import numpy as np
 import pytest
 
-import uqtestfuns
-from uqtestfuns import UQTestFun, get_default_args
-from uqtestfuns.test_functions import ishigami as ishigami_mod
-
+from uqtestfuns import Ishigami
+import uqtestfuns.test_functions.ishigami as ishigami_mod
 
 # Test for different parameters to the Ishigami function
-parameters = list(ishigami_mod.AVAILABLE_PARAMETERS.values()) + [(7.0, 0.05)]
+available_parameters = Ishigami.available_parameters
 
 
-@pytest.fixture(params=parameters)
+@pytest.fixture(params=available_parameters)
 def ishigami_fun(request):
-    default_args = get_default_args("ishigami")
-    ishigami = UQTestFun(
-        name=default_args["name"],
-        evaluate=default_args["evaluate"],
-        prob_input=default_args["prob_input"],
-        parameters=request.param,
-    )
+    ishigami = Ishigami(parameters_selection=request.param)
 
     return ishigami
 
@@ -64,14 +56,12 @@ def test_compute_variance(ishigami_fun):
     assert np.allclose(var_mc, var_ref, rtol=1e-2)
 
 
-@pytest.mark.parametrize("param_selection", ["marrel", "sobol-levitan"])
+@pytest.mark.parametrize("param_selection", available_parameters)
 def test_different_parameters(param_selection):
     """Test selecting different built-in parameters."""
 
     # Create an instance of Ishigami function with a specified param. selection
-    my_testfun = uqtestfuns.create_from_default(
-        "ishigami", parameters=param_selection
-    )
+    my_testfun = Ishigami(parameters_selection=param_selection)
 
     # Assertion
     assert (
@@ -80,13 +70,7 @@ def test_different_parameters(param_selection):
     )
 
 
-def test_wrong_dimension():
-    """The Ishigami function is strictly three-dimensional."""
-    with pytest.raises(AssertionError):
-        get_default_args("ishigami", 10)
-
-
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
     with pytest.raises(ValueError):
-        uqtestfuns.create_from_default("ishigami", parameters="marelli1")
+        Ishigami(parameters_selection="marelli1")

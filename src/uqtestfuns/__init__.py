@@ -1,22 +1,23 @@
 """
 This is the package init for UQTestFuns.
 """
-from . import core
+from .core import UnivariateInput
+from .core import MultivariateInput
+from .core import UQTestFunABC
+from .core import UQTestFun
+
 from . import test_functions
+from .test_functions import *  # noqa
 
-from .core import UQTestFun, UnivariateInput, MultivariateInput
-from .test_functions.default import create_from_default, get_default_args
-from .meta import UQMetaFunSpec, UQMetaTestFun
-
+from .meta import UQMetaFunSpec
+from .meta import UQMetaTestFun
 
 __all__ = [
-    "core",
-    "test_functions",
-    "UQTestFun",
     "UnivariateInput",
     "MultivariateInput",
-    "create_from_default",
-    "get_default_args",
+    "UQTestFunABC",
+    "UQTestFun",
+    "test_functions",
     "UQMetaFunSpec",
     "UQMetaTestFun",
 ]

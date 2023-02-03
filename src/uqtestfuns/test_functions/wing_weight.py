@@ -13,13 +13,14 @@ References
 """
 import numpy as np
 
+from typing import Optional
+
+from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.uqtestfun_abc import UQTestFunABC
+from .available import create_prob_input_from_available
 from .utils import deg2rad
-from ..core import UnivariateInput
 
-DEFAULT_NAME = "Wing-Weight"
-
-TAGS = ["metamodeling", "sensitivity-analysis"]
-
+__all__ = ["WingWeight"]
 
 INPUT_MARGINALS_FORRESTER = [
     UnivariateInput(
@@ -98,34 +99,54 @@ AVAILABLE_INPUT_SPECS = {
 
 DEFAULT_INPUT_SELECTION = "forrester"
 
-AVAILABLE_PARAMETERS = None
 
+class WingWeight(UQTestFunABC):
+    """A concrete implementation of the wing weight test function."""
 
-def evaluate(xx: np.ndarray) -> np.ndarray:
-    """Evaluate the Wing Weight function on a set of input values.
+    tags = ["metamodeling", "sensitivity-analysis"]
 
-    Parameters
-    ----------
-    xx : np.ndarray
-        10-Dimensional input values given by N-by-10 arrays where
-        N is the number of input values.
+    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    Returns
-    -------
-    np.ndarray
-        The output of the Wing Weight function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
-    """
+    available_parameters = None
 
-    # Compute the Wing Weight function
-    term_1 = 0.036 * xx[:, 0] ** 0.758 * xx[:, 1] ** 0.0035
-    term_2 = (xx[:, 2] / np.cos(deg2rad(xx[:, 3])) ** 2) ** 0.6
-    term_3 = xx[:, 4] ** 0.006
-    term_4 = xx[:, 5] ** 0.04
-    term_5 = (100 * xx[:, 6] / np.cos(np.pi / 180.0 * xx[:, 3])) ** (-0.3)
-    term_6 = (xx[:, 7] * xx[:, 8]) ** 0.49
-    term_7 = xx[:, 0] * xx[:, 9]
+    default_dimension = 10
 
-    yy = term_1 * term_2 * term_3 * term_4 * term_5 * term_6 + term_7
+    def __init__(
+        self, *, prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION
+    ):
 
-    return yy
+        # --- Arguments processing
+        prob_input = create_prob_input_from_available(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+
+        super().__init__(prob_input=prob_input, name=WingWeight.__name__)
+
+    def evaluate(self, xx):
+        """Evaluate the Wing Weight function on a set of input values.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            10-Dimensional input values given by N-by-10 arrays where
+            N is the number of input values.
+
+        Returns
+        -------
+        np.ndarray
+            The output of the Wing Weight function evaluated
+            on the input values.
+            The output is a 1-dimensional array of length N.
+        """
+        # Compute the Wing Weight function
+        term_1 = 0.036 * xx[:, 0] ** 0.758 * xx[:, 1] ** 0.0035
+        term_2 = (xx[:, 2] / np.cos(deg2rad(xx[:, 3])) ** 2) ** 0.6
+        term_3 = xx[:, 4] ** 0.006
+        term_4 = xx[:, 5] ** 0.04
+        term_5 = (100 * xx[:, 6] / np.cos(np.pi / 180.0 * xx[:, 3])) ** (-0.3)
+        term_6 = (xx[:, 7] * xx[:, 8]) ** 0.49
+        term_7 = xx[:, 0] * xx[:, 9]
+
+        yy = term_1 * term_2 * term_3 * term_4 * term_5 * term_6 + term_7
+
+        return yy

@@ -8,13 +8,13 @@ Notes
 """
 import numpy as np
 
-from uqtestfuns import create_from_default
+from uqtestfuns import OTLCircuit
 
 
 def test_inert_inputs():
     """Test whether the inputs from 'Moon' specification are indeed inert."""
-    otl_ben_ari = create_from_default("otl", prob_input="ben-ari")
-    otl_moon = create_from_default("otl", prob_input="moon")
+    otl_ben_ari = OTLCircuit(prob_input_selection="ben-ari")
+    otl_moon = OTLCircuit(prob_input_selection="moon")
 
     # Generate sample and compare both
     num_sample = 1000000
