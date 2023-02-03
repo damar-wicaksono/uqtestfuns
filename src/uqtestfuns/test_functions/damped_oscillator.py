@@ -32,11 +32,14 @@ References
 """
 import numpy as np
 
+from typing import Optional
+
+from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.uqtestfun_abc import UQTestFunABC
 from .utils import lognorm2norm_mean, lognorm2norm_std
-from ..core import UnivariateInput
+from .available import create_prob_input_from_available
 
-
-DEFAULT_NAME = "Damped-Oscillator"
+__all__ = ["DampedOscillator"]
 
 INPUT_MARGINALS_DE_KIUREGHIAN = [  # From [2]
     UnivariateInput(
@@ -118,60 +121,81 @@ AVAILABLE_INPUT_SPECS = {
 
 DEFAULT_INPUT_SELECTION = "de-kiureghian"
 
-AVAILABLE_PARAMETERS = None
 
+class DampedOscillator(UQTestFunABC):
+    """A concrete implementation of the Damped oscillator test function."""
 
-def evaluate(xx: np.ndarray) -> np.ndarray:
-    """Evaluate the damped oscillator model on a set of input values.
+    tags = ["metamodeling", "sensitivity-analysis"]
 
-    Parameters
-    ----------
-    xx : np.ndarray
-        A 7-dimensional input values given by an N-by-7 array
-        where N is the number of input values.
+    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    Returns
-    -------
-    np.ndarray
-        The output of the damped oscillator model test function, i.e.,
-        the mean-square relative displacement of the secondary spring.
-    """
+    available_parameters = None
 
-    # Get the parameters
-    mm_p = xx[:, 0]  # Primary mass
-    mm_s = xx[:, 1]  # Secondary mass
-    kk_p = xx[:, 2]  # Primary spring stiffness
-    kk_s = xx[:, 3]  # Secondary spring stiffness
-    zt_p = xx[:, 4]  # Damping ratio of the primary damper
-    zt_s = xx[:, 5]  # Damping ratio of the secondary damper
-    ss_0 = xx[:, 6]  # White noise base acceleration intensity
+    default_dimension = 8
 
-    # Compute natural frequencies
-    omega_p = np.sqrt(kk_p / mm_p)  # Primary system
-    omega_s = np.sqrt(kk_s / mm_s)  # Secondary system
+    def __init__(
+        self,
+        *,
+        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+    ):
+        # --- Arguments processing
+        prob_input = create_prob_input_from_available(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
 
-    # Compute additional parameters
-    gamma = mm_s / mm_p  # relative mass
-    omega_a = (omega_p + omega_s) / 2.0  # average natural frequency
-    zt_a = (zt_p + zt_s) / 2.0  # average damping ratio
-    theta = (omega_p - omega_s) / omega_a  # tuning parameter
+        super().__init__(prob_input=prob_input, name=DampedOscillator.__name__)
 
-    # Compute the mean-square relative displacement of the secondary spring
-    first_term = np.pi * ss_0 / 4 / zt_s / (omega_s**3)
-    second_term = (
-        zt_a
-        * zt_s
-        / (zt_p * zt_s * (4 * zt_a**2 + theta**2) + gamma * zt_a**2)
-    )
-    third_term = (
-        (zt_p * omega_p**3 + zt_s * omega_s**3)
-        * omega_p
-        / 4
-        / zt_a
-        / (omega_a**4)
-    )
+    def evaluate(self, xx):
+        """Evaluate the damped oscillator model on a set of input values.
 
-    # NOTE: This is squared displacement
-    xx_s = first_term * second_term * third_term
+        Parameters
+        ----------
+        xx : np.ndarray
+            A 7-dimensional input values given by an N-by-7 array
+            where N is the number of input values.
 
-    return xx_s
+        Returns
+        -------
+        np.ndarray
+            The output of the damped oscillator model test function, i.e.,
+            the mean-square relative displacement of the secondary spring.
+        """
+
+        # Get the parameters
+        mm_p = xx[:, 0]  # Primary mass
+        mm_s = xx[:, 1]  # Secondary mass
+        kk_p = xx[:, 2]  # Primary spring stiffness
+        kk_s = xx[:, 3]  # Secondary spring stiffness
+        zt_p = xx[:, 4]  # Damping ratio of the primary damper
+        zt_s = xx[:, 5]  # Damping ratio of the secondary damper
+        ss_0 = xx[:, 6]  # White noise base acceleration intensity
+
+        # Compute natural frequencies
+        omega_p = np.sqrt(kk_p / mm_p)  # Primary system
+        omega_s = np.sqrt(kk_s / mm_s)  # Secondary system
+
+        # Compute additional parameters
+        gamma = mm_s / mm_p  # relative mass
+        omega_a = (omega_p + omega_s) / 2.0  # average natural frequency
+        zt_a = (zt_p + zt_s) / 2.0  # average damping ratio
+        theta = (omega_p - omega_s) / omega_a  # tuning parameter
+
+        # Compute the mean-square relative displacement of the secondary spring
+        first_term = np.pi * ss_0 / 4 / zt_s / (omega_s**3)
+        second_term = (
+            zt_a
+            * zt_s
+            / (zt_p * zt_s * (4 * zt_a**2 + theta**2) + gamma * zt_a**2)
+        )
+        third_term = (
+            (zt_p * omega_p**3 + zt_s * omega_s**3)
+            * omega_p
+            / 4
+            / zt_a
+            / (omega_a**4)
+        )
+
+        # NOTE: This is squared displacement
+        xx_s = first_term * second_term * third_term
+
+        return xx_s

@@ -21,14 +21,13 @@ The Borehole test function is an 8-dimensional scalar-valued function
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-import uqtestfuns
+import uqtestfuns as uqtf
 ```
 
-Create an instance of the Borehole test function using
-the built-in default arguments:
+Create an instance of the Borehole test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtestfuns.create_from_default("borehole")
+my_testfun = uqtf.Borehole()
 ```
 
 Check if it has been correctly instantiated:
@@ -75,7 +74,7 @@ to the `input_selection` parameter.
 For example, to create a Borehole test function using the input specification by {cite:t}`Morris1993`:
 
 ```{code-cell} ipython3
-my_testfun_alt = uqtestfuns.create_from_default("borehole", prob_input="morris")
+my_testfun_alt = uqtf.Borehole(prob_input_selection="morris")
 my_testfun_alt.prob_input
 ```
 

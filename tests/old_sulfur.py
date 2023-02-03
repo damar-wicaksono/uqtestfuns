@@ -8,7 +8,7 @@ Notes
 """
 import numpy as np
 
-from uqtestfuns import Sulfur
+import uqtestfuns
 from uqtestfuns.test_functions import sulfur as sulfur_mod
 
 
@@ -45,7 +45,7 @@ def test_compute_mean():
     """Test the mean computation as the result is analytical."""
 
     # Create an instance of Sulfur model
-    my_fun = Sulfur()
+    my_fun = uqtestfuns.create_from_default("sulfur")
 
     # Compute mean via Monte Carlo
     xx = my_fun.prob_input.get_sample(1000000)
@@ -65,7 +65,7 @@ def test_compute_std():
     """Test the standard deviation computation as the result is analytical."""
 
     # Create an instance of Sulfur model
-    my_fun = Sulfur()
+    my_fun = uqtestfuns.create_from_default("sulfur")
 
     # Compute mean via Monte Carlo
     xx = my_fun.prob_input.get_sample(1000000)

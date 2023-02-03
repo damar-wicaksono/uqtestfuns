@@ -44,13 +44,16 @@ References
 """
 import numpy as np
 
-from typing import List
+from typing import List, Optional
 
-from ..core import UnivariateInput
+from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.uqtestfun_abc import UQTestFunABC
+from .available import (
+    create_prob_input_from_available,
+    create_parameters_from_available,
+)
 
-DEFAULT_NAME = "Sobol-G"
-
-TAGS = ["sensitivity-analysis"]
+__all__ = ["SobolG"]
 
 
 def _create_sobol_input(spatial_dimension: int) -> List[UnivariateInput]:
@@ -190,26 +193,68 @@ AVAILABLE_PARAMETERS = {
 
 DEFAULT_PARAMETERS_SELECTION = "crestaux-2007"
 
-DEFAULT_DIMENSION = 2  # The dimension is variable, it requires a default
+# The dimension is variable, it requires a default for fallback
+DEFAULT_DIMENSION_SELECTION = 2
 
 
-def evaluate(xx: np.ndarray, params: np.ndarray) -> np.ndarray:
-    """Evaluate the Sobol-G function on a set of input values.
+class SobolG(UQTestFunABC):
+    """A concrete implementation of the M-dimensional Sobol'-G function."""
 
-    Parameters
-    ----------
-    xx : np.ndarray
-        M-Dimensional input values given by an N-by-M array where
-        N is the number of input values.
-    params: np.ndarray
-        A set of parameters with the same length as the input dimension (M).
+    tags = ["sensitivity-analysis"]
 
-    Returns
-    -------
-    np.ndarray
-        The output of the Sobol-G function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
-    """
-    yy = np.sum(np.log(((np.abs(4 * xx - 2) + params) / (1 + params))), axis=1)
+    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    return np.exp(yy)
+    available_parameters = tuple(AVAILABLE_PARAMETERS.keys())
+
+    default_dimension = None
+
+    def __init__(
+        self,
+        spatial_dimension: int = DEFAULT_DIMENSION_SELECTION,
+        *,
+        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+        parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
+    ):
+        # --- Arguments processing
+        if not isinstance(spatial_dimension, int):
+            raise TypeError(
+                f"Spatial dimension is expected to be of 'int'. "
+                f"Got {type(spatial_dimension):!r} instead."
+            )
+        # Sobol-G is an M-dimensional test function, either given / use default
+        # Create the input according to spatial dimension
+        prob_input = create_prob_input_from_available(
+            prob_input_selection, AVAILABLE_INPUT_SPECS, spatial_dimension
+        )
+        # Create the parameters according to spatial dimension
+        parameters = create_parameters_from_available(
+            parameters_selection, AVAILABLE_PARAMETERS, spatial_dimension
+        )
+
+        super().__init__(
+            prob_input=prob_input, parameters=parameters, name=SobolG.__name__
+        )
+
+    def evaluate(self, xx: np.ndarray):
+        """Evaluate the Sobol-G function on a set of input values.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            M-Dimensional input values given by an N-by-M array where
+            N is the number of input values.
+        params: np.ndarray
+            A set of parameters w/ the same length as the input dimension (M).
+
+        Returns
+        -------
+        np.ndarray
+            The output of the Sobol-G function evaluated on the input values.
+            The output is a 1-dimensional array of length N.
+        """
+        params = self.parameters
+        yy = np.sum(
+            np.log(((np.abs(4 * xx - 2) + params) / (1 + params))), axis=1
+        )
+
+        return np.exp(yy)

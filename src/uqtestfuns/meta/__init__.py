@@ -1,17 +1,7 @@
-"""
-The meta subpackage of UQTestFuns.
-"""
-
-__all__ = []
-
+# """
+# The init for 'meta' subpackage of UQTestFuns.
+# """
 from .metaspec import UQMetaFunSpec
 from .uqmetatestfun import UQMetaTestFun
 
-from . import basis_functions
-from . import metaspec
-from . import uqmetatestfun
-
-__all__ += ["UQMetaFunSpec", "UQMetaTestFun"]
-__all__ += basis_functions.__all__
-__all__ += metaspec.__all__
-__all__ += uqmetatestfun.__all__
+__all__ = ["UQMetaFunSpec", "UQMetaTestFun"]

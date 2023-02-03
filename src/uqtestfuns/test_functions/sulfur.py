@@ -58,15 +58,13 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput
+from typing import Optional
 
+from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.uqtestfun_abc import UQTestFunABC
+from .available import create_prob_input_from_available
 
-DEFAULT_NAME = "Sulfur"
-
-TAGS = [
-    "metamodeling",
-    "sensitivity-analysis",
-]
+__all__ = ["Sulfur"]
 
 INPUT_MARGINALS_PENNER = [  # From [3] (Table 2)
     UnivariateInput(
@@ -141,58 +139,79 @@ AVAILABLE_INPUT_SPECS = {
 
 DEFAULT_INPUT_SELECTION = "penner"
 
-AVAILABLE_PARAMETERS = None
-
 SOLAR_CONSTANT = 1361  # [W/m^2] from [4]
 EARTH_AREA = 5.1e14  # [m^2] from [5]
 DAYS_IN_YEAR = 365  # [days]
 
 
-def evaluate(xx: np.ndarray) -> np.ndarray:
-    """Evaluate the Sulfur model test function on a set of input values.
+class Sulfur(UQTestFunABC):
+    """A concrete implementation of the Sulfur model test function."""
 
-    References
-    ----------
-    xx : np.ndarray
-        A nine-dimensional input values given by an N-by-9 array
-        where N is the number of input values.
+    tags = ["metamodeling", "sensitivity-analysis"]
 
-    Returns
-    -------
-    np.ndarray
-        The output of the Sulfur model test function, i.e.,
-        the direct radiative forcing by sulfate aerosols.
-    """
-    # Source strength of anthropogenic Sulfur
-    qq = xx[:, 0] * 1e12
-    # Fraction of SO2 oxidized to SO4(2-) aerosol
-    yy = xx[:, 1]
-    # Average lifetime of atmospheric SO4(2-)
-    ll = xx[:, 2]
-    # Aerosol mass scattering efficiency
-    psi_e = xx[:, 3]
-    # Fraction of light scattered upward hemisphere
-    beta = xx[:, 4]
-    # Fractional increase in aerosol scattering eff. due to hygroscopic growth
-    ff_psi = xx[:, 5]
-    # Square of atmospheric transmittance above aerosol layer
-    tt_sq = xx[:, 6]
-    # Fraction of earth not covered by cloud
-    aa_c_complement = xx[:, 7]
-    # Square of surface coalbedo
-    co_rr_s_sq = xx[:, 8]
+    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    # Sulfate burden (Eq. (5) in [1], notation from [2])
-    # NOTE: Factor 3.0 due to conversion of mass from S to SO4(2-)
-    # NOTE: Factor 1/365.0 due to average lifetime is given in [days]
-    #       while qq is in [gS / year]
-    sulfate_burden = 3.0 * qq * yy * ll / EARTH_AREA / DAYS_IN_YEAR
+    available_parameters = None
 
-    # Loading of sulfate aerosol (Eq. (4) in [1], notation from [2])
-    sulfate_loading = psi_e * ff_psi * sulfate_burden
+    default_dimension = 9
 
-    # Direct radiative forcing by sulfate aerosols
-    factor_1 = SOLAR_CONSTANT * aa_c_complement * tt_sq * co_rr_s_sq * beta
-    dd_f = -0.5 * factor_1 * sulfate_loading
+    def __init__(
+        self,
+        *,
+        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+    ):
+        # --- Arguments processing
+        prob_input = create_prob_input_from_available(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
 
-    return dd_f
+        super().__init__(prob_input=prob_input, name=Sulfur.__name__)
+
+    def evaluate(self, xx):
+        """Evaluate the Sulfur model test function on a set of input values.
+
+        References
+        ----------
+        xx : np.ndarray
+            A nine-dimensional input values given by an N-by-9 array
+            where N is the number of input values.
+
+        Returns
+        -------
+        np.ndarray
+            The output of the Sulfur model test function, i.e.,
+            the direct radiative forcing by sulfate aerosols.
+        """
+        # Source strength of anthropogenic Sulfur
+        qq = xx[:, 0] * 1e12
+        # Fraction of SO2 oxidized to SO4(2-) aerosol
+        yy = xx[:, 1]
+        # Average lifetime of atmospheric SO4(2-)
+        ll = xx[:, 2]
+        # Aerosol mass scattering efficiency
+        psi_e = xx[:, 3]
+        # Fraction of light scattered upward hemisphere
+        beta = xx[:, 4]
+        # Fractional increase in aerosol scattering eff. due hygroscopic growth
+        ff_psi = xx[:, 5]
+        # Square of atmospheric transmittance above aerosol layer
+        tt_sq = xx[:, 6]
+        # Fraction of earth not covered by cloud
+        aa_c_complement = xx[:, 7]
+        # Square of surface coalbedo
+        co_rr_s_sq = xx[:, 8]
+
+        # Sulfate burden (Eq. (5) in [1], notation from [2])
+        # NOTE: Factor 3.0 due to conversion of mass from S to SO4(2-)
+        # NOTE: Factor 1/365.0 due to average lifetime is given in [days]
+        #       while qq is in [gS / year]
+        sulfate_burden = 3.0 * qq * yy * ll / EARTH_AREA / DAYS_IN_YEAR
+
+        # Loading of sulfate aerosol (Eq. (4) in [1], notation from [2])
+        sulfate_loading = psi_e * ff_psi * sulfate_burden
+
+        # Direct radiative forcing by sulfate aerosols
+        factor_1 = SOLAR_CONSTANT * aa_c_complement * tt_sq * co_rr_s_sq * beta
+        dd_f = -0.5 * factor_1 * sulfate_loading
+
+        return dd_f

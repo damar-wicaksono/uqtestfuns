@@ -1,5 +1,5 @@
 """
-Test module for the Piston simulation test function.
+Test module for the OTL circuit test function.
 
 Notes
 -----
@@ -8,13 +8,13 @@ Notes
 """
 import numpy as np
 
-from uqtestfuns import Piston
+from uqtestfuns import create_from_default
 
 
 def test_inert_inputs():
     """Test whether the inputs from 'Moon' specification are indeed inert."""
-    otl_ben_ari = Piston(prob_input_selection="ben-ari")
-    otl_moon = Piston(prob_input_selection="moon")
+    otl_ben_ari = create_from_default("otl", prob_input="ben-ari")
+    otl_moon = create_from_default("otl", prob_input="moon")
 
     # Generate sample and compare both
     num_sample = 1000000

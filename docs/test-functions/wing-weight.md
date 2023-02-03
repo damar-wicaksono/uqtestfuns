@@ -20,14 +20,14 @@ The Wing Weight test function is a 10-dimensional scalar-valued function {cite}`
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-import uqtestfuns
+import uqtestfuns as uqtf
 ```
 
 Create an instance of the wing weight test function using
 the built-in default arguments:
 
 ```{code-cell} ipython3
-my_testfun = uqtestfuns.create_from_default("wing-weight")
+my_testfun = uqtf.WingWeight()
 ```
 
 Check if it has been correctly instantiated:

@@ -9,16 +9,16 @@ Notes
 import numpy as np
 import pytest
 
-from uqtestfuns import Ishigami
-import uqtestfuns.test_functions.ishigami as ishigami_mod
+from uqtestfuns.test_functions import ishigami as ishigami_mod
+
 
 # Test for different parameters to the Ishigami function
-available_parameters = Ishigami.available_parameters
+parameters = list(ishigami_mod.AVAILABLE_PARAMETERS.values()) + [(7.0, 0.05)]
 
 
-@pytest.fixture(params=available_parameters)
+@pytest.fixture(params=parameters)
 def ishigami_fun(request):
-    ishigami = Ishigami(parameters_selection=request.param)
+    ishigami = ishigami_mod.Ishigami(parameters=request.param)
 
     return ishigami
 
@@ -56,12 +56,12 @@ def test_compute_variance(ishigami_fun):
     assert np.allclose(var_mc, var_ref, rtol=1e-2)
 
 
-@pytest.mark.parametrize("param_selection", available_parameters)
+@pytest.mark.parametrize("param_selection", ["marrel", "sobol-levitan"])
 def test_different_parameters(param_selection):
     """Test selecting different built-in parameters."""
 
     # Create an instance of Ishigami function with a specified param. selection
-    my_testfun = Ishigami(parameters_selection=param_selection)
+    my_testfun = ishigami_mod.Ishigami(parameters=param_selection)
 
     # Assertion
     assert (
@@ -73,4 +73,4 @@ def test_different_parameters(param_selection):
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
     with pytest.raises(ValueError):
-        Ishigami(parameters_selection="marelli1")
+        ishigami_mod.Ishigami(parameters="marelli1")

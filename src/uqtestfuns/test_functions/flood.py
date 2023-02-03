@@ -30,16 +30,13 @@ References
 """
 import numpy as np
 
-from ..core import UnivariateInput
+from typing import Optional
 
+from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.uqtestfun_abc import UQTestFunABC
+from .available import create_prob_input_from_available
 
-DEFAULT_NAME = "Flood"
-
-TAGS = [
-    "metamodeling",
-    "sensitivity-analysis",
-]
-
+__all__ = ["Flood"]
 
 INPUT_MARGINALS_IOOSS = [  # From Ref. [1]
     UnivariateInput(
@@ -106,40 +103,61 @@ AVAILABLE_INPUT_SPECS = {
 
 DEFAULT_INPUT_SELECTION = "iooss"
 
-AVAILABLE_PARAMETERS = None
 
+class Flood(UQTestFunABC):
+    """Concrete implementation of the Flood model test function."""
 
-def evaluate(xx: np.ndarray) -> np.ndarray:
-    """Evaluate the flood model test function on a set of input values.
+    tags = ["metamodeling", "sensitivity-analysis"]
 
-    Parameters
-    ----------
-    xx : np.ndarray
-        A six-dimensional input values given by an N-by-8 array
-        where N is the number of input values.
+    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    Returns
-    -------
-    np.ndarray
-        The output of the flood model test function, i.e.,
-        the height of a river.
-        The output is a one-dimensional array of length N.
-    """
-    qq = xx[:, 0]  # Maximum annual flow rate
-    kk_s = xx[:, 1]  # Strickler coefficient
-    zz_v = xx[:, 2]  # River downstream level
-    zz_m = xx[:, 3]  # River upstream level
-    hh_d = xx[:, 4]  # Dyke height
-    cc_b = xx[:, 5]  # Bank level
-    ll = xx[:, 6]  # Length of the river stretch
-    bb = xx[:, 7]  # River width
+    available_parameters = None
 
-    # Compute the maximum annual height of the river [m]
-    hh_w = (qq / (bb * kk_s * np.sqrt((zz_m - zz_v) / ll))) ** 0.6
+    default_dimension = 8
 
-    # Compute the maximum annual underflow [m]
-    # NOTE: The sign compared to [1] has been inverted below, a negative
-    # value indicates an overflow
-    ss = cc_b + hh_d - zz_v - hh_w
+    def __init__(
+        self,
+        *,
+        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+    ):
+        # --- Arguments processing
+        prob_input = create_prob_input_from_available(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
 
-    return ss
+        super().__init__(prob_input=prob_input, name=Flood.__name__)
+
+    def evaluate(self, xx):
+        """Evaluate the flood model test function on a set of input values.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            A six-dimensional input values given by an N-by-8 array
+            where N is the number of input values.
+
+        Returns
+        -------
+        np.ndarray
+            The output of the flood model test function, i.e.,
+            the height of a river.
+            The output is a one-dimensional array of length N.
+        """
+        qq = xx[:, 0]  # Maximum annual flow rate
+        kk_s = xx[:, 1]  # Strickler coefficient
+        zz_v = xx[:, 2]  # River downstream level
+        zz_m = xx[:, 3]  # River upstream level
+        hh_d = xx[:, 4]  # Dyke height
+        cc_b = xx[:, 5]  # Bank level
+        ll = xx[:, 6]  # Length of the river stretch
+        bb = xx[:, 7]  # River width
+
+        # Compute the maximum annual height of the river [m]
+        hh_w = (qq / (bb * kk_s * np.sqrt((zz_m - zz_v) / ll))) ** 0.6
+
+        # Compute the maximum annual underflow [m]
+        # NOTE: The sign compared to [1] has been inverted below, a negative
+        # value indicates an overflow
+        ss = cc_b + hh_d - zz_v - hh_w
+
+        return ss

@@ -20,14 +20,13 @@ The Ishigami test function is a 3-dimensional scalar-valued function {cite}`Ishi
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-import uqtestfuns
+import uqtestfuns as uqtf
 ```
 
-Create an instance of the wing weight test function using
-the built-in default arguments:
+Create an instance of the Ishigami function as follows:
 
 ```{code-cell} ipython3
-my_testfun = uqtestfuns.create_from_default("ishigami")
+my_testfun = uqtf.Ishigami()
 ```
 
 Check if it has been correctly instantiated:

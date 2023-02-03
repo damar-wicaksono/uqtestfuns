@@ -8,13 +8,10 @@ Notes
 """
 import pytest
 
-import uqtestfuns
+from uqtestfuns import WingWeight
 
 
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters; wing weight has none of it."""
-    with pytest.raises(ValueError):
-        uqtestfuns.create_from_default(
-            "wing-weight",
-            parameters="marrei1",
-        )
+    with pytest.raises(TypeError):
+        WingWeight(parameters="marell1")

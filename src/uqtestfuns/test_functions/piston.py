@@ -23,16 +23,13 @@ References
 import numpy as np
 
 from copy import copy
+from typing import Optional
 
-from ..core import UnivariateInput
+from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.uqtestfun_abc import UQTestFunABC
+from .available import create_prob_input_from_available
 
-
-DEFAULT_NAME = "Piston"
-
-TAGS = [
-    "metamodeling",
-    "sensitivity-analysis",
-]
+__all__ = ["Piston"]
 
 # Marginals specification from [1]
 INPUT_MARGINALS_BEN_ARI = [
@@ -115,53 +112,68 @@ AVAILABLE_INPUT_SPECS = {
 
 DEFAULT_INPUT_SELECTION = "ben-ari"
 
-AVAILABLE_PARAMETERS = None
 
+class Piston(UQTestFunABC):
+    """A concrete implementation of the Piston simulation test function."""
 
-def evaluate(xx: np.ndarray) -> np.ndarray:
-    """Evaluate the OTL circuit test function on a set of input values.
+    tags = ["metamodeling", "sensitivity-analysis"]
 
-    Parameters
-    ----------
-    xx : np.ndarray
-        (At least) 7-dimensional input values given by N-by-7 arrays
-        where N is the number of input values.
+    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    Returns
-    -------
-    np.ndarray
-        The output of the Piston simulation test function,
-        i.e., the cycle time in seconds.
-        The output is a one-dimensional array of length N.
+    available_parameters = None
 
-    Notes
-    -----
-    - The variant of this test function has 14 additional inputs,
-      but they are all taken to be inert and therefore should not affect
-      the output.
-    """
-    mm = xx[:, 0]  # piston weight
-    ss = xx[:, 1]  # piston surface area
-    vv_0 = xx[:, 2]  # initial gas volume
-    kk = xx[:, 3]  # spring coefficient
-    pp_0 = xx[:, 4]  # atmospheric pressure
-    tt_a = xx[:, 5]  # ambient temperature
-    tt_0 = xx[:, 6]  # filling gas temperature
+    default_dimension = 7
 
-    # Compute the force
-    aa = pp_0 * ss + 19.62 * mm - kk * vv_0 / ss
+    def __init__(
+        self,
+        *,
+        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+    ):
+        # --- Arguments processing
+        prob_input = create_prob_input_from_available(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
 
-    # Compute the force difference
-    daa = np.sqrt(aa**2 + 4.0 * kk * pp_0 * vv_0 * tt_a / tt_0) - aa
+        super().__init__(prob_input=prob_input, name=Piston.__name__)
 
-    # Compute the volume difference
-    vv = ss / 2.0 / kk * daa
+    def evaluate(self, xx: np.ndarray) -> np.ndarray:
+        """Evaluate the OTL circuit test function on a set of input values.
 
-    # Compute the cycle time
-    cc = (
-        2.0
-        * np.pi
-        * np.sqrt(mm / (ss**2 * pp_0 * vv_0 * tt_a / tt_0 / vv**2))
-    )
+        Parameters
+        ----------
+        xx : np.ndarray
+            (At least) 6-dimensional input values given by N-by-6 arrays
+            where N is the number of input values.
 
-    return cc
+        Returns
+        -------
+        np.ndarray
+            The output of the OTL circuit test function,
+            i.e., the mid-point voltage in Volt.
+            The output is a one-dimensional array of length N.
+
+        Notes
+        -----
+        - The variant of this test function has 14 additional inputs,
+          but they are all taken to be inert and therefore should not affect
+          the output.
+        """
+        rr_b1 = xx[:, 0]  # Resistance b1
+        rr_b2 = xx[:, 1]  # Resistance b2
+        rr_f = xx[:, 2]  # Resistance f
+        rr_c1 = xx[:, 3]  # Resistance c1
+        rr_c2 = xx[:, 4]  # Resistance c2
+        beta = xx[:, 5]  # Current gain
+
+        # Compute the voltage across b1
+        vb1 = 12 * rr_b1 / (rr_b1 + rr_b2)
+
+        # Compute the mid-point voltage
+        denom = beta * (rr_c2 + 9) + rr_f
+        term_1 = ((vb1 + 0.74) * beta * (rr_c2 + 9)) / denom
+        term_2 = 11.35 * rr_f / denom
+        term_3 = 0.74 * rr_f * beta * (rr_c2 + 9) / (rr_c1 * denom)
+
+        vm = term_1 + term_2 + term_3
+
+        return vm
