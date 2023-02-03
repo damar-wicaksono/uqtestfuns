@@ -83,7 +83,7 @@ def test_estimate_mean() -> None:
     )
 
     # Generate a sample
-    sample_size = 100000  # Should give 1e-2 accuracy
+    sample_size = 1000000  # Should give 1e-2 accuracy
     xx = my_univariate_input.get_sample(sample_size)
 
     # Estimated result
@@ -131,7 +131,7 @@ def test_estimate_median() -> None:
     )
 
     # Generate a sample
-    sample_size = 100000  # Should give 1e-2 accuracy
+    sample_size = 1000000  # Should give 1e-2 accuracy
     xx = my_univariate_input.get_sample(sample_size)
 
     # Estimated result

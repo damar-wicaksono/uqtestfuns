@@ -105,7 +105,6 @@ class MultivariateInput:
         return yy
 
     def __str__(self):
-
         table = f"Name         : {self.name}\n"
         table += f"Spatial Dim. : {self.spatial_dimension}\n"
         table += f"Description  : {self.description}\n"
@@ -125,7 +124,6 @@ class MultivariateInput:
         return table
 
     def _repr_html_(self):
-
         table = "<p><b>Name</b>\n</p>"
         table += f"<p>&nbsp;&nbsp;&nbsp;{self.name}\n</p>"
         table += "<p><b>Spatial Dimension</b>\n</p>"

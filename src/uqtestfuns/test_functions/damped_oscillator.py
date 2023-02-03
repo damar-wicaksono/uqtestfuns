@@ -123,6 +123,7 @@ DEFAULT_INPUT_SELECTION = "de-kiureghian"
 
 
 class DampedOscillator(UQTestFunABC):
+    """A concrete implementation of the Damped oscillator test function."""
 
     tags = ["metamodeling", "sensitivity-analysis"]
 
@@ -137,7 +138,6 @@ class DampedOscillator(UQTestFunABC):
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
     ):
-
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
             prob_input_selection, AVAILABLE_INPUT_SPECS

@@ -125,6 +125,7 @@ DEFAULT_INPUT_SELECTION = "harper"
 
 
 class Borehole(UQTestFunABC):
+    """A concrete implementation of the Borehole function."""
 
     tags = ["metamodeling", "sensitivity-analysis"]
 
@@ -139,7 +140,6 @@ class Borehole(UQTestFunABC):
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
     ):
-
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
             prob_input_selection, AVAILABLE_INPUT_SPECS

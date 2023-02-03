@@ -15,19 +15,20 @@ __all__ = ["UQTestFunABC"]
 class UQTestFunABC(abc.ABC):
     """An abstract class for UQ test functions.
 
-    Parameters
-    ----------
-    prob_input : MultivariateInput
-        Multivariate probabilistic input model.
-    parameters : Any
-        Parameters to the test function. Once set, the parameters are held
-        constant during function evaluation. It may, however, be modified by
-        once an instance has been created.
-    name : str, optional
-        Name of the instance.
-
     Attributes
     ----------
+    tags : List[str]
+        A List of tags to classify a test function given known field of
+        applications in the literature. This is an abstract class property.
+    available_inputs : Optional[Tuple[str, ...]]
+        A tuple of available probabilistic input model specification in the
+        literature. This is an abstract class property.
+    available_parameters : Optional[Tuple[str, ...]]
+        A tuple of available set of parameter values in the literature.
+        This is an abstract class property.
+    default_spatial_dimension : Optional[int]
+        The default spatial dimension of a UQ test function. If 'None' then
+        the function is a variable dimensional test function.
     spatial_dimension : int
         The number of spatial dimension (i.e., input variables) to the UQ test
         function. This number is derived directly from ``prob_input``.
@@ -43,6 +44,19 @@ class UQTestFunABC(abc.ABC):
         parameters: Optional[Any] = None,
         name: Optional[str] = None,
     ):
+        """Default constructor for the UQTestFunABC.
+
+        Parameters
+        ----------
+        prob_input : MultivariateInput
+            Multivariate probabilistic input model.
+        parameters : Any
+            Parameters to the test function. Once set, the parameters are held
+            constant during function evaluation. It may, however, be modified by
+            once an instance has been created.
+        name : str, optional
+            Name of the instance.
+        """
         if not (
             prob_input is None or isinstance(prob_input, MultivariateInput)
         ):
@@ -59,21 +73,21 @@ class UQTestFunABC(abc.ABC):
     @classmethod
     @abc.abstractmethod
     def tags(cls) -> List[str]:
-        """Tags are used to classify different UQ test functions."""
+        """Tags to classify different UQ test functions."""
         pass
 
     @property
     @classmethod
     @abc.abstractmethod
-    def available_inputs(cls) -> Tuple[str, ...]:
-        """To store the keys of available probabilistic input specs."""
+    def available_inputs(cls) -> Optional[Tuple[str, ...]]:
+        """All the keys to the available probabilistic input specifications."""
         pass
 
     @property
     @classmethod
     @abc.abstractmethod
-    def available_parameters(cls) -> Tuple[str, ...]:
-        """To store the keys of available parameterization."""
+    def available_parameters(cls) -> Optional[Tuple[str, ...]]:
+        """All the keys to the available set of parameter values."""
         pass
 
     @property
@@ -106,10 +120,12 @@ class UQTestFunABC(abc.ABC):
 
     @parameters.setter
     def parameters(self, value: Any):
+        """The setter for the parameters of the test function."""
         self._parameters = value
 
     @property
     def spatial_dimension(self) -> Optional[int]:
+        """The dimension (number of input variables) of the test function."""
         if self._prob_input is not None:
             return self._prob_input.spatial_dimension
         else:
@@ -165,6 +181,7 @@ class UQTestFunABC(abc.ABC):
 
     @abc.abstractmethod
     def evaluate(self, xx: np.ndarray):
+        """Evaluate the concrete test function implementation on points."""
         pass
 
     def __call__(self, xx: np.ndarray):

@@ -210,12 +210,11 @@ class SobolG(UQTestFunABC):
 
     def __init__(
         self,
-        *,
         spatial_dimension: int = DEFAULT_DIMENSION_SELECTION,
+        *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
         parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
     ):
-
         # --- Arguments processing
         if not isinstance(spatial_dimension, int):
             raise TypeError(

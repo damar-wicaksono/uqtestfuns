@@ -3,7 +3,7 @@ Module with an implementation of the M-dimensional Ackley function.
 
 The Ackley function [1] is an M-dimensional non-convex scalar-valued function
 typically used for testing optimization algorithms.
-Originally the function is presented as a two-dimensional function.
+Originally, the function is presented as a two-dimensional function.
 
 References
 ----------
@@ -75,7 +75,20 @@ DEFAULT_DIMENSION_SELECTION = 2
 
 
 class Ackley(UQTestFunABC):
-    """A concrete implementation of the M-dimensional Ackley test function."""
+    """A concrete implementation of the M-dimensional Ackley test function.
+
+    Parameters
+    ----------
+    spatial_dimension : int
+        The requested number of spatial_dimension. If not specified,
+        the default is set to 2.
+    prob_input_selection : str, optional
+        The selection of a probabilistic input model from a list of
+        available specifications. This is a keyword only parameter.
+    parameters_selection : str, optional
+        The selection of a parameters sets from a list of available
+        parameter sets. This is a keyword only parameter.
+    """
 
     tags = ["optimization"]
 
@@ -87,12 +100,11 @@ class Ackley(UQTestFunABC):
 
     def __init__(
         self,
-        *,
         spatial_dimension: int = DEFAULT_DIMENSION_SELECTION,
+        *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
         parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
     ):
-
         # --- Arguments processing
         if not isinstance(spatial_dimension, int):
             raise TypeError(

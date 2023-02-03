@@ -52,7 +52,6 @@ class UnivariateInput:
     upper: float = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
-
         # Because frozen=True, post init must access self via setattr
         # Make sure the distribution is lower-case
         object.__setattr__(self, "distribution", self.distribution.lower())

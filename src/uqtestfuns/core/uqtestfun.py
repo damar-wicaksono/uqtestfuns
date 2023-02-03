@@ -35,4 +35,7 @@ class UQTestFun(UQTestFunABC):
         super().__init__(prob_input, parameters, name)
 
     def evaluate(self, xx):
-        return self._evaluate(xx, self.parameters)
+        if self.parameters is None:
+            return self._evaluate(xx)
+        else:
+            return self._evaluate(xx, self.parameters)

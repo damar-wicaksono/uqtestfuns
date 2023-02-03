@@ -87,6 +87,7 @@ def test_create_instance(uqtestfunspec):
 
 
 def test_create_instance_uqmetafunspec():
+    """Test creating an instance of UQMetaFunSpec."""
 
     # Create an instance
     spatial_dimension = 3
@@ -150,6 +151,7 @@ def _create_effects_tuples_coeffs(spatial_dimension, coeffs_generator):
 
 @pytest.mark.parametrize("spatial_dimension", [1, 2, 10])
 def test_get_sample_uqmetafunspec(spatial_dimension):
+    """Test getting a sample of function specifications realizations."""
 
     # Create an instance
     spatial_dimension = 1

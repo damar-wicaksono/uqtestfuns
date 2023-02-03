@@ -345,7 +345,6 @@ class UQMetaFunSpec:
 
         sample = []
         for _ in range(sample_size):
-
             # Randomly select basis
             num_basis = len(self.basis_functions)
             selected_basis = _select_basis(self.spatial_dimension, num_basis)

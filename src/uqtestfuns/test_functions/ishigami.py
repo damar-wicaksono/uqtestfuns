@@ -79,6 +79,7 @@ DEFAULT_PARAMETERS_SELECTION = "ishigami"
 
 
 class Ishigami(UQTestFunABC):
+    """A concrete implementation of the Ishigami function."""
 
     tags = ["metamodeling", "sensitivity-analysis"]
 
@@ -94,7 +95,6 @@ class Ishigami(UQTestFunABC):
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
         parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
     ):
-
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
             prob_input_selection, AVAILABLE_INPUT_SPECS
