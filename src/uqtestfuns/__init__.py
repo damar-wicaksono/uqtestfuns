@@ -12,6 +12,8 @@ from .test_functions import *  # noqa
 from .meta import UQMetaFunSpec
 from .meta import UQMetaTestFun
 
+from .helpers import list_functions
+
 __all__ = [
     "UnivariateInput",
     "MultivariateInput",
@@ -20,4 +22,5 @@ __all__ = [
     "test_functions",
     "UQMetaFunSpec",
     "UQMetaTestFun",
+    "list_functions",
 ]

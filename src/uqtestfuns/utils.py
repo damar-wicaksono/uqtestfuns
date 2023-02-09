@@ -5,13 +5,15 @@ import os
 import inspect
 
 from importlib import import_module
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Any
 from types import ModuleType
+
+SUPPORTED_TAGS = ["sensitivity", "optimization", "metamodeling", "reliability"]
 
 
 def get_available_classes(
     package: ModuleType, exclude: Optional[List[str]] = None
-) -> List[Tuple[str, str]]:
+) -> List[Tuple[str, Any]]:
     """Get the available classes within a given package.
 
     Parameters

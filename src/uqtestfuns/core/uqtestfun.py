@@ -23,6 +23,8 @@ class UQTestFun(UQTestFunABC):
 
     default_dimension = None
 
+    description = None
+
     def __init__(
         self,
         evaluate: Callable,

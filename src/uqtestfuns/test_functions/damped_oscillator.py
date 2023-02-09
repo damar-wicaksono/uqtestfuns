@@ -125,13 +125,17 @@ DEFAULT_INPUT_SELECTION = "de-kiureghian"
 class DampedOscillator(UQTestFunABC):
     """A concrete implementation of the Damped oscillator test function."""
 
-    tags = ["metamodeling", "sensitivity-analysis"]
+    tags = ["metamodeling", "sensitivity"]
 
     available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
     available_parameters = None
 
     default_dimension = 8
+
+    description = (
+        "Damped oscillator model from Igusa and Der Kiureghian (1985)"
+    )
 
     def __init__(
         self,

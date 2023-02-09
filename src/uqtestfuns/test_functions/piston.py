@@ -116,13 +116,15 @@ DEFAULT_INPUT_SELECTION = "ben-ari"
 class Piston(UQTestFunABC):
     """A concrete implementation of the Piston simulation test function."""
 
-    tags = ["metamodeling", "sensitivity-analysis"]
+    tags = ["metamodeling", "sensitivity"]
 
     available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
     available_parameters = None
 
     default_dimension = 7
+
+    description = "Piston simulation model from Ben-Ari and Steinberg (2007)"
 
     def __init__(
         self,
