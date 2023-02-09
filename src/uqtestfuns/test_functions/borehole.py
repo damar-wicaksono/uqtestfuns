@@ -127,13 +127,15 @@ DEFAULT_INPUT_SELECTION = "harper"
 class Borehole(UQTestFunABC):
     """A concrete implementation of the Borehole function."""
 
-    tags = ["metamodeling", "sensitivity-analysis"]
+    tags = ["metamodeling", "sensitivity"]
 
     available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
     available_parameters = None
 
     default_dimension = 8
+
+    description = "Borehole function from Harper and Gupta (1983)"
 
     def __init__(
         self,

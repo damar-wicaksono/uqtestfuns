@@ -98,6 +98,8 @@ class Ackley(UQTestFunABC):
 
     default_dimension = None
 
+    description = "Ackley function from Ackley (1987)"
+
     def __init__(
         self,
         spatial_dimension: int = DEFAULT_DIMENSION_SELECTION,

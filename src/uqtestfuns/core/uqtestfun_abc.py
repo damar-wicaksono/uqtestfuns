@@ -98,6 +98,13 @@ class UQTestFunABC(abc.ABC):
         pass
 
     @property
+    @classmethod
+    @abc.abstractmethod
+    def description(cls) -> Optional[str]:
+        """Short description of the UQ test function."""
+        pass
+
+    @property
     def prob_input(self) -> Optional[MultivariateInput]:
         """The probabilistic input model of the UQ test function."""
         return self._prob_input
@@ -200,7 +207,8 @@ class UQTestFunABC(abc.ABC):
     def __str__(self):
         out = (
             f"Name              : {self.name}\n"
-            f"Spatial dimension : {self.spatial_dimension}"
+            f"Spatial dimension : {self.spatial_dimension}\n"
+            f"Description       : {self.description}"
         )
 
         return out
