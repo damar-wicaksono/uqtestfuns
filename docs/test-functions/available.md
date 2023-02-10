@@ -14,7 +14,7 @@ kernelspec:
 
 # All Available Functions
 
-This table below lists all the available _classic_ test functions from the literature
+The table below lists all the available _classic_ test functions from the literature
 available in the current UQTestFuns, regardless of their typical applications.
 
 |                       Name                       | Spatial Dimension |  Constructor   |
