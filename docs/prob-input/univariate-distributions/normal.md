@@ -23,7 +23,7 @@ import numpy as np
 (prob-input:univariate-distributions:normal)=
 # Normal (Gaussian) Distribution
 
-The normal (or Gaussian) distribution is a two-parameter continous probability
+The normal (or Gaussian) distribution is a two-parameter continuous probability
 distribution.
 The table below summarizes some important aspects of the uniform distributions:
 
@@ -126,6 +126,7 @@ axs[1, 1].set_title("Inverse CDF");
 plt.gcf().set_dpi(150)
 ```
 
+(prob-input:univariate-distributions:normal:standard)=
 ## Standard normal distribution
 
 A normal distribution of particular importance is the _standard normal distribution_
@@ -135,14 +136,19 @@ $\phi$ and $\Phi$.
 That is
 
 $$
-\phi(x) = \frac{1}{\sqrt{2 \pi}} \exp{\left[ - \frac{x^2}{2} \right]}
+\phi(x) = \frac{1}{\sqrt{2 \pi}} \exp{\left[ - \frac{x^2}{2} \right]},
+$$
+
+$$
+\Phi(x) = \frac{1}{2} \left[ 1 + \mathrm{erf}\left( \frac{x}{\sqrt{2}}\right) \right],
 $$
 
 and
 
 $$
-\Phi(x) = \frac{1}{2} \left[ 1 + \mathrm{erf}\left( \frac{x}{\sqrt{2}}\right) \right].
+\Phi^{-1}(x) = \sqrt{2} \mathrm{erf}(2 x - 1).
 $$
+
 
 Any normally distributed random variable can be cast as a transformation
 of the standard normal distribution.
