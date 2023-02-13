@@ -26,15 +26,15 @@ import numpy as np
 The Gumbel (max.) distribution is a two-parameter continuous probability distribution.
 The table below summarizes some important aspects of the distribution.
 
-|                     |                                                                                                                          |
-|---------------------|--------------------------------------------------------------------------------------------------------------------------|
-| **Notation**        | $X \sim \mathrm{Gumbel}(\mu, \beta)$                                                                                     |
-| **Parameters**      | $\mu \in \mathbb{R}$                                                                                                     |
-|                     | $\beta > 0$                                                                                                              |
-| **{term}`Support`** | $\mathcal{D}_X = (-\infty, \infty)$                                                                                      |
-| **{term}`PDF`**     | $f_X (x) = \frac{1}{\beta} \exp{- \left[ \frac{x - \mu}{\beta} + \exp{-\left(\frac{x - \mu}{\beta} \right)} \right]}$    |
-| **{term}`CDF`**     | $F_X (x) = \exp{-\left[ \exp{- \left(\frac{x - \mu}{\beta}) \right)} \right]}$                                           |
-| **{term}`ICDF`**    | $F^{-1}_X (x) = \mu + \beta \ln{(\ln{x})}$                                                                               |
+|                      |                                                                                                                                   |
+|---------------------:|-----------------------------------------------------------------------------------------------------------------------------------|
+|         **Notation** | $X \sim \mathrm{Gumbel}(\mu, \beta)$                                                                                              |
+|       **Parameters** | $\mu \in \mathbb{R}$ (location parameter)                                                                                         |
+|                      | $\beta > 0$ (scale parameter)                                                                                                     |
+|  **{term}`Support`** | $\mathcal{D}_X = (-\infty, \infty)$                                                                                               |
+|      **{term}`PDF`** | $f_X (x; \mu, \beta) = \frac{1}{\beta} \exp{- \left[ \frac{x - \mu}{\beta} + \exp{-\left(\frac{x - \mu}{\beta} \right)} \right]}$ |
+|      **{term}`CDF`** | $F_X (x; \mu, \beta) = \exp{-\left[ \exp{- \left(\frac{x - \mu}{\beta} \right)} \right]}$                                         |
+|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \beta) = \mu + \beta \ln{(\ln{x})}$                                                                            |
 
 The plots of probability density functions (PDFs),
 sample histogram (of $5'000$ points),

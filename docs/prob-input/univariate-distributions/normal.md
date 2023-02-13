@@ -27,15 +27,15 @@ The normal (or Gaussian) distribution is a two-parameter continuous probability
 distribution.
 The table below summarizes some important aspects of the uniform distributions.
 
-|                     |                                                                                                                     |
-|---------------------|---------------------------------------------------------------------------------------------------------------------|
-| **Notation**        | $X \sim \mathcal{N}(\mu, \sigma)$                                                                                   |
-| **Parameters**      | $\mu \in \mathbb{R}$ (mean, or location parameter)                                                                  |
-|                     | $\sigma > 0$ (standard deviation, or scale parameter)                                                               |
-| **{term}`Support`** | $\mathcal{D}_X = (-\infty, \infty)$                                                                                 |
-| **{term}`PDF`**     | $f_X (x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp \left[ -\frac{1}{2} {\left(\frac{x - \mu}{\sigma}\right)}^2 \right] $ |
-| **{term}`CDF`**     | $F_X (x) = \frac{1}{2} \left[ 1 + \mathrm{erf}\left( \frac{x - \mu}{\sigma \sqrt{2}}\right) \right]$                |
-| **{term}`ICDF`**    | $F^{-1}_X (x) = \mu + \sqrt{2} \, \sigma \, \mathrm{erf}^{-1}(2 x - 1)$                                             |
+|                      |                                                                                                                                  |
+|---------------------:|----------------------------------------------------------------------------------------------------------------------------------|
+|         **Notation** | $X \sim \mathcal{N}(\mu, \sigma)$                                                                                                |
+|       **Parameters** | $\mu \in \mathbb{R}$ (mean, or location parameter)                                                                               |
+|                      | $\sigma > 0$ (standard deviation, or scale parameter)                                                                            |
+|  **{term}`Support`** | $\mathcal{D}_X = (-\infty, \infty)$                                                                                              |
+|      **{term}`PDF`** | $f_X (x; \mu, \sigma) = \frac{1}{\sigma \sqrt{2 \pi}} \exp \left[ -\frac{1}{2} {\left(\frac{x - \mu}{\sigma}\right)}^2 \right] $ |
+|      **{term}`CDF`** | $F_X (x; \mu, \sigma) = \frac{1}{2} \left[ 1 + \mathrm{erf}\left( \frac{x - \mu}{\sigma \sqrt{2}}\right) \right]$                |
+|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \sigma) = \mu + \sqrt{2} \, \sigma \, \mathrm{erf}^{-1}(2 x - 1)$                                             |
 
 ```{admonition} error function ($\mathrm{erf}$)
 
