@@ -23,68 +23,134 @@ import numpy as np
 (prob-input:univariate-distributions:normal)=
 # Normal (Gaussian) Distribution
 
-Uniform distribution is a two-parameter continuous probability distribution.
+The normal (or Gaussian) distribution is a two-parameter continous probability
+distribution.
 The table below summarizes some important aspects of the uniform distributions:
 
-|                | Values                                                                                            | Remarks     |
-|----------------|---------------------------------------------------------------------------------------------------|-------------|
-| **Notation**   | $X \sim \mathcal{U}(a, b)$                                                                        |             |
-| **Parameters** | $a \in \mathbb{R}$                                                                                | lower bound |
-|                | $b \in \mathbb{R}$, $b > a$                                                                       | upper bound |
-| **Support**    | $\mathcal{D}_X = [a, b] \subset \mathbb{R}$                                                       |             |
-| **PDF**        | $f_X(x) = \begin{cases} \frac{1}{b - a} & x \in [a, b] \\ 0 & x \notin [a, b] \end{cases}$        |             |
-| **CDF**        | $F_X(x) = \begin{cases} 0 & x < a \\ \frac{x - a}{b - a} & x \in [a, b] \\ 1 & x > b \end{cases}$ |             |
+|                     | Values                                                                                                              |
+|---------------------|---------------------------------------------------------------------------------------------------------------------|
+| **Notation**        | $X \sim \mathcal{N}(\mu, \sigma)$                                                                                   |
+| **Parameters**      | $\mu \in \mathbb{R}$ (mean, or location parameter)                                                                  |
+|                     | $\sigma > 0$ (standard deviation, or scale parameter)                                                               |
+| **{term}`Support`** | $\mathcal{D}_X = (-\infty, \infty)$                                                                                 |
+| **{term}`PDF`**     | $f_X (x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp \left[ -\frac{1}{2} {\left(\frac{x - \mu}{\sigma}\right)}^2 \right] $ |
+| **{term}`CDF`**     | $F_X (x) = \frac{1}{2} \left[ 1 + \mathrm{erf}\left( \frac{x - \mu}{\sigma \sqrt{2}}\right) \right]$                |
+| **{term}`ICDF`**    | $F^{-1}_X (x) = \mu + \sqrt{2} \, \sigma \, \mathrm{erf}^{-1}(2 x - 1)$                                             |
 
-The plots of probability density function (PDF),
-cumulative distribution function (CDF),
-as well as the histogram of a sample ($5000$ points) for different parameter
+```{admonition} error function ($\mathrm{erf}$)
+
+The error function appearing in the formula for CDF above is defined as
+
+$$
+\mathrm{erf}(x) = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2} dt
+$$
+
+and whose domain is $[-1, 1]$.
+```
+
+The plots of probability density functions (PDFs),
+sample histogram (of $5'000$ points),
+cumulative distribution functions (CDFs),
+and inverse cumulative distribution functions (ICDFs) for different parameter
 values are shown below.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_input_1 = uqtf.UnivariateInput(distribution="beta", parameters=[0.5, 0.5, 0, 1])
-my_input_2 = uqtf.UnivariateInput(distribution="beta", parameters=[1, 1, -1, 1])
-my_input_3 = uqtf.UnivariateInput(distribution="beta", parameters=[2, 5, -1, 1])
-my_input_4 = uqtf.UnivariateInput(distribution="beta", parameters=[5, 2, 1, 2])
+import numpy as np
+import matplotlib.pyplot as plt
+import uqtestfuns as uqtf
 
-xx = np.linspace(-3, 3, 1000)
+parameters = [[0, 0.2], [0, 1.0], [0, 2.0], [3, 0.75]]
+colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
+
+univariate_inputs = []
+for parameter in parameters:
+    univariate_inputs.append(uqtf.UnivariateInput(distribution="normal", parameters=parameter))
+
+fig, axs = plt.subplots(2, 2, figsize=(10,10))
+
+# --- PDF
+xx = np.linspace(-6, 6, 1000)
+for i, univariate_input in enumerate(univariate_inputs):
+    axs[0, 0].plot(
+        xx,
+        univariate_input.pdf(xx),
+        color=colors[i],
+        label=f"$\\mu = {univariate_input.parameters[0]}, \\sigma={univariate_input.parameters[1]}$",
+        linewidth=2,
+    )
+axs[0, 0].legend();
+axs[0, 0].grid();
+axs[0, 0].set_title("PDF");
+
+# --- Sample histogram
 sample_size = 5000
-pdf_1 = my_input_1.pdf(xx)
-cdf_1 = my_input_1.cdf(xx)
-xx_1 = my_input_1.get_sample(sample_size)
+np.random.seed(42)
+for col, univariate_input in zip(reversed(colors), reversed(univariate_inputs)):
+    axs[0, 1].hist(
+        univariate_input.get_sample(sample_size),
+        color=col,
+        bins="auto",
+        alpha=0.75
+    )
+axs[0, 1].grid();
+axs[0, 1].set_xlim([-6, 6]);
+axs[0, 1].set_title("Sample histogram");
 
-pdf_2 = my_input_2.pdf(xx)
-cdf_2 = my_input_2.cdf(xx)
-xx_2 = my_input_2.get_sample(sample_size)
+# --- CDF
+xx = np.linspace(-6, 6, 1000)
+for i, univariate_input in enumerate(univariate_inputs):
+    axs[1, 0].plot(
+        xx,
+        univariate_input.cdf(xx),
+        color=colors[i],
+        linewidth=2,
+    )
+axs[1, 0].grid();
+axs[1, 0].set_title("CDF");
 
-cdf_3 = my_input_3.cdf(xx)
-pdf_3 = my_input_3.pdf(xx)
-xx_3 = my_input_3.get_sample(sample_size)
+# --- Inverse CDF
+xx = np.linspace(0, 1, 1000)
+for i, univariate_input in enumerate(univariate_inputs):
+    axs[1, 1].plot(
+        xx,
+        univariate_input.icdf(xx),
+        color=colors[i],
+        linewidth=2
+    )
+axs[1, 1].grid();
+axs[1, 1].set_ylim([-6, 6]);
+axs[1, 1].set_title("Inverse CDF");
 
-cdf_4 = my_input_4.cdf(xx)
-pdf_4 = my_input_4.pdf(xx)
-xx_4 = my_input_4.get_sample(sample_size)
-
-fig, axs = plt.subplots(1, 3, figsize=(10,4))
-axs[0].plot(xx, pdf_1, label="a = -5.0, b = 5.0")
-axs[0].plot(xx, pdf_2, label="a = 0.0, b = 1.0")
-axs[0].plot(xx, pdf_3, label="a = -3.0, b = -1.0")
-axs[0].plot(xx, pdf_4, label="a = -3.0, b = -1.0")
-axs[0].set_title("PDF")
-
-axs[1].plot(xx, cdf_1, label="a = -5.0, b = 5.0")
-axs[1].plot(xx, cdf_2, label="a = 0.0, b = 1.0")
-axs[1].plot(xx, cdf_3, label="a = -3.0, b = -1.0")
-axs[1].plot(xx, cdf_4, label="a = -3.0, b = -1.0")
-axs[1].set_title("CDF")
-axs[1].legend();
-
-axs[2].hist(xx_1, label="a = -5.0, b = 5.0", bins="auto")
-axs[2].hist(xx_2, label="a = 0.0, b = 1.0", bins="auto")
-axs[2].hist(xx_3, label="a = -3.0, b = -1.0", bins="auto")
-axs[2].hist(xx_4, label="a = -3.0, b = -1.0", bins="auto")
-axs[2].set_title("Sample histogram")
-
-plt.gcf().set_dpi(300)
+plt.gcf().set_dpi(150)
 ```
+
+## Standard normal distribution
+
+A normal distribution of particular importance is the _standard normal distribution_
+whose mean and standard deviation are $0.0$ and $1.0$, respectively.
+The PDF and CDF of the standard normal distribution are usually denoted as
+$\phi$ and $\Phi$.
+That is
+
+$$
+\phi(x) = \frac{1}{\sqrt{2 \pi}} \exp{\left[ - \frac{x^2}{2} \right]}
+$$
+
+and
+
+$$
+\Phi(x) = \frac{1}{2} \left[ 1 + \mathrm{erf}\left( \frac{x}{\sqrt{2}}\right) \right].
+$$
+
+Any normally distributed random variable can be cast as a transformation
+of the standard normal distribution.
+Specifically,
+the random variable $X \sim \mathcal{N}(\mu, \sigma)$ can be written as
+
+$$
+X = \mu + \sigma Z,
+$$
+
+where $Z \sim \mathcal{N}(0, 1)$.

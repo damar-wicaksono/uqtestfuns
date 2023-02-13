@@ -80,7 +80,6 @@ for col, univariate_input in zip(reversed(colors), reversed(univariate_inputs)):
     axs[0, 1].hist(
         univariate_input.get_sample(sample_size),
         color=col,
-        label=f"mu = {univariate_input.parameters[0]}, beta={univariate_input.parameters[1]}",
         bins="auto",
         alpha=0.75
     )
@@ -95,7 +94,6 @@ for i, univariate_input in enumerate(univariate_inputs):
         xx,
         univariate_input.cdf(xx),
         color=colors[i],
-        label=f"mu = {univariate_input.parameters[0]}, beta={univariate_input.parameters[1]}",
         linewidth=2,
     )
 axs[1, 0].grid();
@@ -108,7 +106,6 @@ for i, univariate_input in enumerate(univariate_inputs):
         xx,
         univariate_input.icdf(xx),
         color=colors[i],
-        label=f"mu = {univariate_input.parameters[0]}, beta={univariate_input.parameters[1]}",
         linewidth=2
     )
 axs[1, 1].grid();
