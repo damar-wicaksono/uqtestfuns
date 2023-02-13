@@ -13,4 +13,4 @@ to construct ``UnivariateInput`` instance.
 |          {ref}`Triangular <prob-input:univariate-distributions:triangular>`           |  `"triangular"`  |                               |                                  |                      |
 |   {ref}`Truncated Gumbel (max.) <prob-input:univariate-distributions:trunc-gumbel>`   | `"trunc-gumbel"` |                               |                                  |                      |
 | {ref}`Truncated Normal (Gaussian) <prob-input:univariate-distributions:trunc-normal>` | `"trunc-normal"` |                               |                                  |                      |
-|             {ref}`Uniform <prob-input:univariate-distributions:uniform>`              |   `"uniform"`    |                               | $[a, b], \; a, b \in \mathbb{R}$ |          2           |
+|             {ref}`Uniform <prob-input:univariate-distributions:uniform>`              |   `"uniform"`    |      $\mathcal{U}(a, b)$      | $[a, b], \; a, b \in \mathbb{R}$ |          2           |
