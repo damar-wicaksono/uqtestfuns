@@ -25,9 +25,9 @@ import numpy as np
 
 The normal (or Gaussian) distribution is a two-parameter continuous probability
 distribution.
-The table below summarizes some important aspects of the uniform distributions:
+The table below summarizes some important aspects of the uniform distributions.
 
-|                     | Values                                                                                                              |
+|                     |                                                                                                                     |
 |---------------------|---------------------------------------------------------------------------------------------------------------------|
 | **Notation**        | $X \sim \mathcal{N}(\mu, \sigma)$                                                                                   |
 | **Parameters**      | $\mu \in \mathbb{R}$ (mean, or location parameter)                                                                  |

@@ -24,7 +24,7 @@ import numpy as np
 # Gumbel (max.) Distribution
 
 The Gumbel (max.) distribution is a two-parameter continuous probability distribution.
-The table below summarizes some important aspects of the distribution:
+The table below summarizes some important aspects of the distribution.
 
 |                     |                                                                                                                          |
 |---------------------|--------------------------------------------------------------------------------------------------------------------------|
