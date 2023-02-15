@@ -23,11 +23,13 @@ import numpy as np
 
 from scipy.stats import beta
 
-from .utils import postprocess_icdf
+from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 
 DISTRIBUTION_NAME = "beta"
+
+NUM_PARAMS = 4
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:
@@ -51,11 +53,7 @@ def verify_parameters(parameters: ARRAY_FLOAT) -> None:
         or the shapes are inconsistent.
     """
     # Check overall shape
-    if parameters.size != 4:
-        raise ValueError(
-            f"A Beta distribution requires four parameters!"
-            f"Expected 4, got {parameters.size}."
-        )
+    verify_param_nums(parameters.size, NUM_PARAMS, DISTRIBUTION_NAME)
 
     # Check validity of values
     if parameters[0] <= 0.0 or parameters[1] <= 0.0:
