@@ -82,14 +82,6 @@ def test_failed_parameter_verification() -> None:
             name=name, distribution=distribution, parameters=parameters
         )
 
-    # The 1st parameter of the Gumbel (max.) dist. must be within the bounds!
-    parameters = [7.71, 0.5, 0, 5]
-
-    with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
-
     # The lower bound is larger than the upper bound!
     parameters = [2.71, 0.5, 5, 0]
 

@@ -47,3 +47,31 @@ def postprocess_icdf(
         xx[xx > upper_bound] = upper_bound
 
     return xx
+
+
+def verify_param_nums(given: int, expected: int, dist_name: str) -> None:
+    """Verify the number of given parameters against the expected one.
+
+    Parameters
+    ----------
+    given : int
+        The given number of parameters of a distribution.
+    expected : int
+        The expected number of parameters of the distribution.
+    dist_name : str
+        The name of the distribution.
+    Returns
+    -------
+    None
+        The function exits without any return value when nothing is wrong.
+
+    Raises
+    ------
+    ValueError
+        If the given value is not the same as expected one.
+    """
+    if given != expected:
+        raise ValueError(
+            f"A {dist_name} distribution requires {expected} parameters! "
+            f"Expected {expected}, got {given}."
+        )

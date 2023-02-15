@@ -11,10 +11,12 @@ the distribution is 1.0.
 """
 import numpy as np
 
-from .utils import postprocess_icdf
+from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "triangular"
+
+NUM_PARAMS = 3
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:
@@ -37,11 +39,8 @@ def verify_parameters(parameters: ARRAY_FLOAT) -> None:
         If any of the parameter values are invalid
         or the shape is inconsistent.
     """
-    if parameters.size != 3:
-        raise ValueError(
-            f"A triangular distribution requires three parameters!"
-            f"Expected 3, got {parameters.size}."
-        )
+    # Verify overall shape
+    verify_param_nums(parameters.size, NUM_PARAMS, DISTRIBUTION_NAME)
 
     if not (parameters[0] < parameters[2] < parameters[1]):
         raise ValueError(
