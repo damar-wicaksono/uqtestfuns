@@ -23,68 +23,127 @@ import numpy as np
 (prob-input:univariate-distributions:logitnormal)=
 # Logit-Normal Distribution
 
-Uniform distribution is a two-parameter continuous probability distribution.
-The table below summarizes some important aspects of the uniform distributions:
+The logit-normal distribution is a two-parameter continuous probability distribution.
+A logit-normal random variable is a variable whose _logit_ is a normal random
+variable.
 
-|                | Values                                                                                            | Remarks     |
-|----------------|---------------------------------------------------------------------------------------------------|-------------|
-| **Notation**   | $X \sim \mathcal{U}(a, b)$                                                                        |             |
-| **Parameters** | $a \in \mathbb{R}$                                                                                | lower bound |
-|                | $b \in \mathbb{R}$, $b > a$                                                                       | upper bound |
-| **Support**    | $\mathcal{D}_X = [a, b] \subset \mathbb{R}$                                                       |             |
-| **PDF**        | $f_X(x) = \begin{cases} \frac{1}{b - a} & x \in [a, b] \\ 0 & x \notin [a, b] \end{cases}$        |             |
-| **CDF**        | $F_X(x) = \begin{cases} 0 & x < a \\ \frac{x - a}{b - a} & x \in [a, b] \\ 1 & x > b \end{cases}$ |             |
+```{admonition} Logit and logistic function
 
-The plots of probability density function (PDF),
-cumulative distribution function (CDF),
-as well as the histogram of a sample ($5000$ points) for different parameter
+The logit function is the inverse cumulative distribution function of
+the standard logistic distribution. It is defined as
+
+$$
+\mathrm{logit}(x) = \ln \frac{x}{1 - x}, \; x \in (0, 1).	
+$$
+
+The inverse of the logit function is called the _logistic function_
+(it's, the cumulative distribution function of the standard logistic
+distribution):
+
+$$
+\mathrm{logistic}(x) = \frac{1}{1 + e^{-x}}, \; x \in \mathbb{R}
+$$
+
+The range of the logistic function is $(0, 1)$.
+```
+
+The table below summarizes some important aspects of the distribution.
+
+|                      |                                                                                                                                                  |
+|---------------------:|--------------------------------------------------------------------------------------------------------------------------------------------------|
+|         **Notation** | $X \sim \mathcal{N}_{\mathrm{logit}}(\mu, \sigma)$                                                                                               |
+|       **Parameters** | $\mu \in \mathbb{R}$                                                                                                                             |
+|                      | $\sigma > 0$                                                                                                                                     |
+|  **{term}`Support`** | $\mathcal{D}_X = (0, 1)$                                                                                                                         |
+|      **{term}`PDF`** | $f_X (x; \mu, \sigma) = \frac{1}{\sigma \sqrt{2 \pi}} \exp{\left[ - \frac{1}{2} \left(\frac{\mathrm{logit}(x) - \mu}{\sigma} \right)^2 \right]}$ |
+|      **{term}`CDF`** | $F_X (x; \mu, \sigma) = \frac{1}{2} \left[ 1 + \mathrm{erf}\left( \frac{\mathrm{logit}(x) - \mu}{\sigma \sqrt{2}}\right) \right]$                |
+|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \sigma) = \mathrm{logistic} \left(\mu + \sqrt{2} \, \sigma \, \mathrm{erf}^{-1}(2 x - 1) \right)$                             |
+
+```{note}
+The parameters $\mu$ and $\sigma$ of a logit-normal distribution correspond
+to the mean and standard deviation of the underlying normal distribution,
+respectively.
+```
+
+The plots of probability density functions (PDFs),
+sample histogram (of $5'000$ points),
+cumulative distribution functions (CDFs),
+and inverse cumulative distribution functions (ICDFs) for different parameter
 values are shown below.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_input_1 = uqtf.UnivariateInput(distribution="beta", parameters=[0.5, 0.5, 0, 1])
-my_input_2 = uqtf.UnivariateInput(distribution="beta", parameters=[1, 1, -1, 1])
-my_input_3 = uqtf.UnivariateInput(distribution="beta", parameters=[2, 5, -1, 1])
-my_input_4 = uqtf.UnivariateInput(distribution="beta", parameters=[5, 2, 1, 2])
+import numpy as np
+import matplotlib.pyplot as plt
+import uqtestfuns as uqtf
 
-xx = np.linspace(-3, 3, 1000)
+parameters = [[0, 0.5], [0, 1.0], [0, 1.5], [1, 1.5]]
+colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
+
+univariate_inputs = []
+for parameter in parameters:
+    univariate_inputs.append(
+    uqtf.UnivariateInput(distribution="logitnormal", parameters=parameter)
+    )
+
+fig, axs = plt.subplots(2, 2, figsize=(10,10))
+
+# --- PDF
+xx = np.linspace(0, 1, 1000)
+for i, univariate_input in enumerate(univariate_inputs):
+    axs[0, 0].plot(
+        xx,
+        univariate_input.pdf(xx),
+        color=colors[i],
+        label=f"$\\mu = {univariate_input.parameters[0]}, s = {univariate_input.parameters[1]}$",
+        linewidth=2,
+    )
+axs[0, 0].legend();
+axs[0, 0].grid();
+axs[0, 0].set_title("PDF");
+
+# --- Sample histogram
 sample_size = 5000
-pdf_1 = my_input_1.pdf(xx)
-cdf_1 = my_input_1.cdf(xx)
-xx_1 = my_input_1.get_sample(sample_size)
+np.random.seed(42)
+for col, univariate_input in zip(reversed(colors), reversed(univariate_inputs)):
+    axs[0, 1].hist(
+        univariate_input.get_sample(sample_size),
+        color=col,
+        label=f"mu = {univariate_input.parameters[0]}, beta={univariate_input.parameters[1]}",
+        bins="auto",
+        alpha=0.75
+    )
+axs[0, 1].grid();
+axs[0, 1].set_xlim([0, 1]);
+axs[0, 1].set_title("Sample histogram");
 
-pdf_2 = my_input_2.pdf(xx)
-cdf_2 = my_input_2.cdf(xx)
-xx_2 = my_input_2.get_sample(sample_size)
+# --- CDF
+xx = np.linspace(0, 1, 1000)
+for i, univariate_input in enumerate(univariate_inputs):
+    axs[1, 0].plot(
+        xx,
+        univariate_input.cdf(xx),
+        color=colors[i],
+        label=f"mu = {univariate_input.parameters[0]}, beta={univariate_input.parameters[1]}",
+        linewidth=2,
+    )
+axs[1, 0].grid();
+axs[1, 0].set_title("CDF");
 
-cdf_3 = my_input_3.cdf(xx)
-pdf_3 = my_input_3.pdf(xx)
-xx_3 = my_input_3.get_sample(sample_size)
+# --- Inverse CDF
+xx = np.linspace(0, 1, 1000)
+for i, univariate_input in enumerate(univariate_inputs):
+    axs[1, 1].plot(
+        xx,
+        univariate_input.icdf(xx),
+        color=colors[i],
+        label=f"mu = {univariate_input.parameters[0]}, beta={univariate_input.parameters[1]}",
+        linewidth=2
+    )
+axs[1, 1].grid();
+axs[1, 1].set_ylim([0, 1]);
+axs[1, 1].set_title("Inverse CDF");
 
-cdf_4 = my_input_4.cdf(xx)
-pdf_4 = my_input_4.pdf(xx)
-xx_4 = my_input_4.get_sample(sample_size)
-
-fig, axs = plt.subplots(1, 3, figsize=(10,4))
-axs[0].plot(xx, pdf_1, label="a = -5.0, b = 5.0")
-axs[0].plot(xx, pdf_2, label="a = 0.0, b = 1.0")
-axs[0].plot(xx, pdf_3, label="a = -3.0, b = -1.0")
-axs[0].plot(xx, pdf_4, label="a = -3.0, b = -1.0")
-axs[0].set_title("PDF")
-
-axs[1].plot(xx, cdf_1, label="a = -5.0, b = 5.0")
-axs[1].plot(xx, cdf_2, label="a = 0.0, b = 1.0")
-axs[1].plot(xx, cdf_3, label="a = -3.0, b = -1.0")
-axs[1].plot(xx, cdf_4, label="a = -3.0, b = -1.0")
-axs[1].set_title("CDF")
-axs[1].legend();
-
-axs[2].hist(xx_1, label="a = -5.0, b = 5.0", bins="auto")
-axs[2].hist(xx_2, label="a = 0.0, b = 1.0", bins="auto")
-axs[2].hist(xx_3, label="a = -3.0, b = -1.0", bins="auto")
-axs[2].hist(xx_4, label="a = -3.0, b = -1.0", bins="auto")
-axs[2].set_title("Sample histogram")
-
-plt.gcf().set_dpi(300)
+plt.gcf().set_dpi(150)
 ```
