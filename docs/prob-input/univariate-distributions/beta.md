@@ -12,79 +12,133 @@ kernelspec:
   name: python3
 ---
 
-```{code-cell} ipython3
-:tags: [remove-cell]
-
-import uqtestfuns as uqtf
-import matplotlib.pyplot as plt
-import numpy as np
-```
-
 (prob-input:univariate-distributions:beta)=
 # Beta Distribution
 
-Uniform distribution is a two-parameter continuous probability distribution.
-The table below summarizes some important aspects of the uniform distributions:
+The Beta distribution is a four-parameter continuous probability distribution.
+The table below summarizes some important aspects of the distribution.
 
-|                | Values                                                                                            | Remarks     |
-|----------------|---------------------------------------------------------------------------------------------------|-------------|
-| **Notation**   | $X \sim \mathcal{U}(a, b)$                                                                        |             |
-| **Parameters** | $a \in \mathbb{R}$                                                                                | lower bound |
-|                | $b \in \mathbb{R}$, $b > a$                                                                       | upper bound |
-| **Support**    | $\mathcal{D}_X = [a, b] \subset \mathbb{R}$                                                       |             |
-| **PDF**        | $f_X(x) = \begin{cases} \frac{1}{b - a} & x \in [a, b] \\ 0 & x \notin [a, b] \end{cases}$        |             |
-| **CDF**        | $F_X(x) = \begin{cases} 0 & x < a \\ \frac{x - a}{b - a} & x \in [a, b] \\ 1 & x > b \end{cases}$ |             |
+|                     |                                                                                                                                                                                   |
+|--------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|        **Notation** | $X \sim \mathrm{Beta}(\alpha, \beta, a, b)$                                                                                                                                       |
+|      **Parameters** | $\alpha > 0$ (1<sup>st</sup> shape parameter)                                                                                                                                   |
+|                     | $\beta > 0$ (2<sup>nd</sup> shape parameter)                                                                                                                                    |
+|                     | $a \in \mathbb{R}$ (lower bound)                                                                                                                                                  |
+|                     | $b \in \mathbb{R}, b > a$ (upper bound)                                                                                                                                           |
+| **{term}`Support`** | $\mathcal{D}_X = (0, 1)$                                                                                                                                                          |
+|     **{term}`PDF`** | $f_X (x; \alpha, \beta, a, b) = \begin{cases} \frac{(x-a)^{\alpha-1} (b-x)^{\beta-1}}{(b-a)^{\alpha+\beta-1} B(\alpha, \beta)} & x \in [a, b] \\ 0 & x \notin [a, b] \end{cases}$ |
+|     **{term}`CDF`** | $F_X (x; \alpha, \beta, a, b) = \begin{cases} 0 & x < a \\ \frac{1}{(b-a)^{\alpha+\beta-1} B(\alpha,\beta)} B(x; \alpha, \beta, a, b) & x \in [a, b] \\ 1 & x > b \end{cases}$    |
+|    **{term}`ICDF`** | $F^{-1}_X (x; \alpha, \beta, a, b) = \left\{ y \, \vert \, \frac{B(y; \alpha, \beta, a, b)}{(b - a)^{\alpha + \beta - 1} B(\alpha, \beta)} = x \right\}$                          |
 
-The plots of probability density function (PDF),
-cumulative distribution function (CDF),
-as well as the histogram of a sample ($5000$ points) for different parameter
+
+```{admonition} Beta function and incomplete Beta function
+In the table above, $B(\alpha, \beta)$ and $B(x; \alpha, \beta, a, b)$
+correspond to the Beta function and incomplete beta function on $(a, b)$, respectively.
+The Beta function is defined as
+
+$$
+B(\alpha, \beta) \equiv \int_0^1 t^{\alpha-1} (1 - t)^{\beta-1} dt = \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha + \beta)}
+$$
+
+where $\Gamma$ is the the Gamma function for positive real numbers
+
+$$
+\Gamma(x) = \int_0^\infty t^{x - 1} e^{-t} dt, \; x > 0
+$$
+
+The incomplete Beta function is defined as
+
+$$
+B(x; \alpha, \beta, a, b) \equiv \int_a^x (t - a)^{\alpha - 1} (b - t)^{\beta - 1} dt
+$$
+
+Note the difference between the above formulation with the usual incomplete 
+Beta function defined on $(0, 1)$:
+
+$$
+B(x; \alpha, \beta) \equiv \int_0^x t^{\alpha - 1} (1 - t)^{\beta - 1} dt
+$$
+```
+
+```{note}
+The inverse cumulative distribution function (ICDF) of the Beta distribution
+is given as an implicit equation and must be solved numerically.
+```
+
+The plots of probability density functions (PDFs),
+sample histogram (of $5'000$ points),
+cumulative distribution functions (CDFs),
+and inverse cumulative distribution functions (ICDFs) for different parameter
 values are shown below.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_input_1 = uqtf.UnivariateInput(distribution="beta", parameters=[0.5, 0.5, 0, 1])
-my_input_2 = uqtf.UnivariateInput(distribution="beta", parameters=[1, 1, -1, 1])
-my_input_3 = uqtf.UnivariateInput(distribution="beta", parameters=[2, 5, -1, 1])
-my_input_4 = uqtf.UnivariateInput(distribution="beta", parameters=[5, 2, 1, 2])
+import numpy as np
+import matplotlib.pyplot as plt
+import uqtestfuns as uqtf
 
-xx = np.linspace(-3, 3, 1000)
+parameters = [[5, 2, 0.25, 0.75], [1, 5, 0., 1], [2, 2, 0., 1], [0.5, 0.5, 0., 1]]
+colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
+
+univariate_inputs = []
+for parameter in parameters:
+    univariate_inputs.append(uqtf.UnivariateInput(distribution="beta", parameters=parameter))
+
+fig, axs = plt.subplots(2, 2, figsize=(10,10))
+
+# --- PDF
+xx = np.linspace(0, 1, 1000)
+for i, univariate_input in enumerate(univariate_inputs):
+    axs[0, 0].plot(
+        xx,
+        univariate_input.pdf(xx),
+        color=colors[i],
+        label=f"$\\alpha = {univariate_input.parameters[0]}, \\beta = {univariate_input.parameters[1]}, a = {univariate_input.parameters[2]}, b = {univariate_input.parameters[3]:.0f}$",
+        linewidth=2,
+    )
+axs[0, 0].legend();
+axs[0, 0].grid();
+axs[0, 0].set_title("PDF");
+
+# --- Sample histogram
 sample_size = 5000
-pdf_1 = my_input_1.pdf(xx)
-cdf_1 = my_input_1.cdf(xx)
-xx_1 = my_input_1.get_sample(sample_size)
+np.random.seed(42)
+for col, univariate_input in zip(reversed(colors), reversed(univariate_inputs)):
+    axs[0, 1].hist(
+        univariate_input.get_sample(sample_size),
+        color=col,
+        bins="auto",
+        alpha=0.75
+    )
+axs[0, 1].grid();
+axs[0, 1].set_xlim([0, 1]);
+axs[0, 1].set_title("Sample histogram");
 
-pdf_2 = my_input_2.pdf(xx)
-cdf_2 = my_input_2.cdf(xx)
-xx_2 = my_input_2.get_sample(sample_size)
+# --- CDF
+xx = np.linspace(0, 1, 1000)
+for i, univariate_input in enumerate(univariate_inputs):
+    axs[1, 0].plot(
+        xx,
+        univariate_input.cdf(xx),
+        color=colors[i],
+        linewidth=2,
+    )
+axs[1, 0].grid();
+axs[1, 0].set_title("CDF");
 
-cdf_3 = my_input_3.cdf(xx)
-pdf_3 = my_input_3.pdf(xx)
-xx_3 = my_input_3.get_sample(sample_size)
+# --- Inverse CDF
+xx = np.linspace(0, 1, 1000)
+for i, univariate_input in enumerate(univariate_inputs):
+    axs[1, 1].plot(
+        xx,
+        univariate_input.icdf(xx),
+        color=colors[i],
+        linewidth=2
+    )
+axs[1, 1].grid();
+axs[1, 1].set_ylim([0, 1]);
+axs[1, 1].set_title("Inverse CDF");
 
-cdf_4 = my_input_4.cdf(xx)
-pdf_4 = my_input_4.pdf(xx)
-xx_4 = my_input_4.get_sample(sample_size)
-
-fig, axs = plt.subplots(1, 3, figsize=(10,4))
-axs[0].plot(xx, pdf_1, label="a = -5.0, b = 5.0")
-axs[0].plot(xx, pdf_2, label="a = 0.0, b = 1.0")
-axs[0].plot(xx, pdf_3, label="a = -3.0, b = -1.0")
-axs[0].plot(xx, pdf_4, label="a = -3.0, b = -1.0")
-axs[0].set_title("PDF")
-
-axs[1].plot(xx, cdf_1, label="a = -5.0, b = 5.0")
-axs[1].plot(xx, cdf_2, label="a = 0.0, b = 1.0")
-axs[1].plot(xx, cdf_3, label="a = -3.0, b = -1.0")
-axs[1].plot(xx, cdf_4, label="a = -3.0, b = -1.0")
-axs[1].set_title("CDF")
-axs[1].legend();
-
-axs[2].hist(xx_1, label="a = -5.0, b = 5.0", bins="auto")
-axs[2].hist(xx_2, label="a = 0.0, b = 1.0", bins="auto")
-axs[2].hist(xx_3, label="a = -3.0, b = -1.0", bins="auto")
-axs[2].hist(xx_4, label="a = -3.0, b = -1.0", bins="auto")
-axs[2].set_title("Sample histogram")
-
-plt.gcf().set_dpi(300)
+plt.gcf().set_dpi(150)
 ```

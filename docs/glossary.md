@@ -12,5 +12,5 @@ PDF
     
 Support
     The support of the probability density function, that is, the subset of 
-     the function domain whose elements are not zero valued.
+    the function domain whose elements are not mapped to zero.
 ```
