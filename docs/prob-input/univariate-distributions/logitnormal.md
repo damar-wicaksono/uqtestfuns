@@ -24,8 +24,9 @@ import numpy as np
 # Logit-Normal Distribution
 
 The logit-normal distribution is a two-parameter continuous probability distribution.
-A logit-normal random variable is a variable whose _logit_ is a normal random
-variable.
+A logit-normal random variable is a variable whose _logit_ is
+a {ref}`normally distributed <prob-input:univariate-distributions:normal>` 
+random variable.
 
 ```{admonition} Logit and logistic function
 

@@ -21,8 +21,8 @@ The table below summarizes some important aspects of the distribution.
 |                     |                                                                                                                                                                                   |
 |--------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |        **Notation** | $X \sim \mathrm{Beta}(\alpha, \beta, a, b)$                                                                                                                                       |
-|      **Parameters** | $\alpha > 0$ (1<sup>st</sup> shape parameter)                                                                                                                                   |
-|                     | $\beta > 0$ (2<sup>nd</sup> shape parameter)                                                                                                                                    |
+|      **Parameters** | $\alpha > 0$ (1<sup>st</sup> shape parameter)                                                                                                                                     |
+|                     | $\beta > 0$ (2<sup>nd</sup> shape parameter)                                                                                                                                      |
 |                     | $a \in \mathbb{R}$ (lower bound)                                                                                                                                                  |
 |                     | $b \in \mathbb{R}, b > a$ (upper bound)                                                                                                                                           |
 | **{term}`Support`** | $\mathcal{D}_X = (0, 1)$                                                                                                                                                          |

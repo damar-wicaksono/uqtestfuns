@@ -1,14 +1,15 @@
 # Available Univariate Distributions
 
 The table below lists all the available univariate distribution type used
-to construct ``UnivariateInput`` instance.
+to construct ``UnivariateInput`` instances. ``UnivariateInput``are used to 
+represent the marginals of a multivariate probabilistic input.
 
 |                                         Name                                          |     Keyword      |                     Notation                      |             Support              | Number of parameters |
 |:-------------------------------------------------------------------------------------:|:----------------:|:-------------------------------------------------:|:--------------------------------:|:--------------------:|
 |                {ref}`Beta <prob-input:univariate-distributions:beta>`                 |     `"beta"`     |       $\mathrm{Beta}(\alpha, \beta, a, b)$        | $[a, b], \; a, b \in \mathbb{R}$ |          4           |
 |           {ref}`Gumbel (max.) <prob-input:univariate-distributions:gumbel>`           |    `"gumbel"`    |           $\mathrm{Gumbel}(\mu, \beta)$           |       $(-\infty, \infty)$        |          2           |
 |         {ref}`Logit-Normal <prob-input:univariate-distributions:logitnormal>`         | `"logitnormal"`  |    $\mathcal{N}_{\mathrm{logit}}(\mu, \sigma)$    |             $(0, 1)$             |          2           |
-|           {ref}`Log-Normal <prob-input:univariate-distributions:lognormal>`           |  `"lognormal"`   |                                                   |                                  |                      |
+|           {ref}`Log-Normal <prob-input:univariate-distributions:lognormal>`           |  `"lognormal"`   |    $\mathcal{N}_{\mathrm{log}} (\mu, \sigma)$     |          $(0, \infty)$           |          2           |
 |         {ref}`Normal (Gaussian) <prob-input:univariate-distributions:normal>`         |    `"normal"`    |            $\mathcal{N}(\mu, \sigma)$             |       $(-\infty, \infty)$        |          2           |
 |          {ref}`Triangular <prob-input:univariate-distributions:triangular>`           |  `"triangular"`  |          $X \sim \mathcal{T}_r(a, b, c)$          | $[a, b], \; a, b \in \mathbb{R}$ |          3           |
 |   {ref}`Truncated Gumbel (max.) <prob-input:univariate-distributions:trunc-gumbel>`   | `"trunc-gumbel"` | $\mathrm{Gumbel}_{\mathrm{Tr}}(\mu, \beta, a, b)$ | $[a, b], \; a, b \in \mathbb{R}$ |          4           |
