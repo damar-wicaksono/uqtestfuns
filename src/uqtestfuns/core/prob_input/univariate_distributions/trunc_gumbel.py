@@ -14,10 +14,12 @@ from scipy.stats import gumbel_r
 from typing import Tuple
 
 from . import gumbel
-from .utils import postprocess_icdf
+from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "trunc-gumbel"
+
+NUM_PARAMS = 4
 
 
 def _get_parameters(
@@ -73,13 +75,27 @@ def _compute_normalizing_factor(
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:
-    """Verify the parameters of a truncated Gumbel (max.) distribution."""
-    # Check overall shape
-    if parameters.size != 4:
-        raise ValueError(
-            f"A truncated Gumbel (max.) distribution requires four parameters!"
-            f"Expected 4, got {parameters.size}."
-        )
+    """Verify the parameters of a truncated Gumbel (max.) distribution.
+
+    Parameters
+    ----------
+    parameters : ARRAY_FLOAT
+        The parameters of a truncated Gumbel (max.) distribution
+        (i.e., mu, beta, lower bound, and upper bound).
+
+    Returns
+    -------
+    None
+        The function exits without any return value when nothing is wrong.
+
+    Raises
+    ------
+    ValueError
+        If any of the parameter values are invalid
+        or the shape is inconsistent.
+    """
+    # Verify overall shape
+    verify_param_nums(parameters.size, NUM_PARAMS, DISTRIBUTION_NAME)
 
     mu, beta, lb, ub = _get_parameters(parameters)
 
@@ -91,12 +107,6 @@ def verify_parameters(parameters: ARRAY_FLOAT) -> None:
         raise ValueError(
             f"The lower bound of a truncated Gumbel (max.) distribution {lb} "
             f"cannot be equal or greater than the upper bound {ub}!"
-        )
-
-    if mu > ub or mu < lb:
-        raise ValueError(
-            f"The mode of a truncated Gumbel distribution (max.) {mu} "
-            f"must be between the bounds [{lb}, {ub}]!"
         )
 
 

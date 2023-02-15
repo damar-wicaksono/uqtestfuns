@@ -2,7 +2,7 @@
 Module with routines involving the lognormal probability distribution.
 
 The lognormal distribution in UQTestFuns is parameterized by two parameters:
-``lambda`` and ``xi``, the mean and standard deviation of the underlying normal
+``mu`` and ``sigma``, the mean and standard deviation of the underlying normal
 distribution, respectively.
 
 The underlying implementation is based on the implementation of scipy.stats.
@@ -14,16 +14,18 @@ of the underlying normal distribution.
 The translation between parameterization of the distribution in UQTestFuns
 and SciPy is as follows:
 
-- ``s`` = ``xi``
-- ``scale`` = ``np.exp(lambda)``
+- ``s`` = ``sigma``
+- ``scale`` = ``np.exp(mu)``
 """
 import numpy as np
 from scipy.stats import lognorm
 
-from .utils import postprocess_icdf
+from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "lognormal"
+
+NUM_PARAMS = 2
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:
@@ -47,11 +49,8 @@ def verify_parameters(parameters: ARRAY_FLOAT) -> None:
         If any of the parameter values are invalid
         or the shapes are inconsistent.
     """
-    if parameters.size != 2:
-        raise ValueError(
-            f"A lognormal distribution requires two parameters!"
-            f"Expected 2, got {parameters.size}."
-        )
+    # Verify overall shape
+    verify_param_nums(parameters.size, NUM_PARAMS, DISTRIBUTION_NAME)
 
     if parameters[1] <= 0.0:
         raise ValueError(

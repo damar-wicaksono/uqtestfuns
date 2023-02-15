@@ -18,10 +18,12 @@ from scipy.stats import norm
 from scipy.special import logit
 from scipy.special import expit as logistic
 
-from .utils import postprocess_icdf
+from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "logitnormal"
+
+NUM_PARAMS = 2
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:
@@ -44,11 +46,8 @@ def verify_parameters(parameters: ARRAY_FLOAT) -> None:
         If any of the parameter values are invalid
         or the shapes are inconsistent.
     """
-    if parameters.size != 2:
-        raise ValueError(
-            f"A {DISTRIBUTION_NAME} distribution requires two parameters!"
-            f"Expected 2, got {parameters.size}."
-        )
+    # Verify overall shape
+    verify_param_nums(parameters.size, NUM_PARAMS, DISTRIBUTION_NAME)
 
     if parameters[1] <= 0.0:
         raise ValueError(

@@ -73,22 +73,6 @@ def test_failed_parameter_verification() -> None:
             name=name, distribution=distribution, parameters=parameters
         )
 
-    # The mean must be inside the bounds!
-    parameters = [5, 2, 1, 3]
-
-    with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
-
-    # The mean must be inside the bounds!
-    parameters = [0, 2, 1, 3]
-
-    with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
-
     # The lower bound must be smaller than upper bound!
     parameters = [3.5, 2, 4, 3]
 

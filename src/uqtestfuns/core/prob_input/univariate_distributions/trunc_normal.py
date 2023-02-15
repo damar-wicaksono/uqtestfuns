@@ -38,10 +38,12 @@ from scipy.stats import truncnorm
 from typing import Tuple
 
 from . import normal
-from .utils import postprocess_icdf
+from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "trunc-normal"
+
+NUM_PARAMS = 4
 
 
 def _get_parameters(
@@ -88,12 +90,8 @@ def verify_parameters(parameters: ARRAY_FLOAT) -> None:
         If any of the parameter values are invalid
         or the shapes are inconsistent.
     """
-    # Check overall shape
-    if parameters.size != 4:
-        raise ValueError(
-            f"A truncated normal distribution requires four parameters!"
-            f"Expected 4, got {parameters.size}."
-        )
+    # Verify overall shape
+    verify_param_nums(parameters.size, NUM_PARAMS, DISTRIBUTION_NAME)
 
     mu, sigma, lb, ub = _get_parameters(parameters)
 
@@ -108,11 +106,6 @@ def verify_parameters(parameters: ARRAY_FLOAT) -> None:
         raise ValueError(
             f"The lower bound {lb} "
             f"cannot be equal or greater than the upper bound {ub}!"
-        )
-
-    if lb >= mu or ub <= mu:
-        raise ValueError(
-            f"The mean {mu} must be between the bounds [{lb}, {ub}]!"
         )
 
 
