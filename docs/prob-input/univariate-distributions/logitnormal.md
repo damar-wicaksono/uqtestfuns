@@ -50,15 +50,15 @@ The range of the logistic function is $(0, 1)$.
 
 The table below summarizes some important aspects of the distribution.
 
-|                      |                                                                                                                                                  |
-|---------------------:|--------------------------------------------------------------------------------------------------------------------------------------------------|
-|         **Notation** | $X \sim \mathcal{N}_{\mathrm{logit}}(\mu, \sigma)$                                                                                               |
-|       **Parameters** | $\mu \in \mathbb{R}$                                                                                                                             |
-|                      | $\sigma > 0$                                                                                                                                     |
-|  **{term}`Support`** | $\mathcal{D}_X = (0, 1)$                                                                                                                         |
-|      **{term}`PDF`** | $f_X (x; \mu, \sigma) = \frac{1}{\sigma \sqrt{2 \pi}} \exp{\left[ - \frac{1}{2} \left(\frac{\mathrm{logit}(x) - \mu}{\sigma} \right)^2 \right]}$ |
-|      **{term}`CDF`** | $F_X (x; \mu, \sigma) = \frac{1}{2} \left[ 1 + \mathrm{erf}\left( \frac{\mathrm{logit}(x) - \mu}{\sigma \sqrt{2}}\right) \right]$                |
-|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \sigma) = \mathrm{logistic} \left(\mu + \sqrt{2} \, \sigma \, \mathrm{erf}^{-1}(2 x - 1) \right)$                             |
+|                      |                                                                                                                                                                                                                                   |
+|---------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|         **Notation** | $X \sim \mathcal{N}_{\mathrm{logit}}(\mu, \sigma)$                                                                                                                                                                                |
+|       **Parameters** | $\mu \in \mathbb{R}$                                                                                                                                                                                                              |
+|                      | $\sigma > 0$                                                                                                                                                                                                                      |
+|  **{term}`Support`** | $\mathcal{D}_X = (0, 1)$                                                                                                                                                                                                          |
+|      **{term}`PDF`** | $f_X (x; \mu, \sigma) = \begin{cases} 0.0 & x \leq 0.0 \\ \frac{1}{\sigma \sqrt{2 \pi}} \exp{\left[ - \frac{1}{2} \left(\frac{\mathrm{logit}(x) - \mu}{\sigma} \right)^2 \right]} & x \in (0, 1) \\ 0.0 & x \geq 1.0 \end{cases}$ |
+|      **{term}`CDF`** | $F_X (x; \mu, \sigma) = \begin{cases} 0.0 & x \leq 0.0 \\ \frac{1}{2} \left[ 1 + \mathrm{erf}\left( \frac{\mathrm{logit}(x) - \mu}{\sigma \sqrt{2}}\right) \right] & x \in (0, 1) \\ 1.0 & x \geq 1.0\\ \end{cases}$              |
+|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \sigma) = \mathrm{logistic} \left(\mu + \sqrt{2} \, \sigma \, \mathrm{erf}^{-1}(2 x - 1) \right)$                                                                                                              |
 
 ```{note}
 The parameters $\mu$ and $\sigma$ of a logit-normal distribution correspond

@@ -142,3 +142,13 @@ axs[1, 1].set_title("Inverse CDF");
 
 plt.gcf().set_dpi(150)
 ```
+
+As can be observed from the plots above, that:
+
+- if $\alpha > 1.0$ and $\beta > 1.0$, then the density is unimodal;
+- if $\alpha \leq 1.0$ or $\beta \leq 1.0$, 
+  then the density is peaked at one or both boundaries;
+- if $\alpha = \beta$, then the density function is symmetrical.
+
+Note that when $\alpha = 1.0$ and $\beta = 1.0$, then the density is
+a uniform density on $[0, 1]$; this is a special case of the Beta distribution.
