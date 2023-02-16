@@ -23,8 +23,8 @@ The table below summarizes some important aspects of the distribution.
 |        **Notation** | $X \sim \mathrm{Beta}(\alpha, \beta, a, b)$                                                                                                                                       |
 |      **Parameters** | $\alpha > 0$ (1<sup>st</sup> shape parameter)                                                                                                                                     |
 |                     | $\beta > 0$ (2<sup>nd</sup> shape parameter)                                                                                                                                      |
-|                     | $a \in \mathbb{R}$ (lower bound)                                                                                                                                                  |
-|                     | $b \in \mathbb{R}, b > a$ (upper bound)                                                                                                                                           |
+|                     | $a \in (-\infty, b)$ (lower bound)                                                                                                                                                |
+|                     | $b \in (a, \infty)$ (upper bound)                                                                                                                                                 |
 | **{term}`Support`** | $\mathcal{D}_X = (0, 1)$                                                                                                                                                          |
 |     **{term}`PDF`** | $f_X (x; \alpha, \beta, a, b) = \begin{cases} \frac{(x-a)^{\alpha-1} (b-x)^{\beta-1}}{(b-a)^{\alpha+\beta-1} B(\alpha, \beta)} & x \in [a, b] \\ 0 & x \notin [a, b] \end{cases}$ |
 |     **{term}`CDF`** | $F_X (x; \alpha, \beta, a, b) = \begin{cases} 0 & x < a \\ \frac{1}{(b-a)^{\alpha+\beta-1} B(\alpha,\beta)} B(x; \alpha, \beta, a, b) & x \in [a, b] \\ 1 & x > b \end{cases}$    |

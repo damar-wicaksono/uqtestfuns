@@ -26,15 +26,15 @@ import numpy as np
 The uniform distribution is a two-parameter continuous probability distribution.
 The table below summarizes some important aspects of the distribution.
 
-|                      |                                                                                                          |
-|---------------------:|----------------------------------------------------------------------------------------------------------|
-|         **Notation** | $X \sim \mathcal{U}(a, b)$                                                                               |
-|       **Parameters** | $a \in \mathbb{R}$ (lower bound)                                                                         |
-|                      | $b \in \mathbb{R}$, $b > a$ (upper bound)                                                                |
-|  **{term}`Support`** | $\mathcal{D}_X = [a, b] \subset \mathbb{R}$                                                              |
-|      **{term}`PDF`** | $f_X (x; a, b) = \begin{cases} \frac{1}{b - a} & x \in [a, b] \\ 0 & x \notin [a, b] \end{cases}$        |
+|                      |                                                                                                       |
+|---------------------:|-------------------------------------------------------------------------------------------------------|
+|         **Notation** | $X \sim \mathcal{U}(a, b)$                                                                            |
+|       **Parameters** | $a \in (-\infty, b)$ (lower bound)                                                                    |
+|                      | $b \in (a, \infty)$ (upper bound)                                                                     |
+|  **{term}`Support`** | $\mathcal{D}_X = [a, b] \subset \mathbb{R}$                                                           |
+|      **{term}`PDF`** | $f_X (x; a, b) = \begin{cases} \frac{1}{b - a} & x \in [a, b] \\ 0 & x \notin [a, b] \end{cases}$     |
 |      **{term}`CDF`** | $F_X (x; a, b) = \begin{cases} 0 & x < a \\ \frac{x - a}{b - a} & x \in [a, b] \\ 1 & x > b \end{cases}$ |
-|     **{term}`ICDF`** | $F^{-1}_X (x; a, b) = a + (b - a) x$                                                                     |
+|     **{term}`ICDF`** | $F^{-1}_X (x; a, b) = a + (b - a) x$                                                                  |
 
 
 The plots of probability density functions (PDFs),
