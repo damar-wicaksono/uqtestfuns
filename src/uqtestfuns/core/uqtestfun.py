@@ -15,15 +15,15 @@ __all__ = ["UQTestFun"]
 class UQTestFun(UQTestFunABC):
     """Generic concrete class of UQ test function."""
 
-    tags = None
+    _TAGS = None
 
-    available_inputs = None
+    _AVAILABLE_INPUTS = None
 
-    available_parameters = None
+    _AVAILABLE_PARAMETERS = None
 
-    default_dimension = None
+    _DEFAULT_SPATIAL_DIMENSION = None
 
-    description = None
+    _DESCRIPTION = None
 
     def __init__(
         self,
