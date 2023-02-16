@@ -107,18 +107,18 @@ def list_functions(
     ):
         available_class = available_classes_dict[available_class_name]
 
-        default_dimension = available_class.default_dimension
-        if not default_dimension:
-            default_dimension = "M"
+        default_spatial_dimension = available_class.DEFAULT_SPATIAL_DIMENSION
+        if not default_spatial_dimension:
+            default_spatial_dimension = "M"
 
-        tags = ", ".join(available_class.tags)
+        tags = ", ".join(available_class.TAGS)
 
-        description = available_class.description
+        description = available_class.DESCRIPTION
 
         value = [
             idx + 1,
             f"{available_class_name}()",
-            f"{default_dimension}",
+            f"{default_spatial_dimension}",
             tags,
             f"{description}",
         ]
@@ -223,11 +223,13 @@ def _get_functions_from_dimension(
         available_class_name,
         available_class_path,
     ) in available_classes.items():
-        default_dimension = available_class_path.default_dimension
-        if not default_dimension:
-            default_dimension = "m"
+        default_spatial_dimension = (
+            available_class_path.DEFAULT_SPATIAL_DIMENSION
+        )
+        if not default_spatial_dimension:
+            default_spatial_dimension = "m"
 
-        if default_dimension == spatial_dimension:
+        if default_spatial_dimension == spatial_dimension:
             values.append(available_class_name)
 
     return values
@@ -243,7 +245,7 @@ def _get_functions_from_tag(
         available_class_name,
         available_class_path,
     ) in available_classes.items():
-        tags = available_class_path.tags
+        tags = available_class_path.TAGS
 
         if tag in tags:
             values.append(available_class_name)

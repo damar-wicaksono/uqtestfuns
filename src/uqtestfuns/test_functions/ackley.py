@@ -90,15 +90,15 @@ class Ackley(UQTestFunABC):
         parameter sets. This is a keyword only parameter.
     """
 
-    tags = ["optimization"]
+    _TAGS = ["optimization"]
 
-    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    available_parameters = tuple(AVAILABLE_PARAMETERS.keys())
+    _AVAILABLE_PARAMETERS = tuple(AVAILABLE_PARAMETERS.keys())
 
-    default_dimension = None
+    _DEFAULT_SPATIAL_DIMENSION = None
 
-    description = "Ackley function from Ackley (1987)"
+    _DESCRIPTION = "Ackley function from Ackley (1987)"
 
     def __init__(
         self,
