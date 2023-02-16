@@ -43,13 +43,13 @@ $$
 where $\Gamma$ is the the Gamma function for positive real numbers
 
 $$
-\Gamma(x) = \int_0^\infty t^{x - 1} e^{-t} dt, \; x > 0
+\Gamma(x) = \int_0^\infty t^{x - 1} e^{-t} dt, \; x > 0.
 $$
 
 The incomplete Beta function is defined as
 
 $$
-B(x; \alpha, \beta, a, b) \equiv \int_a^x (t - a)^{\alpha - 1} (b - t)^{\beta - 1} dt
+B(x; \alpha, \beta, a, b) \equiv \int_a^x (t - a)^{\alpha - 1} (b - t)^{\beta - 1} dt.
 $$
 
 Note the difference between the above formulation with the usual incomplete 
