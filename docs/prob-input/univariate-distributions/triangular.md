@@ -28,16 +28,16 @@ distribution.
 The table below summarizes some important aspects of the distribution.
 
 
-|                      |                                                                                                                                                                                                       |
-|---------------------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|         **Notation** | $X \sim \mathcal{T}_r (a, b, c)$                                                                                                                                                                      |
-|       **Parameters** | $a \in \mathbb{R}$ (lower bound)                                                                                                                                                                      |
-|                      | $b \in \mathbb{R}$, $b > a$ (upper bound)                                                                                                                                                             |
-|                      | $c \in \mathbb{R}$, $a < b < c$ (mid point)                                                                                                                                                           |
-|  **{term}`Support`** | $\mathcal{D}_X = [a, b] \subset \mathbb{R}$                                                                                                                                                           |
-|      **{term}`PDF`** | $f_X (x; a, b, c) = \begin{cases} 0.0 & x < a \\ \frac{2}{(b-a) (c-a)} (x - a) & x \in [a, c) \\	\frac{2}{b-a} & x = c \\ \frac{2}{(b-a) (b - c)} (b - x) & x \in (c, b] \\ 0.0 & x > b \end{cases}$  |
-|      **{term}`CDF`** | $F_X (x; a, b, c) = \begin{cases} 0.0 & x < a \\	\frac{(x - a)^2}{(b - a) (c - a)} & x \in [a, c] \\	1.0 - \frac{(b - x)^2}{(b-a) (b - c)} & x \in (c, b] \\	1.0 & x > b \end{cases}$                 |
-|     **{term}`ICDF`** | $F^{-1}_X (x; a, b, c) = \begin{cases} a + \sqrt{(b - a) (c - a) x} & x \in [0.0, \frac{c - a}{b - a}] \\ b - \sqrt{(b - a) (b - c) (1 - x)} & x \in (\frac{c - a}{b - a}, 1.0] \\ \end{cases}$       |
+|                      |                                                                                                                                                                                                      |
+|---------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|         **Notation** | $X \sim \mathcal{T}_r (a, b, c)$                                                                                                                                                                     |
+|       **Parameters** | $a \in (-\infty, b)$ (lower bound)                                                                                                                                                                   |
+|                      | $b \in (a, \infty)$ (upper bound)                                                                                                                                                                    |
+|                      | $c \in (a, b)$ (mid point)                                                                                                                                                                           |
+|  **{term}`Support`** | $\mathcal{D}_X = [a, b] \subset \mathbb{R}$                                                                                                                                                          |
+|      **{term}`PDF`** | $f_X (x; a, b, c) = \begin{cases} 0.0 & x < a \\ \frac{2}{(b-a) (c-a)} (x - a) & x \in [a, c) \\	\frac{2}{b-a} & x = c \\ \frac{2}{(b-a) (b - c)} (b - x) & x \in (c, b] \\ 0.0 & x > b \end{cases}$ |
+|      **{term}`CDF`** | $F_X (x; a, b, c) = \begin{cases} 0.0 & x < a \\	\frac{(x - a)^2}{(b - a) (c - a)} & x \in [a, c] \\	1.0 - \frac{(b - x)^2}{(b-a) (b - c)} & x \in (c, b] \\	1.0 & x > b \end{cases}$                |
+|     **{term}`ICDF`** | $F^{-1}_X (x; a, b, c) = \begin{cases} a + \sqrt{(b - a) (c - a) x} & x \in [0.0, \frac{c - a}{b - a}] \\ b - \sqrt{(b - a) (b - c) (1 - x)} & x \in (\frac{c - a}{b - a}, 1.0] \\ \end{cases}$      |
 
 The plots of probability density functions (PDFs),
 sample histogram (of $5'000$ points),
