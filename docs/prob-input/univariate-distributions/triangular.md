@@ -25,7 +25,7 @@ import numpy as np
 
 The triangular distribution is a three-parameter continuous probability
 distribution.
-The table below summarizes some important aspects of the uniform distributions.
+The table below summarizes some important aspects of the distribution.
 
 
 |                      |                                                                                                                                                                                                       |

@@ -19,7 +19,7 @@ The log-normal distribution is a two-parameter continuous probability distributi
 A log-normal random variable is a variable whose (natural) logarithm is 
 a {ref}`normally distributed <prob-input:univariate-distributions:normal>`
 random variable.
-The table below summarizes some important aspects of the uniform distributions:
+The table below summarizes some important aspects of the distribution.
 
 |                     |                                                                                                                                                                                          |
 |--------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

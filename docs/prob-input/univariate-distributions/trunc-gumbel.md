@@ -25,7 +25,7 @@ import numpy as np
 
 The truncated Gumbel (max.) distribution is a four-parameter continuous
 probability distribution.
-The table below summarizes some important aspects of the uniform distributions.
+The table below summarizes some important aspects of the distribution.
 
 |                      |                                                                                                                                                                                                                                                                   |
 |---------------------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

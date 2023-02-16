@@ -24,7 +24,7 @@ import numpy as np
 # Uniform Distribution
 
 The uniform distribution is a two-parameter continuous probability distribution.
-The table below summarizes some important aspects of the uniform distributions.
+The table below summarizes some important aspects of the distribution.
 
 |                      |                                                                                                          |
 |---------------------:|----------------------------------------------------------------------------------------------------------|
