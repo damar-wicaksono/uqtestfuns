@@ -22,7 +22,7 @@ from .utils import deg2rad
 
 __all__ = ["WingWeight"]
 
-INPUT_MARGINALS_FORRESTER = [
+INPUT_MARGINALS_FORRESTER2008 = [
     UnivariateInput(
         name="Sw",
         distribution="uniform",
@@ -86,18 +86,18 @@ INPUT_MARGINALS_FORRESTER = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "forrester": {
+    "Forrester2008": {
         "name": "Wing-Weight-Forrester",
         "description": (
             "Probabilistic input model for the Wing Weight model "
             "from Forrester et al. (2008)."
         ),
-        "marginals": INPUT_MARGINALS_FORRESTER,
+        "marginals": INPUT_MARGINALS_FORRESTER2008,
         "copulas": None,
     }
 }
 
-DEFAULT_INPUT_SELECTION = "forrester"
+DEFAULT_INPUT_SELECTION = "Forrester2008"
 
 
 class WingWeight(UQTestFunABC):

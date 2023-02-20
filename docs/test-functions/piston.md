@@ -155,7 +155,6 @@ ax_2.errorbar(
     yerr=var_estimates_errors,
     marker="o",
     color="#fc8d62",
-    markerfacecolor='none',
     label="Variance",
 )
 ax_2.set_ylabel("Output variance estimate")

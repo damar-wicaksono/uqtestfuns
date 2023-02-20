@@ -33,7 +33,7 @@ and between the borehole and the lower aquifer {cite}`Harper1983`.
 
 ## Test function instance
 
-To create an instance of the Borehole test function:
+To create a default instance of the Borehole test function:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Borehole()
@@ -156,7 +156,6 @@ ax_2.errorbar(
     yerr=var_estimates_errors,
     marker="o",
     color="#fc8d62",
-    markerfacecolor='none',
     label="Variance",
 )
 ax_2.set_ylabel("Output variance estimate")

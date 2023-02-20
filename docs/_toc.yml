@@ -20,6 +20,8 @@ parts:
             title: Borehole
           - file: test-functions/piston
             title: Piston Simulation
+          - file: test-functions/wing-weight
+            title: Wing Weight
   - caption: Metafunction
     chapters:
       - file: metafunction/about
