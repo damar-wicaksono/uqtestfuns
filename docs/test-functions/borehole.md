@@ -23,13 +23,13 @@ import uqtestfuns as uqtf
 
 The Borehole test function is an eight-dimensional scalar-valued function.
 The function has been used in the context of sensitivity analysis
-{cite}`Harper1983` and metamodeling {cite}`Morris1993`.
+{cite}`Harper1983, Worley1987` and metamodeling {cite}`Morris1993`.
 
 The function models the flow rate of water through a borehole drilled
 from the ground surface through two aquifers.
 The model assumes laminar-isothermal flow, and there is no groundwater gradient,
 with steady-state flow between the upper aquifer and the borehole
-and between the borehole and the lower aquifer.
+and between the borehole and the lower aquifer {cite}`Harper1983`.
 
 ## Test function instance
 
