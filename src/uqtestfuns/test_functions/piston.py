@@ -91,7 +91,7 @@ for i in range(13):
 
 AVAILABLE_INPUT_SPECS = {
     "BenAri2007": {
-        "name": "Piston-Ben-Ari",
+        "name": "Piston-Ben-Ari-2007",
         "description": (
             "Probabilistic input model for the Piston simulation model "
             "from Ben-Ari and Steinberg (2007)."
@@ -100,7 +100,7 @@ AVAILABLE_INPUT_SPECS = {
         "copulas": None,
     },
     "Moon2010": {
-        "name": "Piston-Moon",
+        "name": "Piston-Moon-2010",
         "description": (
             "Probabilistic input model for the Piston simulation model "
             "from Moon (2010)."

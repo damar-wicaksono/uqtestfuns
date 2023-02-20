@@ -21,15 +21,15 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Piston simulation test function is a seven-dimensional scalar-valued
-test function.
+The Piston simulation test function is a seven-dimensional scalar-valued 
+function.
 The function computes the cycle time of a piston system.
 
 This function has been used as a test function in metamodeling exercises {cite}`BenAri2007`.
 A 20-dimensional variant was used in the context of sensitivity analysis {cite}`Moon2010`
 by introducing 13 additional _inert_ input variables.
 
-## Creating an instance of a test function
+## Test function instance
 
 To create a default instance of the Piston simulation test function:
 
@@ -65,7 +65,7 @@ for the Piston simulation model as shown in the table below.
 |  No.   |         Keyword         |       Source       |
 |:------:|:-----------------------:|:------------------:|
 |   1.   | `BenAri2007` (default)  | {cite}`BenAri2007` |
-|   2.   |       `Moon2010`        | {cite}`Moon2010`   |
+|   2.   |       `Moon2010`        |  {cite}`Moon2010`  |
 
 The default selection, based on {cite}`BenAri2007`,
 contains seven input variables given as independent uniform random variables

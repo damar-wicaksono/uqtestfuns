@@ -19,6 +19,7 @@ in the comparison of metamodeling approaches.
 
 |                       Name                        | Spatial Dimension |  Constructor   |
 |:-------------------------------------------------:|:-----------------:|:--------------:|
+|     {ref}`Borehole <test-functions:borehole>`     |         8         |  `Borehole()`  |
 | {ref}`Piston Simulation <test-functions:piston>`  |      7 / 20       |   `Piston()`   |
 
 In a Python terminal, you can list all the available functions relevant

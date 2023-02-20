@@ -16,6 +16,8 @@ parts:
       - file: test-functions/available
         title: All Available Functions
         sections:
+          - file: test-functions/borehole
+            title: Borehole
           - file: test-functions/piston
             title: Piston Simulation
   - caption: Metafunction
