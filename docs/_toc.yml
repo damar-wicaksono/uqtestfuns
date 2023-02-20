@@ -16,16 +16,8 @@ parts:
       - file: test-functions/available
         title: All Available Functions
         sections:
-          - file: test-functions/borehole
-            title: Borehole
-          - file: test-functions/ishigami
-            title: Ishigami
-          - file: test-functions/otl-circuit
-            title: OTL Circuit
           - file: test-functions/piston
             title: Piston Simulation
-          - file: test-functions/wing-weight
-            title: Wing Weight
   - caption: Metafunction
     chapters:
       - file: metafunction/about

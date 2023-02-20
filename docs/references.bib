@@ -55,15 +55,15 @@
   publisher = {O'Reilly Media}
 }
 
-@book{forresterEngineeringDesignSurrogate2008,
-  title = {Engineering {{Design}} via {{Surrogate Modelling}}: {{A Practical Guide}}},
+@Book{Forrester2008,
+  author     = {Forrester, Alexander I. J. and Sóbester, András and Keane, Andy J.},
+  publisher  = {{Wiley}},
+  title      = {Engineering {{Design}} via {{Surrogate Modelling}}: {{A Practical Guide}}},
+  year       = {2008},
+  edition    = {1},
+  isbn       = {978-0-470-06068-1 978-0-470-77080-1},
+  doi        = {10.1002/9780470770801},
   shorttitle = {Engineering {{Design}} via {{Surrogate Modelling}}},
-  author = {Forrester, Alexander I. J. and Sóbester, András and Keane, Andy J.},
-  year = {2008},
-  edition = {1},
-  publisher = {{Wiley}},
-  doi = {10.1002/9780470770801},
-  isbn = {978-0-470-06068-1 978-0-470-77080-1},
 }
 
 @inproceedings{Ishigami1991,
@@ -143,6 +143,209 @@
   pages   = {1--18},
   volume  = {12},
   doi     = {10.1615/int.j.uncertaintyquantification.2021038133},
+}
+
+@PhdThesis{Moon2010,
+  author   = {H. Moon},
+  school   = {Ohio State University},
+  title    = {Design and analysis of computer experiments for screening input variables},
+  year     = {2010},
+  address  = {Ohio},
+  abstract = {A computer model is a computer code that implements a mathematical model of a physical process. A computer code is often complicated and can involve a large number of inputs, so it may take hours or days to produce a single response. Screening to determine the most active inputs is critical for reducing the number of future code runs required to understand the detailed input-output relationship, since the computer model is typically complex and the exact functional form of the input-output relationship is unknown. This dissertation proposes a new screening method that identifies active inputs in a computer experiment setting. It describes a Bayesian computation of sensitivity indices as screening measures. It provides algorithms for generating desirable designs for successful screening.
+
+The proposed screening method is called GSinCE (Group Screening in Computer Experiments). The GSinCE procedure is based on a two-stage group screening approach, in which groups of inputs are investigated in the first stage and then inputs within only those groups identified as active at the first stage are investigated individually at the second stage. Two-stage designs with desirable properties are constructed to implement the procedure. Sensitivity indices are used to measure the effects of inputs on the response. Inputs with large sensitivity indices are determined by comparison with a benchmark null distribution constructed from user-specified, low-impact inputs. The use of low-impact inputs is useful for screening out inputs having small effects as well as those that are totally inert. Simulated examples show that, compared with one-stage procedures, the GSinCE procedure provides accurate screening while reducing computational effort.
+
+In this dissertation, the sensitivity indices used as screening measures are computed in a Gaussian process model framework. This approach is known to be computationally efficient by using small numbers of expensive computer code runs for the estimation of sensitivity indices. The existing approach for quantitative inputs is extended so that sensitivity indices can be computed when inputs include a qualitative input in addition to quantitative inputs.
+
+An orthogonal design in which the design matrix has uncorrelated columns is important for estimating the effects of inputs. Moreover, a space-filling design for which design points are well spread out is needed to explore the experimental region thoroughly. New algorithms for achieving such orthogonal space-filling designs are proposed in this dissertation. The three kinds of software are provided for the proposed GSinCE procedure, computation of sensitivity indices, and design search algorithms.},
+  url      = {http://rave.ohiolink.edu/etdc/view?acc_num=osu1275422248},
+}
+
+@Article{BenAri2007,
+  author   = {Einat Neumann Ben-Ari and David M. Steinberg},
+  journal  = {Quality Engineering},
+  title    = {Modeling data from computer experiments: an empirical comparison of kriging with {MARS} and projection pursuit regression},
+  year     = {2007},
+  number   = {4},
+  pages    = {327--338},
+  volume   = {19},
+  abstract = {Computer experiments enable scientists to study complex processes by running computer codes that simulate them. We consider here the analysis of data from computer experiments, comparing three methods for non-parametric smoothing of high-dimensional data: Kriging, Multivariate Adaptive Regression Splines (MARS) and Projection Pursuit Regression (PPR). On several data sets of varying complexity, we find that Kriging is consistently the best performer.},
+  doi      = {10.1080/08982110701580930},
+}
+
+---
+---
+
+@InProceedings{Holdgraf2014,
+  author    = {Holdgraf, Christopher Ramsay and de Heer, Wendy and Pasley, Brian N. and Knight, Robert T.},
+  booktitle = {International {Conference} on {Cognitive} {Neuroscience}},
+  title     = {Evidence for {Predictive} {Coding} in {Human} {Auditory} {Cortex}},
+  year      = {2014},
+  address   = {Brisbane, Australia, Australia},
+  publisher = {Frontiers in Neuroscience},
+}
+
+@Article{Holdgraf2016,
+  author  = {Holdgraf, Christopher Ramsay and de Heer, Wendy and Pasley, Brian N. and Rieger, Jochem W. and Crone, Nathan and Lin, Jack J. and Knight, Robert T. and Theunissen, Frédéric E.},
+  journal = {Nature Communications},
+  title   = {Rapid tuning shifts in human auditory cortex enhance speech intelligibility},
+  year    = {2016},
+  issn    = {2041-1723},
+  number  = {May},
+  pages   = {13654},
+  volume  = {7},
+  doi     = {10.1038/ncomms13654},
+  file    = {Holdgraf et al. - 2016 - Rapid tuning shifts in human auditory cortex enhance speech intelligibility.pdf:C\:\\Users\\chold\\Zotero\\storage\\MDQP3JWE\\Holdgraf et al. - 2016 - Rapid tuning shifts in human auditory cortex enhance speech intelligibility.pdf:application/pdf},
+  url     = {http://www.nature.com/doifinder/10.1038/ncomms13654},
+}
+
+@InProceedings{Holdgraf2017,
+  author    = {Holdgraf, Christopher Ramsay and Culich, A. and Rokem, A. and Deniz, F. and Alegro, M. and Ushizima, D.},
+  booktitle = {{ACM} {International} {Conference} {Proceeding} {Series}},
+  title     = {Portable learning environments for hands-on computational instruction using container-and cloud-based technology to teach data science},
+  year      = {2017},
+  volume    = {Part F1287},
+  abstract  = {© 2017 ACM. There is an increasing interest in learning outside of the traditional classroom setting. This is especially true for topics covering computational tools and data science, as both are challenging to incorporate in the standard curriculum. These atypical learning environments offer new opportunities for teaching, particularly when it comes to combining conceptual knowledge with hands-on experience/expertise with methods and skills. Advances in cloud computing and containerized environments provide an attractive opportunity to improve the effciency and ease with which students can learn. This manuscript details recent advances towards using commonly-Available cloud computing services and advanced cyberinfrastructure support for improving the learning experience in bootcamp-style events. We cover the benets (and challenges) of using a server hosted remotely instead of relying on student laptops, discuss the technology that was used in order to make this possible, and give suggestions for how others could implement and improve upon this model for pedagogy and reproducibility.},
+  doi       = {10.1145/3093338.3093370},
+  isbn      = {978-1-4503-5272-7},
+  keywords  = {Teaching, Bootcamps, Cloud computing, Data science, Docker, Pedagogy},
+}
+
+@Article{Holdgraf2017a,
+  author   = {Holdgraf, Christopher Ramsay and Rieger, J.W. and Micheli, C. and Martin, S. and Knight, R.T. and Theunissen, F.E.},
+  journal  = {Frontiers in Systems Neuroscience},
+  title    = {Encoding and decoding models in cognitive electrophysiology},
+  year     = {2017},
+  issn     = {16625137},
+  volume   = {11},
+  abstract = {© 2017 Holdgraf, Rieger, Micheli, Martin, Knight and Theunissen. Cognitive neuroscience has seen rapid growth in the size and complexity of data recorded from the human brain as well as in the computational tools available to analyze this data. This data explosion has resulted in an increased use of multivariate, model-based methods for asking neuroscience questions, allowing scientists to investigate multiple hypotheses with a single dataset, to use complex, time-varying stimuli, and to study the human brain under more naturalistic conditions. These tools come in the form of “Encoding” models, in which stimulus features are used to model brain activity, and “Decoding” models, in which neural features are used to generated a stimulus output. Here we review the current state of encoding and decoding models in cognitive electrophysiology and provide a practical guide toward conducting experiments and analyses in this emerging field. Our examples focus on using linear models in the study of human language and audition. We show how to calculate auditory receptive fields from natural sounds as well as how to decode neural recordings to predict speech. The paper aims to be a useful tutorial to these approaches, and a practical introduction to using machine learning and applied statistics to build models of neural activity. The data analytic approaches we discuss may also be applied to other sensory modalities, motor systems, and cognitive systems, and we cover some examples in these areas. In addition, a collection of Jupyter notebooks is publicly available as a complement to the material covered in this paper, providing code examples and tutorials for predictive modeling in python. The aimis to provide a practical understanding of predictivemodeling of human brain data and to propose best-practices in conducting these analyses.},
+  doi      = {10.3389/fnsys.2017.00061},
+  keywords = {Decoding models, Encoding models, Electrocorticography (ECoG), Electrophysiology/evoked potentials, Machine learning applied to neuroscience, Natural stimuli, Predictive modeling, Tutorials},
+}
+
+@Book{Flanagan2008,
+  author    = {Flanagan, David and Matsumoto, Yukihiro},
+  publisher = {O'Reilly Media},
+  title     = {The Ruby Programming Language},
+  year      = {2008},
+}
+
+@Book{Forrester2008a,
+  author     = {Forrester, Alexander I. J. and Sóbester, András and Keane, Andy J.},
+  publisher  = {{Wiley}},
+  title      = {Engineering {{Design}} via {{Surrogate Modelling}}: {{A Practical Guide}}},
+  year       = {2008},
+  edition    = {1},
+  isbn       = {978-0-470-06068-1 978-0-470-77080-1},
+  doi        = {10.1002/9780470770801},
+  shorttitle = {Engineering {{Design}} via {{Surrogate Modelling}}},
+}
+
+@InProceedings{Ishigami1991a,
+  author    = {Ishigami, T. and Homma, T.},
+  booktitle = {[1990] {{Proceedings}}. {{First International Symposium}} on {{Uncertainty Modeling}} and {{Analysis}}},
+  title     = {An Importance Quantification Technique in Uncertainty Analysis for Computer Models},
+  year      = {1991},
+  address   = {{College Park, MD, USA}},
+  pages     = {398--403},
+  publisher = {{IEEE Comput. Soc. Press}},
+  doi       = {10.1109/ISUMA.1990.151285},
+  urldate   = {2022-08-08},
+}
+
+
+@Article{Marrel2009a,
+  author  = {Marrel, Amandine and Iooss, Bertrand and Laurent, Béatrice and Roustant, Olivier},
+  journal = {Reliability Engineering \& System Safety},
+  title   = {Calculations of Sobol indices for the Gaussian process metamodel},
+  year    = {2009},
+  number  = {3},
+  pages   = {742--751},
+  volume  = {94},
+  doi     = {10.1016/j.ress.2008.07.008},
+}
+
+
+@Article{Sobol1999a,
+  author  = {Sobol', I.M. and Levitan, Yu.L.},
+  journal = {Computer Physics Communications},
+  title   = {On the use of variance reducing multipliers in Monte Carlo computations of a global sensitivity index},
+  year    = {1999},
+  number  = {1},
+  pages   = {52--61},
+  volume  = {117},
+  doi     = {10.1016/S0010-4655(98)00156-8},
+}
+
+@Article{Morris1993a,
+  author  = {Morris, Max D. and Mitchell, T.J. and Ylvisaker, D.},
+  journal = {Technometrics},
+  title   = {Bayesian design and analysis of computer experiments: Use of derivatives in surface prediction},
+  year    = {1993},
+  number  = {3},
+  pages   = {245--255},
+  volume  = {35},
+  doi     = {10.1080/00401706.1993.10485320},
+}
+
+@Book{Harper1983a,
+  author    = {Harper, William V. and Gupta, Sumant K.},
+  publisher = {Office of Nuclear Waste Isolation, Battelle Memorial Institute},
+  title     = {Sensitivity/Uncertainty Analysis of a borehole Scenario comparing latin hypercube sampling and deterministic sensitivity approaches},
+  year      = {1983},
+  address   = {Columbus, Ohio},
+  number    = {{BMI}/{ONWI}-516},
+  url       = {https://inldigitallibrary.inl.gov/PRR/84393.pdf},
+}
+
+@Article{Becker2020a,
+  author   = {William Becker},
+  journal  = {Reliability Engineering {\&} System Safety},
+  title    = {Metafunctions for benchmarking in sensitivity analysis},
+  year     = {2020},
+  pages    = {107189},
+  volume   = {204},
+  abstract = {Comparison studies of global sensitivity analysis (GSA) approaches are limited in that they are performed on a single model or a small set of test functions, with a limited set of sample sizes and dimensionalities. This work introduces a ﬂexible ‘metafunction’ framework to benchmarking which randomly generates test problems of varying dimensionality and functional form using random combinations of plausible basis functions, and a range of sample sizes. The metafunction is tuned to mimic the characteristics of real models, in terms of the type of model response and the proportion of active model inputs. To demonstrate the framework, a comprehensive comparison of ten GSA approaches is performed in the screening setting, considering functions with up to 100 dimensions and up to 1000 model runs. The methods examined range from recent metamodelling approaches to elementary eﬀects and Monte Carlo estimators of the Sobol’ total eﬀect index. The results give a comparison in unprecedented depth, and show that on average and in the setting investigated, Monte Carlo estimators, particularly the VARS estimator, outperform metamodels. Indicatively, metamodels become competitive at around 10–20 runs per model input, but at lower ratios sampling-based approaches are more eﬀective as a screening tool.},
+  doi      = {10.1016/j.ress.2020.107189},
+}
+
+@Article{Puy2022a,
+  author  = {Arnald Puy and William Becker and Samuele Lo Piano and Andrea Saltelli},
+  journal = {International Journal for Uncertainty Quantification},
+  title   = {A comprehensive comparison of total-order estimators for global sensitivity analysis},
+  year    = {2022},
+  number  = {2},
+  pages   = {1--18},
+  volume  = {12},
+  doi     = {10.1615/int.j.uncertaintyquantification.2021038133},
+}
+
+@PhdThesis{Moon2010a,
+  author   = {H. Moon},
+  school   = {Ohio State University},
+  title    = {Design and analysis of computer experiments for screening input variables},
+  year     = {2010},
+  address  = {Ohio},
+  abstract = {A computer model is a computer code that implements a mathematical model of a physical process. A computer code is often complicated and can involve a large number of inputs, so it may take hours or days to produce a single response. Screening to determine the most active inputs is critical for reducing the number of future code runs required to understand the detailed input-output relationship, since the computer model is typically complex and the exact functional form of the input-output relationship is unknown. This dissertation proposes a new screening method that identifies active inputs in a computer experiment setting. It describes a Bayesian computation of sensitivity indices as screening measures. It provides algorithms for generating desirable designs for successful screening.
+
+The proposed screening method is called GSinCE (Group Screening in Computer Experiments). The GSinCE procedure is based on a two-stage group screening approach, in which groups of inputs are investigated in the first stage and then inputs within only those groups identified as active at the first stage are investigated individually at the second stage. Two-stage designs with desirable properties are constructed to implement the procedure. Sensitivity indices are used to measure the effects of inputs on the response. Inputs with large sensitivity indices are determined by comparison with a benchmark null distribution constructed from user-specified, low-impact inputs. The use of low-impact inputs is useful for screening out inputs having small effects as well as those that are totally inert. Simulated examples show that, compared with one-stage procedures, the GSinCE procedure provides accurate screening while reducing computational effort.
+
+In this dissertation, the sensitivity indices used as screening measures are computed in a Gaussian process model framework. This approach is known to be computationally efficient by using small numbers of expensive computer code runs for the estimation of sensitivity indices. The existing approach for quantitative inputs is extended so that sensitivity indices can be computed when inputs include a qualitative input in addition to quantitative inputs.
+
+An orthogonal design in which the design matrix has uncorrelated columns is important for estimating the effects of inputs. Moreover, a space-filling design for which design points are well spread out is needed to explore the experimental region thoroughly. New algorithms for achieving such orthogonal space-filling designs are proposed in this dissertation. The three kinds of software are provided for the proposed GSinCE procedure, computation of sensitivity indices, and design search algorithms.},
+  url      = {http://rave.ohiolink.edu/etdc/view?acc_num=osu1275422248},
+}
+
+@Article{BenAri2007a,
+  author   = {Einat Neumann Ben-Ari and David M. Steinberg},
+  journal  = {Quality Engineering},
+  title    = {Modeling data from computer experiments: an empirical comparison of kriging with {MARS} and projection pursuit regression},
+  year     = {2007},
+  number   = {4},
+  pages    = {327--338},
+  volume   = {19},
+  abstract = {Computer experiments enable scientists to study complex processes by running computer codes that simulate them. We consider here the analysis of data from computer experiments, comparing three methods for non-parametric smoothing of high-dimensional data: Kriging, Multivariate Adaptive Regression Splines (MARS) and Projection Pursuit Regression (PPR). On several data sets of varying complexity, we find that Kriging is consistently the best performer.},
+  doi      = {10.1080/08982110701580930},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

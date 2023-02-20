@@ -32,7 +32,7 @@ from .available import create_prob_input_from_available
 __all__ = ["Piston"]
 
 # Marginals specification from [1]
-INPUT_MARGINALS_BEN_ARI = [
+INPUT_MARGINALS_BENARI2007 = [
     UnivariateInput(
         name="M",
         distribution="uniform",
@@ -78,9 +78,9 @@ INPUT_MARGINALS_BEN_ARI = [
 ]
 
 # Marginals specification from [2]
-INPUT_MARGINALS_MOON = [copy(_) for _ in INPUT_MARGINALS_BEN_ARI]
+INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
 for i in range(13):
-    INPUT_MARGINALS_MOON.append(
+    INPUT_MARGINALS_MOON2010.append(
         UnivariateInput(
             name=f"Inert {i+1}",
             distribution="uniform",
@@ -90,27 +90,27 @@ for i in range(13):
     )
 
 AVAILABLE_INPUT_SPECS = {
-    "ben-ari": {
+    "BenAri2007": {
         "name": "Piston-Ben-Ari",
         "description": (
             "Probabilistic input model for the Piston simulation model "
             "from Ben-Ari and Steinberg (2007)."
         ),
-        "marginals": INPUT_MARGINALS_BEN_ARI,
+        "marginals": INPUT_MARGINALS_BENARI2007,
         "copulas": None,
     },
-    "moon": {
+    "Moon2010": {
         "name": "Piston-Moon",
         "description": (
             "Probabilistic input model for the Piston simulation model "
             "from Moon (2010)."
         ),
-        "marginals": INPUT_MARGINALS_MOON,
+        "marginals": INPUT_MARGINALS_MOON2010,
         "copulas": None,
     },
 }
 
-DEFAULT_INPUT_SELECTION = "ben-ari"
+DEFAULT_INPUT_SELECTION = "BenAri2007"
 
 
 class Piston(UQTestFunABC):
@@ -160,22 +160,30 @@ class Piston(UQTestFunABC):
           but they are all taken to be inert and therefore should not affect
           the output.
         """
-        rr_b1 = xx[:, 0]  # Resistance b1
-        rr_b2 = xx[:, 1]  # Resistance b2
-        rr_f = xx[:, 2]  # Resistance f
-        rr_c1 = xx[:, 3]  # Resistance c1
-        rr_c2 = xx[:, 4]  # Resistance c2
-        beta = xx[:, 5]  # Current gain
+        mm = xx[:, 0]  # piston weight
+        ss = xx[:, 1]  # piston surface area
+        vv_0 = xx[:, 2]  # initial gas volume
+        kk = xx[:, 3]  # spring coefficient
+        pp_0 = xx[:, 4]  # atmospheric pressure
+        tt_a = xx[:, 5]  # ambient temperature
+        tt_0 = xx[:, 6]  # filling gas temperature
 
-        # Compute the voltage across b1
-        vb1 = 12 * rr_b1 / (rr_b1 + rr_b2)
+        # Compute the force
+        aa = pp_0 * ss + 19.62 * mm - kk * vv_0 / ss
 
-        # Compute the mid-point voltage
-        denom = beta * (rr_c2 + 9) + rr_f
-        term_1 = ((vb1 + 0.74) * beta * (rr_c2 + 9)) / denom
-        term_2 = 11.35 * rr_f / denom
-        term_3 = 0.74 * rr_f * beta * (rr_c2 + 9) / (rr_c1 * denom)
+        # Compute the force difference
+        daa = np.sqrt(aa**2 + 4.0 * kk * pp_0 * vv_0 * tt_a / tt_0) - aa
 
-        vm = term_1 + term_2 + term_3
+        # Compute the volume difference
+        vv = ss / 2.0 / kk * daa
 
-        return vm
+        # Compute the cycle time
+        cc = (
+            2.0
+            * np.pi
+            * np.sqrt(
+                mm / (kk + ss**2 * pp_0 * vv_0 * tt_a / tt_0 / vv**2)
+            )
+        )
+
+        return cc
