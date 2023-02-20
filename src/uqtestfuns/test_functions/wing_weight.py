@@ -1,15 +1,23 @@
 """
 Module with an implementation of the Wing Weight test function.
 
-The Wing Weight test function[1] is a 10-dimensional scalar-valued function
+The Wing Weight test function [1] is a 10-dimensional scalar-valued function
 that models a light aircraft wing.
+The function has been used as a test function in the context of
+metamodeling [2] and optimization [1].
 
 References
 ----------
 
-1. A. I. J. Forrester, A. Sóbester, and A. J. Keane, Engineering Design
-   via Surrogate Modelling: A Practical Guide, 1st ed. Wiley, 2008.
-   doi: 10.1002/9780470770801.
+1. Alexander I. J. Forrester, András Sóbester, and Andy J. Keane,
+   Engineering Design via Surrogate Modelling: A Practical Guide, 1st ed.
+   Wiley, 2008.
+   DOI: 10.1002/9780470770801.
+2. Lavi R. Zuhal, Kemas Zakaria, Pramudita S. Palar, Koji Shimoyama,
+   and Rhea P. Liem, "Gradient-enhanced universal Kriging with polynomial
+   chaos as trend function," In AIAA Scitech 2020 Forum,
+   Orlando, Florida, 2020. American Institute of Aeronautics and Astronautics.
+   DOI: 10.2514/6.2020-1865.
 """
 import numpy as np
 

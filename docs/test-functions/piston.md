@@ -59,8 +59,8 @@ is the seven-dimensional vector of input variables further defined below.
 
 ## Probabilistic input
 
-The literature includes two possible probabilistic input models
-for the Piston simulation model as shown in the table below.
+Two probabilistic input model specifications for the OTL circuit function are
+available as shown in the table below.
 
 |  No.   |         Keyword         |       Source       |
 |:------:|:-----------------------:|:------------------:|
@@ -77,7 +77,8 @@ my_testfun.prob_input
 
 ```{note}
 In {cite}`Moon2010`,
-13 additional _inert_ independent input variables are introduced;
+13 additional _inert_ independent input variables are introduced (totaling 20
+input variables);
 these input variables, being inert, do not affect the output of the function.
 ```
 

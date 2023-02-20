@@ -21,7 +21,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Wing Weight test function is a 10-dimensional scalar-valued function.
+The Wing Weight test function {cite}`Forrester2008` is a 10-dimensional
+scalar-valued function.
 The function has been used as a test function in the context of metamodeling
 {cite}`Zuhal2020` and optimization {cite}`Forrester2008`.
 
