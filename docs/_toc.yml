@@ -13,6 +13,8 @@ parts:
     chapters:
       - file: test-functions/metamodeling
         title: Metamodeling
+      - file: test-functions/sensitivity
+        title: Sensitivity Analysis
       - file: test-functions/available
         title: All Available Functions
         sections:

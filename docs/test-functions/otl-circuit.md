@@ -84,8 +84,9 @@ input variables);
 these input variables, being inert, do not affect the output of the function.
 ```
 
-Alternatively, to create an instance of Piston simulation model
-with the probabilistic input specified in {cite}`Moon2010`:
+Alternatively, to create an instance of the OTL circuit test function
+with the probabilistic input specified in {cite}`Moon2010`, pass the 
+corresponding keyword (`"Moon2010"`) to the parameter (`prob_input_selection`):
 
 ```python
 my_testfun = uqtf.OTLCircuit(prob_input_selection="Moon2010")
