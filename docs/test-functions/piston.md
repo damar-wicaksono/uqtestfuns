@@ -213,9 +213,10 @@ header_names = [
 
 tabulate(
     outputs,
-    tablefmt="html",
-    floatfmt=(".1e", ".4e", ".4e", ".4e", ".4e", "s"),
     headers=header_names,
+    floatfmt=(".1e", ".4e", ".4e", ".4e", ".4e", "s"),
+    tablefmt="html",
+    stralign="center",
 )
 ```
 
