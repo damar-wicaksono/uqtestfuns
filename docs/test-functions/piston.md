@@ -217,6 +217,7 @@ tabulate(
     floatfmt=(".1e", ".4e", ".4e", ".4e", ".4e", "s"),
     tablefmt="html",
     stralign="center",
+    numalign="center",
 )
 ```
 
