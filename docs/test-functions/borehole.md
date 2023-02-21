@@ -25,12 +25,6 @@ The Borehole test function is an eight-dimensional scalar-valued function.
 The function has been used in the context of sensitivity analysis
 {cite}`Harper1983, Worley1987` and metamodeling {cite}`Morris1993`.
 
-The function models the flow rate of water through a borehole drilled
-from the ground surface through two aquifers.
-The model assumes laminar-isothermal flow, and there is no groundwater gradient,
-with steady-state flow between the upper aquifer and the borehole
-and between the borehole and the lower aquifer {cite}`Harper1983`.
-
 ## Test function instance
 
 To create a default instance of the Borehole test function:
@@ -47,8 +41,13 @@ print(my_testfun)
 
 ## Description
 
-The Borehole function computes the water flow rate through a borehole drilled
-through two aquifers:
+The Borehole function models the flow rate of water through a borehole drilled
+from the ground surface through two aquifers.
+The model assumes laminar-isothermal flow, and there is no groundwater gradient,
+with steady-state flow between the upper aquifer and the borehole
+and between the borehole and the lower aquifer {cite}`Harper1983`.
+The function computes the water flow rate through the borehole
+using the following analytical formula:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \frac{2 \, \pi \, T_u \, (H_u - H_l)}{\ln{(r/rw)} \left[1 + \frac{2 \, L \, Tu}{\ln{(r/rw)} \, r_w^2 K_w} + \frac{T_u}{T_l} \right]} 
@@ -101,6 +100,7 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
+np.random.seed(42)
 xx_test = my_testfun.prob_input.get_sample(100000)
 yy_test = my_testfun(xx_test)
 

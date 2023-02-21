@@ -20,6 +20,8 @@ parts:
         sections:
           - file: test-functions/borehole
             title: Borehole
+          - file: test-functions/damped-oscillator
+            title: Damped Oscillator
           - file: test-functions/otl-circuit
             title: OTL Circuit
           - file: test-functions/piston

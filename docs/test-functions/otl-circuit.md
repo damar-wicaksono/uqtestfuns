@@ -27,9 +27,6 @@ The function has been used as a test function in metamodeling exercises
 In {cite}`Moon2010`, a 20-dimensional variant was used for sensitivity analysis
 by introducing 14 additional _inert_ input variables.
 
-The function computes the mid-point voltage of an output transformerless (OTL)
-push-pull circuit.
-
 ## Test function instance
 
 To create a default instance of the OTL circuit test function:
@@ -46,8 +43,8 @@ print(my_testfun)
 
 ## Description
 
-The OTL circuit function computes the mid-point voltage of an OTL push-pull
-circuit using the following analytical formula:
+The OTL circuit function computes the mid-point voltage of an output
+transformerless (OTL) push-pull circuit using the following analytical formula:
 
 $$
 \begin{align}
@@ -104,6 +101,7 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
+np.random.seed(42)
 xx_test = my_testfun.prob_input.get_sample(100000)
 yy_test = my_testfun(xx_test)
 

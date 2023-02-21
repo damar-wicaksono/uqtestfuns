@@ -139,4 +139,39 @@ An orthogonal design in which the design matrix has uncorrelated columns is impo
   doi       = {10.2514/6.2020-1865},
 }
 
+@Article{Igusa1985,
+  author    = {Takeru Igusa and Armen Der Kiureghian},
+  journal   = {Journal of Engineering Mechanics},
+  title     = {Dynamic characterization of two-degree-of-freedom equipment-structure systems},
+  year      = {1985},
+  number    = {1},
+  pages     = {1--19},
+  volume    = {111},
+  abstract  = {A two‐degree‐of‐freedom equipment‐structure system is studied to find its intrinsic properties which are needed for analysis of more general secondary systems. Perturbation theory is used to find closed form expressions for the modal properties of the system in terms of the properties of the individual subsystems. Three important characteristics of the system are identified: tuning, interaction, and nonclassical damping. Mathematical expressions are defined for each of these characteristics and criteria are developed to measure their influences on the response of the equipment. The expressions for the modal properties and the criteria for tuning, interaction, and nonclassical damping are new results for the two‐degree‐of‐freedom system. These results form the bases for analysis of multiply supported multi‐degree‐of‐freedom secondary systems.},
+  doi       = {10.1061/(asce)0733-9399(1985)111:1(1)},
+  publisher = {American Society of Civil Engineers ({ASCE})},
+}
+
+@Article{DerKiureghian1991,
+  author   = {Der Kiureghian, Armen and De Stefano, Mario},
+  journal  = {Journal of Engineering Mechanics},
+  title    = {Efficient algorithm for second-order reliability analysis},
+  year     = {1991},
+  number   = {12},
+  pages    = {2904--2923},
+  volume   = {117},
+  abstract = {In the second‐order reliability method the principal curvatures of the limit‐state surface at the design point are used to construct a paraboloid approximation of the surface, which is then used to compute a second‐order estimate of the failure probability. The principal curvatures are the eigenvalues of the Hessian of the surface. In this paper an efficient algorithm is developed to determine the principal curvatures without computing the Hessian. The curvatures are computed in an iterative manner using the gradient of the limit‐state function, and are obtained in the decreasing order of their absolute magnitudes, which is also the order of their importance in reliability analysis. The computation can be terminated when the last curvature obtained is sufficiently small. The method is efficient for problems with large numbers of random variables, especially when an efficient algorithm for computing the gradient is available. Several numerical examples, including a finite‐element application involving 99 random variables, demonstrate the accuracy and efficiency of the method.},
+  doi      = {10.1061/(asce)0733-9399(1991)117:12(2904)},
+}
+
+@PhdThesis{Dubourg2011,
+  author   = {Dubourg, Vincent},
+  school   = {Université Blaise Pascal - Clermont II},
+  title    = {Adaptive surrogate models for reliability analysis and reliability-based design optimization},
+  year     = {2011},
+  address  = {Clermont-Ferrand, France},
+  type     = {phdthesis},
+  abstract = {This thesis is a contribution to the resolution of the reliability-based design optimization problem. This probabilistic design approach is aimed at considering the uncertainty attached to the system of interest in order to provide optimal and safe solutions. The safety level is quantified in the form of a probability of failure. Then, the optimization problem consists in ensuring that this failure probability remains less than a threshold specified by the stakeholders. The resolution of this problem requires a high number of calls to the limit-state design function underlying the reliability analysis. Hence it becomes cumbersome when the limit-state function involves an expensive-to-evaluate numerical model (e.g. a finite element model). In this context, this manuscript proposes a surrogate-based strategy where the limit-state function is progressively replaced by a Kriging meta-model. A special interest has been given to quantifying, reducing and eventually eliminating the error introduced by the use of this meta-model instead of the original model. The proposed methodology is applied to the design of geometrically imperfect shells prone to buckling.},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}

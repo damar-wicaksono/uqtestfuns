@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:piston)=
-# Piston Simulation Function
+(test-functions:damped-oscillator)=
+# Damped Oscillator Model
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,20 +21,24 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Piston simulation test function is a seven-dimensional scalar-valued 
-function.
-The function computes the cycle time of a piston system.
+The damped oscillator model is a seven-dimensional scalar-valued function.
+The model was first proposed in {cite}`Igusa1985` and used in the context of
+reliability analysis in {cite}`DerKiureghian1991, Dubourg2011`.
 
-This function has been used as a test function in metamodeling exercises {cite}`BenAri2007`.
-A 20-dimensional variant was used in the context of sensitivity analysis {cite}`Moon2010`
-by introducing 13 additional _inert_ input variables.
+```{note}
+The reliability analysis variant differs from this base model.
+Used in the context of reliability analysis, the model also includes additional
+parameters to a capacity factor and load such that the performance function can
+be computed.
+This base model only computes the relative displacement of the spring.
+```
 
 ## Test function instance
 
 To create a default instance of the Piston simulation test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Piston()
+my_testfun = uqtf.DampedOscillator()
 ```
 
 Check if it has been correctly instantiated:
@@ -45,50 +49,40 @@ print(my_testfun)
 
 ## Description
 
-The Piston simulation computes the cycle time of a piston moving
-inside a cylinder using the following analytical expression:
+The damped oscillator model is based on a two degree-of-freedom
+primary-secondary mechanical system characterized by two masses,
+two springs, and the corresponding damping ratios.
+Originally, the model computes the mean-square relative displacement of
+the secondary spring under a white noise base acceleration using
+the following analytical formula:
 
 $$
-\begin{align}
-  \mathcal{M}(\boldsymbol{x}) & = 2 \pi \left( \frac{M}{k + S^2 \frac{P_0 V_0}{T_0} \frac{T_a}{V^2}} \right)^{0.5}, \\
-  V & = \frac{S}{2 k} \left[ \left(A^2 + 4 k \frac{P_0 V_0}{T_0} T_a \right)^{0.5} - A \right]^{0.5}, \\
-  A & = P_0 S + 19.62 M - \frac{k V_0}{S},
-\end{align}
+\mathcal{M}(\boldsymbol{x}) = k_s \left( \pi \frac{S_0}{4 \zeta_s \omega_s^3} \frac{\zeta_a \zeta_s}{\zeta_p \zeta_s (4 \zeta_a^2 + \theta^2) + \gamma \zeta_a^2} \frac{(\zeta_p \omega_p^3 + \zeta_s \omega_s^3) \omega_p}{4 \zeta_a \omega_a^4} \right)^{0.5}
 $$
-where $\boldsymbol{x} = \{ M, S, V_0, k, P_0, T_a, T_0 \}$
+
+$$
+\begin{aligned}
+	\omega_p & = \left( \frac{k_p}{m_p}\right)^{0.5} & \omega_s & = \left(\frac{k_s}{m_s}\right)^{0.5} & \omega_a & = \frac{\omega_p + \omega_s}{2}\\
+	\gamma & = \frac{m_s}{m_p} & \zeta_a & = \frac{\zeta_p + \zeta_s}{2} & \theta & = \frac{\omega_p - \omega_s}{\omega_a} \\
+\end{aligned}
+$$
+where $\boldsymbol{x} = \{ M_p, M_s, K_p, K_s, \zeta_p, \zeta_s, S_0 \}$
 is the seven-dimensional vector of input variables further defined below.
+
+```{note}
+In UQTestFuns, this original output is square-rooted
+to get the relative displacement
+```
 
 ## Probabilistic input
 
-Two probabilistic input model specifications for the OTL circuit function are
-available as shown in the table below.
-
-|  No.   |         Keyword         |       Source       |
-|:------:|:-----------------------:|:------------------:|
-|   1.   | `BenAri2007` (default)  | {cite}`BenAri2007` |
-|   2.   |       `Moon2010`        |  {cite}`Moon2010`  |
-
-The default selection, based on {cite}`BenAri2007`,
-contains seven input variables given as independent uniform random variables
-with specified ranges shown in the table below.
+Based on {cite}`DerKiureghian1991`,
+the probabilistic input model for the damped oscillator model consists of
+seven independent random variables with marginal distributions
+shown in the table below.
 
 ```{code-cell} ipython3
 my_testfun.prob_input
-```
-
-```{note}
-In {cite}`Moon2010`,
-13 additional _inert_ independent input variables are introduced (totaling 20
-input variables);
-these input variables, being inert, do not affect the output of the function.
-```
-
-Alternatively, to create an instance of the Piston simulation test function
-with the probabilistic input specified in {cite}`Moon2010`, pass the 
-corresponding keyword (`"Moon2010"`) to the parameter (`prob_input_selection`):
-
-```python
-my_testfun = uqtf.Piston(prob_input_selection="Moon2010")
 ```
 
 ## Reference results

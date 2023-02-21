@@ -26,8 +26,9 @@ scalar-valued function.
 The function has been used as a test function in the context of metamodeling
 {cite}`Zuhal2020` and optimization {cite}`Forrester2008`.
 
-Create an instance of the wing weight test function using
-the built-in default arguments:
+## Test function instance
+
+To create a default instance of the Piston simulation test function:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.WingWeight()
@@ -40,7 +41,6 @@ print(my_testfun)
 ```
 
 ## Description
-
 
 The weight of a light aircraft wing is computed using
 the following analytical expression:
@@ -74,6 +74,7 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
+np.random.seed(42)
 xx_test = my_testfun.prob_input.get_sample(100000)
 yy_test = my_testfun(xx_test)
 
