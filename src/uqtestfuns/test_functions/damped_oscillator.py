@@ -162,7 +162,7 @@ class DampedOscillator(UQTestFunABC):
         -------
         np.ndarray
             The output of the damped oscillator model test function, i.e.,
-            the mean-square relative displacement of the secondary spring.
+            the relative displacement of the secondary spring.
         """
         yy = evaluate_mean_square_displacement(xx)
 
