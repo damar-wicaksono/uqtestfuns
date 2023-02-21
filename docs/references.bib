@@ -45,14 +45,14 @@
   doi     = {10.1080/00401706.1993.10485320},
 }
 
-@Book{Harper1983,
-  author    = {Harper, William V. and Gupta, Sumant K.},
-  publisher = {Office of Nuclear Waste Isolation, Battelle Memorial Institute},
-  title     = {Sensitivity/uncertainty analysis of a borehole scenario comparing latin hypercube sampling and deterministic sensitivity approaches},
-  year      = {1983},
-  number    = {{BMI}/{ONWI}-516},
-  location  = {Columbus, Ohio},
-  url       = {https://inldigitallibrary.inl.gov/PRR/84393.pdf},
+@TechReport{Harper1983,
+  author      = {Harper, William V. and Gupta, Sumant K.},
+  institution = {Office of Nuclear Waste Isolation, Battelle Memorial Institute},
+  title       = {Sensitivity/uncertainty analysis of a borehole scenario comparing latin hypercube sampling and deterministic sensitivity approaches},
+  year        = {1983},
+  number      = {{BMI}/{ONWI}-516},
+  location    = {Columbus, Ohio},
+  url         = {https://inldigitallibrary.inl.gov/PRR/84393.pdf},
 }
 
 @Article{Becker2020,
@@ -116,15 +116,15 @@ An orthogonal design in which the design matrix has uncorrelated columns is impo
   doi      = {10.1080/08982110701580930},
 }
 
-@Book{Worley1987,
-  author    = {Brian A. Worley},
-  publisher = {Oak Ridge National Laboratory (ORNL)},
-  title     = {Deterministic uncertainty analysis},
-  year      = {1987},
-  address   = {Oak Ridge, Tennessee},
-  number    = {{ORNL}-6428},
-  abstract  = {This paper presents a deterministic uncertainty analysis (DUA) method for calculating uncertainties that has the potential to significantly reduce the number of computer runs compared to conventional statistical analysis. The method is based upon the availability of derivative and sensitivity data such as that calculated using the well known direct or adjoint sensitivity analysis techniques. Formation of response surfaces using derivative data and the propagation of input probability distributions are discussed relative to their role in the DUA method. A sample problem that models the flow of water through a borehole is used as a basis to compare the cumulative distribution function of the flow rate as calculated by the standard statistical methods and the DUA method. Propogation of uncertainties by the DUA method is compared for ten cases in which the number of reference model runs was varied from one to ten. The DUA method gives a more accurate representation of the true cumulative distribution of the flow rate based upon as few as two model executions compared to fifty model executions using a statistical approach.},
-  doi       = {10.2172/5534706},
+@TechReport{Worley1987,
+  author      = {Brian A. Worley},
+  institution = {Oak Ridge National Laboratory (ORNL)},
+  title       = {Deterministic uncertainty analysis},
+  year        = {1987},
+  address     = {Oak Ridge, Tennessee},
+  number      = {{ORNL}-6428},
+  abstract    = {This paper presents a deterministic uncertainty analysis (DUA) method for calculating uncertainties that has the potential to significantly reduce the number of computer runs compared to conventional statistical analysis. The method is based upon the availability of derivative and sensitivity data such as that calculated using the well known direct or adjoint sensitivity analysis techniques. Formation of response surfaces using derivative data and the propagation of input probability distributions are discussed relative to their role in the DUA method. A sample problem that models the flow of water through a borehole is used as a basis to compare the cumulative distribution function of the flow rate as calculated by the standard statistical methods and the DUA method. Propogation of uncertainties by the DUA method is compared for ten cases in which the number of reference model runs was varied from one to ten. The DUA method gives a more accurate representation of the true cumulative distribution of the flow rate based upon as few as two model executions compared to fifty model executions using a statistical approach.},
+  doi         = {10.2172/5534706},
 }
 
 @InProceedings{Zuhal2020,
@@ -184,6 +184,39 @@ An orthogonal design in which the design matrix has uncorrelated columns is impo
   volume   = {93},
   abstract = {Global sensitivity analysis (SA) aims at quantifying the respective effects of input random variables (or combinations thereof) onto the variance of the response of a physical or mathematical model. Among the abundant literature on sensitivity measures, the Sobol’ indices have received much attention since they provide accurate information for most models. The paper introduces generalized polynomial chaos expansions (PCE) to build surrogate models that allow one to compute the Sobol’ indices analytically as a post-processing of the PCE coefﬁcients. Thus the computational cost of the sensitivity indices practically reduces to that of estimating the PCE coefﬁcients. An original non intrusive regression-based approach is proposed, together with an experimental design of minimal size. Various application examples illustrate the approach, both from the ﬁeld of global SA (i.e. well-known benchmark problems) and from the ﬁeld of stochastic mechanics. The proposed method gives accurate results for various examples that involve up to eight input random variables, at a computational cost which is 2–3 orders of magnitude smaller than the traditional Monte Carlo-based evaluation of the Sobol’ indices.},
   doi      = {10.1016/j.ress.2007.04.002},
+}
+
+@InCollection{Iooss2015,
+  author    = {Bertrand Iooss and Paul Lemaître},
+  booktitle = {Uncertainty Management in Simulation-Optimization of Complex Systems},
+  publisher = {Springer {US}},
+  title     = {A review on global sensitivity analysis methods},
+  year      = {2015},
+  pages     = {101--122},
+  abstract  = {This chapter makes a review, in a complete methodological framework, of various global sensitivity analysis methods of model output. Numerous statistical and probabilistic tools (regression, smoothing, tests, statistical learning, Monte Carlo, …) aim at determining the model input variables which mostly contribute to an interest quantity depending on model output. This quantity can be for instance the variance of an output variable. Three kinds of methods are distinguished: the screening (coarse sorting of the most influential inputs among a large number), the measures of importance (quantitative sensitivity indices) and the deep exploration of the model behaviour (measuring the effects of inputs on their all variation range). A progressive application methodology is illustrated on a scholar application. A synthesis is given to place every method according to several axes, mainly the cost in number of model evaluations, the model complexity and the nature of brought information.},
+  doi       = {10.1007/978-1-4899-7547-8_5},
+}
+
+@Article{Lamboni2013,
+  author   = {M. Lamboni and B. Iooss and A.-L. Popelin and F. Gamboa},
+  journal  = {Mathematics and Computers in Simulation},
+  title    = {Derivative-based global sensitivity measures: {General} links with {Sobol'} indices and numerical tests},
+  year     = {2013},
+  pages    = {45--54},
+  volume   = {87},
+  abstract = {The estimation of variance-based importance measures (called Sobol’ indices) of the input variables of a numerical model can require a large number of model evaluations. It turns to be unacceptable for high-dimensional model involving a large number of input variables (typically more than ten). Recently, Sobol and Kucherenko have proposed the derivative-based global sensitivity measures (DGSM), defined as the integral of the squared derivatives of the model output, showing that it can help to solve the problem of dimensionality in some cases. We provide a general inequality link between DGSM and total Sobol’ indices for input variables belonging to the class of Boltzmann probability measures, thus extending the previous results of Sobol and Kucherenko for uniform and normal measures. The special case of log-concave measures is also described. This link provides a DGSM-based maximal bound for the total Sobol indices. Numerical tests show the performance of the bound and its usefulness in practice.},
+  doi      = {10.1016/j.matcom.2013.02.002},
+}
+
+@InCollection{Baudin2017,
+  author    = {Michaël Baudin and Anne Dutfoy and Bertrand Iooss and Anne-Laure Popelin},
+  booktitle = {Handbook of Uncertainty Quantification},
+  publisher = {Springer International Publishing},
+  title     = {{OpenTURNS}: an industrial software for uncertainty quantification in simulation},
+  year      = {2017},
+  pages     = {2001--2038},
+  abstract  = {The needs to assess robust performances for complex systems and to answer tighter regulatory processes (security, safety, environmental control, health impacts, etc.) have led to the emergence of a new industrial simulation challenge: to take uncertainties into account when dealing with complex numerical simulation frameworks. Therefore, a generic methodology has emerged from the joint effort of several industrial companies and academic institutions. EDF R&D, Airbus Group, and Phimeca Engineering started a collaboration at the beginning of 2005, joined by IMACS in 2014, for the development of an open-source software platform dedicated to uncertainty propagation by probabilistic methods, named OpenTURNS for open-source treatment of uncertainty, Risk ’N Statistics. OpenTURNS addresses the specific industrial challenges attached to uncertainties, which are transparency , genericity , modularity, and multi-accessibility. This paper focuses on OpenTURNS and presents its main features: OpenTURNS is an open- source software under the LGPL license that presents itself as a C++ library and a Python TUI and which works under Linux and Windows environment. All the methodological tools are described in the different sections of this paper: uncertainty quantification, uncertainty propagation, sensitivity analysis, and metamodeling. A section also explains the generic wrappers’ way to link OpenTURNS to any external code. The paper illustrates as much as possible the methodological tools on an educational example that simulates the height of a river and compares it to the height of a dike that protects industrial facilities. At last, it gives an overview of the main developments planned for the next few years.},
+  doi       = {10.1007/978-3-319-12385-1_64},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

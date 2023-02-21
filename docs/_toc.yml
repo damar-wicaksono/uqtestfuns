@@ -22,6 +22,8 @@ parts:
             title: Borehole
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
+          - file: test-functions/flood
+            title: Flood
           - file: test-functions/ishigami
             title: Ishigami
           - file: test-functions/otl-circuit

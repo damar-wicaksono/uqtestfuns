@@ -74,20 +74,21 @@ with specified ranges shown in the table below.
 my_testfun.prob_input
 ```
 
-```{note}
+````{note}
 In {cite}`Moon2010`,
-13 additional _inert_ independent input variables are introduced (totaling 20
+14 additional _inert_ independent input variables are introduced (totaling 20
 input variables);
 these input variables, being inert, do not affect the output of the function.
-```
 
-Alternatively, to create an instance of the OTL circuit test function
-with the probabilistic input specified in {cite}`Moon2010`, pass the 
-corresponding keyword (`"Moon2010"`) to the parameter (`prob_input_selection`):
+To create an instance of the OTL circuit test function with the probabilistic
+input specified in {cite}`Moon2010`, pass the corresponding keyword
+(`"Moon2010"`) to the parameter (`prob_input_selection`):
 
 ```python
 my_testfun = uqtf.OTLCircuit(prob_input_selection="Moon2010")
 ```
+````
+
 
 ## Reference results
 

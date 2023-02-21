@@ -64,7 +64,7 @@ INPUT_MARGINALS_ISHIGAMI1991 = [
 
 AVAILABLE_INPUT_SPECS = {
     "Ishigami1991": {
-        "name": "Ishigami",
+        "name": "Ishigami-1991",
         "description": (
             "Probabilistic input model for the Ishigami function "
             "from Ishigami and Homma (1991)."

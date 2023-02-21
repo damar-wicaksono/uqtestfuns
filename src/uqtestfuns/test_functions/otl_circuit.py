@@ -83,7 +83,7 @@ for i in range(14):
 
 AVAILABLE_INPUT_SPECS = {
     "BenAri2007": {
-        "name": "OTL-Circuit-Ben-Ari",
+        "name": "OTL-Circuit-Ben-Ari-2007",
         "description": (
             "Probabilistic input model for the OTL Circuit function "
             "from Ben-Ari and Steinberg (2007)."
@@ -92,7 +92,7 @@ AVAILABLE_INPUT_SPECS = {
         "copulas": None,
     },
     "Moon2010": {
-        "name": "OTL-Circuit-Moon",
+        "name": "OTL-Circuit-Moon-2010",
         "description": (
             "Probabilistic input model for the OTL Circuit function "
             "from Moon (2010)."

@@ -95,7 +95,7 @@ INPUT_MARGINALS_FORRESTER2008 = [
 
 AVAILABLE_INPUT_SPECS = {
     "Forrester2008": {
-        "name": "Wing-Weight-Forrester",
+        "name": "Wing-Weight-Forrester-2008",
         "description": (
             "Probabilistic input model for the Wing Weight model "
             "from Forrester et al. (2008)."

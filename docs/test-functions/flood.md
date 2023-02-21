@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:piston)=
-# Piston Simulation Function
+(test-functions:flood)=
+# Flood Model
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,20 +21,16 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Piston simulation test function is a seven-dimensional scalar-valued 
-function.
-The function computes the cycle time of a piston system.
-
-This function has been used as a test function in metamodeling exercises {cite}`BenAri2007`.
-A 20-dimensional variant was used in the context of sensitivity analysis {cite}`Moon2010`
-by introducing 13 additional _inert_ input variables.
+The flood model is an eight-dimensional scalar valued function.
+The model was used in the context of sensitivity analysis in {cite}`Iooss2015, Lamboni2013`
+and has become a canonical example of the OpenTURNS package {cite}`Baudin2017`.
 
 ## Test function instance
 
-To create a default instance of the piston simulation test function:
+To create a default instance of the flood model:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Piston()
+my_testfun = uqtf.Flood()
 ```
 
 Check if it has been correctly instantiated:
@@ -45,54 +41,40 @@ print(my_testfun)
 
 ## Description
 
-The Piston simulation computes the cycle time of a piston moving
-inside a cylinder using the following analytical expression:
+The flood model computes the maximum annual underflow of a river
+using the following analytical formula:
 
 $$
 \begin{align}
-  \mathcal{M}(\boldsymbol{x}) & = 2 \pi \left( \frac{M}{k + S^2 \frac{P_0 V_0}{T_0} \frac{T_a}{V^2}} \right)^{0.5}, \\
-  V & = \frac{S}{2 k} \left[ \left(A^2 + 4 k \frac{P_0 V_0}{T_0} T_a \right)^{0.5} - A \right]^{0.5}, \\
-  A & = P_0 S + 19.62 M - \frac{k V_0}{S},
+	\mathcal{M}(\boldsymbol{x}) & = z_v + h - h_d - c_b\\
+	h & = \left[ \frac{q}{b k_s \left(\frac{z_m - z_v}{l} \right)^{0.5}} \right]^{0.6}
 \end{align}
 $$
-where $\boldsymbol{x} = \{ M, S, V_0, k, P_0, T_a, T_0 \}$
-is the seven-dimensional vector of input variables further defined below.
+where $\boldsymbol{x} = \{ q, k_s, z_v, z_m, h_d, c_b, l, b \}$
+is the eight-dimensional vector of input variables further defined below.
+The output is given in $[\mathrm{m}]$.
+A negative value indicates that an overflow (_flooding_) occurs.
+
+```{note}
+Compared to the original function,
+this implementation inverted the sign of the output
+such that underflowing has a positive sign.
+```
+The model is based on a simplification of the one-dimensional hydro-dynamical
+equations of St. Venant under the assumption of uniform and constant flow rate 
+and a large rectangular section. 
 
 ## Probabilistic input
 
-Two probabilistic input model specifications for the OTL circuit function are
-available as shown in the table below.
-
-|  No.   |         Keyword         |       Source       |
-|:------:|:-----------------------:|:------------------:|
-|   1.   | `BenAri2007` (default)  | {cite}`BenAri2007` |
-|   2.   |       `Moon2010`        |  {cite}`Moon2010`  |
-
-The default selection, based on {cite}`BenAri2007`,
-contains seven input variables given as independent uniform random variables
-with specified ranges shown in the table below.
+Based on {cite}`Iooss2015` (Table 4), the probabilistic input model
+for the flood model consists of eight independent random variables
+with marginals shown in the table below.
 
 ```{code-cell} ipython3
 my_testfun.prob_input
 ```
 
-````{note}
-In {cite}`Moon2010`,
-13 additional _inert_ independent input variables are introduced (totaling 20
-input variables);
-these input variables, being inert, do not affect the output of the function.
-
-To create an instance of the piston simulation test function
-with the probabilistic input specified in {cite}`Moon2010`,
-pass the corresponding keyword (`"Moon2010"`)
-to the parameter (`prob_input_selection`):
-
-```python
-my_testfun = uqtf.Piston(prob_input_selection="Moon2010")
-```
-````
-
-## Reference results
+## Reference Results
 
 This section provides several reference results of typical UQ analyses involving
 the test function.

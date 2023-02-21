@@ -21,7 +21,8 @@ available in the current UQTestFuns, regardless of their typical applications.
 |:-----------------------------------------------------------:|:-----------------:|:--------------------:|
 |          {ref}`Borehole <test-functions:borehole>`          |         8         |     `Borehole()`     |
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>` |         7         | `DampedOscillator()` |
-|        {ref}`Ishigami <test-functions:ishigami>`            |         3         |    `Ishigami()`      |
+|             {ref}`Flood <test-functions:flood>`             |         8         |      `Flood()`       |
+|          {ref}`Ishigami <test-functions:ishigami>`          |         3         |     `Ishigami()`     |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
 |       {ref}`Wing Weight <test-functions:wing-weight>`       |        10         |    `WingWeight()`    |
