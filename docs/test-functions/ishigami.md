@@ -266,7 +266,7 @@ tabulate(
 )
 ```
 
-## Sensitivity indices
+### Sensitivity indices
 
 The main-effect and total-effect Sobol' indices of the Ishigami function can be   
 derived analytically.  
