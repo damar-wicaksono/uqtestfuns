@@ -35,7 +35,7 @@ This base model only computes the relative displacement of the spring.
 
 ## Test function instance
 
-To create a default instance of the Piston simulation test function:
+To create a default instance of the damped oscillator model:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.DampedOscillator()

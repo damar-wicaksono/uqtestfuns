@@ -28,7 +28,7 @@ The function has been used as a test function in the context of metamodeling
 
 ## Test function instance
 
-To create a default instance of the Piston simulation test function:
+To create a default instance of the wing weight test function:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.WingWeight()

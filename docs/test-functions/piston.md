@@ -31,7 +31,7 @@ by introducing 13 additional _inert_ input variables.
 
 ## Test function instance
 
-To create a default instance of the Piston simulation test function:
+To create a default instance of the piston simulation test function:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Piston()
