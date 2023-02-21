@@ -204,18 +204,18 @@ def evaluate_mean_square_displacement(xx: np.ndarray):
     theta = (omega_p - omega_s) / omega_a  # tuning parameter
 
     # Compute the mean-square relative displacement of the secondary spring
-    first_term = np.pi * ss_0 / 4 / zt_s / (omega_s ** 3)
+    first_term = np.pi * ss_0 / 4 / zt_s / (omega_s**3)
     second_term = (
-            zt_a
-            * zt_s
-            / (zt_p * zt_s * (4 * zt_a ** 2 + theta ** 2) + gamma * zt_a ** 2)
+        zt_a
+        * zt_s
+        / (zt_p * zt_s * (4 * zt_a**2 + theta**2) + gamma * zt_a**2)
     )
     third_term = (
-            (zt_p * omega_p ** 3 + zt_s * omega_s ** 3)
-            * omega_p
-            / 4
-            / zt_a
-            / (omega_a ** 4)
+        (zt_p * omega_p**3 + zt_s * omega_s**3)
+        * omega_p
+        / 4
+        / zt_a
+        / (omega_a**4)
     )
 
     # NOTE: This is squared displacement
