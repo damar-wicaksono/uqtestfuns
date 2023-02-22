@@ -138,7 +138,7 @@ where $\sigma_{g, X_i}$'s are the geometric standard deviation of the input vari
 The geometric variance of the output is then:
 
 $$
-\sigma^2_g = \exp \left( \sum_{m = 1}^9 \ln^2 \sigma_{g, X_i}} \right).
+\sigma^2_g = \exp \left( \sum_{m = 1}^9 \ln^2 \sigma_{g, X_i} \right).
 $$
 
 Shown below is the convergence of a direct Monte-Carlo estimation of
