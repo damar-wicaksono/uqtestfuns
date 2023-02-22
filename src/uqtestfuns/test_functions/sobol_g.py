@@ -1,10 +1,11 @@
 """
 Module with an implementation of the Sobol-G test function.
 
-The Sobol-G function [1] is an M-dimensional scalar-valued function.
-It has been used mainly to test integration algorithms
-(e.g., quasi Monte-Carlo) such as in [1] and global sensitivity analysis
-such as in [2], [3], and [4].
+The Sobol'-G function is an M-dimensional scalar-valued function.
+It was introduced in [1] for testing numerical integration algorithms
+(e.g., quasi-Monte-Carlo; see for instance [2].
+Later on, it becomes a popular testing function for global sensitivity analysis
+methods; see, for instances, [3], [4], and [5].
 
 The parameters of the Sobol-G function (i.e., the weighting coefficients)
 determine the importance of each input variable. There are several sets
@@ -17,30 +18,32 @@ Notes
 
 References
 ----------
-[1] I. M. Sobol’, “On quasi-Monte Carlo integrations,”
-    Mathematics and Computers in Simulation, vol. 47, no. 2–5,
-    pp. 103–112, 1998.
-    DOI: 10.1016/S0378-4754(98)00096-2.
-[2] S. Kucherenko, B. Feil, N. Shah, and W. Mauntz, “The identification of
-    model effective dimensions using global sensitivity analysis,”
-    Reliability Engineering & System Safety, vol. 96, no. 4, pp. 440–449, 2011.
-    DOI: 10.1016/j.ress.2010.11.003.
-[3] A. Marrel, B. Iooss, F. Van Dorpe, and E. Volkova, “An efficient
-    methodology for modeling complex computer codes with Gaussian processes,”
-    Computational Statistics & Data Analysis, vol. 52, no. 10,
-    pp. 4731–4744, 2008.
-    DOI: 10.1016/j.csda.2008.03.026.
-[4] A. Marrel, B. Iooss, B. Laurent, and O. Roustant, “Calculations of Sobol
-    indices for the Gaussian process metamodel,”
-    Reliability Engineering & System Safety, vol. 94, no. 3,
-    pp. 742–751, 2009.
-    DOI: 10.1016/j.ress.2008.07.008.
-[5] T. Crestaux, J.-M. Martinez, O. Le Maître, and O. Lafitte, “Polynomial
-    chaos expansion for uncertainties quantification and sensitivity analysis,”
-    presented at the Fifth International Conference on Sensitivity Analysis
-    of Model Output, 2007.
-    Accessed: Jan. 25, 2023
-    URL: http://samo2007.chem.elte.hu/lectures/Crestaux.pdf
+1. I. Radović, I. M. Sobol’, and R. F. Tichy, “Quasi-Monte Carlo Methods for
+   Numerical Integration: Comparison of Different Low Discrepancy Sequences,”
+   Monte Carlo Methods and Applications, vol. 2, no. 1, pp. 1–14, 1996.
+   DOI: 10.1515/mcma.1996.2.1.1.
+2. I. M. Sobol’, “On quasi-Monte Carlo integrations,” Mathematics and Computers
+   in Simulation, vol. 47, no. 2–5, pp. 103–112, 1998.
+   DOI: 10.1016/S0378-4754(98)00096-2
+3. A. Marrel, B. Iooss, F. Van Dorpe, and E. Volkova, “An efficient
+   methodology for modeling complex computer codes with Gaussian processes,”
+   Computational Statistics & Data Analysis, vol. 52, no. 10,
+   pp. 4731–4744, 2008.
+   DOI: 10.1016/j.csda.2008.03.026
+4. A. Marrel, B. Iooss, B. Laurent, and O. Roustant, “Calculations of Sobol
+   indices for the Gaussian process metamodel,” Reliability Engineering &
+   System Safety, vol. 94, no. 3, pp. 742–751, 2009.
+    DOI: 10.1016/j.ress.2008.07.008
+5. S. Kucherenko, B. Feil, N. Shah, and W. Mauntz, “The identification of
+   model effective dimensions using global sensitivity analysis,”
+   Reliability Engineering & System Safety, vol. 96, no. 4, pp. 440–449, 2011.
+   DOI: 10.1016/j.ress.2010.11.003
+6. T. Crestaux, J.-M. Martinez, O. Le Maître, and O. Lafitte, “Polynomial
+   chaos expansion for uncertainties quantification and sensitivity analysis,”
+   presented at the Fifth International Conference on Sensitivity Analysis
+   of Model Output, 2007.
+   Accessed: Jan. 25, 2023
+   URL: http://samo2007.chem.elte.hu/lectures/Crestaux.pdf
 """
 import numpy as np
 
@@ -85,8 +88,8 @@ def _create_sobol_input(spatial_dimension: int) -> List[UnivariateInput]:
 
 
 AVAILABLE_INPUT_SPECS = {
-    "sobol": {
-        "name": "Sobol-G",
+    "Sobol1998": {
+        "name": "Sobol-G-Sobol-1998",
         "description": (
             "Probabilistic input model for the Sobol'-G function "
             "from Sobol' (1998)."
@@ -96,11 +99,11 @@ AVAILABLE_INPUT_SPECS = {
     },
 }
 
-DEFAULT_INPUT_SELECTION = "sobol"
+DEFAULT_INPUT_SELECTION = "Sobol1998"
 
 
-def _get_params_sobol_1(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol-G according to choice 1 in [1].
+def _get_params_sobol_1998_1(spatial_dimension: int) -> np.ndarray:
+    """Construct a parameter array for Sobol'-G according to choice 1 in [2].
 
     Notes
     -----
@@ -112,8 +115,8 @@ def _get_params_sobol_1(spatial_dimension: int) -> np.ndarray:
     return yy
 
 
-def _get_params_sobol_2(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol-G according to choice 2 in [1].
+def _get_params_sobol_1998_2(spatial_dimension: int) -> np.ndarray:
+    """Construct a parameter array for Sobol'-G according to choice 2 in [2].
 
     Notes
     -----
@@ -126,8 +129,8 @@ def _get_params_sobol_2(spatial_dimension: int) -> np.ndarray:
     return yy
 
 
-def _get_params_sobol_3(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol-G according to choice 3 in [1].
+def _get_params_sobol_1998_3(spatial_dimension: int) -> np.ndarray:
+    """Construct a parameter array for Sobol'-G according to choice 3 in [2].
 
     Notes
     -----
@@ -139,8 +142,8 @@ def _get_params_sobol_3(spatial_dimension: int) -> np.ndarray:
     return yy
 
 
-def _get_params_sobol_4(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol-G according to choice 4 in [1].
+def _get_params_sobol_1998_4(spatial_dimension: int) -> np.ndarray:
+    """Construct a parameter array for Sobol-G according to choice 4 in [2].
 
     Notes
     -----
@@ -152,8 +155,8 @@ def _get_params_sobol_4(spatial_dimension: int) -> np.ndarray:
     return yy
 
 
-def _get_params_kucherenko_2a(spatial_dimension: int) -> np.ndarray:
-    """Construct a param. array for Sobol-G according to problem 2A in [2]."""
+def _get_params_kucherenko_2011_2a(spatial_dimension: int) -> np.ndarray:
+    """Construct a param. array for Sobol'-G according to problem 2A in [5]."""
     yy = np.zeros(spatial_dimension)
     if spatial_dimension >= 2:
         yy[2:] = 6.52
@@ -161,8 +164,8 @@ def _get_params_kucherenko_2a(spatial_dimension: int) -> np.ndarray:
     return yy
 
 
-def _get_params_kucherenko_3b(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol-G according to problem 3B in [2].
+def _get_params_kucherenko_2011_3b(spatial_dimension: int) -> np.ndarray:
+    """Construct a parameter array for Sobol'-G according to problem 3B in [5].
 
     Notes
     -----
@@ -175,23 +178,23 @@ def _get_params_kucherenko_3b(spatial_dimension: int) -> np.ndarray:
 
 
 def _get_params_crestaux_2007(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol-G according to [3]."""
+    """Construct a parameter array for Sobol'-G according to [6]."""
     yy = (np.arange(1, spatial_dimension + 1) - 1) / 2.0
 
     return yy
 
 
 AVAILABLE_PARAMETERS = {
-    "sobol-1": _get_params_sobol_1,
-    "sobol-2": _get_params_sobol_2,
-    "sobol-3": _get_params_sobol_3,
-    "sobol-4": _get_params_sobol_4,
-    "kucherenko-2a": _get_params_kucherenko_2a,
-    "kucherenko-3b": _get_params_kucherenko_3b,
-    "crestaux-2007": _get_params_crestaux_2007,
+    "Sobol1998-1": _get_params_sobol_1998_1,
+    "Sobol1998-2": _get_params_sobol_1998_2,
+    "Sobol1998-3": _get_params_sobol_1998_3,
+    "Sobol1998-4": _get_params_sobol_1998_4,
+    "Kucherenko2011-2a": _get_params_kucherenko_2011_2a,
+    "Kucherenko2011-3b": _get_params_kucherenko_2011_3b,
+    "Crestaux2007": _get_params_crestaux_2007,
 }
 
-DEFAULT_PARAMETERS_SELECTION = "crestaux-2007"
+DEFAULT_PARAMETERS_SELECTION = "Crestaux2007"
 
 # The dimension is variable, it requires a default for fallback
 DEFAULT_DIMENSION_SELECTION = 2
@@ -208,7 +211,7 @@ class SobolG(UQTestFunABC):
 
     _DEFAULT_SPATIAL_DIMENSION = None
 
-    _DESCRIPTION = "Sobol-G function from Sobol' (1998)"
+    _DESCRIPTION = "Sobol'-G function from Sobol' (1998)"
 
     def __init__(
         self,
@@ -255,8 +258,11 @@ class SobolG(UQTestFunABC):
             The output is a 1-dimensional array of length N.
         """
         params = self.parameters
-        yy = np.sum(
-            np.log(((np.abs(4 * xx - 2) + params) / (1 + params))), axis=1
-        )
+        yy = np.prod(((np.abs(4 * xx - 2) + params) / (1 + params)), axis=1)
 
-        return np.exp(yy)
+        return yy
+        # yy = np.sum(
+        #     np.log(((np.abs(4 * xx - 2) + params) / (1 + params))), axis=1
+        # )
+        #
+        # return np.exp(yy)

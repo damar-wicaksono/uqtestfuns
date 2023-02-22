@@ -22,9 +22,10 @@ in the comparison of sensitivity analysis methods.
 |          {ref}`Borehole <test-functions:borehole>`          |         8         |     `Borehole()`     |
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>` |         7         | `DampedOscillator()` |
 |             {ref}`Flood <test-functions:flood>`             |         8         |      `Flood()`       |
-|         {ref}`Ishigami <test-functions:ishigami>`           |         3         |    `Ishigami()`      |
+|          {ref}`Ishigami <test-functions:ishigami>`          |         3         |     `Ishigami()`     |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
+|          {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |      `SobolG()`      |
 |            {ref}`Sulfur <test-functions:sulfur>`            |         9         |      `Sulfur()`      |
 |       {ref}`Wing Weight <test-functions:wing-weight>`       |        10         |    `WingWeight()`    |
 

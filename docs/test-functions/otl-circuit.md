@@ -89,7 +89,6 @@ my_testfun = uqtf.OTLCircuit(prob_input_selection="Moon2010")
 ```
 ````
 
-
 ## Reference results
 
 This section provides several reference results of typical UQ analyses involving

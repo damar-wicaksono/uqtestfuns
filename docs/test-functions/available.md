@@ -25,6 +25,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 |          {ref}`Ishigami <test-functions:ishigami>`          |         3         |     `Ishigami()`     |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
+|          {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |      `SobolG()`      |
 |            {ref}`Sulfur <test-functions:sulfur>`            |         9         |      `Sulfur()`      |
 |       {ref}`Wing Weight <test-functions:wing-weight>`       |        10         |    `WingWeight()`    |
 
