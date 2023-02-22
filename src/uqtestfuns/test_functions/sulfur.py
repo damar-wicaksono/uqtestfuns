@@ -3,7 +3,8 @@ Module with an implementation of the Sulfur model test function.
 
 The Sulfur model from [1] is a nine-dimensional scalar-valued function
 that analytically computes the direct radiative forcing by sulfate aerosols.
-The test function was used in [2] for metamodeling and uncertainty propagation.
+The test function was used in [2] for metamodeling and uncertainty propagation
+purposes.
 The probabilistic input specification used in [2] was originally based
 from [3].
 
@@ -23,38 +24,39 @@ Notes
 
 - The equation of the Sulfur model in [2] (Eq. (12)) is erroneous.
   The solar constant term S0 should not be squared otherwise the dimension
-  will not agree. Moreover, the equation is missing a factor of 365 in the
-  denominator because the parameter L (Sulfate lifetime in the atmosphere)
-  is given in [days] while the parameter Q (Global input flux of anthropogenic
-  sulfur is given in [TgS/year].
-- The input specification of the model here are taken from [3] (Table 2).
+  will not agree. Moreover, the equation is missing factors of 365 in the
+  denominator and 10^12 in the numerator because the parameter L
+  (Sulfate lifetime in the atmosphere) is given in [days]
+  while the parameter Q (Global input flux of anthropogenic sulfur is
+  given in [TgS/year].
+- The input specification of the model here is taken from [3] (Table 2).
   While they are similar, the parameters T and (1-Rs) in [3] are in the
   squared form (i.e., T^2 and (1-Rs)^2).
 
 References
 ----------
-[1] R. J. Charlson, S. E. Schwartz, J. M. Hales, R. D. Cess, J. A. Coakley,
-    J. E. Hansen, and D. J. Hofmann, “Climate forcing by anthropogenic
-    aerosols,” Science, vol. 255, no. 5043, pp. 423–430, 1992.
-    DOI: 10.1126/science.255.5043.423.
-[2] M. A. Tatang, W. Pan, R. G. Prinn, and G. J. McRae, “An efficient method
-    for parametric uncertainty analysis of numerical geophysical models,”
-    Journal of Geophysical Research, vol. 102, no. D18, pp. 21925–21932, 1997.
-    DOI: 10.1029/97JD01654.
-[3] J. E. Penner, R. J. Charlson, S.E. Schwartz, J. M. Hales, N. S. Laulainen,
-    L. Travis, R. Leifer, T. Novakov, J. Ogren, L. F. Radke, “Quantifying and
-    Minimizing Uncertainty of Climate Forcing by Anthropogenic Aerosols,”
-    Bulletin of the American Meteorological Society, vol. 75, no. 3,
-    pp. 375–400, 1994.
-    DOI: 10.1175/1520-0477(1994)075<0375:QAMUOC>2.0.CO;2.
-[4] G. Kopp and J. L. Lean, “A new, lower value of total solar irradiance:
-    Evidence and climate significance,” Geophysical Research Letter, vol. 38,
-    no. 1, 2011.
-    DOI: 10.1029/2010GL045777.
-[5] M. Pidwirny, “Introduction to the Oceans,”
-    Fundamentals of Physical Geography, 2nd Edition, 2006.
-    Accessed: Jan. 25, 2023
-    URL: http://www.physicalgeography.net/fundamentals/8o.html.
+1. R. J. Charlson, S. E. Schwartz, J. M. Hales, R. D. Cess, J. A. Coakley,
+   J. E. Hansen, and D. J. Hofmann, “Climate forcing by anthropogenic
+   aerosols,” Science, vol. 255, no. 5043, pp. 423–430, 1992.
+   DOI: 10.1126/science.255.5043.423.
+2. M. A. Tatang, W. Pan, R. G. Prinn, and G. J. McRae, “An efficient method
+   for parametric uncertainty analysis of numerical geophysical models,”
+   Journal of Geophysical Research, vol. 102, no. D18, pp. 21925–21932, 1997.
+   DOI: 10.1029/97JD01654.
+3. J. E. Penner, R. J. Charlson, S.E. Schwartz, J. M. Hales, N. S. Laulainen,
+   L. Travis, R. Leifer, T. Novakov, J. Ogren, L. F. Radke, “Quantifying and
+   Minimizing Uncertainty of Climate Forcing by Anthropogenic Aerosols,”
+   Bulletin of the American Meteorological Society, vol. 75, no. 3,
+   pp. 375–400, 1994.
+   DOI: 10.1175/1520-0477(1994)075<0375:QAMUOC>2.0.CO;2.
+4. G. Kopp and J. L. Lean, “A new, lower value of total solar irradiance:
+   Evidence and climate significance,” Geophysical Research Letter, vol. 38,
+   no. 1, 2011.
+   DOI: 10.1029/2010GL045777.
+5. M. Pidwirny, “Introduction to the Oceans,”
+   Fundamentals of Physical Geography, 2nd Edition, 2006.
+   Accessed: Jan. 25, 2023
+   URL: http://www.physicalgeography.net/fundamentals/8o.html.
 """
 import numpy as np
 
@@ -66,7 +68,7 @@ from .available import create_prob_input_from_available
 
 __all__ = ["Sulfur"]
 
-INPUT_MARGINALS_PENNER = [  # From [3] (Table 2)
+INPUT_MARGINALS_PENNER1994 = [  # From [3] (Table 2)
     UnivariateInput(
         name="Q",
         distribution="lognormal",
@@ -126,18 +128,18 @@ INPUT_MARGINALS_PENNER = [  # From [3] (Table 2)
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "penner": {
-        "name": "Sulfur-Penner",
+    "Penner1994": {
+        "name": "Sulfur-Penner-1994",
         "description": (
             "Probabilistic input model for the Sulfur model "
             "from Penner et al. (1994)."
         ),
-        "marginals": INPUT_MARGINALS_PENNER,
+        "marginals": INPUT_MARGINALS_PENNER1994,
         "copulas": None,
     }
 }
 
-DEFAULT_INPUT_SELECTION = "penner"
+DEFAULT_INPUT_SELECTION = "Penner1994"
 
 SOLAR_CONSTANT = 1361  # [W/m^2] from [4]
 EARTH_AREA = 5.1e14  # [m^2] from [5]
@@ -184,7 +186,7 @@ class Sulfur(UQTestFunABC):
             The output of the Sulfur model test function, i.e.,
             the direct radiative forcing by sulfate aerosols.
         """
-        # Source strength of anthropogenic Sulfur
+        # Source strength of anthropogenic Sulfur (initially given in Teragram)
         qq = xx[:, 0] * 1e12
         # Fraction of SO2 oxidized to SO4(2-) aerosol
         yy = xx[:, 1]

@@ -30,6 +30,8 @@ parts:
             title: OTL Circuit
           - file: test-functions/piston
             title: Piston Simulation
+          - file: test-functions/sulfur
+            title: Sulfur
           - file: test-functions/wing-weight
             title: Wing Weight
   - caption: Metafunction

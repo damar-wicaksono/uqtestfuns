@@ -171,7 +171,7 @@ plt.grid()
 fig.set_dpi(150)
 ```
 
-The tabulated results for each sample size is shown below.
+The tabulated results for is shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]

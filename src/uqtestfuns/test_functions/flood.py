@@ -13,22 +13,22 @@ and a large rectangular section.
 
 References
 ----------
-[1] B. Iooss and P. Lemaître, “A Review on Global Sensitivity Analysis
-    Methods,” in Uncertainty Management in Simulation-Optimization of
-    Complex Systems, vol. 59, G. Dellino and C. Meloni, Eds.
-    Boston, MA: Springer US, 2015, pp. 101–122.
-    DOI: 10.1007/978-1-4899-7547-8_5
-[2] M. Lamboni, B. Iooss, A.-L. Popelin, and F. Gamboa, “Derivative-based
-    global sensitivity measures: General links with Sobol’ indices
-    and numerical tests,” Mathematics and Computers in Simulation, vol. 87,
-    pp. 45–54, 2013.
-    DOI: 10.1016/j.matcom.2013.02.002
-[3] M. Baudin, A. Dutfoy, B. Iooss, and A.-L. Popelin, “OpenTURNS:
-    An Industrial Software for Uncertainty Quantification in Simulation,”
-    in Handbook of Uncertainty Quantification, R. Ghanem, D. Higdon,
-    and H. Owhadi, Eds. Cham: Springer International Publishing, 2017,
-    pp. 2001–2038.
-    DOI: 10.1007/978-3-319-12385-1_64
+1. B. Iooss and P. Lemaître, “A Review on Global Sensitivity Analysis
+   Methods,” in Uncertainty Management in Simulation-Optimization of
+   Complex Systems, vol. 59, G. Dellino and C. Meloni, Eds.
+   Boston, MA: Springer US, 2015, pp. 101–122.
+   DOI: 10.1007/978-1-4899-7547-8_5
+2. M. Lamboni, B. Iooss, A.-L. Popelin, and F. Gamboa, “Derivative-based
+   global sensitivity measures: General links with Sobol’ indices
+   and numerical tests,” Mathematics and Computers in Simulation, vol. 87,
+   pp. 45–54, 2013.
+   DOI: 10.1016/j.matcom.2013.02.002
+3. M. Baudin, A. Dutfoy, B. Iooss, and A.-L. Popelin, “OpenTURNS:
+   An Industrial Software for Uncertainty Quantification in Simulation,”
+   in Handbook of Uncertainty Quantification, R. Ghanem, D. Higdon,
+   and H. Owhadi, Eds. Cham: Springer International Publishing, 2017,
+   pp. 2001–2038.
+   DOI: 10.1007/978-3-319-12385-1_64
 """
 import numpy as np
 

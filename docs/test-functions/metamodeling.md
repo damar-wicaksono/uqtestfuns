@@ -24,6 +24,7 @@ in the comparison of metamodeling approaches.
 |             {ref}`Flood <test-functions:flood>`             |         8         |       `Flood()`      |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
+|            {ref}`Sulfur <test-functions:sulfur>`            |         9         |      `Sulfur()`      |
 |       {ref}`Wing Weight <test-functions:wing-weight>`       |        10         |    `WingWeight()`    |
 
 In a Python terminal, you can list all the available functions relevant
