@@ -106,7 +106,7 @@ $ git clone https://github.com/damar-wicaksono/uqtestfuns
 To install UQTestFuns from the source, type:
 
 ```bash
-$ pip install [-e] 
+$ pip install [-e] .
 ```
 
 It's a good idea to install the package in an isolated virtual environment.
