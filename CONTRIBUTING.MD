@@ -11,6 +11,25 @@ In case of doubt, use your best judgment.
 Don't hesitate to propose changes to this document via an issue or 
 in a pull request.
 
+#### Table Of Contents
+
+- [Code of Conduct](#code-of-conduct)
+- [Installation](#installation)
+  - [Obtaining the source](#obtaining-the-source)
+  - [Virtual environments](#virtual-environments)
+  - [Installing from source](#installing-from-source)
+- [Testing](#testing)
+- [Documentation](#documentation)
+  - [Install dependencies](#install-dependencies)
+  - [Building the documentation](#building-the-documentation)
+  - [Design of the docs](#design-of-the-docs)
+- [Project organization](#project-organization) 
+
+## Code of Conduct
+
+This project and everyone participating in it is governed by our [Code of Conduct](./CODE-OF-CONDUCT.md).
+By participating, you are expected to uphold this code.
+
 ## Installation
 
 This installation guide is focused on development.
@@ -73,7 +92,7 @@ To create a virtual environment using the `venv` module:
     deactivate
     ```
 
-#### Using [conda](https://conda.io/projects/conda/en/latest/index.html):
+#### Using [conda](https://conda.io/projects/conda/en/latest/index.html)
 
 You may also create a virtual environment via `conda` which is included in
 the Anaconda distribution of Python.
@@ -171,8 +190,8 @@ The docs itself contains six different main sections:
 - The landing page of the docs (`docs/index.md`)
 - The Getting Started Guide (`docs/getting-started`)
 - The Available Test Functions (`docs/test-functions`)
-  contains the documentation for each of the available test functions in UQTestFuns.
-  Each test function has its own documentation file.
+  contains the documentation for each of the available test functions
+  in UQTestFuns. Each test function has its own documentation file.
 - The Fundamentals (`docs/fundamentals`) contains explanations
   on the main uncertainty quantification (UQ) activities.
   This is related to how the test functions are classified based
@@ -185,7 +204,7 @@ The docs itself contains six different main sections:
 Additionally, the `docs` directory also includes `references.bib`
 (the bibliography file) and `glossary.md` (well, the glossary).
 
-## Project Organization
+## Project organization
 
 ```
 ├── .github/                <- The GitHub actions specifications.
