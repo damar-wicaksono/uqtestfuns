@@ -19,6 +19,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 
 |                            Name                             | Spatial Dimension |     Constructor      |
 |:-----------------------------------------------------------:|:-----------------:|:--------------------:|
+|            {ref}`Ackley <test-functions:ackley>`            |         M         |      `Ackley()`      |
 |          {ref}`Borehole <test-functions:borehole>`          |         8         |     `Borehole()`     |
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>` |         7         | `DampedOscillator()` |
 |             {ref}`Flood <test-functions:flood>`             |         8         |      `Flood()`       |

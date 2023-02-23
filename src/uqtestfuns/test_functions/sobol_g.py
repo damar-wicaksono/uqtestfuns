@@ -7,9 +7,9 @@ It was introduced in [1] for testing numerical integration algorithms
 Later on, it becomes a popular testing function for global sensitivity analysis
 methods; see, for instances, [3], [4], and [5].
 
-The parameters of the Sobol-G function (i.e., the weighting coefficients)
-determine the importance of each input variable. There are several sets
-of parameters used in the literature.
+The parameters of the Sobol'-G function (i.e., the coefficients) determine
+the importance of each input variable.
+There are several sets of parameters used in the literature.
 
 Notes
 -----
@@ -88,18 +88,18 @@ def _create_sobol_input(spatial_dimension: int) -> List[UnivariateInput]:
 
 
 AVAILABLE_INPUT_SPECS = {
-    "Sobol1998": {
-        "name": "Sobol-G-Sobol-1998",
+    "Radovic1996": {
+        "name": "Sobol-G-Radovic-1996",
         "description": (
             "Probabilistic input model for the Sobol'-G function "
-            "from Sobol' (1998)."
+            "from Radović et al. (1996)."
         ),
         "marginals": _create_sobol_input,
         "copulas": None,
     },
 }
 
-DEFAULT_INPUT_SELECTION = "Sobol1998"
+DEFAULT_INPUT_SELECTION = "Radovic1996"
 
 
 def _get_params_sobol_1998_1(spatial_dimension: int) -> np.ndarray:
@@ -211,7 +211,7 @@ class SobolG(UQTestFunABC):
 
     _DEFAULT_SPATIAL_DIMENSION = None
 
-    _DESCRIPTION = "Sobol'-G function from Sobol' (1998)"
+    _DESCRIPTION = "Sobol'-G function from Radović et al. (1996)"
 
     def __init__(
         self,
@@ -248,8 +248,6 @@ class SobolG(UQTestFunABC):
         xx : np.ndarray
             M-Dimensional input values given by an N-by-M array where
             N is the number of input values.
-        params: np.ndarray
-            A set of parameters w/ the same length as the input dimension (M).
 
         Returns
         -------
@@ -261,8 +259,3 @@ class SobolG(UQTestFunABC):
         yy = np.prod(((np.abs(4 * xx - 2) + params) / (1 + params)), axis=1)
 
         return yy
-        # yy = np.sum(
-        #     np.log(((np.abs(4 * xx - 2) + params) / (1 + params))), axis=1
-        # )
-        #
-        # return np.exp(yy)

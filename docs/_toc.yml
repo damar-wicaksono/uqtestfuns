@@ -13,11 +13,15 @@ parts:
     chapters:
       - file: test-functions/metamodeling
         title: Metamodeling
+      - file: test-functions/optimization
+        title: Optimization
       - file: test-functions/sensitivity
         title: Sensitivity Analysis
       - file: test-functions/available
         title: All Available Functions
         sections:
+          - file: test-functions/ackley
+            title: Ackley
           - file: test-functions/borehole
             title: Borehole
           - file: test-functions/damped-oscillator

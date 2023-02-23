@@ -63,7 +63,7 @@ axs_2.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
     yy_2d.reshape(1000,1000),
-    cmap="viridis",
+    cmap="magma",
     linewidth=0,
     antialiased=False,
     alpha=0.5
@@ -75,7 +75,7 @@ axs_2.set_title("Surface plot of 2D Sobol'-G", fontsize=14)
 
 # Contour
 axs_3 = plt.subplot(133)
-cf = axs_3.contourf(mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000),cmap='viridis')
+cf = axs_3.contourf(mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000),cmap='magma')
 axs_3.set_xlabel("$x_1$", fontsize=14)
 axs_3.set_ylabel("$x_2$", fontsize=14)
 axs_3.set_title("Contour plot of 2D Sobol'-G", fontsize=14)
@@ -118,7 +118,8 @@ Or, alternatively as the first argument:
 my_testfun = uqtf.SobolG(6)
 ```
 
-In the subsequent section, the function will be illustrated using six dimension.
+In the subsequent section, the function will be illustrated
+using six dimensions.
 
 ## Description
 
