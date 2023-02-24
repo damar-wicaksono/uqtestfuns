@@ -55,7 +55,7 @@ $$
 
 where $\boldsymbol{x} = \{ r_w, r, T_u, H_u, T_l, H_l, L, K_w\}$
 is the vector of input variables defined below.
-The unit of the output is $\left[ \mathrm{m}^3 / \mathrm{year} \right]$
+The unit of the output is $\left[ \mathrm{m}^3 / \mathrm{year} \right]$.
 
 ## Probabilistic input
 

@@ -105,20 +105,20 @@ print(my_testfun)
 By default, the spatial dimension is set to $2$.
 To create an instance with another value of spatial dimension,
 pass an integer to the parameter `spatial_dimension` (or as the first argument).
-For example, to create an instance of the Sobol'-G function in ten dimensions,
-type:  
+For example, to create an instance of 10-dimensional Ackley function, type:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Ackley(spatial_dimension=10)
 ```
 
-Or, alternatively as the first argument:
+Or alternatively, pass the dimension as the first argument:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Ackley(10)
 ```
   
-In the subsequent section, the function will be illustrated using ten dimensions.
+In the subsequent section, this 10-dimensional Ackley function will be used
+for illustration.
 
 ## Description
 
@@ -133,7 +133,7 @@ where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$ is the $M$-dimensional vector of
 input variables further defined below, and
 $\boldsymbol{a} = \{ a_1, a_2, a_3 \}$ are parameters of the function.
 
-## Probabilistic Input
+## Input
 
 Based on {cite}`Ackley1987`, the search domain of the Ackley function is
 in $[-32.768, 32.768]^M$.
