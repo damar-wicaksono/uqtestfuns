@@ -6,7 +6,7 @@ import numpy as np
 
 from scipy.stats import norm
 
-from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
+from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
 from uqtestfuns.global_settings import ARRAY_FLOAT
 from conftest import create_random_alphanumeric
 
@@ -55,7 +55,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.sort(np.random.rand(6))
 
     with pytest.raises(ValueError):
-        UnivariateInput(
+        UnivDist(
             name=name, distribution=distribution, parameters=parameters
         )
 
@@ -69,7 +69,7 @@ def test_failed_parameter_verification() -> None:
     parameters = [7.71, -10, 1, 2]
 
     with pytest.raises(ValueError):
-        UnivariateInput(
+        UnivDist(
             name=name, distribution=distribution, parameters=parameters
         )
 
@@ -77,7 +77,7 @@ def test_failed_parameter_verification() -> None:
     parameters = [3.5, 2, 4, 3]
 
     with pytest.raises(ValueError):
-        UnivariateInput(
+        UnivDist(
             name=name, distribution=distribution, parameters=parameters
         )
 
@@ -94,7 +94,7 @@ def test_estimate_mean() -> None:
     # Insert sigma as the second parameter
     parameters = np.insert(parameters, 1, np.random.rand(1))
 
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         name=name, distribution=distribution, parameters=parameters
     )
 
@@ -123,7 +123,7 @@ def test_estimate_std() -> None:
     # Insert sigma as the second parameter
     parameters = np.insert(parameters, 1, np.random.rand(1))
 
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         name=name, distribution=distribution, parameters=parameters
     )
 
@@ -157,12 +157,12 @@ def test_untruncated() -> None:
     distribution = DISTRIBUTION_NAME
     parameters = [10, 2, -np.inf, np.inf]
 
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         name=name, distribution=distribution, parameters=parameters
     )
 
     # Create a reference normal distribution
-    my_univariate_input_ref = UnivariateInput(
+    my_univariate_input_ref = UnivDist(
         distribution="normal", parameters=parameters[:2]
     )
 

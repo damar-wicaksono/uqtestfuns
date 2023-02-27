@@ -1,8 +1,8 @@
 """
 This is the package init for UQTestFuns.
 """
-from .core import UnivariateInput
-from .core import MultivariateInput
+from .core import UnivDist
+from .core import ProbInput
 from .core import UQTestFunABC
 from .core import UQTestFun
 
@@ -15,8 +15,8 @@ from .meta import UQMetaTestFun
 from .helpers import list_functions
 
 __all__ = [
-    "UnivariateInput",
-    "MultivariateInput",
+    "UnivDist",
+    "ProbInput",
     "UQTestFunABC",
     "UQTestFun",
     "test_functions",

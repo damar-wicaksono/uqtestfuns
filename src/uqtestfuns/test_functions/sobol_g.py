@@ -49,7 +49,7 @@ import numpy as np
 
 from typing import List, Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import (
     create_prob_input_from_available,
@@ -59,7 +59,7 @@ from .available import (
 __all__ = ["SobolG"]
 
 
-def _create_sobol_input(spatial_dimension: int) -> List[UnivariateInput]:
+def _create_sobol_input(spatial_dimension: int) -> List[UnivDist]:
     """Construct an input instance for a given dimension according to [1].
 
     Parameters
@@ -69,14 +69,14 @@ def _create_sobol_input(spatial_dimension: int) -> List[UnivariateInput]:
 
     Returns
     -------
-    List[UnivariateInput]
+    List[UnivDist]
         A list of M marginals as UnivariateInput instances to construct
         the MultivariateInput.
     """
     marginals = []
     for i in range(spatial_dimension):
         marginals.append(
-            UnivariateInput(
+            UnivDist(
                 name=f"X{i + 1}",
                 distribution="uniform",
                 parameters=[0.0, 1.0],

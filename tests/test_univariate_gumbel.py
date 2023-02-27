@@ -5,7 +5,7 @@ distribution.
 import pytest
 import numpy as np
 
-from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
+from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
 from uqtestfuns.global_settings import ARRAY_FLOAT
 from conftest import create_random_alphanumeric
 
@@ -54,7 +54,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.sort(np.random.rand(5))
 
     with pytest.raises(ValueError):
-        UnivariateInput(
+        UnivDist(
             name=name, distribution=distribution, parameters=parameters
         )
 
@@ -67,7 +67,7 @@ def test_failed_parameter_verification() -> None:
     parameters = [7.71, -5.0]
 
     with pytest.raises(ValueError):
-        UnivariateInput(
+        UnivDist(
             name=name, distribution=distribution, parameters=parameters
         )
 
@@ -78,7 +78,7 @@ def test_estimate_mean() -> None:
     parameters = np.sort(1 + 5 * np.random.rand(2))
 
     # Create an instance
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         distribution=DISTRIBUTION_NAME, parameters=parameters
     )
 
@@ -102,7 +102,7 @@ def test_estimate_variance() -> None:
     parameters = np.sort(1 + 5 * np.random.rand(2))
 
     # Create an instance
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         distribution=DISTRIBUTION_NAME, parameters=parameters
     )
 
@@ -126,7 +126,7 @@ def test_estimate_median() -> None:
     parameters = np.sort(1 + 5 * np.random.rand(2))
 
     # Create an instance
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         distribution=DISTRIBUTION_NAME, parameters=parameters
     )
 
@@ -150,7 +150,7 @@ def test_estimate_mode() -> None:
     parameters = np.sort(1 + 5 * np.random.rand(2))
 
     # Create an instance
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         distribution=DISTRIBUTION_NAME, parameters=parameters
     )
 

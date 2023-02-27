@@ -3,7 +3,7 @@ Test module for UQTestFun class, a generic class for generic UQ test function.
 """
 import pytest
 
-from uqtestfuns import UQTestFun, MultivariateInput
+from uqtestfuns import UQTestFun, ProbInput
 from conftest import assert_call, create_random_marginals
 
 
@@ -19,14 +19,14 @@ def uqtestfun():
 
     my_args = {
         "evaluate": evaluate,
-        "prob_input": MultivariateInput(input_marginals),
+        "prob_input": ProbInput(input_marginals),
         "parameters": parameters,
         "name": "Test function",
     }
 
     uqtestfun_instance = UQTestFun(
         evaluate=evaluate,
-        prob_input=MultivariateInput(input_marginals),
+        prob_input=ProbInput(input_marginals),
         parameters=parameters,
         name="Test function",
     )

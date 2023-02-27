@@ -28,7 +28,7 @@ import uqtestfuns as uqtf
 ```
 
 The plots for one-dimensional and two-dimensional Ackley function are shown below.
-As can be seen, the function features many local optima with a single global optima
+As can be seen, the function features many local optima with a single global optima.
 
 ```{code-cell} ipython3
 :tags: [remove-input]

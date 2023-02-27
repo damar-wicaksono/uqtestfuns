@@ -1,15 +1,15 @@
 """
 Helpers module to construct probabilistic input and parameters.
 """
-from typing import Callable, Optional, Any
-from ..core import MultivariateInput
+from typing import Callable, Optional, Any, Union
+from ..core import ProbInput, UnivDist
 
 
 def create_prob_input_from_available(
     input_selection: str,
     available_input_specs: dict,
     spatial_dimension: Optional[int] = None,
-) -> Optional[MultivariateInput]:
+) -> Optional[Union[UnivDist, ProbInput]]:
     """Construct a Multivariate input given available specifications.
 
     Parameters
@@ -29,14 +29,14 @@ def create_prob_input_from_available(
         input_specs = available_input_specs[input_selection]
         if isinstance(input_specs["marginals"], Callable):
             marginals = input_specs["marginals"](spatial_dimension)
-            prob_input = MultivariateInput(
+            prob_input = ProbInput(
                 name=input_specs["name"],
                 description=input_specs["description"],
                 marginals=marginals,
                 copulas=input_specs["copulas"],
             )
         else:
-            prob_input = MultivariateInput(**input_specs)
+            prob_input = ProbInput(**input_specs)
     else:
         raise ValueError("Invalid selection!")
 

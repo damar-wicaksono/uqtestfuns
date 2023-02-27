@@ -25,7 +25,7 @@ import numpy as np
 from copy import copy
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
@@ -33,43 +33,43 @@ __all__ = ["Piston"]
 
 # Marginals specification from [1]
 INPUT_MARGINALS_BENARI2007 = [
-    UnivariateInput(
+    UnivDist(
         name="M",
         distribution="uniform",
         parameters=[30.0, 60.0],
         description="Piston weight [kg]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="S",
         distribution="uniform",
         parameters=[0.005, 0.020],
         description="Piston surface area [m^2]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="V0",
         distribution="uniform",
         parameters=[0.002, 0.010],
         description="Initial gas volume [m^3]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="k",
         distribution="uniform",
         parameters=[1000.0, 5000.0],
         description="Spring coefficient [N/m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="P0",
         distribution="uniform",
         parameters=[90000.0, 110000.0],
         description="Atmospheric pressure [N/m^2]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Ta",
         distribution="uniform",
         parameters=[290.0, 296.0],
         description="Ambient temperature [K]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="T0",
         distribution="uniform",
         parameters=[340.0, 360.0],
@@ -81,7 +81,7 @@ INPUT_MARGINALS_BENARI2007 = [
 INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
 for i in range(13):
     INPUT_MARGINALS_MOON2010.append(
-        UnivariateInput(
+        UnivDist(
             name=f"Inert {i+1}",
             distribution="uniform",
             parameters=[100.0, 200.0],
