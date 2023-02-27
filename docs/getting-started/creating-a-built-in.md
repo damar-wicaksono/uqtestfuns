@@ -20,7 +20,7 @@ _Built-in test functions_ are test functions that are delivered with UQTestFuns.
 UQTestFuns is designed to work with minimal dependency within the numerical
 Python ecosystem.
 At the very least, NumPy and SciPy are required for UQTestFuns to work.
-It might be good idea to import NumPy alongside UQTestFuns:
+It might be a good idea to import NumPy alongside UQTestFuns:
 
 ```{code-cell} ipython3
 import numpy as np
@@ -37,7 +37,7 @@ uqtf.list_functions()
 
 This function produces a list of test functions,
 their respective constructor, spatial dimension, typical applications,
-as well as short description.
+as well as a short description.
 
 ## A Callable instance
 
@@ -129,11 +129,11 @@ plt.gcf().set_dpi(150);
 
 Some UQ methods often produce sample points in a hypercube domain
 (for example, $[0, 1]^M$ or $[-1, 1]^M$ where $M$ is the number of spatial dimension) at which the function should be evaluated.
-This hypercube domain may differ from the test function's own domain.
+This hypercube domain may differ from the test function's domain.
 Before the test function can be evaluated,
 those values must be first transformed to the function domain.
 
-UQTestFuns provides a convenient function to transform sample in one domain
+UQTestFuns provides a convenient function to transform sample points in one domain
 to the function domain.
 For instance, suppose we have a sample of size $5$ in $[-1, 1]^8$
 for the borehole function:
@@ -144,7 +144,7 @@ xx_sample_dom_1 = -1 + 2 * np.random.rand(5, 8)
 xx_sample_dom_1
 ```
 
-We can transform these set of values to the domain of the function
+We can transform this set of values to the domain of the function
 via the `transform_sample()` method:
 
 ```{code-cell} ipython3
@@ -171,9 +171,9 @@ xx_sample_trans_2
 ```
 
 Note that for a given sample, the bounds of the hypercube domain must be
-the same in all dimension.
+the same in all dimensions.
 
-The two transformed values above should be the same due to the fact that
+The two transformed values above should be the same since
 we reset the seed for the random number generator
 each time we call `np.random.rand()`.
 
@@ -186,7 +186,7 @@ assert np.allclose(my_testfun(xx_sample_trans_1), my_testfun(xx_sample_trans_2))
 
 Some test functions are _parameterized_;
 this means that to fully specify the function,
-additional set of values must be specified.
+an additional set of values must be specified.
 In principle, these parameter values can be anything:
 numerical values, flags, selection using strings, etc.
 
@@ -220,7 +220,7 @@ Note that once set, the parameter values are kept constant
 during the evaluation of the function on a set of input values
 
 Different parameter values may change the overall behavior of the function.
-In the case of Ishigami function,
+In the case of the Ishigami function,
 different parameter values alter the total variance of the output
 as illustrated in the figure below.
 
@@ -244,7 +244,9 @@ plt.gcf().set_dpi(150);
 
 ## Test functions with variable dimension
 
-Some test functions supports a _variable dimension_, meaning that an instance of test function can be constructed for any number (positive integer, please) of spatial dimension.
+Some test functions support a _variable dimension_, meaning that an instance
+of a test function can be constructed for any number (positive integer, please) 
+of spatial dimension.
 
 Consider, for instance, the {ref}`Sobol'-G <test-functions:sobol-g>` function,
 a test function whose dimension can be varied
