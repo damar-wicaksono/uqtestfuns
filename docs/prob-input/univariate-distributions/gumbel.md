@@ -54,7 +54,7 @@ colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
 univariate_inputs = []
 for parameter in parameters:
-    univariate_inputs.append(uqtf.UnivariateInput(distribution="gumbel", parameters=parameter))
+    univariate_inputs.append(uqtf.UnivDist(distribution="gumbel", parameters=parameter))
     
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 

@@ -64,20 +64,20 @@ import uqtestfuns as uqtf
 parameters = [[0, 0.2], [0, 1.0], [0, 2.0], [3, 0.75]]
 colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
-univariate_inputs = []
+univ_dists = []
 for parameter in parameters:
-    univariate_inputs.append(uqtf.UnivariateInput(distribution="normal", parameters=parameter))
+    univ_dists.append(uqtf.UnivDist(distribution="normal", parameters=parameter))
 
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 
 # --- PDF
 xx = np.linspace(-6, 6, 1000)
-for i, univariate_input in enumerate(univariate_inputs):
+for i, univ_dist in enumerate(univ_dists):
     axs[0, 0].plot(
         xx,
-        univariate_input.pdf(xx),
+        univ_dist.pdf(xx),
         color=colors[i],
-        label=f"$\\mu = {univariate_input.parameters[0]}, \\sigma={univariate_input.parameters[1]}$",
+        label=f"$\\mu = {univ_dist.parameters[0]}, \\sigma={univ_dist.parameters[1]}$",
         linewidth=2,
     )
 axs[0, 0].legend();
@@ -87,9 +87,9 @@ axs[0, 0].set_title("PDF");
 # --- Sample histogram
 sample_size = 5000
 np.random.seed(42)
-for col, univariate_input in zip(reversed(colors), reversed(univariate_inputs)):
+for col, univ_dist in zip(reversed(colors), reversed(univ_dists)):
     axs[0, 1].hist(
-        univariate_input.get_sample(sample_size),
+        univ_dist.get_sample(sample_size),
         color=col,
         bins="auto",
         alpha=0.75
@@ -100,10 +100,10 @@ axs[0, 1].set_title("Sample histogram");
 
 # --- CDF
 xx = np.linspace(-6, 6, 1000)
-for i, univariate_input in enumerate(univariate_inputs):
+for i, univ_dist in enumerate(univ_dists):
     axs[1, 0].plot(
         xx,
-        univariate_input.cdf(xx),
+        univ_dist.cdf(xx),
         color=colors[i],
         linewidth=2,
     )
@@ -112,10 +112,10 @@ axs[1, 0].set_title("CDF");
 
 # --- Inverse CDF
 xx = np.linspace(0, 1, 1000)
-for i, univariate_input in enumerate(univariate_inputs):
+for i, univ_dist in enumerate(univ_dists):
     axs[1, 1].plot(
         xx,
-        univariate_input.icdf(xx),
+        univ_dist.icdf(xx),
         color=colors[i],
         linewidth=2
     )

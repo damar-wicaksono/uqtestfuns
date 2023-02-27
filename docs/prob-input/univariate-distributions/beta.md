@@ -81,20 +81,20 @@ import uqtestfuns as uqtf
 parameters = [[5, 2, 0.25, 0.75], [1, 5, 0., 1], [2, 2, 0., 1], [0.5, 0.5, 0., 1]]
 colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
-univariate_inputs = []
+univ_dists = []
 for parameter in parameters:
-    univariate_inputs.append(uqtf.UnivariateInput(distribution="beta", parameters=parameter))
+    univ_dists.append(uqtf.UnivDist(distribution="beta", parameters=parameter))
 
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 
 # --- PDF
 xx = np.linspace(0, 1, 1000)
-for i, univariate_input in enumerate(univariate_inputs):
+for i, univ_dist in enumerate(univ_dists):
     axs[0, 0].plot(
         xx,
-        univariate_input.pdf(xx),
+        univ_dist.pdf(xx),
         color=colors[i],
-        label=f"$\\alpha = {univariate_input.parameters[0]}, \\beta = {univariate_input.parameters[1]}, a = {univariate_input.parameters[2]}, b = {univariate_input.parameters[3]:.0f}$",
+        label=f"$\\alpha = {univ_dist.parameters[0]}, \\beta = {univ_dist.parameters[1]}, a = {univ_dist.parameters[2]}, b = {univ_dist.parameters[3]:.0f}$",
         linewidth=2,
     )
 axs[0, 0].legend();
@@ -104,9 +104,9 @@ axs[0, 0].set_title("PDF");
 # --- Sample histogram
 sample_size = 5000
 np.random.seed(42)
-for col, univariate_input in zip(reversed(colors), reversed(univariate_inputs)):
+for col, univ_dist in zip(reversed(colors), reversed(univ_dists)):
     axs[0, 1].hist(
-        univariate_input.get_sample(sample_size),
+        univ_dist.get_sample(sample_size),
         color=col,
         bins="auto",
         alpha=0.75
@@ -117,10 +117,10 @@ axs[0, 1].set_title("Sample histogram");
 
 # --- CDF
 xx = np.linspace(0, 1, 1000)
-for i, univariate_input in enumerate(univariate_inputs):
+for i, univ_dist in enumerate(univ_dists):
     axs[1, 0].plot(
         xx,
-        univariate_input.cdf(xx),
+        univ_dist.cdf(xx),
         color=colors[i],
         linewidth=2,
     )
@@ -129,10 +129,10 @@ axs[1, 0].set_title("CDF");
 
 # --- Inverse CDF
 xx = np.linspace(0, 1, 1000)
-for i, univariate_input in enumerate(univariate_inputs):
+for i, univ_dist in enumerate(univ_dists):
     axs[1, 1].plot(
         xx,
-        univariate_input.icdf(xx),
+        univ_dist.icdf(xx),
         color=colors[i],
         linewidth=2
     )

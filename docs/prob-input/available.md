@@ -1,8 +1,8 @@
 # Available Univariate Distributions
 
-The table below lists all the available univariate distribution type used
-to construct ``UnivariateInput`` instances. ``UnivariateInput``are used to 
-represent the marginals of a multivariate probabilistic input.
+The table below lists all the available univariate distribution types used
+to construct ``UnivDist`` instances. ``UnivDist`` are used to represent the
+univariate marginals of a (possibly, multivariate) probabilistic input model.
 
 |                                         Name                                          |     Keyword      |                     Notation                      |             Support              | Number of parameters |
 |:-------------------------------------------------------------------------------------:|:----------------:|:-------------------------------------------------:|:--------------------------------:|:--------------------:|
