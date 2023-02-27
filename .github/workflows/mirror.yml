@@ -1,0 +1,17 @@
+name: mirror
+
+on: [push, delete]
+
+jobs:
+  mirror-to-CASUS:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: mirror-repository
+      uses: spyoungtech/mirror-action@master
+      with:
+        REMOTE: 'https://github.com/casus/uqtestfuns.git'
+        GIT_USERNAME: damar-wicaksono
+        GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
