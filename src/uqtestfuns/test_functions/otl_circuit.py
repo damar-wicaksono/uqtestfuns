@@ -125,13 +125,17 @@ class OTLCircuit(UQTestFunABC):
         self,
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+        name: Optional[str] = None,
     ):
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
             prob_input_selection, AVAILABLE_INPUT_SPECS
         )
+        # Process the default name
+        if name is None:
+            name = OTLCircuit.__name__
 
-        super().__init__(prob_input=prob_input, name=OTLCircuit.__name__)
+        super().__init__(prob_input=prob_input, name=name)
 
     def evaluate(self, xx: np.ndarray) -> np.ndarray:
         """Evaluate the OTL circuit test function on a set of input values.

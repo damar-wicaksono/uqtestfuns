@@ -22,7 +22,6 @@ AVAILABLE_FUNCTION_CLASSES = get_available_classes(test_functions)
 
 @pytest.fixture(params=AVAILABLE_FUNCTION_CLASSES)
 def builtin_testfun(request):
-    print(request.param)
     _, testfun = request.param
 
     return testfun
@@ -34,6 +33,24 @@ def test_create_instance(builtin_testfun):
 
     # Assertion
     assert_call(testfun)
+
+
+def test_create_instance_with_custom_name(builtin_testfun):
+    """Test the creation of an instance and passing the name argument."""
+    testfun_class = builtin_testfun
+
+    # Get the default name of the test function
+    name = testfun_class.__name__
+
+    # Create a default instance
+    my_fun = testfun_class()
+
+    # Assertion
+    assert my_fun.name == name
+
+    # Use custom name to create a test function
+    my_fun = testfun_class(name=name)
+    assert my_fun.name == name
 
 
 def test_create_instance_with_prob_input(builtin_testfun):
