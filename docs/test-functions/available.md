@@ -24,6 +24,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>` |         7         | `DampedOscillator()` |
 |             {ref}`Flood <test-functions:flood>`             |         8         |      `Flood()`       |
 |          {ref}`Ishigami <test-functions:ishigami>`          |         3         |     `Ishigami()`     |
+| {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`  |         1         |  `OakleyOHagan1D()`  |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
 |          {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |      `SobolG()`      |

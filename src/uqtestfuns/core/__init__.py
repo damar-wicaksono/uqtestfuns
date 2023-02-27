@@ -1,9 +1,9 @@
 """
 The core subpackage of uqtestfuns.
 """
-from .prob_input.univariate_input import UnivariateInput
-from .prob_input.multivariate_input import MultivariateInput
+from .prob_input.univariate_distribution import UnivDist
+from .prob_input.probabilistic_input import ProbInput
 from .uqtestfun_abc import UQTestFunABC
 from .uqtestfun import UQTestFun
 
-__all__ = ["UnivariateInput", "MultivariateInput", "UQTestFunABC", "UQTestFun"]
+__all__ = ["UnivDist", "ProbInput", "UQTestFunABC", "UQTestFun"]

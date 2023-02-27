@@ -1,9 +1,9 @@
 """
-Module with an implementation of MultivariateInput class.
+Module with an implementation of ``ProbInput`` class.
 
-The MultivariateInput class represents a multivariate probabilistic input.
-Each multivariate input has a set of marginals defined by an instance of
-the UnivariateInput class.
+The ProbInput class represents a probabilistic input model.
+Each probabilistic input has a set of marginals defined by an instance of
+the UnivDist class.
 """
 from __future__ import annotations
 
@@ -12,21 +12,21 @@ from tabulate import tabulate
 from typing import Any, List, Optional, Union, Tuple
 from dataclasses import dataclass, field
 
-from .univariate_input import UnivariateInput, FIELD_NAMES
+from .univariate_distribution import UnivDist, FIELD_NAMES
 
 
-__all__ = ["MultivariateInput"]
+__all__ = ["ProbInput"]
 
 
 @dataclass
-class MultivariateInput:
+class ProbInput:
     """A class for multivariate input variables.
 
     Attributes
     ----------
     spatial_dimension : int
         Number of univariate inputs.
-    marginals : List[UnivariateInput]
+    marginals : List[UnivDist]
         List of marginals of univariate inputs.
     copulas : Any
         Copulas between univariate inputs that define dependence structure
@@ -34,7 +34,7 @@ class MultivariateInput:
     """
 
     spatial_dimension: int = field(init=False)
-    marginals: Union[List[UnivariateInput], Tuple[UnivariateInput, ...]]
+    marginals: Union[List[UnivDist], Tuple[UnivDist, ...]]
     copulas: Any = None
     name: Optional[str] = None
     description: Optional[str] = None
@@ -44,7 +44,7 @@ class MultivariateInput:
         # Protect marginals by making it immutable
         self.marginals = tuple(self.marginals)
 
-    def transform_sample(self, xx: np.ndarray, other: MultivariateInput):
+    def transform_sample(self, xx: np.ndarray, other: ProbInput):
         """Transform a sample from the distribution to another."""
         # Make sure the dimensionality is consistent
         if self.spatial_dimension != other.spatial_dimension:
@@ -153,7 +153,7 @@ class MultivariateInput:
 
 
 def _get_values_as_list(
-    univ_inputs: Union[List[UnivariateInput], Tuple[UnivariateInput, ...]],
+    univ_inputs: Union[List[UnivDist], Tuple[UnivDist, ...]],
     field_names: List[str],
 ) -> list:
     """Get the values from each field from a list of UnivariateInput

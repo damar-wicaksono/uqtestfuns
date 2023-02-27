@@ -25,44 +25,44 @@ import numpy as np
 from copy import copy
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
 __all__ = ["OTLCircuit"]
 
 INPUT_MARGINALS_BENARI2007 = [
-    UnivariateInput(
+    UnivDist(
         name="Rb1",
         distribution="uniform",
         parameters=[50.0, 150.0],
         description="Resistance b1 [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Rb2",
         distribution="uniform",
         parameters=[25.0, 70.0],
         description="Resistance b2 [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Rf",
         distribution="uniform",
         parameters=[0.5, 3.0],
         description="Resistance f [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Rc1",
         distribution="uniform",
         parameters=[1.2, 2.5],
         description="Resistance c1 [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Rc2",
         distribution="uniform",
         parameters=[0.25, 1.20],
         description="Resistance c2 [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="beta",
         distribution="uniform",
         parameters=[50.0, 300.0],
@@ -73,7 +73,7 @@ INPUT_MARGINALS_BENARI2007 = [
 INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
 for i in range(14):
     INPUT_MARGINALS_MOON2010.append(
-        UnivariateInput(
+        UnivDist(
             name=f"Inert {i+1}",
             distribution="uniform",
             parameters=[100.0, 200.0],

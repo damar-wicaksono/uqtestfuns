@@ -3,7 +3,7 @@ import numpy as np
 from tabulate import tabulate
 from typing import List, Any
 
-from uqtestfuns.core.prob_input.multivariate_input import MultivariateInput
+from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 from conftest import create_random_marginals
 
 
@@ -12,7 +12,7 @@ def test_create_instance_numpy_parameters(spatial_dimension):
     """Test the creation of a MultivariateInput instance."""
     marginals = create_random_marginals(spatial_dimension)
 
-    my_multivariate_input = MultivariateInput(marginals)
+    my_multivariate_input = ProbInput(marginals)
 
     # Assertions
     # Test the dimensionality
@@ -38,7 +38,7 @@ def test_generate_sample(spatial_dimension):
     """Test sample generation from an instance of MultivariateInput."""
     marginals = create_random_marginals(spatial_dimension)
 
-    my_multivariate_input = MultivariateInput(marginals)
+    my_multivariate_input = ProbInput(marginals)
 
     sample_size = 5325
     xx = my_multivariate_input.get_sample(sample_size)
@@ -58,7 +58,7 @@ def test_generate_dependent_sample():
     """Test dependent sample generation (not yet supported; raise error)."""
     marginals = create_random_marginals(5)
 
-    my_multivariate_input = MultivariateInput(marginals)
+    my_multivariate_input = ProbInput(marginals)
     my_multivariate_input.copulas = "a"
 
     with pytest.raises(ValueError):
@@ -70,7 +70,7 @@ def test_get_pdf_values(spatial_dimension):
     """Test the PDF values from an instance of MultivariateInput."""
     marginals = create_random_marginals(spatial_dimension)
 
-    my_multivariate_input = MultivariateInput(marginals)
+    my_multivariate_input = ProbInput(marginals)
 
     sample_size = 100
     xx = my_multivariate_input.get_sample(sample_size)
@@ -85,7 +85,7 @@ def test_get_dependent_pdf_values():
     """Test dependent PDF value computation (not yet supported)."""
     marginals = create_random_marginals(5)
 
-    my_multivariate_input = MultivariateInput(marginals)
+    my_multivariate_input = ProbInput(marginals)
     my_multivariate_input.copulas = "b"
 
     with pytest.raises(ValueError):
@@ -96,13 +96,13 @@ def test_get_dependent_pdf_values():
 def test_transform_sample(spatial_dimension):
     """Test the transformation of sample values from one dist. to another."""
     marginals_1 = create_random_marginals(spatial_dimension)
-    my_multivariate_input_1 = MultivariateInput(marginals_1)
+    my_multivariate_input_1 = ProbInput(marginals_1)
 
     sample_size = 5000
     xx = my_multivariate_input_1.get_sample(sample_size)
 
     marginals_2 = create_random_marginals(spatial_dimension)
-    my_multivariate_input_2 = MultivariateInput(marginals_2)
+    my_multivariate_input_2 = ProbInput(marginals_2)
 
     xx_trans = my_multivariate_input_1.transform_sample(
         xx, my_multivariate_input_2
@@ -117,10 +117,10 @@ def test_transform_sample(spatial_dimension):
 def test_failed_transform_sample():
     """Test the failure of sample transformation for MultiVariateInput."""
     marginals_1 = create_random_marginals(5)
-    my_multivariate_input_1 = MultivariateInput(marginals_1)
+    my_multivariate_input_1 = ProbInput(marginals_1)
 
     marginals_2 = create_random_marginals(10)
-    my_multivariate_input_2 = MultivariateInput(marginals_2)
+    my_multivariate_input_2 = ProbInput(marginals_2)
 
     sample_size = 5000
     xx = my_multivariate_input_1.get_sample(sample_size)
@@ -133,10 +133,10 @@ def test_failed_transform_sample():
 def test_transform_dependent_sample():
     """Test dependent transformation (not yet supported; raise an error)."""
     marginals_1 = create_random_marginals(5)
-    my_multivariate_input_1 = MultivariateInput(marginals_1)
+    my_multivariate_input_1 = ProbInput(marginals_1)
 
     marginals_2 = create_random_marginals(5)
-    my_multivariate_input_2 = MultivariateInput(marginals_2)
+    my_multivariate_input_2 = ProbInput(marginals_2)
 
     xx = np.random.rand(2, 5)
 
@@ -150,7 +150,7 @@ def test_str():
 
     # Create a test instance
     marginals = create_random_marginals(2)
-    my_multivariate_input = MultivariateInput(marginals)
+    my_multivariate_input = ProbInput(marginals)
 
     # Create the reference string
     str_ref = f"Name         : {my_multivariate_input.name}\n"
@@ -181,7 +181,7 @@ def test_repr_html():
 
     # Create a test instance
     marginals = create_random_marginals(5)
-    my_multivariate_input = MultivariateInput(marginals)
+    my_multivariate_input = ProbInput(marginals)
 
     # Create the reference string
     str_ref = "<p><b>Name</b>\n</p>"

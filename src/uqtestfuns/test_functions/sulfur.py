@@ -62,64 +62,64 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
 __all__ = ["Sulfur"]
 
 INPUT_MARGINALS_PENNER1994 = [  # From [3] (Table 2)
-    UnivariateInput(
+    UnivDist(
         name="Q",
         distribution="lognormal",
         parameters=[np.log(71.0), np.log(1.15)],
         description="Source strength of anthropogenic Sulfur [10^12 g/year]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Y",
         distribution="lognormal",
         parameters=[np.log(0.5), np.log(1.5)],
         description="Fraction of SO2 oxidized to SO4(2-) aerosol [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="L",
         distribution="lognormal",
         parameters=[np.log(5.5), np.log(1.5)],
         description="Average lifetime of atmospheric SO4(2-) [days]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Psi_e",
         distribution="lognormal",
         parameters=[np.log(5.0), np.log(1.4)],
         description="Aerosol mass scattering efficiency [m^2/g]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="beta",
         distribution="lognormal",
         parameters=[np.log(0.3), np.log(1.3)],
         description="Fraction of light scattered upward hemisphere [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="f_Psi_e",
         distribution="lognormal",
         parameters=[np.log(1.7), np.log(1.2)],
         description="Fractional increase in aerosol scattering efficiency "
         "due to hygroscopic growth [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="T^2",
         distribution="lognormal",
         parameters=[np.log(0.58), np.log(1.4)],
         description="Square of atmospheric "
         "transmittance above aerosol layer [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="(1-Ac)",
         distribution="lognormal",
         parameters=[np.log(0.39), np.log(1.1)],
         description="Fraction of earth not covered by cloud [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="(1-Rs)^2",
         distribution="lognormal",
         parameters=[np.log(0.72), np.log(1.2)],

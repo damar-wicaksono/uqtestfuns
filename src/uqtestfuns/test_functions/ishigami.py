@@ -31,7 +31,7 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import (
     create_prob_input_from_available,
@@ -42,19 +42,19 @@ __all__ = ["Ishigami"]
 
 
 INPUT_MARGINALS_ISHIGAMI1991 = [
-    UnivariateInput(
+    UnivDist(
         name="X1",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
         description="None",
     ),
-    UnivariateInput(
+    UnivDist(
         name="X2",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
         description="None",
     ),
-    UnivariateInput(
+    UnivDist(
         name="X3",
         distribution="uniform",
         parameters=[-np.pi, np.pi],

@@ -34,56 +34,56 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
 __all__ = ["Flood"]
 
 INPUT_MARGINALS_IOOSS2015 = [  # From Ref. [1]
-    UnivariateInput(
+    UnivDist(
         name="Q",
         distribution="trunc-gumbel",
         parameters=[1013.0, 558.0, 500.0, 3000.0],
         description="Maximum annual flow rate [m^3/s]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Ks",
         distribution="trunc-normal",
         parameters=[30.0, 8.0, 15.0, np.inf],
         description="Strickler coefficient [m^(1/3)/s]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Zv",
         distribution="triangular",
         parameters=[49.0, 51.0, 50.0],
         description="River downstream level [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Zm",
         distribution="triangular",
         parameters=[54.0, 56.0, 55.0],
         description="River upstream level [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Hd",
         distribution="uniform",
         parameters=[7.0, 9.0],
         description="Dyke height [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Cb",
         distribution="triangular",
         parameters=[55.0, 56.0, 55.5],
         description="Bank level [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="L",
         distribution="triangular",
         parameters=[4990.0, 5010.0, 5000.0],
         description="Length of the river stretch [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="B",
         distribution="triangular",
         parameters=[295.0, 305.0, 300.0],

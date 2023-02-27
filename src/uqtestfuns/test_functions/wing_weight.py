@@ -23,7 +23,7 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 from .utils import deg2rad
@@ -31,61 +31,61 @@ from .utils import deg2rad
 __all__ = ["WingWeight"]
 
 INPUT_MARGINALS_FORRESTER2008 = [
-    UnivariateInput(
+    UnivDist(
         name="Sw",
         distribution="uniform",
         parameters=[150.0, 200.0],
         description="wing area [ft^2]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Wfw",
         distribution="uniform",
         parameters=[220.0, 300.0],
         description="weight of fuel in the wing [lb]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="A",
         distribution="uniform",
         parameters=[6.0, 10.0],
         description="aspect ratio [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Lambda",
         distribution="uniform",
         parameters=[-10.0, 10.0],
         description="quarter-chord sweep [degrees]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="q",
         distribution="uniform",
         parameters=[16.0, 45.0],
         description="dynamic pressure at cruise [lb/ft^2]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="lambda",
         distribution="uniform",
         parameters=[0.5, 1.0],
         description="taper ratio [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="tc",
         distribution="uniform",
         parameters=[0.08, 0.18],
         description="aerofoil thickness to chord ratio [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Nz",
         distribution="uniform",
         parameters=[2.5, 6.0],
         description="ultimate load factor [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Wdg",
         distribution="uniform",
         parameters=[1700, 2500],
         description="flight design gross weight [lb]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Wp",
         distribution="uniform",
         parameters=[0.025, 0.08],

@@ -24,7 +24,7 @@ import numpy as np
 from typing import List, Optional
 
 from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from .available import (
     create_prob_input_from_available,
     create_parameters_from_available,
@@ -33,7 +33,7 @@ from .available import (
 __all__ = ["Ackley"]
 
 
-def _ackley_input(spatial_dimension: int) -> List[UnivariateInput]:
+def _ackley_input(spatial_dimension: int) -> List[UnivDist]:
     """Create a list of marginals for the M-dimensional Ackley function.
 
     Parameters
@@ -43,13 +43,13 @@ def _ackley_input(spatial_dimension: int) -> List[UnivariateInput]:
 
     Returns
     -------
-    List[UnivariateInput]
+    List[UnivDist]
         A list of marginals for the multivariate input following Ref. [1]
     """
     marginals = []
     for i in range(spatial_dimension):
         marginals.append(
-            UnivariateInput(
+            UnivDist(
                 name=f"X{i + 1}",
                 distribution="uniform",
                 parameters=[-32.768, 32.768],

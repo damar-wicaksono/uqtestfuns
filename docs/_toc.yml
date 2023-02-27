@@ -30,6 +30,8 @@ parts:
             title: Flood
           - file: test-functions/ishigami
             title: Ishigami
+          - file: test-functions/oakley-ohagan-1d
+            title: Oakley-O'Hagan 1D
           - file: test-functions/otl-circuit
             title: OTL Circuit
           - file: test-functions/piston

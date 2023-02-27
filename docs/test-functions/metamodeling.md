@@ -23,6 +23,7 @@ in the comparison of metamodeling approaches.
 |        {ref}`Borehole <test-functions:borehole>`            |         8         |     `Borehole()`     |
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>` |         7         | `DampedOscillator()` |
 |             {ref}`Flood <test-functions:flood>`             |         8         |       `Flood()`      |
+| {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`  |         1         |  `OakleyOHagan1D()`  |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
 |            {ref}`Sulfur <test-functions:sulfur>`            |         9         |      `Sulfur()`      |

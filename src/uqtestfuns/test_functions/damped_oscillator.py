@@ -34,7 +34,7 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .utils import lognorm2norm_mean, lognorm2norm_std
 from .available import create_prob_input_from_available
@@ -42,7 +42,7 @@ from .available import create_prob_input_from_available
 __all__ = ["DampedOscillator"]
 
 INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
-    UnivariateInput(
+    UnivDist(
         name="Mp",
         distribution="lognormal",
         parameters=[
@@ -51,7 +51,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary mass",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Ms",
         distribution="lognormal",
         parameters=[
@@ -60,7 +60,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary mass",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Kp",
         distribution="lognormal",
         parameters=[
@@ -69,7 +69,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary spring stiffness",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Ks",
         distribution="lognormal",
         parameters=[
@@ -78,7 +78,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary spring stiffness",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Zeta_p",
         distribution="lognormal",
         parameters=[
@@ -87,7 +87,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary damping ratio",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Zeta_s",
         distribution="lognormal",
         parameters=[
@@ -96,7 +96,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary damping ratio",
     ),
-    UnivariateInput(
+    UnivDist(
         name="S0",
         distribution="lognormal",
         parameters=[

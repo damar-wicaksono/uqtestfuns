@@ -4,7 +4,7 @@ Test module for UnivariateInput instances with a Beta distribution.
 import pytest
 import numpy as np
 
-from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
+from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
 from uqtestfuns.global_settings import ARRAY_FLOAT
 from conftest import create_random_alphanumeric
 
@@ -42,9 +42,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.sort(np.random.rand(6))
 
     with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_failed_parameter_verification() -> None:
@@ -56,25 +54,19 @@ def test_failed_parameter_verification() -> None:
     parameters = [-7.71, 10, 1, 2]
 
     with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
     # The 2nd parameter of the Beta distribution must be strictly positive!
     parameters = [7.71, -10, 1, 2]
 
     with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
     # The lower bound must be smaller than upper bound!
     parameters = [1, 2, 4, 3]
 
     with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_estimate_mean() -> None:
@@ -85,7 +77,7 @@ def test_estimate_mean() -> None:
     distribution = "beta"
     parameters = np.sort(2 * np.random.rand(4))
 
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         name=name, distribution=distribution, parameters=parameters
     )
 
@@ -110,7 +102,7 @@ def test_estimate_std() -> None:
     distribution = "beta"
     parameters = np.sort(2 * np.random.rand(4))
 
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         name=name, distribution=distribution, parameters=parameters
     )
 
