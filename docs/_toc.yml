@@ -7,7 +7,7 @@ parts:
   - caption: Getting Started
     chapters:
       - file: getting-started/obtaining-and-installing
-      - file: getting-started/creating-a-default
+      - file: getting-started/creating-a-built-in
       - file: getting-started/creating-a-custom
   - caption: Test Functions
     chapters:
