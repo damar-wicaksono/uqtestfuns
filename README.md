@@ -131,6 +131,20 @@ and the documentation (including new reference results) are welcomed!
 Please consider the [Contribution Guidelines](CONTRIBUTING.MD) first,
 before making a pull request. 
 
+## Credits and contributors
+
+<!--Credits and contributors-->
+This work was partly funded
+by the [Center for Advanced Systems Understanding (CASUS)](https://www.casus.science/)
+which is financed by Germany's Federal Ministry of Education and Research (BMBF)
+and by the Saxony Ministry for Science, Culture and Tourism (SMWK)
+with tax funds on the basis of the budget approved
+by the Saxony State Parliament.
+
+UQTestFuns is currently maintained by:
+
+- Damar Wicaksono ([HZDR/CASUS](https://www.casus.science/))
+
 ## License
 
 <!--License-->
