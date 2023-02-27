@@ -1,22 +1,30 @@
 """
 Module with an implementation of the M-dimensional Ackley function.
 
-The Ackley function [1] is an M-dimensional non-convex scalar-valued function
-typically used for testing optimization algorithms.
-Originally, the function is presented as a two-dimensional function.
+The Ackley function  is an $M$-dimensional scalar-valued function.
+The function was first introduced in [1] as a test function for optimization
+algorithms,
+Originally presented as a two-dimensional function, it was later generalized
+by Bäck and Schwefel [2].
 
 References
 ----------
 
-1. D. H. Ackley, "A connectionist machine for genetic hillclimbing."
-   Boston, MA:  Kluwer Academic Publishers, 1987.
+1. D. H. Ackley, A Connectionist Machine for Genetic Hillclimbing,
+   The Kluwer International Series in Engineering and Computer Science vol. 28.
+   Boston, MA: Springer US, 1987.
+   DOI: 10.1007/978-1-4613-1997-9
+2. T. Bäck and H.-P. Schwefel, “An overview of evolutionary algorithms for
+   parameter optimization,” Evolutionary Computation,
+   vol. 1, no. 1, pp. 1–23, 1993.
+   DOI: 10.1162/evco.1993.1.1.1.
 """
 import numpy as np
 
 from typing import List, Optional
 
 from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from .available import (
     create_prob_input_from_available,
     create_parameters_from_available,
@@ -25,7 +33,7 @@ from .available import (
 __all__ = ["Ackley"]
 
 
-def _ackley_input(spatial_dimension: int) -> List[UnivariateInput]:
+def _ackley_input(spatial_dimension: int) -> List[UnivDist]:
     """Create a list of marginals for the M-dimensional Ackley function.
 
     Parameters
@@ -35,13 +43,13 @@ def _ackley_input(spatial_dimension: int) -> List[UnivariateInput]:
 
     Returns
     -------
-    List[UnivariateInput]
+    List[UnivDist]
         A list of marginals for the multivariate input following Ref. [1]
     """
     marginals = []
     for i in range(spatial_dimension):
         marginals.append(
-            UnivariateInput(
+            UnivDist(
                 name=f"X{i + 1}",
                 distribution="uniform",
                 parameters=[-32.768, 32.768],
@@ -53,22 +61,21 @@ def _ackley_input(spatial_dimension: int) -> List[UnivariateInput]:
 
 
 AVAILABLE_INPUT_SPECS = {
-    "ackley": {
-        "name": "Ackley",
+    "Ackley1987": {
+        "name": "Ackley-Ackley-1987",
         "description": (
-            "Probabilistic input model for the Ackley function "
-            "from Ackley (1987)."
+            "Search domain for the Ackley function from Ackley (1987)."
         ),
         "marginals": _ackley_input,
         "copulas": None,
     },
 }
 
-DEFAULT_INPUT_SELECTION = "ackley"
+DEFAULT_INPUT_SELECTION = "Ackley1987"
 
-AVAILABLE_PARAMETERS = {"ackley": (20, 0.2, 2 * np.pi)}
+AVAILABLE_PARAMETERS = {"Ackley1987": np.array([20, 0.2, 2 * np.pi])}
 
-DEFAULT_PARAMETERS_SELECTION = "ackley"
+DEFAULT_PARAMETERS_SELECTION = "Ackley1987"
 
 # The dimension is variable so define a default for fallback
 DEFAULT_DIMENSION_SELECTION = 2
@@ -90,15 +97,15 @@ class Ackley(UQTestFunABC):
         parameter sets. This is a keyword only parameter.
     """
 
-    tags = ["optimization"]
+    _TAGS = ["optimization", "metamodeling"]
 
-    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    available_parameters = tuple(AVAILABLE_PARAMETERS.keys())
+    _AVAILABLE_PARAMETERS = tuple(AVAILABLE_PARAMETERS.keys())
 
-    default_dimension = None
+    _DEFAULT_SPATIAL_DIMENSION = None
 
-    description = "Ackley function from Ackley (1987)"
+    _DESCRIPTION = "Ackley function from Ackley (1987)"
 
     def __init__(
         self,
@@ -106,6 +113,7 @@ class Ackley(UQTestFunABC):
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
         parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
+        name: Optional[str] = None,
     ):
         # --- Arguments processing
         if not isinstance(spatial_dimension, int):
@@ -122,9 +130,12 @@ class Ackley(UQTestFunABC):
         parameters = create_parameters_from_available(
             parameters_selection, AVAILABLE_PARAMETERS, spatial_dimension
         )
+        # Process the default name
+        if name is None:
+            name = Ackley.__name__
 
         super().__init__(
-            prob_input=prob_input, parameters=parameters, name=Ackley.__name__
+            prob_input=prob_input, parameters=parameters, name=name
         )
 
     def evaluate(self, xx: np.ndarray):

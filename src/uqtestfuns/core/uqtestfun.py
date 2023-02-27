@@ -7,7 +7,7 @@ create a UQ test function.
 from typing import Any, Callable, Optional
 
 from .uqtestfun_abc import UQTestFunABC
-from .prob_input.multivariate_input import MultivariateInput
+from .prob_input.probabilistic_input import ProbInput
 
 __all__ = ["UQTestFun"]
 
@@ -15,22 +15,22 @@ __all__ = ["UQTestFun"]
 class UQTestFun(UQTestFunABC):
     """Generic concrete class of UQ test function."""
 
-    tags = None
+    _TAGS = None
 
-    available_inputs = None
+    _AVAILABLE_INPUTS = None
 
-    available_parameters = None
+    _AVAILABLE_PARAMETERS = None
 
-    default_dimension = None
+    _DEFAULT_SPATIAL_DIMENSION = None
 
-    description = None
+    _DESCRIPTION = None
 
     def __init__(
         self,
         evaluate: Callable,
-        prob_input: Optional[MultivariateInput] = None,
-        parameters: Any = None,
-        name: str = None,
+        prob_input: Optional[ProbInput] = None,
+        parameters: Optional[Any] = None,
+        name: Optional[str] = None,
     ):
         self._evaluate = evaluate
 

@@ -1,8 +1,9 @@
 """
-Module with an implementation of the ``UnivariateInput`` class.
+Module with an implementation of the ``UnivDist`` class.
 
-The UnivariateInput class represents a univariate probabilistic input.
-Each input has a probability distribution and the associated parameters.
+The UnivDist class represents a univariate random variable.
+Each random variable has a probability distribution
+and the associated parameters.
 """
 from __future__ import annotations
 
@@ -22,15 +23,15 @@ from .utils import (
 )
 from ...global_settings import ARRAY_FLOAT
 
-__all__ = ["UnivariateInput"]
+__all__ = ["UnivDist"]
 
 # Ordered field names for printing purpose
 FIELD_NAMES = ["name", "distribution", "parameters", "description"]
 
 
 @dataclass(frozen=True)
-class UnivariateInput:
-    """A class for univariate input variables.
+class UnivDist:
+    """A class for univariate random variables.
 
     Attributes
     ----------
@@ -75,10 +76,10 @@ class UnivariateInput:
     def transform_sample(
         self,
         xx: ArrayLike,
-        other: UnivariateInput,
+        other: UnivDist,
     ) -> ArrayLike:
         """Transform a sample from a given distribution to another."""
-        if not isinstance(other, UnivariateInput):
+        if not isinstance(other, UnivDist):
             raise TypeError("Other instance must be of UnivariateType!")
 
         xx_trans = self.cdf(xx)

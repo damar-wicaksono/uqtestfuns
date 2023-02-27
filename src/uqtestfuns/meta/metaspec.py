@@ -8,7 +8,7 @@ from dataclasses import dataclass, field, InitVar
 from scipy.special import comb
 from typing import Dict, Callable, Tuple, Optional, Union, List
 
-from ..core import UnivariateInput
+from ..core import UnivDist
 
 __all__ = ["UQMetaFunSpec", "UQTestFunSpec"]
 
@@ -223,7 +223,7 @@ def _select_marginals(
         if name is None:
             name = f"X{num + 1}"
         # Create a new instance (now with a name)
-        selected_marginal = UnivariateInput(
+        selected_marginal = UnivDist(
             name=name,
             distribution=selected_marginal.distribution,
             parameters=selected_marginal.parameters,
@@ -266,7 +266,7 @@ class UQTestFunSpec:
     selected_basis: Tuple[int, ...]
     effects_tuples: Dict[int, Tuple[Tuple[int, ...], ...]]
     effects_coeffs: Dict[int, np.ndarray]
-    inputs: Union[List[UnivariateInput], Tuple[UnivariateInput, ...]]
+    inputs: Union[List[UnivDist], Tuple[UnivDist, ...]]
 
 
 @dataclass
@@ -293,7 +293,7 @@ class UQMetaFunSpec:
     basis_functions: Dict[int, Callable]
     effects: Dict[int, int] = field(init=False)
     effects_dict: InitVar[Dict[int, Optional[int]]]
-    input_marginals: Union[List[UnivariateInput], Tuple[UnivariateInput, ...]]
+    input_marginals: Union[List[UnivDist], Tuple[UnivDist, ...]]
     coeffs_generator: Callable
     _effects_tuples: Optional[Dict[int, Tuple[Tuple[int, ...], ...]]] = field(
         init=False, repr=False

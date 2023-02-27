@@ -22,7 +22,7 @@ from typing import Optional, Union, List
 
 from .metaspec import UQMetaFunSpec, UQTestFunSpec
 from .basis_functions import BASIS_BY_ID
-from ..core import UQTestFun, MultivariateInput, UnivariateInput
+from ..core import UQTestFun, ProbInput, UnivDist
 
 
 __all__ = ["UQMetaTestFun", "default_coeffs_gen"]
@@ -145,7 +145,7 @@ class UQMetaTestFun:
             assert testfun_specs is not None
             assert not isinstance(testfun_specs, list)
             # Create an instance of inputs
-            prob_input = MultivariateInput(testfun_specs.inputs)
+            prob_input = ProbInput(testfun_specs.inputs)
             # Assign the realized spec as a parameter
             parameters = testfun_specs
 
@@ -160,7 +160,7 @@ class UQMetaTestFun:
         for i in range(sample_size):
             # Create an instance of inputs
             assert isinstance(testfun_specs, list)
-            prob_input = MultivariateInput(testfun_specs[i].inputs)
+            prob_input = ProbInput(testfun_specs[i].inputs)
             # Assign the realized spec as a parameter
             parameters = testfun_specs[i]
 
@@ -210,26 +210,16 @@ class UQMetaTestFun:
             input_id = np.random.randint(0, 8)
 
         input_marginals = [
-            UnivariateInput(distribution="uniform", parameters=[0, 1]),
-            UnivariateInput(
+            UnivDist(distribution="uniform", parameters=[0, 1]),
+            UnivDist(
                 distribution="trunc-normal",
                 parameters=[0.5, 0.15, 0.0, 1.0],
             ),
-            UnivariateInput(
-                distribution="beta", parameters=[8.0, 2.0, 0.0, 1.0]
-            ),
-            UnivariateInput(
-                distribution="beta", parameters=[2.0, 8.0, 0.0, 1.0]
-            ),
-            UnivariateInput(
-                distribution="beta", parameters=[2.0, 0.8, 0.0, 1.0]
-            ),
-            UnivariateInput(
-                distribution="beta", parameters=[0.8, 2.0, 0.0, 1.0]
-            ),
-            UnivariateInput(
-                distribution="logitnormal", parameters=[0.0, 3.16]
-            ),
+            UnivDist(distribution="beta", parameters=[8.0, 2.0, 0.0, 1.0]),
+            UnivDist(distribution="beta", parameters=[2.0, 8.0, 0.0, 1.0]),
+            UnivDist(distribution="beta", parameters=[2.0, 0.8, 0.0, 1.0]),
+            UnivDist(distribution="beta", parameters=[0.8, 2.0, 0.0, 1.0]),
+            UnivDist(distribution="logitnormal", parameters=[0.0, 3.16]),
         ]
 
         if input_id < 7:

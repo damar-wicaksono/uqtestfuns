@@ -12,8 +12,12 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:wing-weight)=
-# Wing Weight Function
+(test-functions:oakley-ohagan-1d)=
+# One-dimensional (1D) Oakley-O'Hagan Function
+
+The 1D Oakley-O'Hagan function is a one-dimensional scalar-valued function.
+It was used in {cite}`Oakley2002` as a test function for illustrating
+metamodeling and uncertainty propagation approaches.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,17 +25,31 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Wing Weight test function {cite}`Forrester2008` is a 10-dimensional
-scalar-valued function.
-The function has been used as a test function in the context of metamodeling
-{cite}`Zuhal2020` and optimization {cite}`Forrester2008`.
+A plot of the function is shown below for $x \in [-12, 12]$.
+
+```{code-cell} ipython3
+:tags: [remove-input]
+
+my_testfun = uqtf.OakleyOHagan1D()
+xx = np.linspace(-12, 12, 1000)[:, np.newaxis]
+yy = my_testfun(xx)
+
+# --- Create the plot
+plt.plot(xx, yy, color="#8da0cb")
+plt.grid()
+plt.xlabel("$x$")
+plt.ylabel("$\mathcal{M}(x)$")
+plt.gcf().tight_layout(pad=3.0)
+plt.gcf().set_dpi(150);
+```
 
 ## Test function instance
 
-To create a default instance of the wing weight test function:
+To create a default instance of the one-dimensional Oakley-O'Hagan
+test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.WingWeight()
+my_testfun = uqtf.OakleyOHagan1D()
 ```
 
 Check if it has been correctly instantiated:
@@ -42,27 +60,24 @@ print(my_testfun)
 
 ## Description
 
-The weight of a light aircraft wing is computed using
-the following analytical expression:
+The test function is analytically defined as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = 0.036 \, S_w^{0.758} \, W_{fw}^{0.0035} \, \left( \frac{A}{\cos^2{(\Lambda)}} \right)^{0.6} q^{0.006} \lambda^{0.04} \left(\frac{100 t_c}{\cos{(\Lambda)}}\right)^{-0.3} \left( N_z W_{dg} \right)^{0.49} + S_w W_p 
+\mathcal{M}(x) = 5 + x + \cos{x}
 $$
-
-where $\boldsymbol{x} = \{ S_w, W_{fw}, A, \Lambda, q, \lambda, t_c, N_z, W_{dg}, W_p\}$
-is the vector of input variables defined below.
+where $x$ is probabilistically defined below.
 
 ## Probabilistic input
 
-Based on {cite}`Forrester2008`, the probabilistic input model for the Wing
-Weight function consists of eight independent uniform random variables with 
-ranges shown in the table below.
+Based on {cite}`Oakley2002`, the probabilistic input model for the 1D
+Oakley-O'Hagan function consists of a normal random variable
+with the parameters shown in the table below.
 
 ```{code-cell} ipython3
 my_testfun.prob_input
 ```
 
-## Reference Results
+## Reference results
 
 This section provides several reference results of typical UQ analyses involving
 the test function.
@@ -81,10 +96,12 @@ yy_test = my_testfun(xx_test)
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel("$\mathcal{M}(X)$");
+plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
-### Moments estimation
+
+### Moment estimations
 
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes.
@@ -92,41 +109,45 @@ the output mean and variance with increasing sample sizes.
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-# --- Compute the mean and variance estimate
 np.random.seed(42)
-sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], dtype=int)
-mean_estimates = np.empty(len(sample_sizes))
-var_estimates = np.empty(len(sample_sizes))
+sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6], dtype=int)
+mean_estimates = np.empty((len(sample_sizes), 50))
+var_estimates = np.empty((len(sample_sizes), 50))
 
 for i, sample_size in enumerate(sample_sizes):
-    xx_test = my_testfun.prob_input.get_sample(sample_size)
-    yy_test = my_testfun(xx_test)
-    mean_estimates[i] = np.mean(yy_test)
-    var_estimates[i] = np.var(yy_test)
+    for j in range(50):
+        xx_test = my_testfun.prob_input.get_sample(sample_size)
+        yy_test = my_testfun(xx_test)
+        mean_estimates[i, j] = np.mean(yy_test)
+        var_estimates[i, j] = np.var(yy_test)
 
 # --- Compute the error associated with the estimates
-mean_estimates_errors = np.sqrt(var_estimates) / np.sqrt(np.array(sample_sizes))
-var_estimates_errors = var_estimates * np.sqrt(2 / (np.array(sample_sizes) - 1))
+mean_estimates_errors = np.std(mean_estimates, axis=1)
+var_estimates_errors = np.std(var_estimates, axis=1)
 
-# --- Do the plot
+# --- Plot the mean and variance estimates
 fig, ax_1 = plt.subplots(figsize=(6,4))
 
+# --- Mean plot
 ax_1.errorbar(
     sample_sizes,
-    mean_estimates,
-    yerr=mean_estimates_errors,
+    mean_estimates[:,0],
+    yerr=2.0*mean_estimates_errors,
     marker="o",
     color="#66c2a5",
-    label="Mean",
+    label="Mean"
 )
+ax_1.set_xlim([5, 2e6])
 ax_1.set_xlabel("Sample size")
 ax_1.set_ylabel("Output mean estimate")
 ax_1.set_xscale("log");
 ax_2 = ax_1.twinx()
+
+# --- Variance plot
 ax_2.errorbar(
-    sample_sizes + 1,
-    var_estimates,
-    yerr=var_estimates_errors,
+    sample_sizes+1,
+    var_estimates[:,0],
+    yerr=1.96*var_estimates_errors,
     marker="o",
     color="#fc8d62",
     label="Variance",
@@ -150,7 +171,8 @@ The tabulated results for each sample size is shown below.
 from tabulate import tabulate
 
 # --- Compile data row-wise
-outputs = []
+outputs =[]
+
 for (
     sample_size,
     mean_estimate,
@@ -159,10 +181,10 @@ for (
     var_estimate_error,
 ) in zip(
     sample_sizes,
-    mean_estimates,
-    mean_estimates_errors,
-    var_estimates,
-    var_estimates_errors,
+    mean_estimates[:,0],
+    2.0*mean_estimates_errors,
+    var_estimates[:,0],
+    2.0*var_estimates_errors,
 ):
     outputs += [
         [
@@ -186,11 +208,11 @@ header_names = [
 
 tabulate(
     outputs,
-    headers=header_names,
-    floatfmt=(".1e", ".4e", ".4e", ".4e", ".4e", "s"),
-    tablefmt="html",
-    stralign="center",
     numalign="center",
+    stralign="center",
+    tablefmt="html",
+    floatfmt=(".1e", ".4e", ".4e", ".4e", ".4e", "s"),
+    headers=header_names
 )
 ```
 

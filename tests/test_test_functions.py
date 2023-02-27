@@ -22,7 +22,6 @@ AVAILABLE_FUNCTION_CLASSES = get_available_classes(test_functions)
 
 @pytest.fixture(params=AVAILABLE_FUNCTION_CLASSES)
 def builtin_testfun(request):
-    print(request.param)
     _, testfun = request.param
 
     return testfun
@@ -34,6 +33,24 @@ def test_create_instance(builtin_testfun):
 
     # Assertion
     assert_call(testfun)
+
+
+def test_create_instance_with_custom_name(builtin_testfun):
+    """Test the creation of an instance and passing the name argument."""
+    testfun_class = builtin_testfun
+
+    # Get the default name of the test function
+    name = testfun_class.__name__
+
+    # Create a default instance
+    my_fun = testfun_class()
+
+    # Assertion
+    assert my_fun.name == name
+
+    # Use custom name to create a test function
+    my_fun = testfun_class(name=name)
+    assert my_fun.name == name
 
 
 def test_create_instance_with_prob_input(builtin_testfun):
@@ -54,10 +71,12 @@ def test_create_instance_with_prob_input(builtin_testfun):
     my_prob_input = copy.copy(my_fun.prob_input)
 
     # Create an instance without probabilistic input
-    if testfun_class.available_inputs is not None:
+    if testfun_class.AVAILABLE_INPUTS is not None:
         my_fun_2 = testfun_class(prob_input_selection=None)
         assert my_fun_2.prob_input is None
-        assert my_fun_2.spatial_dimension == testfun_class.default_dimension
+        assert my_fun_2.spatial_dimension == (
+            testfun_class.DEFAULT_SPATIAL_DIMENSION
+        )
 
         # Assign the probabilistic input
         my_fun_2.prob_input = my_prob_input
@@ -83,7 +102,7 @@ def test_create_instance_with_parameters(builtin_testfun):
     my_fun = testfun_class()
     parameters = my_fun.parameters
 
-    if testfun_class.available_parameters is not None:
+    if testfun_class.AVAILABLE_PARAMETERS is not None:
         my_fun_2 = testfun_class(parameters_selection=None)
         assert my_fun_2.parameters is None
         my_fun_2.parameters = parameters
@@ -97,7 +116,7 @@ def test_available_inputs(builtin_testfun):
 
     testfun_class = builtin_testfun
 
-    available_inputs = testfun_class.available_inputs
+    available_inputs = testfun_class.AVAILABLE_INPUTS
 
     for available_input in available_inputs:
         assert_call(testfun_class, prob_input_selection=available_input)
@@ -108,7 +127,7 @@ def test_available_parameters(builtin_testfun):
 
     testfun_class = builtin_testfun
 
-    available_parameters = testfun_class.available_parameters
+    available_parameters = testfun_class.AVAILABLE_PARAMETERS
 
     if available_parameters is not None:
         for available_parameter in available_parameters:
@@ -223,7 +242,7 @@ def test_evaluate_wrong_input_domain(builtin_testfun):
 def test_evaluate_invalid_spatial_dim(builtin_testfun):
     """Test if an exception is raised if invalid spatial dimension is given."""
 
-    if builtin_testfun.default_dimension is None:
+    if builtin_testfun.DEFAULT_SPATIAL_DIMENSION is None:
         with pytest.raises(TypeError):
             builtin_testfun(spatial_dimension="10")
 

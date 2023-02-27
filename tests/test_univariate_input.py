@@ -7,7 +7,7 @@ import numpy as np
 from typing import Tuple, Dict, Union, Any
 from numpy.typing import ArrayLike
 
-from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
+from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 from conftest import create_random_alphanumeric
 
@@ -18,7 +18,7 @@ MARGINALS = list(SUPPORTED_MARGINALS.keys())
 @pytest.fixture(params=MARGINALS)
 def univariate_input(
     request: Any,
-) -> Tuple[UnivariateInput, Dict[str, Union[str, ArrayLike]]]:
+) -> Tuple[UnivDist, Dict[str, Union[str, ArrayLike]]]:
     """Test fixture, an instance of UnivariateInput."""
     name = create_random_alphanumeric(8)
     distribution = request.param
@@ -51,7 +51,7 @@ def univariate_input(
         "parameters": parameters,
     }
 
-    my_univariate_input = UnivariateInput(**specs)
+    my_univariate_input = UnivDist(**specs)
 
     return my_univariate_input, specs
 
@@ -73,9 +73,7 @@ def test_create_instance_unsupported_marginal() -> None:
     parameters = list(np.sort(np.random.rand(2)))
 
     with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_generate_sample(univariate_input: Any) -> None:
@@ -156,7 +154,7 @@ def test_transform_sample() -> None:
     distribution_1 = "uniform"
     parameters_1 = np.sort(np.random.rand(2))
 
-    my_univariate_input_1 = UnivariateInput(
+    my_univariate_input_1 = UnivDist(
         name=name_1, distribution=distribution_1, parameters=parameters_1
     )
 
@@ -167,7 +165,7 @@ def test_transform_sample() -> None:
     distribution_2 = "uniform"
     parameters_2 = np.sort(np.random.rand(2))
 
-    my_univariate_input_2 = UnivariateInput(
+    my_univariate_input_2 = UnivDist(
         name=name_2, distribution=distribution_2, parameters=parameters_2
     )
 
@@ -186,7 +184,7 @@ def test_failed_transform_sample() -> None:
     distribution = "uniform"
     parameters = np.sort(np.random.rand(2))
 
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         name=name, distribution=distribution, parameters=parameters
     )
 

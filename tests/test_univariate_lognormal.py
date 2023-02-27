@@ -4,7 +4,7 @@ Test module specifically for UnivariateInput instances with lognormal dist.
 import pytest
 import numpy as np
 
-from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
+from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
 from conftest import create_random_alphanumeric
 
 
@@ -16,9 +16,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.sort(np.random.rand(3))
 
     with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_failed_parameter_verification() -> None:
@@ -28,9 +26,7 @@ def test_failed_parameter_verification() -> None:
     parameters = [7.71, -10]
 
     with pytest.raises(ValueError):
-        UnivariateInput(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_get_pdf_values() -> None:
@@ -40,7 +36,7 @@ def test_get_pdf_values() -> None:
     distribution = "lognormal"
     parameters = np.sort(np.random.rand(2))
 
-    my_univariate_input = UnivariateInput(
+    my_univariate_input = UnivDist(
         name=name, distribution=distribution, parameters=parameters
     )
 

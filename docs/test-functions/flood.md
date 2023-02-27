@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:wing-weight)=
-# Wing Weight Function
+(test-functions:flood)=
+# Flood Model
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,17 +21,16 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Wing Weight test function {cite}`Forrester2008` is a 10-dimensional
-scalar-valued function.
-The function has been used as a test function in the context of metamodeling
-{cite}`Zuhal2020` and optimization {cite}`Forrester2008`.
+The flood model is an eight-dimensional scalar valued function.
+The model was used in the context of sensitivity analysis in {cite}`Iooss2015, Lamboni2013`
+and has become a canonical example of the OpenTURNS package {cite}`Baudin2017`.
 
 ## Test function instance
 
-To create a default instance of the wing weight test function:
+To create a default instance of the flood model:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.WingWeight()
+my_testfun = uqtf.Flood()
 ```
 
 Check if it has been correctly instantiated:
@@ -42,21 +41,34 @@ print(my_testfun)
 
 ## Description
 
-The weight of a light aircraft wing is computed using
-the following analytical expression:
+The flood model computes the maximum annual underflow of a river
+using the following analytical formula:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = 0.036 \, S_w^{0.758} \, W_{fw}^{0.0035} \, \left( \frac{A}{\cos^2{(\Lambda)}} \right)^{0.6} q^{0.006} \lambda^{0.04} \left(\frac{100 t_c}{\cos{(\Lambda)}}\right)^{-0.3} \left( N_z W_{dg} \right)^{0.49} + S_w W_p 
+\begin{align}
+	\mathcal{M}(\boldsymbol{x}) & = z_v + h - h_d - c_b\\
+	h & = \left[ \frac{q}{b k_s \left(\frac{z_m - z_v}{l} \right)^{0.5}} \right]^{0.6}
+\end{align}
 $$
+where $\boldsymbol{x} = \{ q, k_s, z_v, z_m, h_d, c_b, l, b \}$
+is the eight-dimensional vector of input variables further defined below.
+The output is given in $[\mathrm{m}]$.
+A negative value indicates that an overflow (_flooding_) occurs.
 
-where $\boldsymbol{x} = \{ S_w, W_{fw}, A, \Lambda, q, \lambda, t_c, N_z, W_{dg}, W_p\}$
-is the vector of input variables defined below.
+```{note}
+Compared to the original function,
+this implementation inverted the sign of the output
+such that underflowing has a positive sign.
+```
+The model is based on a simplification of the one-dimensional hydro-dynamical
+equations of St. Venant under the assumption of uniform and constant flow rate 
+and a large rectangular section. 
 
 ## Probabilistic input
 
-Based on {cite}`Forrester2008`, the probabilistic input model for the Wing
-Weight function consists of eight independent uniform random variables with 
-ranges shown in the table below.
+Based on {cite}`Iooss2015` (Table 4), the probabilistic input model
+for the flood model consists of eight independent random variables
+with marginals shown in the table below.
 
 ```{code-cell} ipython3
 my_testfun.prob_input
@@ -84,6 +96,7 @@ plt.ylabel("Counts [-]");
 plt.xlabel("$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
+
 ### Moments estimation
 
 Shown below is the convergence of a direct Monte-Carlo estimation of

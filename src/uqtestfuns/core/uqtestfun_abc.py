@@ -6,10 +6,28 @@ import numpy as np
 
 from typing import Optional, Any, Tuple, List
 
-from .prob_input.multivariate_input import MultivariateInput
+from .prob_input.probabilistic_input import ProbInput
 from .utils import create_canonical_uniform_input
 
 __all__ = ["UQTestFunABC"]
+
+CLASS_HIDDEN_ATTRIBUTES = [
+    "_TAGS",
+    "_AVAILABLE_INPUTS",
+    "_AVAILABLE_PARAMETERS",
+    "_DEFAULT_SPATIAL_DIMENSION",
+    "_DESCRIPTION",
+]
+
+
+class classproperty(property):
+    """Decorator w/ descriptor to get and set class-level attributes."""
+
+    def __get__(self, owner_self, owner_cls):
+        return self.fget(owner_cls)
+
+    def __set__(self, owner_self, owner_cls):
+        raise AttributeError("can't set attribute")
 
 
 class UQTestFunABC(abc.ABC):
@@ -38,9 +56,19 @@ class UQTestFunABC(abc.ABC):
         values, the input values are first verified before evaluating them.
     """
 
+    _TAGS = None
+
+    _AVAILABLE_INPUTS = None
+
+    _AVAILABLE_PARAMETERS = None
+
+    _DEFAULT_SPATIAL_DIMENSION = None
+
+    _DESCRIPTION = None
+
     def __init__(
         self,
-        prob_input: Optional[MultivariateInput] = None,
+        prob_input: Optional[ProbInput] = None,
         parameters: Optional[Any] = None,
         name: Optional[str] = None,
     ):
@@ -48,7 +76,7 @@ class UQTestFunABC(abc.ABC):
 
         Parameters
         ----------
-        prob_input : MultivariateInput
+        prob_input : ProbInput
             Multivariate probabilistic input model.
         parameters : Any
             Parameters to the test function. Once set, the parameters are held
@@ -57,9 +85,7 @@ class UQTestFunABC(abc.ABC):
         name : str, optional
             Name of the instance.
         """
-        if not (
-            prob_input is None or isinstance(prob_input, MultivariateInput)
-        ):
+        if not (prob_input is None or isinstance(prob_input, ProbInput)):
             raise TypeError(
                 f"Probabilistic input model must be either 'None' or "
                 f"of 'MultivariateInput' type! Got instead {type(prob_input)}."
@@ -69,55 +95,55 @@ class UQTestFunABC(abc.ABC):
         self._parameters = parameters
         self._name = name
 
-    @property
     @classmethod
-    @abc.abstractmethod
-    def tags(cls) -> List[str]:
+    def __init_subclass__(cls):
+        """Verify if concrete class has all the required hidden attributes."""
+        for class_hidden_attribute in CLASS_HIDDEN_ATTRIBUTES:
+            if not hasattr(cls, class_hidden_attribute):
+                raise NotImplementedError(
+                    f"Class {cls} lacks required {class_hidden_attribute!r} "
+                    f"class attribute."
+                )
+
+    @classproperty
+    def TAGS(cls) -> Optional[List[str]]:
         """Tags to classify different UQ test functions."""
-        pass
+        return cls._TAGS
 
-    @property
-    @classmethod
-    @abc.abstractmethod
-    def available_inputs(cls) -> Optional[Tuple[str, ...]]:
+    @classproperty
+    def AVAILABLE_INPUTS(cls) -> Optional[Tuple[str, ...]]:
         """All the keys to the available probabilistic input specifications."""
-        pass
+        return cls._AVAILABLE_INPUTS
 
-    @property
-    @classmethod
-    @abc.abstractmethod
-    def available_parameters(cls) -> Optional[Tuple[str, ...]]:
+    @classproperty
+    def AVAILABLE_PARAMETERS(cls) -> Optional[Tuple[str, ...]]:
         """All the keys to the available set of parameter values."""
-        pass
+        return cls._AVAILABLE_PARAMETERS
 
-    @property
-    @classmethod
-    @abc.abstractmethod
-    def default_dimension(cls) -> Optional[int]:
+    @classproperty
+    def DEFAULT_SPATIAL_DIMENSION(cls) -> Optional[int]:
         """To store the default dimension of a test function."""
-        pass
+        return cls._DEFAULT_SPATIAL_DIMENSION
 
-    @property
-    @classmethod
-    @abc.abstractmethod
-    def description(cls) -> Optional[str]:
+    @classproperty
+    def DESCRIPTION(cls) -> Optional[str]:
         """Short description of the UQ test function."""
-        pass
+        return cls._DESCRIPTION
 
     @property
-    def prob_input(self) -> Optional[MultivariateInput]:
+    def prob_input(self) -> Optional[ProbInput]:
         """The probabilistic input model of the UQ test function."""
         return self._prob_input
 
     @prob_input.setter
-    def prob_input(self, value: MultivariateInput):
+    def prob_input(self, value: Optional[ProbInput]):
         """The setter for probabilistic input model of the UQ test function."""
-        if value is None or isinstance(value, MultivariateInput):
+        if value is None or isinstance(value, ProbInput):
             self._prob_input = value
         else:
             raise TypeError(
                 f"Probabilistic input model must be either 'None' or "
-                f"of 'MultivariateInput' type! Got instead {type(value)}."
+                f"of 'MultivariateInput' types! Got instead {type(value)}."
             )
 
     @property
@@ -136,10 +162,10 @@ class UQTestFunABC(abc.ABC):
         if self._prob_input is not None:
             return self._prob_input.spatial_dimension
         else:
-            return self.default_dimension
+            return self.DEFAULT_SPATIAL_DIMENSION
 
     @property
-    def name(self) -> str:
+    def name(self) -> Optional[str]:
         """The name of the UQ test function."""
         return self._name
 
@@ -208,7 +234,7 @@ class UQTestFunABC(abc.ABC):
         out = (
             f"Name              : {self.name}\n"
             f"Spatial dimension : {self.spatial_dimension}\n"
-            f"Description       : {self.description}"
+            f"Description       : {self.DESCRIPTION}"
         )
 
         return out

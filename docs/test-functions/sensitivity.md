@@ -12,30 +12,29 @@ kernelspec:
   name: python3
 ---
 
-# All Available Functions
+# Test Functions for Sensitivity Analysis
 
-The table below lists all the available _classic_ test functions from the literature
-available in the current UQTestFuns, regardless of their typical applications.
+The table below listed the available test functions typically used
+in the comparison of sensitivity analysis methods.
 
 |                            Name                             | Spatial Dimension |     Constructor      |
 |:-----------------------------------------------------------:|:-----------------:|:--------------------:|
-|            {ref}`Ackley <test-functions:ackley>`            |         M         |      `Ackley()`      |
 |          {ref}`Borehole <test-functions:borehole>`          |         8         |     `Borehole()`     |
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>` |         7         | `DampedOscillator()` |
 |             {ref}`Flood <test-functions:flood>`             |         8         |      `Flood()`       |
 |          {ref}`Ishigami <test-functions:ishigami>`          |         3         |     `Ishigami()`     |
-| {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`  |         1         |  `OakleyOHagan1D()`  |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
 |          {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |      `SobolG()`      |
 |            {ref}`Sulfur <test-functions:sulfur>`            |         9         |      `Sulfur()`      |
 |       {ref}`Wing Weight <test-functions:wing-weight>`       |        10         |    `WingWeight()`    |
 
-In a Python terminal, you can list all the available functions
-along with the corresponding constructor using ``list_functions()``:
+In a Python terminal, you can list all the available functions relevant
+for metamodeling applications using ``list_functions()`` and filter the results
+using the ``tag`` parameter:
 
 ```{code-cell} ipython3
 import uqtestfuns as uqtf
 
-uqtf.list_functions()
+uqtf.list_functions(tag="sensitivity")
 ```

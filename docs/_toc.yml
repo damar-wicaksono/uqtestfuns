@@ -13,17 +13,33 @@ parts:
     chapters:
       - file: test-functions/metamodeling
         title: Metamodeling
+      - file: test-functions/optimization
+        title: Optimization
+      - file: test-functions/sensitivity
+        title: Sensitivity Analysis
       - file: test-functions/available
         title: All Available Functions
         sections:
+          - file: test-functions/ackley
+            title: Ackley
           - file: test-functions/borehole
             title: Borehole
+          - file: test-functions/damped-oscillator
+            title: Damped Oscillator
+          - file: test-functions/flood
+            title: Flood
           - file: test-functions/ishigami
             title: Ishigami
+          - file: test-functions/oakley-ohagan-1d
+            title: Oakley-O'Hagan 1D
           - file: test-functions/otl-circuit
             title: OTL Circuit
           - file: test-functions/piston
             title: Piston Simulation
+          - file: test-functions/sobol-g
+            title: Sobol'-G
+          - file: test-functions/sulfur
+            title: Sulfur
           - file: test-functions/wing-weight
             title: Wing Weight
   - caption: Metafunction

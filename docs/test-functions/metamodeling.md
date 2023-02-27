@@ -14,15 +14,20 @@ kernelspec:
 
 # Test Functions for Metamodeling
 
-The table below listed the available test functions typically used in the comparison of metamodeling approaches.
+The table below listed the available test functions typically used
+in the comparison of metamodeling approaches.
 
-|                       Name                        | Spatial Dimension |  Constructor   |
-|:-------------------------------------------------:|:-----------------:|:--------------:|
-|     {ref}`Borehole <test-functions:borehole>`     |         8         |  `Borehole()`  |
-|     {ref}`Ishigami <test-functions:ishigami>`     |         3         |  `Ishigami()`  |
-|  {ref}`OTL Circuit <test-functions:otl-circuit>`  |     6 / 20        | `OTLCircuit()` |
-| {ref}`Piston Simulation <test-functions:piston>`  |      7 / 20       |   `Piston()`   |
-|  {ref}`Wing Weight <test-functions:wing-weight>`  |        10         | `WingWeight()` |
+|                            Name                             | Spatial Dimension |     Constructor      |
+|:-----------------------------------------------------------:|:-----------------:|:--------------------:|
+|            {ref}`Ackley <test-functions:ackley>`            |         M         |      `Ackley()`      |
+|        {ref}`Borehole <test-functions:borehole>`            |         8         |     `Borehole()`     |
+| {ref}`Damped Oscillator <test-functions:damped-oscillator>` |         7         | `DampedOscillator()` |
+|             {ref}`Flood <test-functions:flood>`             |         8         |       `Flood()`      |
+| {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`  |         1         |  `OakleyOHagan1D()`  |
+|       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
+|      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
+|            {ref}`Sulfur <test-functions:sulfur>`            |         9         |      `Sulfur()`      |
+|       {ref}`Wing Weight <test-functions:wing-weight>`       |        10         |    `WingWeight()`    |
 
 In a Python terminal, you can list all the available functions relevant
 for metamodeling applications using ``list_functions()`` and filter the results

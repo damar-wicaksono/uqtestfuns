@@ -32,3 +32,9 @@ docs/_build/
 
 # MacOS specific
 .DS_Store
+
+# JabRef
+*.bib.sav
+
+# Jupyter
+.ipynb_checkpoints/

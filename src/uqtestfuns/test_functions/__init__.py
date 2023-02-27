@@ -6,6 +6,7 @@ from .borehole import Borehole
 from .damped_oscillator import DampedOscillator
 from .flood import Flood
 from .ishigami import Ishigami
+from .oakley_ohagan_1d import OakleyOHagan1D
 from .otl_circuit import OTLCircuit
 from .piston import Piston
 from .sobol_g import SobolG
@@ -21,6 +22,7 @@ __all__ = [
     "DampedOscillator",
     "Flood",
     "Ishigami",
+    "OakleyOHagan1D",
     "OTLCircuit",
     "Piston",
     "SobolG",

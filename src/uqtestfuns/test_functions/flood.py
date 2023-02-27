@@ -1,8 +1,8 @@
 """
 Module with an implementation of the flood model.
 
-The flood model from [1] is an 8-dimensional scalar-valued function that
-computes maximum annual underflow of a river (in [m]).
+The flood model from [1] is an eight-dimensional scalar-valued function that
+computes the maximum annual underflow of a river (in [m]).
 A negative value indicates that an overflow (flooding) occurs.
 The model is used in the context of sensitivity analysis in [1] and [2]
 and has become a canonical example of the OpenTURNS package [3].
@@ -13,75 +13,77 @@ and a large rectangular section.
 
 References
 ----------
-[1] B. Iooss and P. Lemaître, “A Review on Global Sensitivity Analysis
-    Methods,” in Uncertainty Management in Simulation-Optimization of
-    Complex Systems, vol. 59, G. Dellino and C. Meloni, Eds.
-    Boston, MA: Springer US, 2015, pp. 101–122.
-    doi: 10.1007/978-1-4899-7547-8_5.
-[2] M. Lamboni, B. Iooss, A.-L. Popelin, and F. Gamboa, “Derivative-based
-    global sensitivity measures: General links with Sobol’ indices
-    and numerical tests,” Mathematics and Computers in Simulation, vol. 87,
-    pp. 45–54, Jan. 2013, doi: 10.1016/j.matcom.2013.02.002.
-[3] M. Baudin, A. Dutfoy, B. Iooss, and A.-L. Popelin, “OpenTURNS:
-    An Industrial Software for Uncertainty Quantification in Simulation,”
-    in Handbook of Uncertainty Quantification, R. Ghanem, D. Higdon,
-    and H. Owhadi, Eds. Cham: Springer International Publishing, 2017,
-    pp. 2001–2038. doi: 10.1007/978-3-319-12385-1_64.
+1. B. Iooss and P. Lemaître, “A Review on Global Sensitivity Analysis
+   Methods,” in Uncertainty Management in Simulation-Optimization of
+   Complex Systems, vol. 59, G. Dellino and C. Meloni, Eds.
+   Boston, MA: Springer US, 2015, pp. 101–122.
+   DOI: 10.1007/978-1-4899-7547-8_5
+2. M. Lamboni, B. Iooss, A.-L. Popelin, and F. Gamboa, “Derivative-based
+   global sensitivity measures: General links with Sobol’ indices
+   and numerical tests,” Mathematics and Computers in Simulation, vol. 87,
+   pp. 45–54, 2013.
+   DOI: 10.1016/j.matcom.2013.02.002
+3. M. Baudin, A. Dutfoy, B. Iooss, and A.-L. Popelin, “OpenTURNS:
+   An Industrial Software for Uncertainty Quantification in Simulation,”
+   in Handbook of Uncertainty Quantification, R. Ghanem, D. Higdon,
+   and H. Owhadi, Eds. Cham: Springer International Publishing, 2017,
+   pp. 2001–2038.
+   DOI: 10.1007/978-3-319-12385-1_64
 """
 import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
 __all__ = ["Flood"]
 
-INPUT_MARGINALS_IOOSS = [  # From Ref. [1]
-    UnivariateInput(
+INPUT_MARGINALS_IOOSS2015 = [  # From Ref. [1]
+    UnivDist(
         name="Q",
         distribution="trunc-gumbel",
         parameters=[1013.0, 558.0, 500.0, 3000.0],
         description="Maximum annual flow rate [m^3/s]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Ks",
         distribution="trunc-normal",
         parameters=[30.0, 8.0, 15.0, np.inf],
         description="Strickler coefficient [m^(1/3)/s]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Zv",
         distribution="triangular",
         parameters=[49.0, 51.0, 50.0],
         description="River downstream level [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Zm",
         distribution="triangular",
         parameters=[54.0, 56.0, 55.0],
         description="River upstream level [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Hd",
         distribution="uniform",
         parameters=[7.0, 9.0],
         description="Dyke height [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Cb",
         distribution="triangular",
         parameters=[55.0, 56.0, 55.5],
         description="Bank level [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="L",
         distribution="triangular",
         parameters=[4990.0, 5010.0, 5000.0],
         description="Length of the river stretch [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="B",
         distribution="triangular",
         parameters=[295.0, 305.0, 300.0],
@@ -90,44 +92,48 @@ INPUT_MARGINALS_IOOSS = [  # From Ref. [1]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "iooss": {
-        "name": "Flood-Iooss",
+    "Iooss2015": {
+        "name": "Flood-Iooss-2015",
         "description": (
             "Probabilistic input model for the Flood model "
             "from Iooss and Lemaître (2015)."
         ),
-        "marginals": INPUT_MARGINALS_IOOSS,
+        "marginals": INPUT_MARGINALS_IOOSS2015,
         "copulas": None,
     }
 }
 
-DEFAULT_INPUT_SELECTION = "iooss"
+DEFAULT_INPUT_SELECTION = "Iooss2015"
 
 
 class Flood(UQTestFunABC):
     """Concrete implementation of the Flood model test function."""
 
-    tags = ["metamodeling", "sensitivity"]
+    _TAGS = ["metamodeling", "sensitivity"]
 
-    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    available_parameters = None
+    _AVAILABLE_PARAMETERS = None
 
-    default_dimension = 8
+    _DEFAULT_SPATIAL_DIMENSION = 8
 
-    description = "Flood model from Iooss and Lemaître (2015)"
+    _DESCRIPTION = "Flood model from Iooss and Lemaître (2015)"
 
     def __init__(
         self,
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+        name: Optional[str] = None,
     ):
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
             prob_input_selection, AVAILABLE_INPUT_SPECS
         )
+        # Process the default name
+        if name is None:
+            name = Flood.__name__
 
-        super().__init__(prob_input=prob_input, name=Flood.__name__)
+        super().__init__(prob_input=prob_input, name=name)
 
     def evaluate(self, xx):
         """Evaluate the flood model test function on a set of input values.

@@ -9,7 +9,7 @@ import string
 from typing import List, Callable, Any
 
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
-from uqtestfuns.core.prob_input.univariate_input import UnivariateInput
+from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
 
 MARGINALS = list(SUPPORTED_MARGINALS.keys())
 
@@ -36,8 +36,8 @@ def create_random_alphanumeric(length: int) -> str:
     return out
 
 
-def create_random_marginals(length: int) -> List[UnivariateInput]:
-    """Create a random list of univariate input.
+def create_random_marginals(length: int) -> List[UnivDist]:
+    """Create a random list of univariate random variables.
 
     Parameters
     ----------
@@ -46,8 +46,8 @@ def create_random_marginals(length: int) -> List[UnivariateInput]:
 
     Returns
     -------
-    List[UnivariateInput]
-        List of dictionaries to specify a MultivariateInput class.
+    List[UnivDist]
+        List of dictionaries to specify a ProbInput instance.
     """
     marginals = []
 
@@ -73,7 +73,7 @@ def create_random_marginals(length: int) -> List[UnivariateInput]:
             parameters = np.sort(1 + 2 * np.random.rand(2))
 
         marginals.append(
-            UnivariateInput(
+            UnivDist(
                 name=f"X{i+1}",
                 distribution=distribution,
                 parameters=parameters,

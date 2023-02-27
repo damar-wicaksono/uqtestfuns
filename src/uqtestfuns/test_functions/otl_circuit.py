@@ -25,44 +25,44 @@ import numpy as np
 from copy import copy
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
 __all__ = ["OTLCircuit"]
 
-INPUT_MARGINALS_BEN_ARI = [
-    UnivariateInput(
+INPUT_MARGINALS_BENARI2007 = [
+    UnivDist(
         name="Rb1",
         distribution="uniform",
         parameters=[50.0, 150.0],
         description="Resistance b1 [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Rb2",
         distribution="uniform",
         parameters=[25.0, 70.0],
         description="Resistance b2 [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Rf",
         distribution="uniform",
         parameters=[0.5, 3.0],
         description="Resistance f [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Rc1",
         distribution="uniform",
         parameters=[1.2, 2.5],
         description="Resistance c1 [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Rc2",
         distribution="uniform",
         parameters=[0.25, 1.20],
         description="Resistance c2 [kOhm]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="beta",
         distribution="uniform",
         parameters=[50.0, 300.0],
@@ -70,10 +70,10 @@ INPUT_MARGINALS_BEN_ARI = [
     ),
 ]
 
-INPUT_MARGINALS_MOON = [copy(_) for _ in INPUT_MARGINALS_BEN_ARI]
+INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
 for i in range(14):
-    INPUT_MARGINALS_MOON.append(
-        UnivariateInput(
+    INPUT_MARGINALS_MOON2010.append(
+        UnivDist(
             name=f"Inert {i+1}",
             distribution="uniform",
             parameters=[100.0, 200.0],
@@ -82,41 +82,41 @@ for i in range(14):
     )
 
 AVAILABLE_INPUT_SPECS = {
-    "ben-ari": {
-        "name": "OTL-Circuit-Ben-Ari",
+    "BenAri2007": {
+        "name": "OTL-Circuit-Ben-Ari-2007",
         "description": (
             "Probabilistic input model for the OTL Circuit function "
             "from Ben-Ari and Steinberg (2007)."
         ),
-        "marginals": INPUT_MARGINALS_BEN_ARI,
+        "marginals": INPUT_MARGINALS_BENARI2007,
         "copulas": None,
     },
-    "moon": {
-        "name": "OTL-Circuit-Moon",
+    "Moon2010": {
+        "name": "OTL-Circuit-Moon-2010",
         "description": (
             "Probabilistic input model for the OTL Circuit function "
             "from Moon (2010)."
         ),
-        "marginals": INPUT_MARGINALS_MOON,
+        "marginals": INPUT_MARGINALS_MOON2010,
         "copulas": None,
     },
 }
 
-DEFAULT_INPUT_SELECTION = "ben-ari"
+DEFAULT_INPUT_SELECTION = "BenAri2007"
 
 
 class OTLCircuit(UQTestFunABC):
     """A concrete implementation of the OTL circuit test function."""
 
-    tags = ["metamodeling", "sensitivity"]
+    _TAGS = ["metamodeling", "sensitivity"]
 
-    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    available_parameters = None
+    _AVAILABLE_PARAMETERS = None
 
-    default_dimension = 6
+    _DEFAULT_SPATIAL_DIMENSION = 6
 
-    description = (
+    _DESCRIPTION = (
         "Output transformerless (OTL) circuit model "
         "from Ben-Ari and Steinberg (2007)"
     )
@@ -125,13 +125,17 @@ class OTLCircuit(UQTestFunABC):
         self,
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+        name: Optional[str] = None,
     ):
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
             prob_input_selection, AVAILABLE_INPUT_SPECS
         )
+        # Process the default name
+        if name is None:
+            name = OTLCircuit.__name__
 
-        super().__init__(prob_input=prob_input, name=OTLCircuit.__name__)
+        super().__init__(prob_input=prob_input, name=name)
 
     def evaluate(self, xx: np.ndarray) -> np.ndarray:
         """Evaluate the OTL circuit test function on a set of input values.
@@ -163,7 +167,7 @@ class OTLCircuit(UQTestFunABC):
         beta = xx[:, 5]  # Current gain
 
         # Compute the voltage across b1
-        vb1 = 12 * rr_b1 / (rr_b1 + rr_b2)
+        vb1 = 12 * rr_b2 / (rr_b1 + rr_b2)
 
         # Compute the mid-point voltage
         denom = beta * (rr_c2 + 9) + rr_f

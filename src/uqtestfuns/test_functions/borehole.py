@@ -19,63 +19,63 @@ References
 2. Max D. Morris, T. J. Mitchell, and D. Ylvisaker, “Bayesian design and
    analysis of computer experiments: Use of derivatives in surface
    prediction,” Technometrics, vol. 35, no. 3, pp. 243–255, 1993.
-   DOI:10.1080/00401706.1993.10485320
+   DOI: 10.1080/00401706.1993.10485320
 """
 import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
 __all__ = ["Borehole"]
 
 # From Ref. [1]
-INPUT_MARGINALS_HARPER = [
-    UnivariateInput(
+INPUT_MARGINALS_HARPER1983 = [
+    UnivDist(
         name="rw",
         distribution="normal",
         parameters=[0.10, 0.0161812],
         description="radius of the borehole [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="r",
         distribution="lognormal",
         parameters=[7.71, 1.0056],
         description="radius of influence [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Tu",
         distribution="uniform",
         parameters=[63070.0, 115600.0],
         description="transmissivity of upper aquifer [m^2/year]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Hu",
         distribution="uniform",
         parameters=[990.0, 1100.0],
         description="potentiometric head of upper aquifer [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Tl",
         distribution="uniform",
         parameters=[63.1, 116.0],
         description="transmissivity of lower aquifer [m^2/year]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Hl",
         distribution="uniform",
         parameters=[700.0, 820.0],
         description="potentiometric head of lower aquifer [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="L",
         distribution="uniform",
         parameters=[1120.0, 1680.0],
         description="length of the borehole [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Kw",
         distribution="uniform",
         parameters=[9985.0, 12045.0],
@@ -84,15 +84,15 @@ INPUT_MARGINALS_HARPER = [
 ]
 
 # From Ref. [2]
-INPUT_MARGINALS_MORRIS = list(INPUT_MARGINALS_HARPER)
-INPUT_MARGINALS_MORRIS[0:2] = [
-    UnivariateInput(
+INPUT_MARGINALS_MORRIS1993 = list(INPUT_MARGINALS_HARPER1983)
+INPUT_MARGINALS_MORRIS1993[0:2] = [
+    UnivDist(
         name="rw",
         distribution="uniform",
         parameters=[0.05, 0.15],
         description="radius of the borehole [m]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="r",
         distribution="uniform",
         parameters=[100, 50000],
@@ -101,53 +101,57 @@ INPUT_MARGINALS_MORRIS[0:2] = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "harper": {
-        "name": "Borehole-Harper",
+    "Harper1983": {
+        "name": "Borehole-Harper-1983",
         "description": (
             "Probabilistic input model of the Borehole model "
             "from Harper and Gupta (1983)."
         ),
-        "marginals": INPUT_MARGINALS_HARPER,
+        "marginals": INPUT_MARGINALS_HARPER1983,
         "copulas": None,
     },
-    "morris": {
-        "name": "Borehole-Morris",
+    "Morris1993": {
+        "name": "Borehole-Morris-1993",
         "description": (
             "Probabilistic input model of the Borehole model "
             "from Morris et al. (1993)."
         ),
-        "marginals": INPUT_MARGINALS_MORRIS,
+        "marginals": INPUT_MARGINALS_MORRIS1993,
         "copulas": None,
     },
 }
 
-DEFAULT_INPUT_SELECTION = "harper"
+DEFAULT_INPUT_SELECTION = "Harper1983"
 
 
 class Borehole(UQTestFunABC):
     """A concrete implementation of the Borehole function."""
 
-    tags = ["metamodeling", "sensitivity"]
+    _TAGS = ["metamodeling", "sensitivity"]
 
-    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    available_parameters = None
+    _AVAILABLE_PARAMETERS = None
 
-    default_dimension = 8
+    _DEFAULT_SPATIAL_DIMENSION = 8
 
-    description = "Borehole function from Harper and Gupta (1983)"
+    _DESCRIPTION = "Borehole function from Harper and Gupta (1983)"
 
     def __init__(
         self,
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+        name: Optional[str] = None,
     ):
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
             prob_input_selection, AVAILABLE_INPUT_SPECS
         )
+        # Process the default name
+        if name is None:
+            name = Borehole.__name__
 
-        super().__init__(prob_input=prob_input, name=Borehole.__name__)
+        super().__init__(prob_input=prob_input, name=name)
 
     def evaluate(self, xx):
         """Evaluate the Borehole function on a set of input values.

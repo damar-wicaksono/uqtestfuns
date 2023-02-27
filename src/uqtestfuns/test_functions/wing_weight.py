@@ -1,83 +1,91 @@
 """
 Module with an implementation of the Wing Weight test function.
 
-The Wing Weight test function[1] is a 10-dimensional scalar-valued function
+The Wing Weight test function [1] is a 10-dimensional scalar-valued function
 that models a light aircraft wing.
+The function has been used as a test function in the context of
+metamodeling [2] and optimization [1].
 
 References
 ----------
 
-1. A. I. J. Forrester, A. Sóbester, and A. J. Keane, Engineering Design
-   via Surrogate Modelling: A Practical Guide, 1st ed. Wiley, 2008.
-   doi: 10.1002/9780470770801.
+1. Alexander I. J. Forrester, András Sóbester, and Andy J. Keane,
+   Engineering Design via Surrogate Modelling: A Practical Guide, 1st ed.
+   Wiley, 2008.
+   DOI: 10.1002/9780470770801.
+2. Lavi R. Zuhal, Kemas Zakaria, Pramudita S. Palar, Koji Shimoyama,
+   and Rhea P. Liem, "Gradient-enhanced universal Kriging with polynomial
+   chaos as trend function," In AIAA Scitech 2020 Forum,
+   Orlando, Florida, 2020. American Institute of Aeronautics and Astronautics.
+   DOI: 10.2514/6.2020-1865.
 """
 import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_input import UnivariateInput
+from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 from .utils import deg2rad
 
 __all__ = ["WingWeight"]
 
-INPUT_MARGINALS_FORRESTER = [
-    UnivariateInput(
+INPUT_MARGINALS_FORRESTER2008 = [
+    UnivDist(
         name="Sw",
         distribution="uniform",
         parameters=[150.0, 200.0],
         description="wing area [ft^2]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Wfw",
         distribution="uniform",
         parameters=[220.0, 300.0],
         description="weight of fuel in the wing [lb]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="A",
         distribution="uniform",
         parameters=[6.0, 10.0],
         description="aspect ratio [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Lambda",
         distribution="uniform",
         parameters=[-10.0, 10.0],
         description="quarter-chord sweep [degrees]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="q",
         distribution="uniform",
         parameters=[16.0, 45.0],
         description="dynamic pressure at cruise [lb/ft^2]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="lambda",
         distribution="uniform",
         parameters=[0.5, 1.0],
         description="taper ratio [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="tc",
         distribution="uniform",
         parameters=[0.08, 0.18],
         description="aerofoil thickness to chord ratio [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Nz",
         distribution="uniform",
         parameters=[2.5, 6.0],
         description="ultimate load factor [-]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Wdg",
         distribution="uniform",
         parameters=[1700, 2500],
         description="flight design gross weight [lb]",
     ),
-    UnivariateInput(
+    UnivDist(
         name="Wp",
         distribution="uniform",
         parameters=[0.025, 0.08],
@@ -86,42 +94,48 @@ INPUT_MARGINALS_FORRESTER = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "forrester": {
-        "name": "Wing-Weight-Forrester",
+    "Forrester2008": {
+        "name": "Wing-Weight-Forrester-2008",
         "description": (
             "Probabilistic input model for the Wing Weight model "
             "from Forrester et al. (2008)."
         ),
-        "marginals": INPUT_MARGINALS_FORRESTER,
+        "marginals": INPUT_MARGINALS_FORRESTER2008,
         "copulas": None,
     }
 }
 
-DEFAULT_INPUT_SELECTION = "forrester"
+DEFAULT_INPUT_SELECTION = "Forrester2008"
 
 
 class WingWeight(UQTestFunABC):
     """A concrete implementation of the wing weight test function."""
 
-    tags = ["metamodeling", "sensitivity"]
+    _TAGS = ["metamodeling", "sensitivity"]
 
-    available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    available_parameters = None
+    _AVAILABLE_PARAMETERS = None
 
-    default_dimension = 10
+    _DEFAULT_SPATIAL_DIMENSION = 10
 
-    description = "Wing weight model from Forrester et al. (2008)"
+    _DESCRIPTION = "Wing weight model from Forrester et al. (2008)"
 
     def __init__(
-        self, *, prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION
+        self,
+        *,
+        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
+        name: Optional[str] = None,
     ):
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
             prob_input_selection, AVAILABLE_INPUT_SPECS
         )
+        # Process the default name
+        if name is None:
+            name = WingWeight.__name__
 
-        super().__init__(prob_input=prob_input, name=WingWeight.__name__)
+        super().__init__(prob_input=prob_input, name=name)
 
     def evaluate(self, xx):
         """Evaluate the Wing Weight function on a set of input values.
