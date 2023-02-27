@@ -57,9 +57,7 @@ class OakleyOHagan1D(UQTestFunABC):
 
     _DEFAULT_SPATIAL_DIMENSION = 1
 
-    _DESCRIPTION = (
-        "One-dimensional function from Oakley and O'Hagan (2002)"
-    )
+    _DESCRIPTION = "One-dimensional function from Oakley and O'Hagan (2002)"
 
     def __init__(
         self,

@@ -16,9 +16,7 @@ def test_wrong_parameters() -> None:
     parameters = np.sort(np.random.rand(1))
 
     with pytest.raises(ValueError):
-        UnivDist(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_failed_parameter_verification() -> None:
@@ -29,9 +27,7 @@ def test_failed_parameter_verification() -> None:
     parameters = [10, -10]
 
     with pytest.raises(ValueError):
-        UnivDist(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_get_pdf_values() -> None:

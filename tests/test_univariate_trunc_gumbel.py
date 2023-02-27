@@ -65,9 +65,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.sort(np.random.rand(5))
 
     with pytest.raises(ValueError):
-        UnivDist(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_failed_parameter_verification() -> None:
@@ -78,17 +76,13 @@ def test_failed_parameter_verification() -> None:
     parameters = [7.71, -5.0, 0, 10]
 
     with pytest.raises(ValueError):
-        UnivDist(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
     # The lower bound is larger than the upper bound!
     parameters = [2.71, 0.5, 5, 0]
 
     with pytest.raises(ValueError):
-        UnivDist(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_estimate_mode() -> None:

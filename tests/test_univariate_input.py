@@ -73,9 +73,7 @@ def test_create_instance_unsupported_marginal() -> None:
     parameters = list(np.sort(np.random.rand(2)))
 
     with pytest.raises(ValueError):
-        UnivDist(
-            name=name, distribution=distribution, parameters=parameters
-        )
+        UnivDist(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_generate_sample(univariate_input: Any) -> None:

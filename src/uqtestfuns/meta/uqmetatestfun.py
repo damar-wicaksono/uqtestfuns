@@ -215,21 +215,11 @@ class UQMetaTestFun:
                 distribution="trunc-normal",
                 parameters=[0.5, 0.15, 0.0, 1.0],
             ),
-            UnivDist(
-                distribution="beta", parameters=[8.0, 2.0, 0.0, 1.0]
-            ),
-            UnivDist(
-                distribution="beta", parameters=[2.0, 8.0, 0.0, 1.0]
-            ),
-            UnivDist(
-                distribution="beta", parameters=[2.0, 0.8, 0.0, 1.0]
-            ),
-            UnivDist(
-                distribution="beta", parameters=[0.8, 2.0, 0.0, 1.0]
-            ),
-            UnivDist(
-                distribution="logitnormal", parameters=[0.0, 3.16]
-            ),
+            UnivDist(distribution="beta", parameters=[8.0, 2.0, 0.0, 1.0]),
+            UnivDist(distribution="beta", parameters=[2.0, 8.0, 0.0, 1.0]),
+            UnivDist(distribution="beta", parameters=[2.0, 0.8, 0.0, 1.0]),
+            UnivDist(distribution="beta", parameters=[0.8, 2.0, 0.0, 1.0]),
+            UnivDist(distribution="logitnormal", parameters=[0.0, 3.16]),
         ]
 
         if input_id < 7:

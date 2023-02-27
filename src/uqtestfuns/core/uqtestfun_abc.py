@@ -55,6 +55,7 @@ class UQTestFunABC(abc.ABC):
         Note that when calling an instance of the class on a set of input
         values, the input values are first verified before evaluating them.
     """
+
     _TAGS = None
 
     _AVAILABLE_INPUTS = None
@@ -84,9 +85,7 @@ class UQTestFunABC(abc.ABC):
         name : str, optional
             Name of the instance.
         """
-        if not (
-                prob_input is None or isinstance(prob_input, ProbInput)
-        ):
+        if not (prob_input is None or isinstance(prob_input, ProbInput)):
             raise TypeError(
                 f"Probabilistic input model must be either 'None' or "
                 f"of 'MultivariateInput' type! Got instead {type(prob_input)}."
