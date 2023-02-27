@@ -31,7 +31,7 @@ from .available import create_prob_input_from_available
 
 __all__ = ["OTLCircuit"]
 
-INPUT_MARGINALS_BEN_ARI = [
+INPUT_MARGINALS_BENARI2007 = [
     UnivariateInput(
         name="Rb1",
         distribution="uniform",
@@ -70,9 +70,9 @@ INPUT_MARGINALS_BEN_ARI = [
     ),
 ]
 
-INPUT_MARGINALS_MOON = [copy(_) for _ in INPUT_MARGINALS_BEN_ARI]
+INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
 for i in range(14):
-    INPUT_MARGINALS_MOON.append(
+    INPUT_MARGINALS_MOON2010.append(
         UnivariateInput(
             name=f"Inert {i+1}",
             distribution="uniform",
@@ -82,27 +82,27 @@ for i in range(14):
     )
 
 AVAILABLE_INPUT_SPECS = {
-    "ben-ari": {
-        "name": "OTL-Circuit-Ben-Ari",
+    "BenAri2007": {
+        "name": "OTL-Circuit-Ben-Ari-2007",
         "description": (
             "Probabilistic input model for the OTL Circuit function "
             "from Ben-Ari and Steinberg (2007)."
         ),
-        "marginals": INPUT_MARGINALS_BEN_ARI,
+        "marginals": INPUT_MARGINALS_BENARI2007,
         "copulas": None,
     },
-    "moon": {
-        "name": "OTL-Circuit-Moon",
+    "Moon2010": {
+        "name": "OTL-Circuit-Moon-2010",
         "description": (
             "Probabilistic input model for the OTL Circuit function "
             "from Moon (2010)."
         ),
-        "marginals": INPUT_MARGINALS_MOON,
+        "marginals": INPUT_MARGINALS_MOON2010,
         "copulas": None,
     },
 }
 
-DEFAULT_INPUT_SELECTION = "ben-ari"
+DEFAULT_INPUT_SELECTION = "BenAri2007"
 
 
 class OTLCircuit(UQTestFunABC):
@@ -163,7 +163,7 @@ class OTLCircuit(UQTestFunABC):
         beta = xx[:, 5]  # Current gain
 
         # Compute the voltage across b1
-        vb1 = 12 * rr_b1 / (rr_b1 + rr_b2)
+        vb1 = 12 * rr_b2 / (rr_b1 + rr_b2)
 
         # Compute the mid-point voltage
         denom = beta * (rr_c2 + 9) + rr_f

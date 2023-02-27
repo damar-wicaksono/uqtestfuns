@@ -1,8 +1,8 @@
 """
 Module with an implementation of the flood model.
 
-The flood model from [1] is an 8-dimensional scalar-valued function that
-computes maximum annual underflow of a river (in [m]).
+The flood model from [1] is an eight-dimensional scalar-valued function that
+computes the maximum annual underflow of a river (in [m]).
 A negative value indicates that an overflow (flooding) occurs.
 The model is used in the context of sensitivity analysis in [1] and [2]
 and has become a canonical example of the OpenTURNS package [3].
@@ -13,20 +13,22 @@ and a large rectangular section.
 
 References
 ----------
-[1] B. Iooss and P. Lemaître, “A Review on Global Sensitivity Analysis
-    Methods,” in Uncertainty Management in Simulation-Optimization of
-    Complex Systems, vol. 59, G. Dellino and C. Meloni, Eds.
-    Boston, MA: Springer US, 2015, pp. 101–122.
-    doi: 10.1007/978-1-4899-7547-8_5.
-[2] M. Lamboni, B. Iooss, A.-L. Popelin, and F. Gamboa, “Derivative-based
-    global sensitivity measures: General links with Sobol’ indices
-    and numerical tests,” Mathematics and Computers in Simulation, vol. 87,
-    pp. 45–54, Jan. 2013, doi: 10.1016/j.matcom.2013.02.002.
-[3] M. Baudin, A. Dutfoy, B. Iooss, and A.-L. Popelin, “OpenTURNS:
-    An Industrial Software for Uncertainty Quantification in Simulation,”
-    in Handbook of Uncertainty Quantification, R. Ghanem, D. Higdon,
-    and H. Owhadi, Eds. Cham: Springer International Publishing, 2017,
-    pp. 2001–2038. doi: 10.1007/978-3-319-12385-1_64.
+1. B. Iooss and P. Lemaître, “A Review on Global Sensitivity Analysis
+   Methods,” in Uncertainty Management in Simulation-Optimization of
+   Complex Systems, vol. 59, G. Dellino and C. Meloni, Eds.
+   Boston, MA: Springer US, 2015, pp. 101–122.
+   DOI: 10.1007/978-1-4899-7547-8_5
+2. M. Lamboni, B. Iooss, A.-L. Popelin, and F. Gamboa, “Derivative-based
+   global sensitivity measures: General links with Sobol’ indices
+   and numerical tests,” Mathematics and Computers in Simulation, vol. 87,
+   pp. 45–54, 2013.
+   DOI: 10.1016/j.matcom.2013.02.002
+3. M. Baudin, A. Dutfoy, B. Iooss, and A.-L. Popelin, “OpenTURNS:
+   An Industrial Software for Uncertainty Quantification in Simulation,”
+   in Handbook of Uncertainty Quantification, R. Ghanem, D. Higdon,
+   and H. Owhadi, Eds. Cham: Springer International Publishing, 2017,
+   pp. 2001–2038.
+   DOI: 10.1007/978-3-319-12385-1_64
 """
 import numpy as np
 
@@ -38,7 +40,7 @@ from .available import create_prob_input_from_available
 
 __all__ = ["Flood"]
 
-INPUT_MARGINALS_IOOSS = [  # From Ref. [1]
+INPUT_MARGINALS_IOOSS2015 = [  # From Ref. [1]
     UnivariateInput(
         name="Q",
         distribution="trunc-gumbel",
@@ -90,18 +92,18 @@ INPUT_MARGINALS_IOOSS = [  # From Ref. [1]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "iooss": {
-        "name": "Flood-Iooss",
+    "Iooss2015": {
+        "name": "Flood-Iooss-2015",
         "description": (
             "Probabilistic input model for the Flood model "
             "from Iooss and Lemaître (2015)."
         ),
-        "marginals": INPUT_MARGINALS_IOOSS,
+        "marginals": INPUT_MARGINALS_IOOSS2015,
         "copulas": None,
     }
 }
 
-DEFAULT_INPUT_SELECTION = "iooss"
+DEFAULT_INPUT_SELECTION = "Iooss2015"
 
 
 class Flood(UQTestFunABC):

@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:wing-weight)=
-# Wing Weight Function
+(test-functions:damped-oscillator)=
+# Damped Oscillator Model
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,17 +21,24 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Wing Weight test function {cite}`Forrester2008` is a 10-dimensional
-scalar-valued function.
-The function has been used as a test function in the context of metamodeling
-{cite}`Zuhal2020` and optimization {cite}`Forrester2008`.
+The damped oscillator model is a seven-dimensional scalar-valued function.
+The model was first proposed in {cite}`Igusa1985` and used in the context of
+reliability analysis in {cite}`DerKiureghian1991, Dubourg2011`.
+
+```{note}
+The reliability analysis variant differs from this base model.
+Used in the context of reliability analysis, the model also includes additional
+parameters to a capacity factor and load such that the performance function can
+be computed.
+This base model only computes the relative displacement of the spring.
+```
 
 ## Test function instance
 
-To create a default instance of the wing weight test function:
+To create a default instance of the damped oscillator model:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.WingWeight()
+my_testfun = uqtf.DampedOscillator()
 ```
 
 Check if it has been correctly instantiated:
@@ -42,27 +49,43 @@ print(my_testfun)
 
 ## Description
 
-The weight of a light aircraft wing is computed using
-the following analytical expression:
+The damped oscillator model is based on a two degree-of-freedom
+primary-secondary mechanical system characterized by two masses,
+two springs, and the corresponding damping ratios.
+Originally, the model computes the mean-square relative displacement of
+the secondary spring under a white noise base acceleration using
+the following analytical formula:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = 0.036 \, S_w^{0.758} \, W_{fw}^{0.0035} \, \left( \frac{A}{\cos^2{(\Lambda)}} \right)^{0.6} q^{0.006} \lambda^{0.04} \left(\frac{100 t_c}{\cos{(\Lambda)}}\right)^{-0.3} \left( N_z W_{dg} \right)^{0.49} + S_w W_p 
+\mathcal{M}(\boldsymbol{x}) = k_s \left( \pi \frac{S_0}{4 \zeta_s \omega_s^3} \frac{\zeta_a \zeta_s}{\zeta_p \zeta_s (4 \zeta_a^2 + \theta^2) + \gamma \zeta_a^2} \frac{(\zeta_p \omega_p^3 + \zeta_s \omega_s^3) \omega_p}{4 \zeta_a \omega_a^4} \right)^{0.5}
 $$
 
-where $\boldsymbol{x} = \{ S_w, W_{fw}, A, \Lambda, q, \lambda, t_c, N_z, W_{dg}, W_p\}$
-is the vector of input variables defined below.
+$$
+\begin{aligned}
+	\omega_p & = \left( \frac{k_p}{m_p}\right)^{0.5} & \omega_s & = \left(\frac{k_s}{m_s}\right)^{0.5} & \omega_a & = \frac{\omega_p + \omega_s}{2}\\
+	\gamma & = \frac{m_s}{m_p} & \zeta_a & = \frac{\zeta_p + \zeta_s}{2} & \theta & = \frac{\omega_p - \omega_s}{\omega_a} \\
+\end{aligned}
+$$
+where $\boldsymbol{x} = \{ M_p, M_s, K_p, K_s, \zeta_p, \zeta_s, S_0 \}$
+is the seven-dimensional vector of input variables further defined below.
+
+```{note}
+In UQTestFuns, this original output is square-rooted
+to get the relative displacement
+```
 
 ## Probabilistic input
 
-Based on {cite}`Forrester2008`, the probabilistic input model for the Wing
-Weight function consists of eight independent uniform random variables with 
-ranges shown in the table below.
+Based on {cite}`DerKiureghian1991`,
+the probabilistic input model for the damped oscillator model consists of
+seven independent random variables with marginal distributions
+shown in the table below.
 
 ```{code-cell} ipython3
 my_testfun.prob_input
 ```
 
-## Reference Results
+## Reference results
 
 This section provides several reference results of typical UQ analyses involving
 the test function.
@@ -84,6 +107,7 @@ plt.ylabel("Counts [-]");
 plt.xlabel("$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
+
 ### Moments estimation
 
 Shown below is the convergence of a direct Monte-Carlo estimation of

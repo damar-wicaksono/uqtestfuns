@@ -19,7 +19,7 @@ References
 2. Max D. Morris, T. J. Mitchell, and D. Ylvisaker, “Bayesian design and
    analysis of computer experiments: Use of derivatives in surface
    prediction,” Technometrics, vol. 35, no. 3, pp. 243–255, 1993.
-   DOI:10.1080/00401706.1993.10485320
+   DOI: 10.1080/00401706.1993.10485320
 """
 import numpy as np
 
@@ -32,7 +32,7 @@ from .available import create_prob_input_from_available
 __all__ = ["Borehole"]
 
 # From Ref. [1]
-INPUT_MARGINALS_HARPER = [
+INPUT_MARGINALS_HARPER1983 = [
     UnivariateInput(
         name="rw",
         distribution="normal",
@@ -84,8 +84,8 @@ INPUT_MARGINALS_HARPER = [
 ]
 
 # From Ref. [2]
-INPUT_MARGINALS_MORRIS = list(INPUT_MARGINALS_HARPER)
-INPUT_MARGINALS_MORRIS[0:2] = [
+INPUT_MARGINALS_MORRIS1993 = list(INPUT_MARGINALS_HARPER1983)
+INPUT_MARGINALS_MORRIS1993[0:2] = [
     UnivariateInput(
         name="rw",
         distribution="uniform",
@@ -101,27 +101,27 @@ INPUT_MARGINALS_MORRIS[0:2] = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "harper": {
-        "name": "Borehole-Harper",
+    "Harper1983": {
+        "name": "Borehole-Harper-1983",
         "description": (
             "Probabilistic input model of the Borehole model "
             "from Harper and Gupta (1983)."
         ),
-        "marginals": INPUT_MARGINALS_HARPER,
+        "marginals": INPUT_MARGINALS_HARPER1983,
         "copulas": None,
     },
-    "morris": {
-        "name": "Borehole-Morris",
+    "Morris1993": {
+        "name": "Borehole-Morris-1993",
         "description": (
             "Probabilistic input model of the Borehole model "
             "from Morris et al. (1993)."
         ),
-        "marginals": INPUT_MARGINALS_MORRIS,
+        "marginals": INPUT_MARGINALS_MORRIS1993,
         "copulas": None,
     },
 }
 
-DEFAULT_INPUT_SELECTION = "harper"
+DEFAULT_INPUT_SELECTION = "Harper1983"
 
 
 class Borehole(UQTestFunABC):

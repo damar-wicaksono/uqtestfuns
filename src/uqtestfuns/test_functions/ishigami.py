@@ -1,8 +1,10 @@
 """
 Module with an implementation of the Ishigami function.
 
-The Ishigami test function[1] is a 3-dimensional scalar-valued function.
-It is a highly non-linear and non-monotonic function.
+The Ishigami test function is a three-dimensional scalar-valued function.
+The function was first introduced in [1] in the context of sensitivity
+analysis, and has been revisited many times in the same context
+(see, for instances, [2], [3], [4]).
 
 References
 ----------
@@ -10,12 +12,16 @@ References
 1. T. Ishigami and T. Homma, “An importance quantification technique in
    uncertainty analysis for computer models,” in [1990] Proceedings.
    First International Symposium on Uncertainty Modeling and Analysis,
-   College Park, MD, USA, 1991, pp. 398–403. doi: 10.1109/ISUMA.1990.151285.
+   College Park, MD, USA, 1991, pp. 398–403.
+   DOI: 10.1109/ISUMA.1990.151285.
 2. I. M. Sobol’ and Y. L. Levitan, “On the use of variance reducing multipliers
    in Monte Carlo computations of a global sensitivity index,”
    Computer Physics Communications, vol. 117, no. 1, pp. 52–61, 1999.
-   DOI:10.1016/S0010-4655(98)00156-8
-3. A. Marrel, B. Iooss, B. Laurent, and O. Roustant, "Calculations of
+   DOI: 10.1016/S0010-4655(98)00156-8
+3. B. Sudret, “Global sensitivity analysis using polynomial chaos expansions,”
+   Reliability Engineering & System Safety, vol. 93, no. 7, pp. 964–979, 2008.
+   DOI: 10.1016/j.ress.2007.04.002.
+4. A. Marrel, B. Iooss, B. Laurent, and O. Roustant, "Calculations of
    Sobol indices for the Gaussian process metamodel,”
    Reliability Engineering & System Safety,
    vol. 94, no. 3, pp. 742–751, 2009.
@@ -35,7 +41,7 @@ from .available import (
 __all__ = ["Ishigami"]
 
 
-INPUT_MARGINALS_ISHIGAMI = [
+INPUT_MARGINALS_ISHIGAMI1991 = [
     UnivariateInput(
         name="X1",
         distribution="uniform",
@@ -57,31 +63,31 @@ INPUT_MARGINALS_ISHIGAMI = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "ishigami": {
-        "name": "Ishigami",
+    "Ishigami1991": {
+        "name": "Ishigami-1991",
         "description": (
             "Probabilistic input model for the Ishigami function "
             "from Ishigami and Homma (1991)."
         ),
-        "marginals": INPUT_MARGINALS_ISHIGAMI,
+        "marginals": INPUT_MARGINALS_ISHIGAMI1991,
         "copulas": None,
     }
 }
 
-DEFAULT_INPUT_SELECTION = "ishigami"
+DEFAULT_INPUT_SELECTION = "Ishigami1991"
 
 AVAILABLE_PARAMETERS = {
-    "ishigami": (7, 0.05),  # from [1]
-    "marrel": (7, 0.1),  # from [3]
+    "Ishigami1991": (7, 0.05),  # from [1]
+    "Sobol1999": (7, 0.1),  # from [2]
 }
 
-DEFAULT_PARAMETERS_SELECTION = "ishigami"
+DEFAULT_PARAMETERS_SELECTION = "Ishigami1991"
 
 
 class Ishigami(UQTestFunABC):
     """A concrete implementation of the Ishigami function."""
 
-    _TAGS = ["metamodeling", "sensitivity"]
+    _TAGS = ["sensitivity"]
 
     _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
 
