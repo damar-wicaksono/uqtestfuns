@@ -12,6 +12,6 @@ jobs:
     - name: mirror-repository
       uses: spyoungtech/mirror-action@master
       with:
-        REMOTE: 'https://github.com/casus/uqtestfuns.git'
-        GIT_USERNAME: damar-wicaksono
-        GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+        REMOTE: 'ssh://git@github.com/casus/uqtestfuns.git'
+        GIT_SSH_PRIVATE_KEY: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+        GIT_SSH_NO_VERIFY_HOST: "true"
