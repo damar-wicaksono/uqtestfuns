@@ -103,7 +103,7 @@ array([ 57.32635774, 110.12229548,  53.10585812,  96.15822154,
 UQTestFuns is not yet available via PyPI; the source can be obtained from GitHub:
 
 ```bash
-$ git clone https://github.com/damar-wicaksono/uqtestfuns
+$ git clone https://github.com/casus/uqtestfuns
 ```
 
 To install UQTestFuns from the source, type:
