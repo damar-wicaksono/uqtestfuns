@@ -45,6 +45,29 @@ parts:
   - caption: Metafunction
     chapters:
       - file: metafunction/about
+  - caption: Probabilistic Input
+    chapters:
+      - file: prob-input/available
+        title: Univariate Distributions
+        sections:
+          - file: prob-input/univariate-distributions/beta
+            title: Beta
+          - file: prob-input/univariate-distributions/gumbel
+            title: Gumbel (max.)
+          - file: prob-input/univariate-distributions/logitnormal
+            title: Logit-Normal
+          - file: prob-input/univariate-distributions/lognormal
+            title: Log-Normal
+          - file: prob-input/univariate-distributions/normal
+            title: Normal (Gaussian)
+          - file: prob-input/univariate-distributions/triangular
+            title: Triangular
+          - file: prob-input/univariate-distributions/trunc-gumbel
+            title: Truncated Gumbel (max.)
+          - file: prob-input/univariate-distributions/trunc-normal
+            title: Truncated Normal (Gaussian)
+          - file: prob-input/univariate-distributions/uniform
+            title: Uniform
   - caption: API Reference
     chapters:
       - file: api/overview
@@ -52,3 +75,4 @@ parts:
     chapters:
       - file: development/about
       - file: development/code-of-conduct
+      - file: glossary
