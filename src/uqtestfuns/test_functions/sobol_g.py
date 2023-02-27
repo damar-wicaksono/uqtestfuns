@@ -219,6 +219,7 @@ class SobolG(UQTestFunABC):
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
         parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
+        name: Optional[str] = None,
     ):
         # --- Arguments processing
         if not isinstance(spatial_dimension, int):
@@ -235,9 +236,12 @@ class SobolG(UQTestFunABC):
         parameters = create_parameters_from_available(
             parameters_selection, AVAILABLE_PARAMETERS, spatial_dimension
         )
+        # Process the default name
+        if name is None:
+            name = SobolG.__name__
 
         super().__init__(
-            prob_input=prob_input, parameters=parameters, name=SobolG.__name__
+            prob_input=prob_input, parameters=parameters, name=name
         )
 
     def evaluate(self, xx: np.ndarray):

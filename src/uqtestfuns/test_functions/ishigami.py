@@ -102,6 +102,7 @@ class Ishigami(UQTestFunABC):
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
         parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
+        name: Optional[str] = None,
     ):
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
@@ -111,11 +112,12 @@ class Ishigami(UQTestFunABC):
         parameters = create_parameters_from_available(
             parameters_selection, AVAILABLE_PARAMETERS
         )
+        # Process the default name
+        if name is None:
+            name = Ishigami.__name__
 
         super().__init__(
-            prob_input=prob_input,
-            parameters=parameters,
-            name=Ishigami.__name__,
+            prob_input=prob_input, parameters=parameters, name=name
         )
 
     def evaluate(self, xx):
