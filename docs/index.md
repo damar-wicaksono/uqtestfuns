@@ -18,9 +18,9 @@ The package aims to provide:
 :text-align: center
 New to, but ready to use, UQTestFuns?
 You can check out the guide on how to create a built-in test function
-or create a custom one.
+or a custom one.
 Need some background info first?
-Be sure to checkout the what and why of UQ test functions.
+Check out the what & why of these test functions.
 +++
 ```{button-ref} getting-started:creating-a-built-in
 :ref-type: myst
