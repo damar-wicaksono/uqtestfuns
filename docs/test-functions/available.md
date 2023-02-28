@@ -12,6 +12,7 @@ kernelspec:
   name: python3
 ---
 
+(test-functions:available)=
 # All Available Functions
 
 The table below lists all the available _classic_ test functions from the literature

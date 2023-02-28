@@ -9,6 +9,7 @@ parts:
       - file: getting-started/obtaining-and-installing
       - file: getting-started/creating-a-built-in
       - file: getting-started/creating-a-custom
+      - file: getting-started/about-uq-test-functions
   - caption: Test Functions
     chapters:
       - file: fundamentals/metamodeling
@@ -44,6 +45,8 @@ parts:
             title: Wing Weight
   - caption: Probabilistic Input
     chapters:
+      - file: prob-input/overview
+        title: Overview
       - file: prob-input/available
         title: Univariate Distributions
         sections:
@@ -70,6 +73,8 @@ parts:
       - file: api/overview
   - caption: Development
     chapters:
+      - file: development/overview
+        title: Overview
       - file: development/about
       - file: development/code-of-conduct
       - file: glossary
