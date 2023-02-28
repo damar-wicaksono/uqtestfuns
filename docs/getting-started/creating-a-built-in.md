@@ -19,7 +19,7 @@ _Built-in test functions_ are test functions that are delivered with UQTestFuns.
 
 UQTestFuns is designed to work with minimal dependency within the numerical
 Python ecosystem.
-At the very least, NumPy and SciPy are required for UQTestFuns to work.
+At the very least, UQTestFuns requires NumPy and SciPy to work.
 It might be a good idea to import NumPy alongside UQTestFuns:
 
 ```{code-cell} ipython3
@@ -60,7 +60,8 @@ print(my_testfun)
 The resulting object is a `Callable`
 (think of it as a function, it evaluates the inputs and produces outputs).
 The instance can be evaluated with a set of input values.
-For example:
+For example, the eight-dimensional borehole function can be evaluated
+at a single point (1-by-8 array).:
 
 ```{code-cell} ipython3
 xx = np.array([
@@ -75,6 +76,9 @@ my_testfun(xx)
 ```{note}
 Calling the function on a set of input values automatically
 verifies the correctness of the input (its dimensionality and bounds).
+Furthermore, the test function also accepts a vectorized input
+(that is, an $N$-by$M$ array where $N$ and $M$ are the number of points
+and dimensions, respectively)
 ```
 
 ## Probabilistic input
@@ -97,7 +101,7 @@ print(my_testfun.prob_input)
 ```
 
 ```{note}
-_Copulas_ represents the dependence structure
+_Copulas_ models the statistical dependence structure
 between the component (univariate) marginals.
 If the marginals are independent, then the copulas value is `None`.
 Currently, UQTestFuns does not support dependent probability inputs.
