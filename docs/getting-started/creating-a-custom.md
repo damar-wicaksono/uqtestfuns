@@ -79,6 +79,9 @@ The typical values for the parameters are shown in the table below.
 ## Evaluation function
 
 The first component of a test function is the evaluation function itself.
+UQTestFuns requires for such a function to have at least the input array
+as its first parameter.
+When applicable, the parameters must be the second parameter of the function.
 The Branin evaluation function can be defined as a Python function as follows:
 
 ```{code-cell} ipython3
@@ -150,6 +153,11 @@ In other words, you have full control on how to define the parameters.
 ```
 
 ## Creating a test function
+
+```{margin}
+Once again, a UQ test function consists of an evaluation function,
+a probabilistic input model, and (optionally) a set of parameters.
+```
 
 The evaluation function, probabilistic input, and parameters are combined
 to make a test function via the `UQTestFun` class.

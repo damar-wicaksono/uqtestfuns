@@ -57,11 +57,16 @@ print it to get some basic information on the terminal:
 print(my_testfun)
 ```
 
-The resulting object is a `Callable`
-(think of it as a function, it evaluates the inputs and produces outputs).
+```{margin}
+Think of a `Callable` as a regular function;
+it takes some inputs, evaluates them, and produces some outputs.
+In otherwords, you _call_ it with arguments.
+```
+
+The resulting object is a `Callable`.
 The instance can be evaluated with a set of input values.
 For example, the eight-dimensional borehole function can be evaluated
-at a single point (1-by-8 array).:
+at a single point (1-by-8 array):
 
 ```{code-cell} ipython3
 xx = np.array([
@@ -132,13 +137,18 @@ plt.gcf().set_dpi(150);
 ## Transformation to the function domain
 
 Some UQ methods often produce sample points in a hypercube domain
-(for example, $[0, 1]^M$ or $[-1, 1]^M$ where $M$ is the number of spatial dimension) at which the function should be evaluated.
+(for example, $[0, 1]^M$ or $[-1, 1]^M$ where $M$ is the number of spatial dimension)
+at which the function should be evaluated.
 This hypercube domain may differ from the test function's domain.
 Before the test function can be evaluated,
 those values must be first transformed to the function domain.
 
-UQTestFuns provides a convenient function to transform sample points in one domain
-to the function domain.
+```{margin}
+The transformation is done via an isoprobabilistic transformation.
+```
+
+UQTestFuns provides a convenient function to transform sample points
+in one domain to the function domain.
 For instance, suppose we have a sample of size $5$ in $[-1, 1]^8$
 for the borehole function:
 
@@ -188,6 +198,10 @@ assert np.allclose(my_testfun(xx_sample_trans_1), my_testfun(xx_sample_trans_2))
 
 ## Test functions with parameters
 
+```{margin}
+Parameters of a test function can be anything.
+```
+
 Some test functions are _parameterized_;
 this means that to fully specify the function,
 an additional set of values must be specified.
@@ -223,7 +237,7 @@ my_testfun.parameters
 Note that once set, the parameter values are kept constant
 during the evaluation of the function on a set of input values
 
-Different parameter values may change the overall behavior of the function.
+Different parameter values usually change the overall behavior of the function.
 In the case of the Ishigami function,
 different parameter values alter the total variance of the output
 as illustrated in the figure below.
@@ -247,6 +261,10 @@ plt.gcf().set_dpi(150);
 ```
 
 ## Test functions with variable dimension
+
+```{margin}
+Spatial dimension must be a positive integer.
+```
 
 Some test functions support a _variable dimension_, meaning that an instance
 of a test function can be constructed for any number (positive integer, please) 
