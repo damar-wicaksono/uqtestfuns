@@ -11,11 +11,11 @@ parts:
       - file: getting-started/creating-a-custom
   - caption: Test Functions
     chapters:
-      - file: test-functions/metamodeling
+      - file: fundamentals/metamodeling
         title: Metamodeling
-      - file: test-functions/optimization
+      - file: fundamentals/optimization
         title: Optimization
-      - file: test-functions/sensitivity
+      - file: fundamentals/sensitivity
         title: Sensitivity Analysis
       - file: test-functions/available
         title: All Available Functions
