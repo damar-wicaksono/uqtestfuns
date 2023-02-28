@@ -76,7 +76,7 @@ The typical values for the parameters are shown in the table below.
 | 5       |    $s$    |          $10$           |
 | 6       |    $t$    |    $\frac{1}{8 \pi}$    |
 
-### Evaluation function
+## Evaluation function
 
 The first component of a test function is the evaluation function itself.
 The Branin evaluation function can be defined as a Python function as follows:
