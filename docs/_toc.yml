@@ -7,15 +7,15 @@ parts:
   - caption: Getting Started
     chapters:
       - file: getting-started/obtaining-and-installing
-      - file: getting-started/creating-a-default
+      - file: getting-started/creating-a-built-in
       - file: getting-started/creating-a-custom
   - caption: Test Functions
     chapters:
-      - file: test-functions/metamodeling
+      - file: fundamentals/metamodeling
         title: Metamodeling
-      - file: test-functions/optimization
+      - file: fundamentals/optimization
         title: Optimization
-      - file: test-functions/sensitivity
+      - file: fundamentals/sensitivity
         title: Sensitivity Analysis
       - file: test-functions/available
         title: All Available Functions
@@ -42,9 +42,6 @@ parts:
             title: Sulfur
           - file: test-functions/wing-weight
             title: Wing Weight
-  - caption: Metafunction
-    chapters:
-      - file: metafunction/about
   - caption: Probabilistic Input
     chapters:
       - file: prob-input/available
