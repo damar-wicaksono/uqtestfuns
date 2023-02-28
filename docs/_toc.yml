@@ -42,9 +42,6 @@ parts:
             title: Sulfur
           - file: test-functions/wing-weight
             title: Wing Weight
-  - caption: Metafunction
-    chapters:
-      - file: metafunction/about
   - caption: Probabilistic Input
     chapters:
       - file: prob-input/available
