@@ -42,10 +42,11 @@ The what & why of UQ test functions
 ```
 :::
 
-:::{grid-item-card} Available Functions
+:::{grid-item-card} User Guide
 :text-align: center
 
-Be sure to browse through all the available test functions in UQTestFuns.
+Be sure to browse through all the available test functions in UQTestFuns;
+they are also crudely classified into their usage in typical UQ analyses.
 Need a reference on how to define a probabilistic input model,
 there's a dedicated section on that!
 +++
