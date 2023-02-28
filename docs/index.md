@@ -56,6 +56,12 @@ in the table below.
 |  7  |  $l$  | triangular        |   $[4990, 5010, 5000]$   |        Length of the river stretch $[\mathrm{m}]$        |
 |  8  |  $b$  | triangular        |    $[295, 305, 300]$     |                River width $[\mathrm{m}]$                |
 
+```{margin}
+In a calibration (inverse quantification) analysis, the task is to obtain
+the probabilistic input (posterior) given a function, input prior,
+and some observed data.
+```
+
 UQ test functions are unique in this way:
 _the input variables are modeled probabilistically
 as a joint multivariate random variable_.
