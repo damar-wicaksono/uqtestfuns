@@ -47,6 +47,9 @@ def test_compute_mean():
     # Create an instance of Sulfur model
     my_fun = Sulfur()
 
+    # Assert that ProbInput is correctly attached
+    assert my_fun.prob_input is not None
+
     # Compute mean via Monte Carlo
     xx = my_fun.prob_input.get_sample(1000000)
     yy = my_fun(xx)
@@ -66,6 +69,9 @@ def test_compute_std():
 
     # Create an instance of Sulfur model
     my_fun = Sulfur()
+
+    # Assert that ProbInput is correctly attached
+    assert my_fun.prob_input is not None
 
     # Compute mean via Monte Carlo
     xx = my_fun.prob_input.get_sample(1000000)
