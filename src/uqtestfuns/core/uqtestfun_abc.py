@@ -24,7 +24,7 @@ class classproperty(property):
     """Decorator w/ descriptor to get and set class-level attributes."""
 
     def __get__(self, owner_self, owner_cls):
-        return self.fget(owner_cls)
+        return self.fget(owner_cls)  # type: ignore
 
     def __set__(self, owner_self, owner_cls):
         raise AttributeError("can't set attribute")
@@ -55,16 +55,6 @@ class UQTestFunABC(abc.ABC):
         Note that when calling an instance of the class on a set of input
         values, the input values are first verified before evaluating them.
     """
-
-    _TAGS = None
-
-    _AVAILABLE_INPUTS = None
-
-    _AVAILABLE_PARAMETERS = None
-
-    _DEFAULT_SPATIAL_DIMENSION = None
-
-    _DESCRIPTION = None
 
     def __init__(
         self,
@@ -108,27 +98,27 @@ class UQTestFunABC(abc.ABC):
     @classproperty
     def TAGS(cls) -> Optional[List[str]]:
         """Tags to classify different UQ test functions."""
-        return cls._TAGS
+        return cls._TAGS  # type: ignore
 
     @classproperty
     def AVAILABLE_INPUTS(cls) -> Optional[Tuple[str, ...]]:
         """All the keys to the available probabilistic input specifications."""
-        return cls._AVAILABLE_INPUTS
+        return cls._AVAILABLE_INPUTS  # type: ignore
 
     @classproperty
     def AVAILABLE_PARAMETERS(cls) -> Optional[Tuple[str, ...]]:
         """All the keys to the available set of parameter values."""
-        return cls._AVAILABLE_PARAMETERS
+        return cls._AVAILABLE_PARAMETERS  # type: ignore
 
     @classproperty
     def DEFAULT_SPATIAL_DIMENSION(cls) -> Optional[int]:
         """To store the default dimension of a test function."""
-        return cls._DEFAULT_SPATIAL_DIMENSION
+        return cls._DEFAULT_SPATIAL_DIMENSION  # type: ignore
 
     @classproperty
     def DESCRIPTION(cls) -> Optional[str]:
         """Short description of the UQ test function."""
-        return cls._DESCRIPTION
+        return cls._DESCRIPTION  # type: ignore
 
     @property
     def prob_input(self) -> Optional[ProbInput]:
@@ -157,7 +147,7 @@ class UQTestFunABC(abc.ABC):
         self._parameters = value
 
     @property
-    def spatial_dimension(self) -> Optional[int]:
+    def spatial_dimension(self) -> int:
         """The dimension (number of input variables) of the test function."""
         if self._prob_input is not None:
             return self._prob_input.spatial_dimension
@@ -193,6 +183,12 @@ class UQTestFunABC(abc.ABC):
             Transformed sampled values from the specified uniform domain to
             the domain of the function as defined the `input` property.
         """
+        if self.prob_input is None:
+            raise ValueError(
+                "There is not ProbInput attached to the function! "
+                "A sample can't be generated."
+            )
+
         # Verify the uniform bounds
         assert min_value < max_value, (
             f"min. value ({min_value}) must be "
@@ -222,11 +218,15 @@ class UQTestFunABC(abc.ABC):
 
         # Verify the shape of the input
         _verify_sample_shape(xx, self.spatial_dimension)
-        # Verify the domain of the input
-        for dim_idx in range(self.spatial_dimension):
-            lb = self.prob_input.marginals[dim_idx].lower
-            ub = self.prob_input.marginals[dim_idx].upper
-            _verify_sample_domain(xx[:, dim_idx], min_value=lb, max_value=ub)
+
+        if self.prob_input is not None:
+            # If ProbInput is attached, verify the domain of the input
+            for dim_idx in range(self.spatial_dimension):
+                lb = self.prob_input.marginals[dim_idx].lower
+                ub = self.prob_input.marginals[dim_idx].upper
+                _verify_sample_domain(
+                    xx[:, dim_idx], min_value=lb, max_value=ub
+                )
 
         return self.evaluate(xx)
 
