@@ -36,9 +36,9 @@ def postprocess_icdf(
     # A scalar output
     if xx.ndim == 0:
         if xx < lower_bound:
-            xx = lower_bound
+            xx = np.asarray(lower_bound)
         if xx > upper_bound:
-            xx = upper_bound
+            xx = np.asarray(upper_bound)
 
         xx = np.asarray(xx)
 
