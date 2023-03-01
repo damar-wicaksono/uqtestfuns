@@ -1,15 +1,16 @@
 """
 Helpers module to construct probabilistic input and parameters.
 """
-from typing import Callable, Optional, Any, Union
-from ..core import ProbInput, UnivDist
+from types import FunctionType
+from typing import Any, Optional
+from ..core import ProbInput
 
 
 def create_prob_input_from_available(
-    input_selection: str,
+    input_selection: Optional[str],
     available_input_specs: dict,
     spatial_dimension: Optional[int] = None,
-) -> Optional[Union[UnivDist, ProbInput]]:
+) -> Optional[ProbInput]:
     """Construct a Multivariate input given available specifications.
 
     Parameters
@@ -21,13 +22,19 @@ def create_prob_input_from_available(
     spatial_dimension : int, optional
         The requested number of spatial dimensions, when applicable.
         Some specifications are functions of spatial dimension.
+
+    Raises
+    ------
+    ValueError
+        If the input selection keyword not in the list of available
+        specifications.
     """
     if input_selection is None:
         return None
 
     if input_selection in available_input_specs:
         input_specs = available_input_specs[input_selection]
-        if isinstance(input_specs["marginals"], Callable):
+        if isinstance(input_specs["marginals"], FunctionType):
             marginals = input_specs["marginals"](spatial_dimension)
             prob_input = ProbInput(
                 name=input_specs["name"],
@@ -44,7 +51,7 @@ def create_prob_input_from_available(
 
 
 def create_parameters_from_available(
-    param_selection: str,
+    param_selection: Optional[str],
     available_parameters: dict,
     spatial_dimension: Optional[int] = None,
 ) -> Any:
@@ -66,7 +73,7 @@ def create_parameters_from_available(
 
     if param_selection in available_parameters:
         parameters = available_parameters[param_selection]
-        if isinstance(parameters, Callable):
+        if isinstance(parameters, FunctionType):
             parameters = parameters(spatial_dimension)
     else:
         raise ValueError("Invalid parameters selection!")
