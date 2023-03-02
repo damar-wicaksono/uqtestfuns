@@ -23,7 +23,16 @@ This test function is known as the _flood model_ {cite}`Iooss2015`.
 The input variables of the function are modeled probabilistically as eight independent random variables with univariate marginals specified
 in the table below.
 
-
+| No. | Name  |      Distribution       |        Parameters        |                   Description                   |
+|:---:|:-----:|:-----------------------:|:------------------------:|:-----------------------------------------------:|
+|  1  |  $q$  | Truncated Gumbel (max.) | $[1013, 558, 500, 3000]$ |   Maximum annual flow rate $[\mathrm{m^3/s}]$   |
+|  2  | $k_s$ |    Truncated Normal     |  $[30, 8, 15, \infty]$   | Strickler coefficient $[\mathrm{m^{(1/3)}/s}]$  |
+|  3  | $z_v$ |       Triangular        |      $[49, 51, 50]$      |      River downstream level $[\mathrm{m}]$      |
+|  4  | $z_m$ |       Triangular        |      $[54, 56, 55]$      |       River upstream level $[\mathrm{m}]$       |
+|  5  | $h_d$ |         Uniform         |         $[7, 9]$         |           Dyke height $[\mathrm{m}]$            |
+|  6  | $c_b$ |       Triangular        |     $[55, 56, 55.5]$     |            Bank level $[\mathrm{m}]$            |
+|  7  |  $l$  |       Triangular        |   $[4990, 5010, 5000]$   |   Length of the river stretch $[\mathrm{m}]$    |
+|  8  |  $b$  |       Triangular        |    $[295, 305, 300]$     |           River width $[\mathrm{m}]$            |
 
 ```{margin}
 In a calibration (inverse quantification) analysis, the task is to obtain
