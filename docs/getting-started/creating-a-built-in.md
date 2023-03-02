@@ -82,7 +82,7 @@ my_testfun(xx)
 Calling the function on a set of input values automatically
 verifies the correctness of the input (its dimensionality and bounds).
 Furthermore, the test function also accepts a vectorized input
-(that is, an $N$-by$M$ array where $N$ and $M$ are the number of points
+(that is, an $N$-by-$M$ array where $N$ and $M$ are the number of points
 and dimensions, respectively)
 ```
 

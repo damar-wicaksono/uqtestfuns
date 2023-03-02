@@ -1,3 +1,4 @@
+(prob-input:available-univariate-distributions)=
 # Available Univariate Distributions
 
 The table below lists all the available univariate distribution types used
