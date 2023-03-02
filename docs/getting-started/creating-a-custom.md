@@ -48,7 +48,8 @@ import uqtestfuns as uqtf
 
 ## Branin function
 
-Suppose we want to add the two-dimensional Branin function as a test function.
+Suppose we want to add the two-dimensional Branin (or Branin-Hoo) function
+as a test function {cite}`Dixon1978`.
 The function is defined analytically as follows:
 
 $$
@@ -100,7 +101,7 @@ def evaluate_branin(xx: np.ndarray, params: np.ndarray):
     Returns
     -------
     np.ndarray
-        The output of the Sobol-G function evaluated on the input values.
+        The output of the Branin function evaluated on the input values.
         The output is a 1-dimensional array of length N.    
     """
     yy = (
@@ -267,4 +268,10 @@ will construct an instance of the Branin function using
 the default input and parameter values.
 
 You can find a guide on how to do this in more detail
-in the relevant section of the Developer's Guide.
+in the {ref}`relevant section <development:adding-test-function-implementation>`
+of the Developer's Guide.
+
+```{bibliography}
+:style: plain
+:filter: docname in docnames
+```

@@ -196,7 +196,7 @@ The docs itself contains six different main sections:
   on the main uncertainty quantification (UQ) activities.
   This is related to how the test functions are classified based
   on their applications.
-- The Contributors Guide (`docs/development`) contains the information
+- The Contributor's Guide (`docs/development`) contains the information
   on UQTestFuns development and how to contribute to the project.
 - The API Reference (`docs/api`) contains the reference
   to all exposed components of UQTestFuns (functions, classes, etc.).
@@ -207,19 +207,20 @@ Additionally, the `docs` directory also includes `references.bib`
 ## Project organization
 
 ```
+.
 ├── .github/                <- The GitHub actions specifications.
 ├── .gitignore              <- List of ignored files/directories if `git add/commit`
-├── .readthedocs.yml        <- Configuration of readthedocs support
-├── AUTHORS.md              <- List of developers and maintainers.
+├── .readthedocs.yml        <- Configuration for readthedocs
+├── AUTHORS.md              <- List of developers and maintainers
 ├── CODE-OF-CONDUCT.md      <- Code of conduct adopted by the project.
-├── CONTRIBUTING.md         <- Contribution guidelines (this document).
-├── docs                    <- Directory for Jupyter Book Sphinx in rst or md.
-├── LICENSE                 <- License as chosen on the command-line.
+├── CONTRIBUTING.md         <- (Brif) contribution guidelines
+├── docs                    <- The docs (*.md or *.rst files)
+├── LICENSE                 <- The license file
 ├── MANIFEST.in             <- Keep track of (minimal) source distribution files
 ├── pyproject.toml          <- Specification build requirements
-├── README.md               <- The top-level README.
-├── setup.cfg               <- Declarative configuration of your project.
+├── README.md               <- The top-level README
+├── setup.cfg               <- Declarative configuration of your project
 ├── src
-│   └── uqtestfuns          <- Actual Python package where the main functionality goes.
-└── tests                   <- Unit tests which can be run with `pytest`.
+│   └── uqtestfuns          <- Actual Python package where the main functionality goes
+└── tests                   <- Test suite which can be run with `pytest`
 ```

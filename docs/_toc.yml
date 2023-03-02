@@ -81,6 +81,17 @@ parts:
     chapters:
       - file: development/overview
         title: Overview
+      - file: development/setting-up-dev-env
+        title: Development Environment
+      - file: development/adding-test-function-implementation
+        title: Test Function Implementation
+      - file: development/adding-test-function-docs
+        title: Test Function Docs
+      - file: development/making-a-pull-request
+        title: Making a Pull Request
+      - file: development/adding-univariate-distribution
+        title: Univariate Distribution
       - file: development/about
+        title: About UQTestFuns
       - file: development/code-of-conduct
       - file: glossary

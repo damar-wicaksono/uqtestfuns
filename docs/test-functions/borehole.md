@@ -88,7 +88,7 @@ the input specification by {cite}`Morris1993`:
 my_testfun = uqtf.Borehole(prob_input_selection="Morris1993")
 ```
 
-## Reference Results
+## Reference results
 
 This section provides several reference results of typical UQ analyses involving
 the test function.
