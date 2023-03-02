@@ -6,7 +6,8 @@ their role within UQ analysis methods development, and how to usually get them, 
 
 ## What are UQ test functions
 
-Consider the following analytical function that computes the maximum annual underflow of a river:
+Consider the following analytical function that computes
+the maximum annual underflow of a river:
 
 $$
 \begin{align}
@@ -18,11 +19,14 @@ $$
 where $\boldsymbol{x} = \{ q, k_s, z_v, z_m, h_d, c_b, l, b \}$ is the eight-dimensional vector of input variables. 
 The output is given in $[\mathrm{m}]$.
 A negative value indicates that an overflow (_flooding_) occurs.
-This test function is known as the _flood model_ {cite}`Iooss2015`.
+This test function is known as the {ref}`flood model <test-functions:flood>` {cite}`Iooss2015`.
+
+```{margin}
+The inputs of a UQ test function is probabilistic, modeled as random variables
+```
 
 The input variables of the function are modeled probabilistically as eight independent random variables with univariate marginals specified
 in the table below.
-
 
 | No. | Name  |      Distribution       |        Parameters        |                   Description                   |
 |:---:|:-----:|:-----------------------:|:------------------------:|:-----------------------------------------------:|
@@ -34,7 +38,6 @@ in the table below.
 |  6  | $c_b$ |       Triangular        |     $[55, 56, 55.5]$     |            Bank level $[\mathrm{m}]$            |
 |  7  |  $l$  |       Triangular        |   $[4990, 5010, 5000]$   |   Length of the river stretch $[\mathrm{m}]$    |
 |  8  |  $b$  |       Triangular        |    $[295, 305, 300]$     |           River width $[\mathrm{m}]$            |
-
 
 ```{margin}
 In a calibration (inverse quantification) analysis, the task is to obtain
@@ -207,3 +210,8 @@ Specifically, none of them provides:
 
 Satisfying all the above requirements is exactly the goal
 of the UQTestFuns package.
+
+```{bibliography}
+:style: plain
+:filter: docname in docnames
+```
