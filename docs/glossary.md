@@ -13,7 +13,7 @@ ICDF
     and its parameter values, the value at the boundaries may or may not be
     finite.
     ICDF is also known as the _quantile function_
-    or _probability point function_.
+    or _percent point function_.
 
 PDF
     Probability density function, denoted by $f_X(x; \circ)$ where $\circ$

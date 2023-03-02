@@ -47,6 +47,12 @@ parts:
     chapters:
       - file: prob-input/overview
         title: Overview
+      - file: prob-input/preliminaries
+        title: Preliminaries
+      - file: prob-input/univariate-random-variable
+        title: Univariate Random Variable
+      - file: prob-input/probabilistic-input
+        title: Probabilistic Input Model
       - file: prob-input/available
         title: Univariate Distributions
         sections:

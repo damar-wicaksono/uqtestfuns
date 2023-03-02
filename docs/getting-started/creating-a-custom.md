@@ -69,7 +69,7 @@ The typical values for the parameters are shown in the table below.
 
 | No.     | Parameter |          Value          |
 |:-------:|:---------:|:-----------------------:|
-| 1       |   $a$     |        $1.0$            |
+| 1       |    $a$    |        $1.0$            |
 | 2       |    $b$    | $\frac{5.1}{(2 \pi)^2}$ |
 | 3       |    $c$    |     $\frac{5}{\pi}$     |
 | 4       |    $r$    |           $6$           |
@@ -124,8 +124,8 @@ and an instance of it can be defined as follows:
 ```{code-cell} ipython3
 # Define a list of marginals
 marginals = [
-    uqtf.UnivDist(distribution="uniform", parameters=[-5, 10]),
-    uqtf.UnivDist(distribution="uniform", parameters=[0, 15]),
+    uqtf.UnivDist(distribution="uniform", parameters=[-5, 10], name="x1"),
+    uqtf.UnivDist(distribution="uniform", parameters=[0, 15], name="x2"),
 ]
 # Create a probabilistic input
 my_input = uqtf.ProbInput(marginals=marginals, name="Branin-Input")

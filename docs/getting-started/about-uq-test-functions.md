@@ -1,19 +1,12 @@
 (getting-started:about-uq-test-functions)=
 # About UQ Test Functions
 
-If you're interested in some background information
-about the what and why of uncertainty quantification (UQ) test functions,
-their role within UQ analysis methods development, and how to usually get them, 
-read on.
+If you're interested in some background information about the what and why of uncertainty quantification (UQ) test functions,
+their role within UQ analysis methods development, and how to usually get them, read on.
 
 ## What are UQ test functions
 
-Consider the following analytical function that computes
-the maximum annual underflow of a river:
-
-```{margin}
-You can see the flood model in more detail {ref}`here <test-functions:flood>`
-```
+Consider the following analytical function that computes the maximum annual underflow of a river:
 
 $$
 \begin{align}
@@ -21,30 +14,27 @@ $$
 	h & = \left[ \frac{q}{b k_s \left(\frac{z_m - z_v}{l} \right)^{0.5}} \right]^{0.6}
 \end{align}
 $$
-where $\boldsymbol{x} = \{ q, k_s, z_v, z_m, h_d, c_b, l, b \}$
-is the eight-dimensional vector of input variables.
+
+where $\boldsymbol{x} = \{ q, k_s, z_v, z_m, h_d, c_b, l, b \}$ is the eight-dimensional vector of input variables. 
 The output is given in $[\mathrm{m}]$.
 A negative value indicates that an overflow (_flooding_) occurs.
 This test function is known as the _flood model_ {cite}`Iooss2015`.
 
-```{margin}
-The inputs of a UQ test function is probabilistic, modeled as random variables
-```
-
-The input variables of the function are modeled probabilistically
-as eight independent random variables with univariate marginals specified
+The input variables of the function are modeled probabilistically as eight independent random variables with univariate marginals specified
 in the table below.
 
-| No. | Name  |  Distribution     |        Parameters        |                       Description                        |
-|:---:|:-----:|:-----------------:|:------------------------:|:--------------------------------------------------------:|
-|  1  |  $q$  | truncated-gumbel  | $[1013, 558, 500, 3000]$ |       Maximum annual flow rate $[\mathrm{m^3/s}]$        |
-|  2  | $k_s$ | truncated-normal  |  $[30, 8, 15, \infty]$   |       Strickler coefficient $[\mathrm{m^(1/3)/s}]$       |
-|  3  | $z_v$ | triangular        |      $[49, 51, 50]$      |          River downstream level $[\mathrm{m}]$           |
-|  4  | $z_m$ | triangular        |      $[54, 56, 55]$      |           River upstream level $[\mathrm{m}]$            |
-|  5  | $h_d$ | uniform           |         $[7, 9]$         |                Dyke height $[\mathrm{m}]$                |
-|  6  | $c_b$ | triangular        |     $[55, 56, 55.5]$     |                Bank level $[\mathrm{m}]$                 |
-|  7  |  $l$  | triangular        |   $[4990, 5010, 5000]$   |        Length of the river stretch $[\mathrm{m}]$        |
-|  8  |  $b$  | triangular        |    $[295, 305, 300]$     |                River width $[\mathrm{m}]$                |
+
+| No. | Name  |      Distribution       |        Parameters        |                   Description                   |
+|:---:|:-----:|:-----------------------:|:------------------------:|:-----------------------------------------------:|
+|  1  |  $q$  | Truncated Gumbel (max.) | $[1013, 558, 500, 3000]$ |   Maximum annual flow rate $[\mathrm{m^3/s}]$   |
+|  2  | $k_s$ |    Truncated Normal     |  $[30, 8, 15, \infty]$   | Strickler coefficient $[\mathrm{m^{(1/3)}/s}]$  |
+|  3  | $z_v$ |       Triangular        |      $[49, 51, 50]$      |      River downstream level $[\mathrm{m}]$      |
+|  4  | $z_m$ |       Triangular        |      $[54, 56, 55]$      |       River upstream level $[\mathrm{m}]$       |
+|  5  | $h_d$ |         Uniform         |         $[7, 9]$         |           Dyke height $[\mathrm{m}]$            |
+|  6  | $c_b$ |       Triangular        |     $[55, 56, 55.5]$     |            Bank level $[\mathrm{m}]$            |
+|  7  |  $l$  |       Triangular        |   $[4990, 5010, 5000]$   |   Length of the river stretch $[\mathrm{m}]$    |
+|  8  |  $b$  |       Triangular        |    $[295, 305, 300]$     |           River width $[\mathrm{m}]$            |
+
 
 ```{margin}
 In a calibration (inverse quantification) analysis, the task is to obtain
@@ -52,38 +42,29 @@ the probabilistic input (posterior) given a function, input prior,
 and some observed data.
 ```
 
-UQ test functions are unique in this way:
-_the input variables are modeled probabilistically
-as a joint multivariate random variable_.
-In most cases, the specification of the inputs
-(the distribution, parameters, and dependence structure)
-are given as part of the problem.
+UQ test functions are unique in this way: _the input variables are modeled probabilistically  as a joint multivariate random variable_.
+In most cases, the specification of the inputs (the distribution, parameters, and dependence structure) are given as part of the problem specification.
 
 ```{margin}
 Some typical questions in UQ analyses
 ```
 
-Given both the function and the input specification,
-in a typical UQ analysis, we would ask the following questions:
+Given both the function and the input specification, in a typical UQ analysis, we would ask the following questions:
 
 - _what is the mean and variance of the output_? (uncertainty propagation)
 - _which input variables drive the uncertainty in the output_? (sensitivity analysis)
 - _what is the probability that an overflow occurs_? (reliability analysis / rare event estimation) 
 
-Granted, this model is an oversimplification of the real situation
-and most probably not used to make any real-world decision.
-But as far as a test function goes,
-this function exhibits some challenging features for a UQ analysis method.
+Granted, this model is an oversimplification of the real situation and most probably not used to make any real-world decision.
+But as far as a test function goes, this function exhibits some challenging features for a UQ analysis method.
 Specifically, the function:
 
 - is multidimensional
 - contains non-uniform random variables
 - involves some interaction terms between the input variables
 
-Before a new UQ method is applied to a real-world problem
-to answer similar questions as the above,
-it might be a good idea to check if the method can perform well
-when applied to the well-known flood model.
+Before a new UQ method is applied to a real-world problem to answer similar questions as the above,
+it might be a good idea to check if the method can perform well when applied to the well-known flood model.
 
 ## Why use UQ test functions
 
@@ -91,7 +72,7 @@ As illustrated above, applied uncertainty quantification in computational
 science and engineering encompasses many activities,
 including uncertainty propagation, sensitivity analysis, reliability analysis,
 optimization, etc.
-A new method for each of the UQ analyses is continuously being developed.
+New methods for each of the UQ analyses are continuously being developed.
 Although such a method is eventually aimed at solving
 real-world problems&mdash;typically involved a complex expensive-to-evaluate computational model&mdash;,
 during the development phase,
@@ -136,7 +117,8 @@ For example:
   provides a selection of test functions in metamodeling, sensitivity analysis,
   and reliability analysis along with their implementation in MATLAB.
   Although the implementations themselves are of generic MATLAB,
-  they are geared towards usage in UQLab (a framework for UQ in MATLAB).
+  they are geared towards usage in [UQLab](https://uqlab.com)
+  (a framework for UQ in MATLAB).
 
 Common to all these online resources are the requirement to either:
 
@@ -207,7 +189,7 @@ and delivered as part of a UQ analysis package.
 One is even a dedicated benchmark package.
 
 ```{margin}
-We argue "yes"
+We think "yes"
 ```
 
 And yet, we think none of them is satisfactory.
@@ -225,10 +207,3 @@ Specifically, none of them provides:
 
 Satisfying all the above requirements is exactly the goal
 of the UQTestFuns package.
-
-## References
-
-```{bibliography}
-:style: plain
-:filter: docname in docnames
-```
