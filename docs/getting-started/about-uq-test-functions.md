@@ -207,3 +207,8 @@ Specifically, none of them provides:
 
 Satisfying all the above requirements is exactly the goal
 of the UQTestFuns package.
+
+```{bibliography}
+:style: plain
+:filter: docname in docnames
+```
