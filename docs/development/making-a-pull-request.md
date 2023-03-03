@@ -40,7 +40,7 @@ Fix any formatting issues that Black raised manually.
 
 Finally, make sure you run `pytest` and resolve any issues before making the pull request.
 
-## Creating a Pull-Request
+## Creating a pull request
 
 Once you're happy with the local development and would like to make a pull request for it,
 push all the local changes to your own remote repository on GitHub:
