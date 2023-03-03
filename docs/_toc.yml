@@ -77,6 +77,17 @@ parts:
   - caption: API Reference
     chapters:
       - file: api/overview
+        title: Overview
+      - file: api/list-functions
+        title: List Functions
+      - file: api/uqtestfun-abc
+        title: UQTestFunABC
+      - file: api/uqtestfun
+        title: UQTestFun
+      - file: api/probinput
+        title: ProbInput
+      - file: api/univdist
+        title: UnivDist
   - caption: Development
     chapters:
       - file: development/overview

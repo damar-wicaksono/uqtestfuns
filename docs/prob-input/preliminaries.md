@@ -134,3 +134,7 @@ f_{\boldsymbol{X}} (x_1, \ldots, x_M) = \prod_{m = 1}^M f_{X_m} (x_m),
 $$
 
 where $f_{X_m}$ is the univariate PDF of a component random variable.
+
+[^random-variable]: it's neither random
+(at least, not in _completely unpredictable_ sense)
+nor a variable (it's a function).

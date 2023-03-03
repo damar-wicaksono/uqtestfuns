@@ -1,9 +1,9 @@
 """
 Module with an implementation of ``ProbInput`` class.
 
-The ProbInput class represents a probabilistic input model.
-Each probabilistic input has a set of marginals defined by an instance of
-the UnivDist class.
+The ``ProbInput`` class represents a probabilistic input model.
+Each probabilistic input has a set of one-dimensional marginals each of which
+is defined by an instance of the ``UnivDist`` class.
 """
 from __future__ import annotations
 
@@ -22,15 +22,22 @@ __all__ = ["ProbInput"]
 class ProbInput:
     """A class for multivariate input variables.
 
+    Parameters
+    ----------
+    marginals : Union[List[UnivDist], Tuple[UnivDist, ...]]
+        A list of one-dimensional marginals (univariate random variables)
+    copulas : Any
+        Copulas between univariate inputs that define dependence structure
+        (currently not used)
+    name : str, optional
+        The name of the probabilistic input model
+    description : str, optional
+        The short description regarding the input model
+
     Attributes
     ----------
     spatial_dimension : int
-        Number of univariate inputs.
-    marginals : List[UnivDist]
-        List of marginals of univariate inputs.
-    copulas : Any
-        Copulas between univariate inputs that define dependence structure
-        (currently not used).
+        Number of constituents (random) input variables.
     """
 
     spatial_dimension: int = field(init=False)
@@ -66,8 +73,21 @@ class ProbInput:
 
         return xx_trans
 
-    def get_sample(self, sample_size: int = 1):
-        """Get a random sample from the distribution."""
+    def get_sample(self, sample_size: int = 1) -> np.ndarray:
+        """Get a random sample from the distribution.
+
+        Parameters
+        ----------
+        sample_size : int
+            The number of sample points in the generated sample.
+
+        Returns
+        -------
+        np.ndarray
+            The generated sample in an :math:`N`-by-:math:`M` array
+            where :math:`N` and :math:`M` are the sample size
+            and the number of spatial dimensions, respectively.
+        """
 
         xx = np.empty((sample_size, self.spatial_dimension))
         # Transform the sample in [0, 1] to the domain of the distribution

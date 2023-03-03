@@ -39,7 +39,7 @@ def list_functions(
 
     Returns
     -------
-    Optional[List[ABCMeta]]
+    Optional[List[UQTestFunABC]]
         Either a tabulated view of the list of available functions,
         or a list of fully-qualified class name (each is callable).
         The function may return None if after filtering there is no entry.
