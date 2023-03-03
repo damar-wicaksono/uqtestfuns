@@ -1,9 +1,8 @@
 """
 Module with an implementation of the ``UnivDist`` class.
 
-The UnivDist class represents a univariate random variable.
-Each random variable has a probability distribution
-and the associated parameters.
+The ``UnivDist`` class represents a univariate random variable.
+Each random variable has a (parametric) probability distribution.
 """
 from __future__ import annotations
 
@@ -33,16 +32,23 @@ FIELD_NAMES = ["name", "distribution", "parameters", "description"]
 class UnivDist:
     """A class for univariate random variables.
 
+    Parameters
+    ----------
+    distribution : str
+        The type of the probability distribution
+    parameters : ArrayLike
+        The parameters of the chosen probability distribution
+    name : str, optional
+        The name of the random variable
+    description : str, optional
+        The short text description of the random variable
+
     Attributes
     ----------
-    name : str
-        Name of the input variable.
-    distribution : str
-        Type of probability distribution.
-    parameters : ArrayLike
-        Parameters of the probability distribution.
-    description : str, optional
-        The text description of the input variable.
+    lower : float
+        The lower bound of the distribution
+    upper : float
+        The upper bound of the distribution
     """
 
     distribution: str

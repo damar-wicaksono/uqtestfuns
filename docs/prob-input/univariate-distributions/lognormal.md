@@ -72,7 +72,7 @@ for i, univ_dist in enumerate(univ_dists):
         xx,
         univ_dist.pdf(xx),
         color=colors[i],
-        label=f"$\\mu = {univ_dist.parameters[0]}, s = {univ_dist.parameters[1]}$",
+        label=f"$\\mu = {univ_dist.parameters[0]}, \\sigma = {univ_dist.parameters[1]}$",
         linewidth=2,
     )
 axs[0, 0].legend();

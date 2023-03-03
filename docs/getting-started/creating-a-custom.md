@@ -48,7 +48,8 @@ import uqtestfuns as uqtf
 
 ## Branin function
 
-Suppose we want to add the two-dimensional Branin function as a test function.
+Suppose we want to add the two-dimensional Branin (or Branin-Hoo) function
+as a test function {cite}`Dixon1978`.
 The function is defined analytically as follows:
 
 $$
@@ -69,7 +70,7 @@ The typical values for the parameters are shown in the table below.
 
 | No.     | Parameter |          Value          |
 |:-------:|:---------:|:-----------------------:|
-| 1       |   $a$     |        $1.0$            |
+| 1       |    $a$    |        $1.0$            |
 | 2       |    $b$    | $\frac{5.1}{(2 \pi)^2}$ |
 | 3       |    $c$    |     $\frac{5}{\pi}$     |
 | 4       |    $r$    |           $6$           |
@@ -100,7 +101,7 @@ def evaluate_branin(xx: np.ndarray, params: np.ndarray):
     Returns
     -------
     np.ndarray
-        The output of the Sobol-G function evaluated on the input values.
+        The output of the Branin function evaluated on the input values.
         The output is a 1-dimensional array of length N.    
     """
     yy = (
@@ -124,8 +125,8 @@ and an instance of it can be defined as follows:
 ```{code-cell} ipython3
 # Define a list of marginals
 marginals = [
-    uqtf.UnivDist(distribution="uniform", parameters=[-5, 10]),
-    uqtf.UnivDist(distribution="uniform", parameters=[0, 15]),
+    uqtf.UnivDist(distribution="uniform", parameters=[-5, 10], name="x1"),
+    uqtf.UnivDist(distribution="uniform", parameters=[0, 15], name="x2"),
 ]
 # Create a probabilistic input
 my_input = uqtf.ProbInput(marginals=marginals, name="Branin-Input")
@@ -267,4 +268,10 @@ will construct an instance of the Branin function using
 the default input and parameter values.
 
 You can find a guide on how to do this in more detail
-in the relevant section of the Developer's Guide.
+in the {ref}`relevant section <development:adding-test-function-implementation>`
+of the Developer's Guide.
+
+```{bibliography}
+:style: plain
+:filter: docname in docnames
+```

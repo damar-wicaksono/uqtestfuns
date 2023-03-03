@@ -1,8 +1,6 @@
 """
-uqtestfun.py
-
 This module contains the concrete implementation of a generic class to
-create a UQ test function.
+create a UQ test function in runtime or within a running Python session.
 """
 from typing import Any, Callable, Optional
 

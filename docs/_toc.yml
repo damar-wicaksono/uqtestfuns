@@ -47,6 +47,12 @@ parts:
     chapters:
       - file: prob-input/overview
         title: Overview
+      - file: prob-input/preliminaries
+        title: Preliminaries
+      - file: prob-input/univariate-random-variable
+        title: Univariate Random Variable
+      - file: prob-input/probabilistic-input
+        title: Probabilistic Input Model
       - file: prob-input/available
         title: Univariate Distributions
         sections:
@@ -71,10 +77,32 @@ parts:
   - caption: API Reference
     chapters:
       - file: api/overview
+        title: Overview
+      - file: api/list-functions
+        title: List Functions
+      - file: api/uqtestfun-abc
+        title: UQTestFunABC
+      - file: api/uqtestfun
+        title: UQTestFun
+      - file: api/probinput
+        title: ProbInput
+      - file: api/univdist
+        title: UnivDist
   - caption: Development
     chapters:
       - file: development/overview
         title: Overview
+      - file: development/setting-up-dev-env
+        title: Development Environment
+      - file: development/adding-test-function-implementation
+        title: Test Function Implementation
+      - file: development/adding-test-function-docs
+        title: Test Function Docs
+      - file: development/making-a-pull-request
+        title: Making a Pull Request
+      - file: development/adding-univariate-distribution
+        title: Univariate Distribution
       - file: development/about
+        title: About UQTestFuns
       - file: development/code-of-conduct
       - file: glossary

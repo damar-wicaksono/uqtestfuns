@@ -1,3 +1,4 @@
+(development:code-of-conduct)=
 # Code of Conduct
 
 This Code of Conduct provides a set of expectations
