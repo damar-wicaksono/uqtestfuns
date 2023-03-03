@@ -74,7 +74,7 @@ with marginals shown in the table below.
 my_testfun.prob_input
 ```
 
-## Reference Results
+## Reference results
 
 This section provides several reference results of typical UQ analyses involving
 the test function.
