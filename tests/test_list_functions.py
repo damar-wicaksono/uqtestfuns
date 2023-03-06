@@ -52,6 +52,7 @@ def test_untabulated_call():
     my_classes_ref = dict(get_available_classes(test_functions))
 
     # --- Assertions
+    assert isinstance(my_classes_from_list, list)
     assert len(my_classes_from_list) == len(my_classes_ref)
     for my_class in my_classes_from_list:
         assert my_class in list(my_classes_ref.values())
