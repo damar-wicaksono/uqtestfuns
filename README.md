@@ -102,18 +102,20 @@ array([ 57.32635774, 110.12229548,  53.10585812,  96.15822154,
 
 ## Installation
 
-<!--Installation-->
-UQTestFuns is not yet available via PyPI; the source can be obtained from GitHub:
+You can obtain UQTestFuns directly from PyPI using `pip`:
 
 ```bash
-$ git clone https://github.com/casus/uqtestfuns
+$ pip install uqtestfuns
 ```
 
-To install UQTestFuns from the source, type:
+Alternatively, you can also install the latest version from the source:
 
 ```bash
-$ pip install [-e] .
+pip install git+https://github.com/damar-wicaksono/uqtestfuns.git
 ```
+
+> **NOTE**: UQTestFuns is currently work in progress,
+> therefore interfaces are subject to change.
 
 It's a good idea to install the package in an isolated virtual environment.
 
