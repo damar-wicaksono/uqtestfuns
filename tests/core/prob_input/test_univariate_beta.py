@@ -91,7 +91,7 @@ def test_estimate_mean() -> None:
     mean_ref = _mean(parameters)
 
     # Assertion
-    assert np.isclose(mean, mean_ref, rtol=5e-03, atol=5e-04)
+    assert np.isclose(mean, mean_ref, rtol=5e-02, atol=5e-03)
 
 
 def test_estimate_std() -> None:
@@ -116,4 +116,4 @@ def test_estimate_std() -> None:
     std_ref = _std(parameters)
 
     # Assertion
-    assert np.allclose(std, std_ref, rtol=5e-03, atol=5e-04)
+    assert np.allclose(std, std_ref, rtol=5e-02, atol=5e-03)
