@@ -1,20 +1,18 @@
 # Obtaining and Installing UQTestFuns
 
-UQTestFuns is still under pre-release development;
-it is therefore not yet available via PyPI.
-The source is hosted in GitHub and can be obtained via:
+You can obtain UQTestFuns directly from PyPI using `pip`:
 
 ```bash
-$ git clone https://github.com/casus/uqtestfuns
+$ pip install uqtestfuns
 ```
 
-To install the package from source, type:
+Alternatively, you can also install the latest version from the source:
 
 ```bash
-$ pip install [-e] .
+pip install git+https://github.com/damar-wicaksono/uqtestfuns.git
 ```
-where the optional flag `-e` tells `pip` to link the package source as obtained
-via `git` into the Python site-packages.
 
-It's often a good idea to install the package
-in an isolated Python virtual environment.
+> **NOTE**: UQTestFuns is currently work in progress,
+> therefore interfaces are subject to change.
+
+It's a good idea to install the package in an isolated virtual environment.
