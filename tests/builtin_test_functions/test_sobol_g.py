@@ -33,6 +33,9 @@ def test_compute_mean(spatial_dimension, params_selection):
         parameters_selection=params_selection,
     )
 
+    # Assert that ProbInput is correctly attached
+    assert my_fun.prob_input is not None
+
     # Compute mean via Monte Carlo
     xx = my_fun.prob_input.get_sample(500000)
     yy = my_fun(xx)
@@ -57,6 +60,9 @@ def test_compute_variance(spatial_dimension, params_selection):
         spatial_dimension=spatial_dimension,
         parameters_selection=params_selection,
     )
+
+    # Assert that ProbInput is correctly attached
+    assert my_fun.prob_input is not None
 
     # Compute the variance via Monte Carlo
     xx = my_fun.prob_input.get_sample(500000)

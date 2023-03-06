@@ -65,7 +65,7 @@ def list_functions(
             available_classes_dict, spatial_dimension
         )
     else:
-        available_classes_from_dimension = available_classes_dict.keys()
+        available_classes_from_dimension = list(available_classes_dict.keys())
 
     # --- Filter according to the requested tag
     if tag:
@@ -73,7 +73,7 @@ def list_functions(
             available_classes_dict, tag.lower()
         )
     else:
-        available_classes_from_tag = available_classes_dict.keys()
+        available_classes_from_tag = list(available_classes_dict.keys())
 
     # --- Combine the results of both filters to obtain the final list
     available_class_names = set(available_classes_from_dimension).intersection(
@@ -83,15 +83,15 @@ def list_functions(
     if not available_class_names:
         return None
 
-    values = []
+    constructors = []
 
     # --- When asked, immediately return all the fully-qualified class name
     if not tabulate:
         for available_class_name in available_class_names:
-            value = available_classes_dict[available_class_name]
-            values.append(value)
+            constructor = available_classes_dict[available_class_name]
+            constructors.append(constructor)
 
-        return values
+        return constructors
 
     # --- Create a tabulated view of the list
     header_names = [
@@ -102,6 +102,7 @@ def list_functions(
         "Description",
     ]
 
+    values = []
     for idx, available_class_name in enumerate(
         sorted(list(available_class_names))
     ):
@@ -133,6 +134,8 @@ def list_functions(
     )
 
     print(table)
+
+    return None
 
 
 def _verify_input_args(

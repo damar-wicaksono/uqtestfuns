@@ -18,8 +18,9 @@ def get_available_classes(
 
     Parameters
     ----------
-    package_name : ModuleType
-        Fully-qualified package name whose contents are searched through.
+    package : ModuleType
+        Fully-qualified package name whose contents (all modules)
+        are searched through.
     exclude : Optional[List[str]]
         List of modules within package to exclude (don't include '.py').
 
@@ -33,8 +34,20 @@ def get_available_classes(
     if exclude is None:
         exclude = []
 
+    # Verify package
+    err_msg = f"Invalid package name {package}!"
+    try:
+        package_file = package.__file__
+        if package_file is None:
+            raise ValueError(err_msg)
+    except AttributeError:
+        raise AttributeError(err_msg)
+
+    # Get the full path of a (sub-) package
+    package_dir = os.path.dirname(package_file)
+
     # Get all modules within the package
-    all_modules = os.listdir(os.path.dirname(package.__file__))
+    all_modules = os.listdir(package_dir)
 
     classes = []
     for module in all_modules:

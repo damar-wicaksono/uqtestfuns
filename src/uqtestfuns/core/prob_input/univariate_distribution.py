@@ -10,7 +10,7 @@ import numpy as np
 
 from numpy.typing import ArrayLike
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, Union
 
 from .utils import (
     verify_distribution,
@@ -81,9 +81,9 @@ class UnivDist:
 
     def transform_sample(
         self,
-        xx: ArrayLike,
+        xx: Union[float, np.ndarray],
         other: UnivDist,
-    ) -> ArrayLike:
+    ) -> np.ndarray:
         """Transform a sample from a given distribution to another."""
         if not isinstance(other, UnivDist):
             raise TypeError("Other instance must be of UnivariateType!")
@@ -98,7 +98,7 @@ class UnivDist:
             other.upper,
         )
 
-    def get_sample(self, sample_size: int = 1) -> ArrayLike:
+    def get_sample(self, sample_size: int = 1) -> np.ndarray:
         """Get a random sample from the distribution."""
         xx = np.random.rand(sample_size)
 
@@ -106,7 +106,7 @@ class UnivDist:
             xx, self.distribution, self.parameters, self.lower, self.upper
         )
 
-    def pdf(self, xx: ArrayLike) -> ARRAY_FLOAT:
+    def pdf(self, xx: Union[float, np.ndarray]) -> ARRAY_FLOAT:
         """Compute the PDF of the distribution on a set of values."""
         # TODO: check if you put a scalar inside
         # Convert input to an np.array
@@ -116,7 +116,7 @@ class UnivDist:
             xx, self.distribution, self.parameters, self.lower, self.upper
         )
 
-    def cdf(self, xx: ArrayLike) -> ARRAY_FLOAT:
+    def cdf(self, xx: Union[float, np.ndarray]) -> ARRAY_FLOAT:
         """Compute the CDF of the distribution on a set of values.
 
         The function transforms the sample values in the domain
@@ -130,7 +130,7 @@ class UnivDist:
             xx, self.distribution, self.parameters, self.lower, self.upper
         )
 
-    def icdf(self, xx: ArrayLike) -> ARRAY_FLOAT:
+    def icdf(self, xx: Union[float, np.ndarray]) -> ARRAY_FLOAT:
         """Compute the inverse CDF of the distribution on a set of values.
 
         The function transforms values in the [0,1] domain to the domain
