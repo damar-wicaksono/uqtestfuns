@@ -3,12 +3,12 @@
 [![Python 3.8](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
 
-|    Branches     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-|:---------------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `main` (stable) | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=dev&style=flat-square) [![CodeCov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns?style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/github/damar-wicaksono/uqtestfuns) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=latest&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=latest) |
-| `dev` (latest)  | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=dev&style=flat-square) [![CodeCov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns?style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/github/damar-wicaksono/uqtestfuns) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=latest&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=latest) | 
+|                                  Branches                                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|:--------------------------------------------------------------------------:|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`main`](https://github.com/damar-wicaksono/uqtestfuns/tree/main) (stable) | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=main&style=flat-square) [![codecov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns/main?logo=CodeCov&style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/gh/damar-wicaksono/uqtestfuns/tree/main) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=stable&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=stable) |
+|  [`dev`](https://github.com/damar-wicaksono/uqtestfuns/tree/dev) (latest)  | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=dev&style=flat-square) [![codecov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns/dev?logo=CodeCov&style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/gh/damar-wicaksono/uqtestfuns/tree/dev) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=latest&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=latest)                                                                                                                          |
 
-<!--One paragrah description-->
+<!--One paragraph description-->
 UQTestFuns is an open-source Python3 library of test functions commonly used
 within the uncertainty quantification (UQ) community.
 The package aims to provide:
@@ -102,18 +102,20 @@ array([ 57.32635774, 110.12229548,  53.10585812,  96.15822154,
 
 ## Installation
 
-<!--Installation-->
-UQTestFuns is not yet available via PyPI; the source can be obtained from GitHub:
+You can obtain UQTestFuns directly from PyPI using `pip`:
 
 ```bash
-$ git clone https://github.com/casus/uqtestfuns
+$ pip install uqtestfuns
 ```
 
-To install UQTestFuns from the source, type:
+Alternatively, you can also install the latest version from the source:
 
 ```bash
-$ pip install [-e] .
+pip install git+https://github.com/damar-wicaksono/uqtestfuns.git
 ```
+
+> **NOTE**: UQTestFuns is currently work in progress,
+> therefore interfaces are subject to change.
 
 It's a good idea to install the package in an isolated virtual environment.
 
