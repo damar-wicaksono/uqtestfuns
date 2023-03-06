@@ -29,7 +29,7 @@ to the [Virtual Library of Simulation Experiments (VLSE)](https://www.sfu.ca/~ss
 UQTestFuns includes several commonly used test functions in the UQ community.
 To list the available functions:
 
-```python
+```python-repl
 >>> import uqtestfuns as uqtf
 >>> uqtf.list_functions()
  No.      Constructor       Spatial Dimension          Application          Description
@@ -45,7 +45,7 @@ To list the available functions:
 Consider the Borehole function, a test function commonly used for metamodeling
 and sensitivity analysis purposes; to create an instance of this test function:
 
-```python
+```python-repl
 >>> my_testfun = uqtf.Borehole()
 >>> print(my_testfun)
 Name              : Borehole
@@ -55,7 +55,7 @@ Description       : Borehole function from Harper and Gupta (1983)
 
 The probabilistic input specification of this test function is built-in:
 
-```python
+```python-repl
 >>> print(my_testfun.prob_input)
 Name         : Borehole-Harper-1983
 Spatial Dim. : 8
@@ -79,7 +79,7 @@ Marginals    :
 
 A sample of input values can be generated from the input model:
 
-```python
+```python-repl
 >>> xx = my_testfun.prob_input.get_sample(10)
 array([[8.40623544e-02, 2.43926544e+03, 8.12290909e+04, 1.06612711e+03,
         7.24216436e+01, 7.78916695e+02, 1.13125867e+03, 1.02170796e+04],
@@ -94,7 +94,7 @@ array([[8.40623544e-02, 2.43926544e+03, 8.12290909e+04, 1.06612711e+03,
 
 ...and used to evaluate the test function:
 
-```python
+```python-repl
 >>> yy = my_testfun(xx)
 array([ 57.32635774, 110.12229548,  53.10585812,  96.15822154,
         58.51714875,  89.40068404,  52.61710076,  61.47419171,
