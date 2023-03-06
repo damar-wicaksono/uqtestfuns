@@ -1,0 +1,108 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: index
+parts:
+  - caption: Getting Started
+    chapters:
+      - file: getting-started/obtaining-and-installing
+      - file: getting-started/creating-a-built-in
+      - file: getting-started/creating-a-custom
+      - file: getting-started/about-uq-test-functions
+  - caption: Test Functions
+    chapters:
+      - file: fundamentals/metamodeling
+        title: Metamodeling
+      - file: fundamentals/optimization
+        title: Optimization
+      - file: fundamentals/sensitivity
+        title: Sensitivity Analysis
+      - file: test-functions/available
+        title: All Available Functions
+        sections:
+          - file: test-functions/ackley
+            title: Ackley
+          - file: test-functions/borehole
+            title: Borehole
+          - file: test-functions/damped-oscillator
+            title: Damped Oscillator
+          - file: test-functions/flood
+            title: Flood
+          - file: test-functions/ishigami
+            title: Ishigami
+          - file: test-functions/oakley-ohagan-1d
+            title: Oakley-O'Hagan 1D
+          - file: test-functions/otl-circuit
+            title: OTL Circuit
+          - file: test-functions/piston
+            title: Piston Simulation
+          - file: test-functions/sobol-g
+            title: Sobol'-G
+          - file: test-functions/sulfur
+            title: Sulfur
+          - file: test-functions/wing-weight
+            title: Wing Weight
+  - caption: Probabilistic Input
+    chapters:
+      - file: prob-input/overview
+        title: Overview
+      - file: prob-input/preliminaries
+        title: Preliminaries
+      - file: prob-input/univariate-random-variable
+        title: Univariate Random Variable
+      - file: prob-input/probabilistic-input
+        title: Probabilistic Input Model
+      - file: prob-input/available
+        title: Univariate Distributions
+        sections:
+          - file: prob-input/univariate-distributions/beta
+            title: Beta
+          - file: prob-input/univariate-distributions/gumbel
+            title: Gumbel (max.)
+          - file: prob-input/univariate-distributions/logitnormal
+            title: Logit-Normal
+          - file: prob-input/univariate-distributions/lognormal
+            title: Log-Normal
+          - file: prob-input/univariate-distributions/normal
+            title: Normal (Gaussian)
+          - file: prob-input/univariate-distributions/triangular
+            title: Triangular
+          - file: prob-input/univariate-distributions/trunc-gumbel
+            title: Truncated Gumbel (max.)
+          - file: prob-input/univariate-distributions/trunc-normal
+            title: Truncated Normal (Gaussian)
+          - file: prob-input/univariate-distributions/uniform
+            title: Uniform
+  - caption: API Reference
+    chapters:
+      - file: api/overview
+        title: Overview
+      - file: api/list-functions
+        title: List Functions
+      - file: api/uqtestfun-abc
+        title: UQTestFunABC
+      - file: api/uqtestfun
+        title: UQTestFun
+      - file: api/probinput
+        title: ProbInput
+      - file: api/univdist
+        title: UnivDist
+  - caption: Development
+    chapters:
+      - file: development/overview
+        title: Overview
+      - file: development/setting-up-dev-env
+        title: Development Environment
+      - file: development/adding-test-function-implementation
+        title: Test Function Implementation
+      - file: development/adding-test-function-docs
+        title: Test Function Docs
+      - file: development/making-a-pull-request
+        title: Making a Pull Request
+      - file: development/adding-univariate-distribution
+        title: Univariate Distribution
+      - file: development/about
+        title: About UQTestFuns
+      - file: development/code-of-conduct
+      - file: glossary
