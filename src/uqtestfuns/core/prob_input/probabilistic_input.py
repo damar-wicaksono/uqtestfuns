@@ -149,7 +149,7 @@ class ProbInput:
             f"<p><b>Spatial Dimension</b>:&nbsp;{self.spatial_dimension}\n</p>"
         )
         table += f"<p><b>Description</b>:&nbsp;{self.description}\n</p>"
-        table += f"<p><b>Marginals:</b>\n</p>"
+        table += "<p><b>Marginals:</b>\n</p>"
 
         # Get the header names
         header_names = [name.capitalize() for name in FIELD_NAMES]
@@ -165,7 +165,7 @@ class ProbInput:
             tablefmt="html",
         )
 
-        table += f"\n"
+        table += "\n"
         table += f"<p><b>Copulas</b>:&nbsp;{self.copulas}</p>"
 
         return table
