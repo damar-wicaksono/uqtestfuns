@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Wrong classifier specification in `setup.cfg` causing upload to PyPI to fail
 - Issue with RTD document built crashing from time to time;
-  probably due to a problematic Python and Sphinx versions combination
+  probably due to a problematic matplotlib version
 
 ### Changed
 
