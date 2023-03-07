@@ -5,6 +5,14 @@ All notable changes to the UQTestFuns project is documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2023-07-03
+
+### Fixed
+
+- v0.1.0 was erroneously already registered at PyPI;
+  latest version of UQTestFuns that was planned for v0.1.0 is now v0.1.1
+- Missing link in CHANGELOG.md
+
 ## [0.1.0] - 2023-07-03
 
 ### Added
@@ -43,4 +51,6 @@ First public release of UQTestFuns.
 - CI/CD to build and serve the documentation on [ReadTheDocs](https://readthedocs.org/)
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
+[0.1.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/damar-wicaksono/uqtestfuns/releases/tag/v0.0.1
