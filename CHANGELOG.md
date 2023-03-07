@@ -5,6 +5,27 @@ All notable changes to the UQTestFuns project is documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0] - 2023-07-03
+
+### Added
+
+- Publishing to PyPI is now automated
+  once a tagged (with semantic version) release is carried out via GitHub
+- Add a few additional classifiers in `setup.cfg` for the PyPI record
+- DOI from Zenodo in README.md
+
+### Fixed
+
+- Wrong classifier specification in `setup.cfg` causing upload to PyPI to fail
+- Issue with RTD document built crashing from time to time;
+  probably due to a problematic matplotlib version
+
+### Changed
+
+- The HTML representation of `ProbInput` instances now takes less space
+- Relax the numerical tolerance of a test (i.e., univariate beta distribution)
+- Minor edit in the docs
+
 ## [0.0.1] - 2023-06-03
 
 First public release of UQTestFuns.

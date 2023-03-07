@@ -1,12 +1,13 @@
 # UQTestFuns
+[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.7701904-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.7701904)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![Python 3.8](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
 
-|                                  Branches                                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|                                  Branches                                  | Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 |:--------------------------------------------------------------------------:|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`main`](https://github.com/damar-wicaksono/uqtestfuns/tree/main) (stable) | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=main&style=flat-square) [![codecov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns/main?logo=CodeCov&style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/gh/damar-wicaksono/uqtestfuns/tree/main) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=stable&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=stable) |
-|  [`dev`](https://github.com/damar-wicaksono/uqtestfuns/tree/dev) (latest)  | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=dev&style=flat-square) [![codecov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns/dev?logo=CodeCov&style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/gh/damar-wicaksono/uqtestfuns/tree/dev) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=latest&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=latest)                                                                                                                          |
+|  [`dev`](https://github.com/damar-wicaksono/uqtestfuns/tree/dev) (latest)  | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=dev&style=flat-square) [![codecov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns/dev?logo=CodeCov&style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/gh/damar-wicaksono/uqtestfuns/tree/dev) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=latest&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=latest)    |
 
 <!--One paragraph description-->
 UQTestFuns is an open-source Python3 library of test functions commonly used
@@ -28,7 +29,7 @@ to the [Virtual Library of Simulation Experiments (VLSE)](https://www.sfu.ca/~ss
 UQTestFuns includes several commonly used test functions in the UQ community.
 To list the available functions:
 
-```python
+```python-repl
 >>> import uqtestfuns as uqtf
 >>> uqtf.list_functions()
  No.      Constructor       Spatial Dimension          Application          Description
@@ -44,7 +45,7 @@ To list the available functions:
 Consider the Borehole function, a test function commonly used for metamodeling
 and sensitivity analysis purposes; to create an instance of this test function:
 
-```python
+```python-repl
 >>> my_testfun = uqtf.Borehole()
 >>> print(my_testfun)
 Name              : Borehole
@@ -54,7 +55,7 @@ Description       : Borehole function from Harper and Gupta (1983)
 
 The probabilistic input specification of this test function is built-in:
 
-```python
+```python-repl
 >>> print(my_testfun.prob_input)
 Name         : Borehole-Harper-1983
 Spatial Dim. : 8
@@ -78,7 +79,7 @@ Marginals    :
 
 A sample of input values can be generated from the input model:
 
-```python
+```python-repl
 >>> xx = my_testfun.prob_input.get_sample(10)
 array([[8.40623544e-02, 2.43926544e+03, 8.12290909e+04, 1.06612711e+03,
         7.24216436e+01, 7.78916695e+02, 1.13125867e+03, 1.02170796e+04],
@@ -93,7 +94,7 @@ array([[8.40623544e-02, 2.43926544e+03, 8.12290909e+04, 1.06612711e+03,
 
 ...and used to evaluate the test function:
 
-```python
+```python-repl
 >>> yy = my_testfun(xx)
 array([ 57.32635774, 110.12229548,  53.10585812,  96.15822154,
         58.51714875,  89.40068404,  52.61710076,  61.47419171,

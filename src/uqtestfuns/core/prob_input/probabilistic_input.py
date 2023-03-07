@@ -144,13 +144,12 @@ class ProbInput:
         return table
 
     def _repr_html_(self):
-        table = "<p><b>Name</b>\n</p>"
-        table += f"<p>&nbsp;&nbsp;&nbsp;{self.name}\n</p>"
-        table += "<p><b>Spatial Dimension</b>\n</p>"
-        table += f"<p>&nbsp;&nbsp;&nbsp;{self.spatial_dimension}\n</p>"
-        table += "<p><b>Description</b>\n</p>"
-        table += f"<p>&nbsp;&nbsp;&nbsp;{self.description}\n</p>"
-        table += "<p><b>Marginals</b>\n\n</p>"
+        table = f"<p><b>Name</b>:&nbsp;{self.name}\n</p>"
+        table += (
+            f"<p><b>Spatial Dimension</b>:&nbsp;{self.spatial_dimension}\n</p>"
+        )
+        table += f"<p><b>Description</b>:&nbsp;{self.description}\n</p>"
+        table += "<p><b>Marginals:</b>\n</p>"
 
         # Get the header names
         header_names = [name.capitalize() for name in FIELD_NAMES]
@@ -166,8 +165,8 @@ class ProbInput:
             tablefmt="html",
         )
 
-        table += "<p>\n\n<b>Copulas</b>\n</p>"
-        table += f"<p>&nbsp;&nbsp;&nbsp;{self.copulas}</p>"
+        table += "\n"
+        table += f"<p><b>Copulas</b>:&nbsp;{self.copulas}</p>"
 
         return table
 

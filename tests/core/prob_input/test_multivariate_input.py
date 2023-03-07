@@ -184,17 +184,17 @@ def test_repr_html():
     my_multivariate_input = ProbInput(marginals)
 
     # Create the reference string
-    str_ref = "<p><b>Name</b>\n</p>"
-    str_ref += f"<p>&nbsp;&nbsp;&nbsp;{my_multivariate_input.name}\n</p>"
-    str_ref += "<p><b>Spatial Dimension</b>\n</p>"
+    str_ref = f"<p><b>Name</b>:&nbsp;{my_multivariate_input.name}\n</p>"
     str_ref += (
-        f"<p>&nbsp;&nbsp;&nbsp;{my_multivariate_input.spatial_dimension}\n</p>"
+        f"<p><b>Spatial Dimension</b>:&nbsp;"
+        f"{my_multivariate_input.spatial_dimension}\n</p>"
     )
-    str_ref += "<p><b>Description</b>\n</p>"
     str_ref += (
-        f"<p>&nbsp;&nbsp;&nbsp;{my_multivariate_input.description}\n</p>"
+        "<p><b>Description</b>:&nbsp;"
+        f"{my_multivariate_input.description}\n</p>"
     )
-    str_ref += "<p><b>Marginals</b>\n\n</p>"
+    str_ref += "<p><b>Marginals:</b>\n</p>"
+
     header_names = ["name", "distribution", "parameters", "description"]
     str_ref_list: List[List] = []
     for i, marginal in enumerate(marginals):
@@ -210,8 +210,8 @@ def test_repr_html():
         tablefmt="html",
     )
 
-    str_ref += "<p>\n\n<b>Copulas</b>\n</p>"
-    str_ref += f"<p>&nbsp;&nbsp;&nbsp;{my_multivariate_input.copulas}</p>"
+    str_ref += "\n"
+    str_ref += f"<p><b>Copulas</b>:&nbsp;{my_multivariate_input.copulas}</p>"
 
     # Assertion
     assert my_multivariate_input._repr_html_() == str_ref
