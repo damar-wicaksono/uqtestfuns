@@ -51,6 +51,6 @@ First public release of UQTestFuns.
 - CI/CD to build and serve the documentation on [ReadTheDocs](https://readthedocs.org/)
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
-[0.1.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.0...v0.1.1
+[0.1.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/damar-wicaksono/uqtestfuns/releases/tag/v0.0.1
