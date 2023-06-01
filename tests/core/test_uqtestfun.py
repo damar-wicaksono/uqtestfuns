@@ -1,6 +1,7 @@
 """
 Test module for UQTestFun class, a generic class for generic UQ test function.
 """
+import numpy as np
 import pytest
 
 from uqtestfuns import UQTestFun, ProbInput
@@ -82,3 +83,12 @@ def test_invalid_input(uqtestfun):
 
     with pytest.raises(TypeError):
         UQTestFun(**uqtestfun_dict)
+
+
+def test_empty_uqtestfun():
+    """Test creation of an empty UQTestFun instance."""
+    my_fun = UQTestFun(lambda x: x)
+
+    with pytest.raises(ValueError):
+        xx = np.random.rand(10)
+        my_fun.transform_sample(xx)

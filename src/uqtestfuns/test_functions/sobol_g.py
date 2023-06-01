@@ -220,6 +220,7 @@ class SobolG(UQTestFunABC):
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
         parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
         name: Optional[str] = None,
+        rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
         if not isinstance(spatial_dimension, int):
@@ -230,7 +231,10 @@ class SobolG(UQTestFunABC):
         # Sobol-G is an M-dimensional test function, either given / use default
         # Create the input according to spatial dimension
         prob_input = create_prob_input_from_available(
-            prob_input_selection, AVAILABLE_INPUT_SPECS, spatial_dimension
+            prob_input_selection,
+            AVAILABLE_INPUT_SPECS,
+            spatial_dimension,
+            rng_seed_prob_input,
         )
         # Create the parameters according to spatial dimension
         parameters = create_parameters_from_available(

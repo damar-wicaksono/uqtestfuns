@@ -142,10 +142,13 @@ class DampedOscillator(UQTestFunABC):
         *,
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
         name: Optional[str] = None,
+        rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
         prob_input = create_prob_input_from_available(
-            prob_input_selection, AVAILABLE_INPUT_SPECS
+            prob_input_selection,
+            AVAILABLE_INPUT_SPECS,
+            rng_seed=rng_seed_prob_input,
         )
         # Process the default name
         if name is None:

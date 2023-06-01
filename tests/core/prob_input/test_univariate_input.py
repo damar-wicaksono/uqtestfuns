@@ -216,3 +216,19 @@ def test_cdf_monotonously_increasing(univariate_input: Any) -> None:
 
     # Assertion
     assert np.all(yy_diff >= 0.0)
+
+
+def test_pass_random_seed():
+    """Test passing random seed to the constructor."""
+
+    # Create two instances with an identical seed number
+    rng_seed = 42
+    my_input_1 = UnivDist("uniform", [0, 1], rng_seed=rng_seed)
+    my_input_2 = UnivDist("uniform", [0, 1], rng_seed=rng_seed)
+
+    # Generate sample points
+    xx_1 = my_input_1.get_sample(1000)
+    xx_2 = my_input_2.get_sample(1000)
+
+    # Assertion: Both samples are equal because the seed is identical
+    assert np.allclose(xx_1, xx_2)

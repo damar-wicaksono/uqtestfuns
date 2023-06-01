@@ -47,7 +47,20 @@ in the context of metamodeling and sensitivity analysis.
 To instantiate a borehole test function, call the constructor as follows:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Borehole()
+my_testfun = uqtf.Borehole(rng_seed_prob_input=176326)
+```
+
+```{note}
+The parameter `rng_seed_prob_input` is optional; if not specified,
+the system entropy is used to initialized
+the [NumPy default random generator](https://numpy.org/doc/stable/reference/random/generator.html#numpy.random.default_rng).
+The number is given here such that the example is more or less reproducible.
+
+In UQTestFuns, each instance of test function carries its own pseudo-random
+number generator (RNG) for the corresponding probabilitic input model
+to avoid using the global NumPy random RNG.
+See this [blog post](https://albertcthomas.github.io/good-practices-random-number-generators/)
+regarding some good practices on using NumPy RNG.
 ```
 
 To verify whether the instance has been created,
@@ -81,7 +94,7 @@ my_testfun(xx)
 ```{note}
 Calling the function on a set of input values automatically
 verifies the correctness of the input (its dimensionality and bounds).
-Furthermore, the test function also accepts a vectorized input
+Moreover, the test function accepts a vectorized input
 (that is, an $N$-by-$M$ array where $N$ and $M$ are the number of points
 and dimensions, respectively)
 ```
@@ -153,8 +166,8 @@ For instance, suppose we have a sample of size $5$ in $[-1, 1]^8$
 for the borehole function:
 
 ```{code-cell} ipython3
-np.random.seed(42)
-xx_sample_dom_1 = -1 + 2 * np.random.rand(5, 8)
+rng_1 = np.random.default_rng(42)
+xx_sample_dom_1 = rng_1.uniform(low=-1, high=1, size=(5, 8))
 xx_sample_dom_1
 ```
 
@@ -172,15 +185,17 @@ It is possible to transform values defined in another uniform domain.
 For example, the sample values in $[0, 1]^8$ (a unit hypercube):
 
 ```{code-cell} ipython3
-np.random.seed(42)
-xx_sample_dom_2 = np.random.rand(5, 8)
+rng_2 = np.random.default_rng(42)
+xx_sample_dom_2 = rng_2.random((5, 8))
 xx_sample_dom_2
 ```
 
 can be transformed to the domain of the borehole function as follows:
 
 ```{code-cell} ipython3
-xx_sample_trans_2 = my_testfun.transform_sample(xx_sample_dom_2, min_value=0.0, max_value=1.0)
+xx_sample_trans_2 = my_testfun.transform_sample(
+    xx_sample_dom_2, min_value=0.0, max_value=1.0
+)
 xx_sample_trans_2
 ```
 
@@ -188,8 +203,8 @@ Note that for a given sample, the bounds of the hypercube domain must be
 the same in all dimensions.
 
 The two transformed values above should be the same since
-we reset the seed for the random number generator
-each time we call `np.random.rand()`.
+we use two instances of the default RNG with the same seed
+to generate the random sample.
 
 ```{code-cell} ipython3
 assert np.allclose(xx_sample_trans_1, xx_sample_trans_2)
