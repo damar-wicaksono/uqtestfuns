@@ -7,15 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.1] - 2023-07-03
-
 ### Added
 
 - An instance of NumPy random number generator is now attached to instances of
   `UnivDist` and `ProbInput`. The random seed
   number may be passed to the corresponding constructor for reproducibility.
-- The (first) Franke function, relevant for metamodeling exercises,
-  is added as a UQ test function.
+- The two-dimensional (first) Franke function, relevant for metamodeling 
+  exercises, is added as a UQ test function.
+- The two-dimensional (third) Franke function, relevant for metamodeling
+  exercises, is added as a UQ test function.
+
+## [0.1.1] - 2023-07-03
 
 ### Fixed
 

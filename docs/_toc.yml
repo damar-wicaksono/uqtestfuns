@@ -31,6 +31,8 @@ parts:
             title: Flood
           - file: test-functions/franke-1
             title: (First) Franke
+          - file: test-functions/franke-3
+            title: (Third) Franke
           - file: test-functions/ishigami
             title: Ishigami
           - file: test-functions/oakley-ohagan-1d
