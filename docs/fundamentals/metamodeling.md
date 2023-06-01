@@ -28,6 +28,7 @@ in the comparison of metamodeling approaches.
 |        {ref}`(3rd) Franke <test-functions:franke-3>`        |         2         |     `Franke3()`      |
 | {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`  |         1         |  `OakleyOHagan1D()`  |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
+|         {ref}`McLain S5 <test-functions:mclain-s5>`         |         2         |     `McLainS5()`     |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
 |            {ref}`Sulfur <test-functions:sulfur>`            |         9         |      `Sulfur()`      |
 |       {ref}`Wing Weight <test-functions:wing-weight>`       |        10         |    `WingWeight()`    |
