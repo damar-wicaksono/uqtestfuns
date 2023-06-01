@@ -78,7 +78,7 @@ cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
 axs_2.axis('scaled')
 
-fig.tight_layout(pad=3.0)
+fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 

@@ -5,6 +5,7 @@ from .ackley import Ackley
 from .borehole import Borehole
 from .damped_oscillator import DampedOscillator
 from .franke_1 import Franke1
+from .franke_2 import Franke2
 from .franke_3 import Franke3
 from .flood import Flood
 from .ishigami import Ishigami
@@ -24,6 +25,7 @@ __all__ = [
     "DampedOscillator",
     "Flood",
     "Franke1",
+    "Franke2",
     "Franke3",
     "Ishigami",
     "OakleyOHagan1D",

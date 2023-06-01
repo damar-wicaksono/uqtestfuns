@@ -24,6 +24,7 @@ in the comparison of metamodeling approaches.
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>` |         7         | `DampedOscillator()` |
 |             {ref}`Flood <test-functions:flood>`             |         8         |      `Flood()`       |
 |        {ref}`(1st) Franke <test-functions:franke-1>`        |         2         |     `Franke1()`      |
+|        {ref}`(2nd) Franke <test-functions:franke-2>`        |         2         |     `Franke2()`      |
 |        {ref}`(3rd) Franke <test-functions:franke-3>`        |         2         |     `Franke3()`      |
 | {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`  |         1         |  `OakleyOHagan1D()`  |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |

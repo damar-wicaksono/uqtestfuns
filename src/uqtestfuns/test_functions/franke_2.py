@@ -1,9 +1,11 @@
 """
-Module with an implementation of the (first) Franke function.
+Module with an implementation of the (second) Franke function.
 
-The (first) Franke function is a two-dimensional scalar-valued function.
-The function was first introduced in [1] in the context of interpolation
-problem and was used in the context of metamodeling in [2].
+The (second) Franke function is a two-dimensional scalar-valued function.
+The function was introduced in [1] in the context of interpolation
+problem. The function was adapted from the test function S5 in [2] by
+translating its domain and modifying the function slightly to
+"enchance the visual aspects of the surface".
 
 The Franke's original report [1] contains in total six two-dimensional test
 functions. The first function that appeared in the report is commonly known
@@ -16,9 +18,9 @@ References
    of scattered data," Naval Postgraduate School, Monterey, Canada,
    Technical Report No. NPS53-79-003, 1979.
    URL: https://core.ac.uk/reader/36727660
-2. Ben Haaland and Peter Z. G. Qian, “Accurate emulators for large-scale
-   computer experiments,” The Annals of Statistics, vol. 39, no. 6,
-   pp. 2974-3002, 2011. DOI: 10.1214/11-AOS929
+2. D. H. McLain, "Drawing contours from arbitrary data points," The Computer
+   Journal, vol. 17, no. 4, pp. 318-324, 1974.
+   DOI: 10.1093/comjnl/17.4.318
 """
 import numpy as np
 
@@ -28,7 +30,7 @@ from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
-__all__ = ["Franke1"]
+__all__ = ["Franke2"]
 
 INPUT_MARGINALS_FRANKE1979 = [  # From Ref. [1]
     UnivDist(
@@ -47,7 +49,7 @@ AVAILABLE_INPUT_SPECS = {
     "Franke1979": {
         "name": "Franke-1979",
         "description": (
-            "Input specification for the (first) Franke function "
+            "Input specification for the (second) Franke function "
             "from Franke (1979)."
         ),
         "marginals": INPUT_MARGINALS_FRANKE1979,
@@ -58,8 +60,8 @@ AVAILABLE_INPUT_SPECS = {
 DEFAULT_INPUT_SELECTION = "Franke1979"
 
 
-class Franke1(UQTestFunABC):
-    """A concrete implementation of the (first) Franke function."""
+class Franke2(UQTestFunABC):
+    """A concrete implementation of the (second) Franke function."""
 
     _TAGS = ["metamodeling"]
 
@@ -69,7 +71,7 @@ class Franke1(UQTestFunABC):
 
     _DEFAULT_SPATIAL_DIMENSION = 2
 
-    _DESCRIPTION = "(First) Franke function from Franke (1979)"
+    _DESCRIPTION = "(Second) Franke function from Franke (1979)"
 
     def __init__(
         self,
@@ -86,12 +88,12 @@ class Franke1(UQTestFunABC):
         )
         # Process the default name
         if name is None:
-            name = Franke1.__name__
+            name = Franke2.__name__
 
         super().__init__(prob_input=prob_input, name=name)
 
     def evaluate(self, xx: np.ndarray):
-        """Evaluate the (first) Franke function on a set of input values.
+        """Evaluate the (second) Franke function on a set of input values.
 
         Parameters
         ----------
@@ -102,22 +104,11 @@ class Franke1(UQTestFunABC):
         Returns
         -------
         np.ndarray
-            The output of the (first) Franke function evaluated
+            The output of the (second) Franke function evaluated
             on the input values.
             The output is a 1-dimensional array of length N.
         """
-
-        xx0 = 9 * xx[:, 0]
-        xx1 = 9 * xx[:, 1]
-
-        # Compute the (first) Franke function
-        term_1 = 0.75 * np.exp(-0.25 * ((xx0 - 2) ** 2 + (xx1 - 2) ** 2))
-        term_2 = 0.75 * np.exp(
-            -1.00 * ((xx0 + 1) ** 2 / 49.0 + (xx1 + 1) ** 2 / 10.0)
-        )
-        term_3 = 0.50 * np.exp(-0.25 * ((xx0 - 7) ** 2 + (xx1 - 3) ** 2))
-        term_4 = 0.20 * np.exp(-1.00 * ((xx0 - 4) ** 2 + (xx1 - 7) ** 2))
-
-        yy = term_1 + term_2 + term_3 - term_4
+        # Compute the (second) Franke function
+        yy = (np.tanh(9 * (xx[:, 1] - xx[:, 0])) + 1) / 9.0
 
         return yy

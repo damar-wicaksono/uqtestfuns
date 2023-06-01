@@ -6,8 +6,8 @@ The function was first introduced in [1] in the context of interpolation
 problem. It features a saddle shaped surface.
 
 The Franke's original report [1] contains in total six two-dimensional test
-functions. The first function that appeared is commonly known as the
-"Franke function".
+functions. The first function that appeared in the report is commonly known
+as the "Franke function".
 
 References
 ----------
