@@ -4,6 +4,7 @@ The init for the 'test_functions' subpackage of UQTestFuns.
 from .ackley import Ackley
 from .borehole import Borehole
 from .damped_oscillator import DampedOscillator
+from .franke_1 import Franke1
 from .flood import Flood
 from .ishigami import Ishigami
 from .oakley_ohagan_1d import OakleyOHagan1D
@@ -21,6 +22,7 @@ __all__ = [
     "Borehole",
     "DampedOscillator",
     "Flood",
+    "Franke1",
     "Ishigami",
     "OakleyOHagan1D",
     "OTLCircuit",

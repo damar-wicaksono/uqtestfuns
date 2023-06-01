@@ -47,13 +47,6 @@ class UQTestFunABC(abc.ABC):
     default_spatial_dimension : Optional[int]
         The default spatial dimension of a UQ test function. If 'None' then
         the function is a variable dimensional test function.
-    spatial_dimension : int
-        The number of spatial dimension (i.e., input variables) to the UQ test
-        function. This number is derived directly from ``prob_input``.
-    evaluate : Callable
-        Implementation of a UQ test function as a Callable.
-        Note that when calling an instance of the class on a set of input
-        values, the input values are first verified before evaluating them.
     """
 
     def __init__(

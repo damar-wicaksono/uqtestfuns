@@ -105,7 +105,7 @@ a popular open-source package and environment management system.
 We assume that all the example commands given below are executed from the UQTestFuns
 root source directory.
 
-#### Using `venv`
+### Using `venv`
 
 Since v3.5, Python includes `venv` module to create and manage virtual environments.
 To set up a virtual environment using the `venv` module:
@@ -127,7 +127,7 @@ To set up a virtual environment using the `venv` module:
     $ deactivate
     ```
 
-#### Using `conda`
+### Using `conda`
 
 You may also create a virtual environment via [`conda`](https://conda.io/projects/conda/en/latest/index.html)
 which is included in the [Anaconda distribution of Python](https://www.anaconda.com/).
