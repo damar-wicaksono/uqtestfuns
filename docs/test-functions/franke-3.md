@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:franke-1)=
-# (1st) Franke Function
+(test-functions:franke-3)=
+# (3rd) Franke Function
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,22 +21,24 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The (first) Franke function is a two-dimensional scalar-valued function.
+The (third) Franke function is a two-dimensional scalar-valued function.
 The function was first introduced in {cite}`Franke1979` in the context of
-interpolation problem and was used in {cite}`Haaland2011` in the context of
-metamodeling.
+interpolation problem.
 
+```{note}
 The Franke's original report {cite}`Franke1979` contains in total
 six two-dimensional test functions.
 The first function that appeared in the report is commonly known simply as
-the "Franke function" (without further specification).
+the "{ref}`Franke function <test-functions:franke-1>`" (without further
+specification).
+```
 
 ```{code-cell} ipython3
 :tags: [remove-input]
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-my_fun = uqtf.Franke1()
+my_fun = uqtf.Franke3()
 
 # --- Create 2D data
 xx_1d = np.linspace(0.0, 1.0, 1000)[:, np.newaxis]
@@ -61,7 +63,7 @@ axs_1.plot_surface(
 axs_1.set_xlabel("$x_1$", fontsize=14)
 axs_1.set_ylabel("$x_2$", fontsize=14)
 axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_1.set_title("Surface plot of (1st) Franke", fontsize=14)
+axs_1.set_title("Surface plot of (3rd) Franke", fontsize=14)
 
 # Contour
 axs_2 = plt.subplot(122)
@@ -70,7 +72,7 @@ cf = axs_2.contourf(
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_title("Contour plot of (1st) Franke", fontsize=14)
+axs_2.set_title("Contour plot of (3rd) Franke", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -80,16 +82,14 @@ fig.tight_layout(pad=3.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the surface consists of two Gaussian peaks and
-a Gaussian dip on a surface sloping down toward the upper right boundary
-(i.e., $[1.0, 1.0]$).
+As shown in the plots above, the function features a saddle shaped surface.
 
 ## Test function instance
 
-To create a default instance of the Franke function:
+To create a default instance of the (third) Franke function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Franke1()
+my_testfun = uqtf.Franke3()
 ```
 
 Check if it has been correctly instantiated:
@@ -103,12 +103,7 @@ print(my_testfun)
 The Franke function is defined as follows:
 
 $$
-\begin{align}
-	\mathcal{M}(\boldsymbol{x}) = & 0.75 \exp{\left( -0.25 \left( (x_1 - 2)^2 + (x_2 - 2)^2 \right) \right) } \\
-                                  & + 0.75 \exp{\left( -1.00 \left( \frac{(x_1 + 1)^2}{49} + \frac{(x_2 + 1)^2}{10} \right) \right)} \\
-								  & + 0.50 \exp{\left( -0.25 \left( (x_1 - 7)^2 + (x_2 - 3)^2 \right) \right)} \\
-								  & - 0.20 \exp{\left( -1.00 \left( (x_1 - 4)^2 + (x_2 - 7)^2 \right) \right)} \\
-\end{align}
+\mathcal{M}(\boldsymbol{x}) = \frac{1.25 + \cos{(5.4 x_2)}}{6 (1 + (3 x_1 - 1)^2)}
 $$
 where $\boldsymbol{x} = \{ x_1, x_2 \}$
 is the two-dimensional vector of input variables further defined below.
