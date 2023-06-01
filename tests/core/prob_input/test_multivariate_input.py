@@ -217,6 +217,24 @@ def test_repr_html():
     assert my_multivariate_input._repr_html_() == str_ref
 
 
+@pytest.mark.parametrize("spatial_dimension", [1, 2, 10, 100])
+def test_pass_random_seed(spatial_dimension):
+    """Test passing random seed to the constructor."""
+    marginals = create_random_marginals(spatial_dimension)
+
+    # Create two instances with an identical seed number
+    rng_seed = 42
+    my_input_1 = ProbInput(marginals, rng_seed=rng_seed)
+    my_input_2 = ProbInput(marginals, rng_seed=rng_seed)
+
+    # Generate sample points
+    xx_1 = my_input_1.get_sample(1000)
+    xx_2 = my_input_2.get_sample(1000)
+
+    # Assertion: Both samples are identical because the seed is identical
+    assert np.allclose(xx_1, xx_2)
+
+
 #
 # def test_get_cdf_values():
 #     """Test the CDF values from an instance of UnivariateInput."""

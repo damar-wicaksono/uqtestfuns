@@ -10,6 +10,7 @@ def create_prob_input_from_available(
     input_selection: Optional[str],
     available_input_specs: dict,
     spatial_dimension: Optional[int] = None,
+    rng_seed: Optional[int] = None,
 ) -> Optional[ProbInput]:
     """Construct a Multivariate input given available specifications.
 
@@ -22,6 +23,9 @@ def create_prob_input_from_available(
     spatial_dimension : int, optional
         The requested number of spatial dimensions, when applicable.
         Some specifications are functions of spatial dimension.
+    rng_seed : int, optional
+        The seed for the pseudo-random number generator; if not given then
+        the number is taken from the system entropy.
 
     Raises
     ------
@@ -41,9 +45,10 @@ def create_prob_input_from_available(
                 description=input_specs["description"],
                 marginals=marginals,
                 copulas=input_specs["copulas"],
+                rng_seed=rng_seed,
             )
         else:
-            prob_input = ProbInput(**input_specs)
+            prob_input = ProbInput(**input_specs, rng_seed=rng_seed)
     else:
         raise ValueError("Invalid selection!")
 

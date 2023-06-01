@@ -5,7 +5,15 @@ All notable changes to the UQTestFuns project is documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
 ## [0.1.1] - 2023-07-03
+
+### Added
+
+- An instance of NumPy random number generator is now attached to instances of
+  `UnivDist` and `ProbInput`. The random seed
+  number may be passed to the corresponding constructor for reproducibility.
 
 ### Fixed
 
@@ -51,6 +59,7 @@ First public release of UQTestFuns.
 - CI/CD to build and serve the documentation on [ReadTheDocs](https://readthedocs.org/)
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
+[Unreleased]: https://github.com/damar-wicaksono/uqtestfuns/compare/main...dev
 [0.1.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/damar-wicaksono/uqtestfuns/releases/tag/v0.0.1

@@ -154,26 +154,22 @@ def test_transform_input(builtin_testfun):
     """Test transforming a set of input values in the default unif. domain."""
 
     testfun = builtin_testfun
+    rng_seed = 32
 
     # Create an instance
-    my_fun = testfun()
+    my_fun = testfun(rng_seed_prob_input=rng_seed)
 
     sample_size = 100
 
     # Transformation from the default uniform domain to the input domain
-    np.random.seed(315)
-    # NOTE: Direct sample from the input property is done by column to column,
-    # for reproducibility using the same RNG seed the reference input must be
-    # filled in column by column as well with the. The call to NumPy random
-    # number generators below yields the same effect.
-    xx_1 = -1 + 2 * np.random.rand(my_fun.spatial_dimension, sample_size).T
+    rng = np.random.default_rng(rng_seed)
+    xx_1 = -1 + 2 * rng.random((sample_size, my_fun.spatial_dimension))
     xx_1 = my_fun.transform_sample(xx_1)
 
     # Directly sample from the input property
-    np.random.seed(315)
     xx_2 = my_fun.prob_input.get_sample(sample_size)
 
-    # Assertion: two sampled values are equal
+    # Assertion: Both samples are equal because the seed is identical
     assert np.allclose(xx_1, xx_2)
 
 
@@ -181,26 +177,22 @@ def test_transform_input_non_default(builtin_testfun):
     """Test transforming an input from non-default domain."""
 
     testfun = builtin_testfun
+    rng_seed = 1232
 
     # Create an instance
-    my_fun = testfun()
+    my_fun = testfun(rng_seed_prob_input=rng_seed)
 
     sample_size = 100
 
     # Transformation from non-default uniform domain to the input domain
-    np.random.seed(315)
-    # NOTE: Direct sample from the input property is done by column to column,
-    # for reproducibility using the same RNG seed the reference input must be
-    # filled in column by column as well with the. The call to NumPy random
-    # number generators below yields the same effect.
-    xx_1 = np.random.rand(my_fun.spatial_dimension, sample_size).T
+    rng = np.random.default_rng(rng_seed)
+    xx_1 = rng.random((sample_size, my_fun.spatial_dimension))
     xx_1 = my_fun.transform_sample(xx_1, min_value=0.0, max_value=1.0)
 
     # Directly sample from the input property
-    np.random.seed(315)
     xx_2 = my_fun.prob_input.get_sample(sample_size)
 
-    # Assertion: two sampled values are equal
+    # Assertion: Both samples are equal because the seed is identical
     assert np.allclose(xx_1, xx_2)
 
 

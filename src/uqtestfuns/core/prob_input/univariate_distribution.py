@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from numpy.random._generator import Generator
 from numpy.typing import ArrayLike
 from dataclasses import dataclass, field
 from typing import Optional, Union
@@ -42,6 +43,9 @@ class UnivDist:
         The name of the random variable
     description : str, optional
         The short text description of the random variable
+    rng_seed : int, optional.
+        The seed used to initialize the pseudo-random number generator.
+        If not specified, the value is taken from the system entropy.
 
     Attributes
     ----------
@@ -49,6 +53,10 @@ class UnivDist:
         The lower bound of the distribution
     upper : float
         The upper bound of the distribution
+    _rng : Generator
+        The default pseudo-random number generator of NumPy.
+        The generator is only created if or when needed (e.g., generating
+        a random sample from the distribution).
     """
 
     distribution: str
@@ -57,6 +65,8 @@ class UnivDist:
     description: Optional[str] = None
     lower: float = field(init=False, repr=False)
     upper: float = field(init=False, repr=False)
+    rng_seed: Optional[int] = field(default=None, repr=False)
+    _rng: Optional[Generator] = field(init=False, default=None, repr=False)
 
     def __post_init__(self) -> None:
         # Because frozen=True, post init must access self via setattr
@@ -100,7 +110,12 @@ class UnivDist:
 
     def get_sample(self, sample_size: int = 1) -> np.ndarray:
         """Get a random sample from the distribution."""
-        xx = np.random.rand(sample_size)
+        if self._rng is None:  # pragma: no cover
+            # Create a pseudo-random number generator (lazy evaluation)
+            rng = np.random.default_rng(self.rng_seed)
+            object.__setattr__(self, "_rng", rng)
+
+        xx = self._rng.random(sample_size)  # type: ignore
 
         return get_icdf_values(
             xx, self.distribution, self.parameters, self.lower, self.upper

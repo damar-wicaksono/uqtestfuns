@@ -95,6 +95,14 @@ class Ackley(UQTestFunABC):
     parameters_selection : str, optional
         The selection of a parameters sets from a list of available
         parameter sets. This is a keyword only parameter.
+    name : str, optional
+        The name of the instance; if not given the default name is used.
+        This is a keyword only parameter.
+    rng_seed_prob_input : int, optional
+        The seed number for the pseudo-random number generator of the
+        corresponding `ProbInput`; if not given `None` is used
+        (taken from the system entropy).
+        This is a keyword only parameter.
     """
 
     _TAGS = ["optimization", "metamodeling"]
@@ -114,6 +122,7 @@ class Ackley(UQTestFunABC):
         prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
         parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
         name: Optional[str] = None,
+        rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
         if not isinstance(spatial_dimension, int):
@@ -124,7 +133,10 @@ class Ackley(UQTestFunABC):
         # Ackley is an M-dimensional test function, either given / use default
         # Create the input according to spatial dimension
         prob_input = create_prob_input_from_available(
-            prob_input_selection, AVAILABLE_INPUT_SPECS, spatial_dimension
+            prob_input_selection,
+            AVAILABLE_INPUT_SPECS,
+            spatial_dimension,
+            rng_seed_prob_input,
         )
         # Create the parameters according to spatial dimension
         parameters = create_parameters_from_available(
@@ -135,7 +147,9 @@ class Ackley(UQTestFunABC):
             name = Ackley.__name__
 
         super().__init__(
-            prob_input=prob_input, parameters=parameters, name=name
+            prob_input=prob_input,
+            parameters=parameters,
+            name=name,
         )
 
     def evaluate(self, xx: np.ndarray):
