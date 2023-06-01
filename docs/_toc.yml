@@ -41,6 +41,8 @@ parts:
             title: Oakley-O'Hagan 1D
           - file: test-functions/otl-circuit
             title: OTL Circuit
+          - file: test-functions/mclain-s5
+            title: McLain S5
           - file: test-functions/piston
             title: Piston Simulation
           - file: test-functions/sobol-g

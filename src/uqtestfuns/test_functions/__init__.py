@@ -11,6 +11,7 @@ from .flood import Flood
 from .ishigami import Ishigami
 from .oakley_ohagan_1d import OakleyOHagan1D
 from .otl_circuit import OTLCircuit
+from .mclain import McLainS5
 from .piston import Piston
 from .sobol_g import SobolG
 from .sulfur import Sulfur
@@ -30,6 +31,7 @@ __all__ = [
     "Ishigami",
     "OakleyOHagan1D",
     "OTLCircuit",
+    "McLainS5",
     "Piston",
     "SobolG",
     "Sulfur",

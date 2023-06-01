@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   exercises, is added as a UQ test function.
 - The two-dimensional (third) Franke function, relevant for metamodeling
   exercises, is added as a UQ test function.
+- The two-dimensional McLain S5 function, relevant for metamodeling exercises,
+  is added as a UQ test function
 
 ## [0.1.1] - 2023-07-03
 
