@@ -30,6 +30,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 |          {ref}`Ishigami <test-functions:ishigami>`          |         3         |     `Ishigami()`     |
 | {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`  |         1         |  `OakleyOHagan1D()`  |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
+|         {ref}`McLain S1 <test-functions:mclain-s1>`         |         2         |     `McLainS1()`     |
 |         {ref}`McLain S5 <test-functions:mclain-s5>`         |         2         |     `McLainS5()`     |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
 |          {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |      `SobolG()`      |
