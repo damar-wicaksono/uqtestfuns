@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   number may be passed to the corresponding constructor for reproducibility.
 - The two-dimensional (first) Franke function, relevant for metamodeling 
   exercises, is added as a UQ test function.
+- The two-dimensional (second) Franke function, relevant for metamodeling
+  exercises, is added as a UQ test function.
 - The two-dimensional (third) Franke function, relevant for metamodeling
   exercises, is added as a UQ test function.
 
