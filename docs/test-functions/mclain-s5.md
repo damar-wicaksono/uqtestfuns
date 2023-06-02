@@ -22,14 +22,15 @@ import uqtestfuns as uqtf
 ```
 
 The McLain S5 function is a two-dimensional scalar-valued function.
-The function was introduced in {cite}`McLain1974` in the context of a procedure 
-for drawing contours from a given set of points.
+The function was introduced in {cite}`McLain1974` as a test function for
+procedures to construct contours from a given set of points.
 
 ```{note}
 The McLain's test functions are a set of five two-dimensional functions 
 that mathematically defines surfaces. The functions are:
 
 - {ref}`S1 <test-functions:mclain-s1>`: A part of a sphere
+- {ref}`S2 <test-functions:mclain-s2>`: A steep hill rising from a plain
 - {ref}`S5 <test-functions:mclain-s5>`: A plateau and plain separated by a steep cliff (this function)
 ```
 

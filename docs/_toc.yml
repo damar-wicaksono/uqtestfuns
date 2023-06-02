@@ -43,6 +43,8 @@ parts:
             title: OTL Circuit
           - file: test-functions/mclain-s1
             title: McLain S1
+          - file: test-functions/mclain-s2
+            title: McLain S2
           - file: test-functions/mclain-s5
             title: McLain S5
           - file: test-functions/piston
