@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:mclain-s1)=
-# McLain S1 Function
+(test-functions:mclain-s2)=
+# McLain S2 Function
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The McLain S1 function is a two-dimensional scalar-valued function.
+The McLain S2 function is a two-dimensional scalar-valued function.
 The function was introduced in {cite}`McLain1974` as a test function for
 procedures to construct contours from a given set of points.
 
@@ -29,8 +29,8 @@ procedures to construct contours from a given set of points.
 The McLain's test functions are a set of five two-dimensional functions 
 that mathematically defines surfaces. The functions are:
 
-- {ref}`S1 <test-functions:mclain-s1>`: A part of a sphere (this function)
-- {ref}`S2 <test-functions:mclain-s2>`: A steep hill rising from a plain
+- {ref}`S1 <test-functions:mclain-s1>`: A part of a sphere
+- {ref}`S2 <test-functions:mclain-s2>`: A steep hill rising from a plain (this function)
 - {ref}`S5 <test-functions:mclain-s5>`: A plateau and plain separated by a steep cliff
 ```
 
@@ -39,7 +39,7 @@ that mathematically defines surfaces. The functions are:
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-my_fun = uqtf.McLainS1()
+my_fun = uqtf.McLainS2()
 
 # --- Create 2D data
 xx_1d = np.linspace(1.0, 10.0, 1000)[:, np.newaxis]
@@ -64,7 +64,7 @@ axs_1.plot_surface(
 axs_1.set_xlabel("$x_1$", fontsize=14)
 axs_1.set_ylabel("$x_2$", fontsize=14)
 axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_1.set_title("Surface plot of McLain S1", fontsize=14)
+axs_1.set_title("Surface plot of McLain S2", fontsize=14)
 
 # Contour
 axs_2 = plt.subplot(122)
@@ -73,7 +73,7 @@ cf = axs_2.contourf(
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_title("Contour plot of McLain S1", fontsize=14)
+axs_2.set_title("Contour plot of McLain S2", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -83,7 +83,9 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the resulting surface is a part of a sphere.
+As shown in the plots above, the resulting surface resembles a steep hill
+rising from a plain. The location of the peak is at $(5.0, 5.0)$
+and with the height of $1.0$.
 
 ```{note}
 The McLain S1 function appeared in a modified form in the report 
@@ -99,7 +101,7 @@ from $[1.0, 10.0]$ to $[0.0, 1.0]$.
 To create a default instance of the McLain S1 function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.McLainS1()
+my_testfun = uqtf.McLainS2()
 ```
 
 Check if it has been correctly instantiated:
@@ -113,7 +115,7 @@ print(my_testfun)
 The (2nd) Franke function is defined as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \left( 64 - (x_1 - 5.5)^2 - (x_2 - 5.5)^2 \right)^{0.5}
+\mathcal{M}(\boldsymbol{x}) = \exp{\left[ - \left( (x_1 - 5)^2 + (x_2 - 5)^2 \right) \right]}
 $$
 where $\boldsymbol{x} = \{ x_1, x_2 \}$
 is the two-dimensional vector of input variables further defined below.
@@ -142,7 +144,7 @@ Shown below is the histogram of the output based on $100'000$ random points:
 xx_test = my_testfun.prob_input.get_sample(100000)
 yy_test = my_testfun(xx_test)
 
-plt.hist(yy_test, bins="auto", color="#8da0cb");
+plt.hist(yy_test, color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
 plt.xlabel("$\mathcal{M}(\mathbf{X})$");
