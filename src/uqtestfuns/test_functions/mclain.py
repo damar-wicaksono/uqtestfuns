@@ -10,6 +10,7 @@ defined surface:
 
 - S1: A part of a sphere
 - S2: A steep hill rising from a plain
+- S3: A less steep hill
 - S5: A plateau and plain separated by a steep cliff
 
 Four of the functions (S1-S3 and S5) appeared in modified forms in [2].
@@ -33,20 +34,20 @@ from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
-__all__ = ["McLainS1", "McLainS2", "McLainS5"]
+__all__ = ["McLainS1", "McLainS2", "McLainS3", "McLainS5"]
 
 INPUT_MARGINALS_MCLAIN1974 = [  # From Ref. [1]
     UnivDist(
         name="X1",
         distribution="uniform",
         parameters=[1.0, 10.0],
-        description=None,
+        description="None",
     ),
     UnivDist(
         name="X2",
         distribution="uniform",
         parameters=[1.0, 10.0],
-        description=None,
+        description="None",
     ),
 ]
 
@@ -95,26 +96,39 @@ def _init(
     UQTestFunABC.__init__(self, prob_input=prob_input, name=name)
 
 
-def _eval_s1(self, xx: np.ndarray):
+def _eval_s1(uqtestfun: UQTestFunABC, xx: np.ndarray):
+    """Evaluate the McLain S1 function."""
     yy = np.sqrt(64 - (xx[:, 0] - 5.5) ** 2 - (xx[:, 1] - 5.5) ** 2)
 
     return yy
 
 
-def _eval_s2(self, xx: np.ndarray):
+def _eval_s2(uqtestfun: UQTestFunABC, xx: np.ndarray):
+    """Evaluate the McLain S2 function."""
     yy = np.exp(-1.0 * ((xx[:, 0] - 5) ** 2 + (xx[:, 1] - 5) ** 2))
 
     return yy
 
 
-def _eval_s5(self, xx: np.ndarray):
+def _eval_s3(uqtestfun: UQTestFunABC, xx: np.ndarray):
+    """Evaluate the McLain S3 function."""
+    yy = np.exp(-0.25 * ((xx[:, 0] - 5) ** 2 + (xx[:, 1] - 5) ** 2))
+
+    return yy
+
+
+def _eval_s5(uqtestfun: UQTestFunABC, xx: np.ndarray):
+    """Evaluate the McLain S5 function."""
     yy = np.tanh(xx[:, 0] + xx[:, 1] - 11)
 
     return yy
 
 
 class McLainS1(UQTestFunABC):
-    """A concrete implementation of the McLain S1 function."""
+    """A concrete implementation of the McLain S1 function.
+
+    The function features a part of a sphere.
+    """
 
     _TAGS = COMMON_METADATA["_TAGS"]
     _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
@@ -136,20 +150,39 @@ class McLainS2(UQTestFunABC):
     _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
     _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
     _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"McLain S1 function {COMMON_METADATA['_DESCRIPTION']}"
+    _DESCRIPTION = f"McLain S2 function {COMMON_METADATA['_DESCRIPTION']}"
 
     __init__ = _init  # type: ignore
     evaluate = _eval_s2
 
 
-class McLainS5(UQTestFunABC):
-    """A concrete implementation of the McLain S5 function."""
+class McLainS3(UQTestFunABC):
+    """A concrete implementation of the McLain S2 function.
+
+    The function features a less steep hill (compared to S2).
+    """
 
     _TAGS = COMMON_METADATA["_TAGS"]
     _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
     _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
     _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"McLain S1 function {COMMON_METADATA['_DESCRIPTION']}"
+    _DESCRIPTION = f"McLain S3 function {COMMON_METADATA['_DESCRIPTION']}"
+
+    __init__ = _init  # type: ignore
+    evaluate = _eval_s3
+
+
+class McLainS5(UQTestFunABC):
+    """A concrete implementation of the McLain S5 function.
+
+    The function features two plateaus separated by a steep cliff.
+    """
+
+    _TAGS = COMMON_METADATA["_TAGS"]
+    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
+    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
+    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
+    _DESCRIPTION = f"McLain S5 function {COMMON_METADATA['_DESCRIPTION']}"
 
     __init__ = _init  # type: ignore
     evaluate = _eval_s5
