@@ -45,6 +45,8 @@ parts:
             title: McLain S1
           - file: test-functions/mclain-s2
             title: McLain S2
+          - file: test-functions/mclain-s3
+            title: McLain S3
           - file: test-functions/mclain-s5
             title: McLain S5
           - file: test-functions/piston

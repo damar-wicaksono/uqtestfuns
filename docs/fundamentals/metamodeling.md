@@ -30,6 +30,7 @@ in the comparison of metamodeling approaches.
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
 |         {ref}`McLain S1 <test-functions:mclain-s1>`         |         2         |     `McLainS1()`     |
 |         {ref}`McLain S2 <test-functions:mclain-s2>`         |         2         |     `McLainS2()`     |
+|         {ref}`McLain S3 <test-functions:mclain-s3>`         |         2         |     `McLainS3()`     |
 |         {ref}`McLain S5 <test-functions:mclain-s5>`         |         2         |     `McLainS5()`     |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
 |            {ref}`Sulfur <test-functions:sulfur>`            |         9         |      `Sulfur()`      |
