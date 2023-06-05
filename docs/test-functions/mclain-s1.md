@@ -29,8 +29,10 @@ procedures to construct contours from a given set of points.
 The McLain's test functions are a set of five two-dimensional functions 
 that mathematically defines surfaces. The functions are:
 
-- {ref}`S1 <test-functions:mclain-s1>`: A part of a sphere (this function)
+- {ref}`S1 <test-functions:mclain-s1>`: A part of a sphere (_this function_)
 - {ref}`S2 <test-functions:mclain-s2>`: A steep hill rising from a plain
+- {ref}`S3 <test-functions:mclain-s3>`: A less steep hill
+- {ref}`S4 <test-functions:mclain-s4>`: A long narrow hill
 - {ref}`S5 <test-functions:mclain-s5>`: A plateau and plain separated by a steep cliff
 ```
 
@@ -84,14 +86,16 @@ plt.gcf().set_dpi(75);
 ```
 
 As shown in the plots above, the resulting surface is a part of a sphere.
+The center of the sphere is at $(5.5, 5.5)$ and the maximum height is
+$8.0$.
 
 ```{note}
 The McLain S1 function appeared in a modified form in the report 
 of Franke {cite}`Franke1979` (specifically the (6th) Franke function).
 
-In fact, four of Franke's test functions are 
-slight modifications of McLain's, including the translation of the input domain
-from $[1.0, 10.0]$ to $[0.0, 1.0]$.
+In fact, four of the Franke's test functions (2, 4, 5, and 6) are 
+slight modifications of the McLain's, including the translation
+of the input domain from $[1.0, 10.0]$ to $[0.0, 1.0]$.
 ```
 
 ## Test function instance
@@ -110,7 +114,7 @@ print(my_testfun)
 
 ## Description
 
-The (2nd) Franke function is defined as follows:
+The McLain S1 function is defined as follows:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \left( 64 - (x_1 - 5.5)^2 - (x_2 - 5.5)^2 \right)^{0.5}

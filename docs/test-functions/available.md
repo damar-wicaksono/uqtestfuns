@@ -33,6 +33,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 |         {ref}`McLain S1 <test-functions:mclain-s1>`         |         2         |     `McLainS1()`     |
 |         {ref}`McLain S2 <test-functions:mclain-s2>`         |         2         |     `McLainS2()`     |
 |         {ref}`McLain S3 <test-functions:mclain-s3>`         |         2         |     `McLainS3()`     |
+|         {ref}`McLain S4 <test-functions:mclain-s4>`         |         2         |     `McLainS4()`     |
 |         {ref}`McLain S5 <test-functions:mclain-s5>`         |         2         |     `McLainS5()`     |
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
 |          {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |      `SobolG()`      |

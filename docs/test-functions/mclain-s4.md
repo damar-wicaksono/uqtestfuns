@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:mclain-s3)=
-# McLain S3 Function
+(test-functions:mclain-s4)=
+# McLain S4 Function
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The McLain S3 function is a two-dimensional scalar-valued function.
+The McLain S4 function is a two-dimensional scalar-valued function.
 The function was introduced in {cite}`McLain1974` as a test function for
 procedures to construct contours from a given set of points.
 
@@ -31,8 +31,8 @@ that mathematically defines surfaces. The functions are:
 
 - {ref}`S1 <test-functions:mclain-s1>`: A part of a sphere
 - {ref}`S2 <test-functions:mclain-s2>`: A steep hill rising from a plain
-- {ref}`S3 <test-functions:mclain-s3>`: A less steep hill (_this function_)
-- {ref}`S4 <test-functions:mclain-s4>`: A long narrow hill
+- {ref}`S3 <test-functions:mclain-s3>`: A less steep hill
+- {ref}`S4 <test-functions:mclain-s4>`: A long narrow hill (_this function_)
 - {ref}`S5 <test-functions:mclain-s5>`: A plateau and plain separated by a steep cliff
 ```
 
@@ -41,7 +41,7 @@ that mathematically defines surfaces. The functions are:
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-my_fun = uqtf.McLainS3()
+my_fun = uqtf.McLainS4()
 
 # --- Create 2D data
 xx_1d = np.linspace(1.0, 10.0, 1000)[:, np.newaxis]
@@ -66,7 +66,7 @@ axs_1.plot_surface(
 axs_1.set_xlabel("$x_1$", fontsize=14)
 axs_1.set_ylabel("$x_2$", fontsize=14)
 axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_1.set_title("Surface plot of McLain S3", fontsize=14)
+axs_1.set_title("Surface plot of McLain S4", fontsize=14)
 
 # Contour
 axs_2 = plt.subplot(122)
@@ -75,7 +75,7 @@ cf = axs_2.contourf(
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_title("Contour plot of McLain S3", fontsize=14)
+axs_2.set_title("Contour plot of McLain S4", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -85,26 +85,16 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the resulting surface resembles a gentler 
-hill (compared to {ref}`S2 <test-functions:mclain-s2>`) rising from a plain.
-The location of the peak is at $(5.0, 5.0)$
-and with the maximum height of $1.0$.
-
-```{note}
-The McLain S3 function appeared in a modified form in the report 
-of Franke {cite}`Franke1979` (specifically the (4th) Franke function).
-
-In fact, four of the Franke's test functions (2, 4, 5, and 6) are 
-slight modifications of McLain's, including the translation of the input domain
-from $[1.0, 10.0]$ to $[0.0, 1.0]$.
-```
+As shown in the plots above, the resulting surface consists of a long narrow
+hill running diagonally from $(0.0, 10.0)$ to $(10.0, 0.0)$.
+The maximum height is $1.0$ at $(5.5, 5.5)$.
 
 ## Test function instance
 
-To create a default instance of the McLain S3 function:
+To create a default instance of the McLain S4 function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.McLainS3()
+my_testfun = uqtf.McLainS4()
 ```
 
 Check if it has been correctly instantiated:
@@ -115,11 +105,10 @@ print(my_testfun)
 
 ## Description
 
-The McLain S3 function is defined as follows:
+The McLain S4 function is defined as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \exp{\left[ - 
-0.25 \left( (x_1 - 5)^2 + (x_2 - 5)^2 \right) \right]}
+\mathcal{M}(\boldsymbol{x}) = \exp{\left[ -1 \left( (x_1 + x_2 - 11)^2 + \frac{(x_1 - x_2)^2}{10} \right) \right]}
 $$
 where $\boldsymbol{x} = \{ x_1, x_2 \}$
 is the two-dimensional vector of input variables further defined below.
