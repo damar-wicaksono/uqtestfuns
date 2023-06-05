@@ -35,6 +35,8 @@ parts:
             title: (2nd) Franke
           - file: test-functions/franke-3
             title: (3rd) Franke
+          - file: test-functions/franke-4
+            title: (4th) Franke
           - file: test-functions/ishigami
             title: Ishigami
           - file: test-functions/oakley-ohagan-1d

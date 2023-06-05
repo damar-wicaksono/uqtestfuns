@@ -57,7 +57,7 @@ axs_1 = plt.subplot(121, projection='3d')
 axs_1.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000,1000),
+    yy_2d.reshape(1000, 1000).T,
     linewidth=0,
     cmap="plasma",
     antialiased=False,
@@ -71,7 +71,7 @@ axs_1.set_title("Surface plot of McLain S4", fontsize=14)
 # Contour
 axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
-    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000), cmap="plasma"
+    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)

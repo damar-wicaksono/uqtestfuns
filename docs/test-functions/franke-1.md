@@ -21,15 +21,27 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The (first) Franke function is a two-dimensional scalar-valued function.
+The (1st) Franke function is a two-dimensional scalar-valued function.
 The function was first introduced in {cite}`Franke1979` in the context of
 interpolation problem and was used in {cite}`Haaland2011` in the context of
 metamodeling.
 
+```{note}
 The Franke's original report {cite}`Franke1979` contains in total
-six two-dimensional test functions.
-The first function that appeared in the report is commonly known simply as
-the "Franke function" (without further specification).
+six two-dimensional test functions:
+
+- {ref}`(1st) Franke function <test-functions:franke-1>`: Two Gaussian peaks
+  and a Gaussian dip on a surface slopping down the upper right boundary
+  (_this function_)
+- {ref}`(2nd) Franke function <test-functions:franke-2>`: Two nearly flat
+  regions joined by a sharp rise running diagonally
+- {ref}`(3rd) Franke function <test-functions:franke-3>`: A saddle shaped
+  surface
+- {ref}`(4th) Franke function <test-functions:franke-4>`: A Gaussian hill
+  that slopes off in a gentle fashion
+
+The term "Franke function" typically only refers to the (1st) Franke function.
+```
 
 ```{code-cell} ipython3
 :tags: [remove-input]
@@ -52,7 +64,7 @@ axs_1 = plt.subplot(121, projection='3d')
 axs_1.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000,1000),
+    yy_2d.reshape(1000,1000).T,
     linewidth=0,
     cmap="plasma",
     antialiased=False,
@@ -66,7 +78,7 @@ axs_1.set_title("Surface plot of (1st) Franke", fontsize=14)
 # Contour
 axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
-    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000), cmap="plasma"
+    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
@@ -82,7 +94,7 @@ plt.gcf().set_dpi(75);
 
 As shown in the plots above, the surface consists of two Gaussian peaks and
 a Gaussian dip on a surface sloping down toward the upper right boundary
-(i.e., $(1.0, 1.0)$).
+(i.e., at $(1.0, 1.0)$).
 
 ## Test function instance
 

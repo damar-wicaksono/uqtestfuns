@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:mclain-s2)=
-# McLain S2 Function
+(test-functions:franke-4)=
+# (4th) Franke Function
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,19 +21,24 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The McLain S2 function is a two-dimensional scalar-valued function.
-The function was introduced in {cite}`McLain1974` as a test function for
-procedures to construct contours from a given set of points.
+The (4th) Franke function is a two-dimensional scalar-valued function.
+The function was first introduced in {cite}`Franke1979` in the context of
+interpolation problem.
 
 ```{note}
-The McLain's test functions are a set of five two-dimensional functions 
-that mathematically defines surfaces. The functions are:
+The Franke's original report {cite}`Franke1979` contains in total
+six two-dimensional test functions:
 
-- {ref}`S1 <test-functions:mclain-s1>`: A part of a sphere
-- {ref}`S2 <test-functions:mclain-s2>`: A steep hill rising from a plain (_this function_)
-- {ref}`S3 <test-functions:mclain-s3>`: A less steep hill
-- {ref}`S4 <test-functions:mclain-s4>`: A long narrow hill
-- {ref}`S5 <test-functions:mclain-s5>`: A plateau and plain separated by a steep cliff
+- {ref}`(1st) Franke function <test-functions:franke-1>`: Two Gaussian peaks
+  and a Gaussian dip on a surface slopping down the upper right boundary
+- {ref}`(2nd) Franke function <test-functions:franke-2>`: Two nearly flat
+  regions joined by a sharp rise running diagonally
+- {ref}`(3rd) Franke function <test-functions:franke-3>`: A saddle shaped
+  surface
+- {ref}`(4th) Franke function <test-functions:franke-4>`: A Gaussian hill
+  that slopes off in a gentle fashion (_this function_)
+
+The term "Franke function" typically only refers to the (1st) Franke function.
 ```
 
 ```{code-cell} ipython3
@@ -41,10 +46,10 @@ that mathematically defines surfaces. The functions are:
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-my_fun = uqtf.McLainS2()
+my_fun = uqtf.Franke4()
 
 # --- Create 2D data
-xx_1d = np.linspace(1.0, 10.0, 1000)[:, np.newaxis]
+xx_1d = np.linspace(0.0, 1.0, 1000)[:, np.newaxis]
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_fun(xx_2d)
@@ -57,7 +62,7 @@ axs_1 = plt.subplot(121, projection='3d')
 axs_1.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000, 1000).T,
+    yy_2d.reshape(1000,1000).T,
     linewidth=0,
     cmap="plasma",
     antialiased=False,
@@ -66,7 +71,7 @@ axs_1.plot_surface(
 axs_1.set_xlabel("$x_1$", fontsize=14)
 axs_1.set_ylabel("$x_2$", fontsize=14)
 axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_1.set_title("Surface plot of McLain S2", fontsize=14)
+axs_1.set_title("Surface plot of (4th) Franke", fontsize=14)
 
 # Contour
 axs_2 = plt.subplot(122)
@@ -75,7 +80,7 @@ cf = axs_2.contourf(
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_title("Contour plot of McLain S2", fontsize=14)
+axs_2.set_title("Contour plot of (4th) Franke", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -85,25 +90,24 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the resulting surface resembles a steep hill
-rising from a plain. The location of the peak is at $(5.0, 5.0)$
-and with the maximum height of $1.0$.
+As shown in the plots above, the function features a Gaussian hill that slopes
+in a gentle fashion.
 
 ```{note}
-The McLain S2 function appeared in a modified form in the report 
-of Franke {cite}`Franke1979` (specifically the (5th) Franke function).
+The (4th) Franke function is a modified form of the {ref}`McLain S3 function <test-functions:mclain-s3>`
+{cite}`McLain1974`.
 
-In fact, four of the Franke's test functions (2, 4, 5, and 6) are 
-slight modifications of the McLain's, including the translation 
-of the input domain from $[1.0, 10.0]^2$ to $[0.0, 1.0]^2$.
+Specifically, the domain of the function is translated from $[1.0, 10.0]^2$
+to $[0.0, 1.0]^2$ with some additional slight modifications to "enhance the
+visual aspects" of the resulting surfaces.
 ```
 
 ## Test function instance
 
-To create a default instance of the McLain S2 function:
+To create a default instance of the (4th) Franke function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.McLainS2()
+my_testfun = uqtf.Franke4()
 ```
 
 Check if it has been correctly instantiated:
@@ -114,17 +118,17 @@ print(my_testfun)
 
 ## Description
 
-The McLain S2 function is defined as follows:
+The (4th) Franke function is defined as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \exp{\left[ - \left( (x_1 - 5)^2 + (x_2 - 5)^2 \right) \right]}
+\mathcal{M}(\boldsymbol{x}) = \frac{1}{3} \exp{\left[ -\frac{81}{16} \left( (x_1 - 0.5)^2 + (x_2 - 0.5)^2 \right) \right]}
 $$
 where $\boldsymbol{x} = \{ x_1, x_2 \}$
 is the two-dimensional vector of input variables further defined below.
 
 ## Probabilistic input
 
-Based on {cite}`McLain1974`, the probabilistic input model
+Based on {cite}`Franke1979`, the probabilistic input model
 for the function consists of two independent random variables as shown below.
 
 ```{code-cell} ipython3
@@ -146,7 +150,7 @@ Shown below is the histogram of the output based on $100'000$ random points:
 xx_test = my_testfun.prob_input.get_sample(100000)
 yy_test = my_testfun(xx_test)
 
-plt.hist(yy_test, color="#8da0cb");
+plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
 plt.xlabel("$\mathcal{M}(\mathbf{X})$");

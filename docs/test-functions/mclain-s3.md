@@ -57,7 +57,7 @@ axs_1 = plt.subplot(121, projection='3d')
 axs_1.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000,1000),
+    yy_2d.reshape(1000, 1000).T,
     linewidth=0,
     cmap="plasma",
     antialiased=False,
@@ -71,7 +71,7 @@ axs_1.set_title("Surface plot of McLain S3", fontsize=14)
 # Contour
 axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
-    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000), cmap="plasma"
+    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
@@ -92,11 +92,12 @@ and with the maximum height of $1.0$.
 
 ```{note}
 The McLain S3 function appeared in a modified form in the report 
-of Franke {cite}`Franke1979` (specifically the (4th) Franke function).
+of Franke {cite}`Franke1979`
+(specifically the {ref}`(4th) Franke function <test-functions:franke-4>`).
 
 In fact, four of the Franke's test functions (2, 4, 5, and 6) are 
 slight modifications of McLain's, including the translation of the input domain
-from $[1.0, 10.0]$ to $[0.0, 1.0]$.
+from $[1.0, 10.0]^2$ to $[0.0, 1.0]^2$.
 ```
 
 ## Test function instance

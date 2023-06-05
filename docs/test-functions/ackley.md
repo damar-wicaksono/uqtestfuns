@@ -62,7 +62,7 @@ axs_2 = plt.subplot(132, projection='3d')
 axs_2.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000,1000),
+    yy_2d.reshape(1000,1000).T,
     linewidth=0,
     cmap="plasma",
     antialiased=False,
@@ -76,7 +76,7 @@ axs_2.set_title("Surface plot of 2D Ackley", fontsize=14)
 # Contour
 axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
-    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000), cmap="plasma"
+    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
 axs_3.set_xlabel("$x_1$", fontsize=14)
 axs_3.set_ylabel("$x_2$", fontsize=14)
