@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:franke-5)=
-# (5th) Franke Function
+(test-functions:franke-6)=
+# (6th) Franke Function
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The (5th) Franke function is a two-dimensional scalar-valued function.
+The (6th) Franke function is a two-dimensional scalar-valued function.
 The function was first introduced in {cite}`Franke1979` in the context of
 interpolation problem.
 
@@ -38,8 +38,9 @@ six two-dimensional test functions:
 - {ref}`(4th) Franke function <test-functions:franke-4>`: A Gaussian hill
   that slopes off in a gentle fashion
 - {ref}`(5th) Franke function <test-functions:franke-5>`: A steep Gaussian hill
-  that approaches zero at the boundaries (_this function_)
+  that approaches zero at the boundaries
 - {ref}`(6th) Franke function <test-functions:franke-6>`: A part of a sphere
+  (_this function_)
 
 The term "Franke function" typically only refers to the (1st) Franke function.
 ```
@@ -49,7 +50,7 @@ The term "Franke function" typically only refers to the (1st) Franke function.
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-my_fun = uqtf.Franke5()
+my_fun = uqtf.Franke6()
 
 # --- Create 2D data
 xx_1d = np.linspace(0.0, 1.0, 1000)[:, np.newaxis]
@@ -74,7 +75,7 @@ axs_1.plot_surface(
 axs_1.set_xlabel("$x_1$", fontsize=14)
 axs_1.set_ylabel("$x_2$", fontsize=14)
 axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_1.set_title("Surface plot of (5th) Franke", fontsize=14)
+axs_1.set_title("Surface plot of (6th) Franke", fontsize=14)
 
 # Contour
 axs_2 = plt.subplot(122)
@@ -83,7 +84,7 @@ cf = axs_2.contourf(
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_title("Contour plot of (5th) Franke", fontsize=14)
+axs_2.set_title("Contour plot of (6th) Franke", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -93,12 +94,12 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the function features a Gaussian hill that slopes
-in a steeper fashion as compared to the {ref}`(4th) Franke function <test-functions:franke-4>`.
-The maximum of the function is located at $(0.5, 0.5)$ with a height of $\frac{1}{3}$.
+As shown in the plots above, the function features a part of a sphere
+with a radius of $\frac{8}{9}$
+and a center at $(\frac{1}{2}, \frac{1}{2}, -\frac{1}{2})$.
 
 ```{note}
-The (5th) Franke function is a modified form of the {ref}`McLain S2 function <test-functions:mclain-s2>`
+The (6th) Franke function is a modified form of the {ref}`McLain S1 function <test-functions:mclain-s1>`
 {cite}`McLain1974`.
 
 Specifically, the domain of the function is translated from $[1.0, 10.0]^2$
@@ -108,10 +109,10 @@ visual aspects" of the resulting surfaces.
 
 ## Test function instance
 
-To create a default instance of the (5th) Franke function:
+To create a default instance of the (6th) Franke function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Franke5()
+my_testfun = uqtf.Franke6()
 ```
 
 Check if it has been correctly instantiated:
@@ -125,7 +126,7 @@ print(my_testfun)
 The (4th) Franke function is defined as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \frac{1}{3} \exp{\left[ -\frac{81}{4} \left( (x_1 - 0.5)^2 + (x_2 - 0.5)^2 \right) \right]}
+\mathcal{M}(\boldsymbol{x}) = \left( 64 - 81 \left( (x_1 - 0.5)^2 + (x_2 - 0.5)^2 \right) \right)^{0.5} - 0.5
 $$
 where $\boldsymbol{x} = \{ x_1, x_2 \}$
 is the two-dimensional vector of input variables further defined below.

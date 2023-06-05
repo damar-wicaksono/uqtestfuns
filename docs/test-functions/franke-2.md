@@ -39,6 +39,7 @@ six two-dimensional test functions:
   that slopes off in a gentle fashion
 - {ref}`(5th) Franke function <test-functions:franke-5>`: A steep Gaussian hill
   that approaches zero at the boundaries
+- {ref}`(6th) Franke function <test-functions:franke-6>`: A part of a sphere
 
 The term "Franke function" typically only refers to the (1st) Franke function.
 ```

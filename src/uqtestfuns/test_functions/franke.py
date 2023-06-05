@@ -16,6 +16,7 @@ The six functions are:
 - (4th) Franke function: A Gaussian hill that slopes off in a gentle fashion.
 - (5th) Franke function: A steep Gaussian hill which becomes almost zero at
   the boundaries.
+- (6th) Franke function: A part of a sphere.
 
 Four of the Franke functions, namely the 2nd, 4th, 5th, and 6th are modified
 from [3] (namely, S5, S3, S2 and S1, respectively).
@@ -46,7 +47,7 @@ from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
-__all__ = ["Franke1", "Franke2", "Franke3", "Franke4", "Franke5"]
+__all__ = ["Franke1", "Franke2", "Franke3", "Franke4", "Franke5", "Franke6"]
 
 INPUT_MARGINALS_FRANKE1979 = [  # From Ref. [1]
     UnivDist(
@@ -277,7 +278,7 @@ class Franke5(UQTestFunABC):
     _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
     _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
     _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"(4th) Franke function {COMMON_METADATA['_DESCRIPTION']}"
+    _DESCRIPTION = f"(5th) Franke function {COMMON_METADATA['_DESCRIPTION']}"
 
     __init__ = _init  # type: ignore
 
@@ -302,6 +303,45 @@ class Franke5(UQTestFunABC):
                 -81.0 / 4.0 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2)
             )
             / 3.0
+        )
+
+        return yy
+
+
+class Franke6(UQTestFunABC):
+    """A concrete implementation of the (6th) Franke function.
+
+    The function features a part of a sphere.
+    """
+
+    _TAGS = COMMON_METADATA["_TAGS"]
+    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
+    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
+    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
+    _DESCRIPTION = f"(6th) Franke function {COMMON_METADATA['_DESCRIPTION']}"
+
+    __init__ = _init  # type: ignore
+
+    def evaluate(self, xx: np.ndarray):
+        """Evaluate the (6th) Franke function on a set of input values.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            Two-Dimensional input values given by N-by-2 arrays where
+            N is the number of input values.
+
+        Returns
+        -------
+        np.ndarray
+            The output of the (6th) Franke function evaluated
+            on the input values.
+            The output is a 1-dimensional array of length N.
+        """
+        yy = (
+            np.sqrt(64 - 81 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2))
+            / 9.0
+            - 0.5
         )
 
         return yy

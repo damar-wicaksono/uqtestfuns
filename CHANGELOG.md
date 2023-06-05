@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - An instance of NumPy random number generator is now attached to instances of
   `UnivDist` and `ProbInput`. The random seed
   number may be passed to the corresponding constructor for reproducibility.
-- The two-dimensional Franke functions (1st, 2nd, 3rd, 4th, 5th),
+- The two-dimensional Franke functions (1st, 2nd, 3rd, 4th, 5th, and 6th),
   relevant for metamodeling exercises, are added as UQ test functions.
 - The two-dimensional McLain functions (S1, S2, S3, S4, and S5),
   relevant for metamodeling exercises, are added as UQ test functions.

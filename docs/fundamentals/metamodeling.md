@@ -28,6 +28,7 @@ in the comparison of metamodeling approaches.
 |        {ref}`(3rd) Franke <test-functions:franke-3>`        |         2         |     `Franke3()`      |
 |        {ref}`(4th) Franke <test-functions:franke-4>`        |         2         |     `Franke4()`      |
 |        {ref}`(5th) Franke <test-functions:franke-5>`        |         2         |     `Franke5()`      |
+|        {ref}`(6th) Franke <test-functions:franke-6>`        |         2         |     `Franke6()`      |
 | {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`  |         1         |  `OakleyOHagan1D()`  |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |
 |         {ref}`McLain S1 <test-functions:mclain-s1>`         |         2         |     `McLainS1()`     |
