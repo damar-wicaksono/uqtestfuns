@@ -27,6 +27,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 |        {ref}`(1st) Franke <test-functions:franke-1>`        |         2         |     `Franke1()`      |
 |        {ref}`(2nd) Franke <test-functions:franke-2>`        |         2         |     `Franke2()`      |
 |        {ref}`(3rd) Franke <test-functions:franke-3>`        |         2         |     `Franke3()`      |
+|        {ref}`(4th) Franke <test-functions:franke-4>`        |         2         |     `Franke4()`      |
 |          {ref}`Ishigami <test-functions:ishigami>`          |         3         |     `Ishigami()`     |
 | {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`  |         1         |  `OakleyOHagan1D()`  |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`       |      6 / 20       |    `OTLCircuit()`    |

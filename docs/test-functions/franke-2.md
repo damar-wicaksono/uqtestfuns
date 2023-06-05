@@ -21,17 +21,24 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The (second) Franke function is a two-dimensional scalar-valued function.
+The (2nd) Franke function is a two-dimensional scalar-valued function.
 The function was introduced in {cite}`Franke1979` in the context of
-interpolation problem. It is based on a similar function used in
-{cite}`McLain1974` (specifically, the function S5) also in the context of
-interpolation problem albeit in a modified form.
+interpolation problem.
 
 ```{note}
 The Franke's original report {cite}`Franke1979` contains in total
-six two-dimensional test functions.
-The first function that appeared in the report is commonly known simply as
-the "Franke function" (without further specification).
+six two-dimensional test functions:
+
+- {ref}`(1st) Franke function <test-functions:franke-1>`: Two Gaussian peaks
+  and a Gaussian dip on a surface slopping down the upper right boundary
+- {ref}`(2nd) Franke function <test-functions:franke-2>`: Two nearly flat
+  regions joined by a sharp rise running diagonally (_this function_)
+- {ref}`(3rd) Franke function <test-functions:franke-3>`: A saddle shaped
+  surface
+- {ref}`(4th) Franke function <test-functions:franke-4>`: A Gaussian hill
+  that slopes off in a gentle fashion
+
+The term "Franke function" typically only refers to the (1st) Franke function.
 ```
 
 ```{code-cell} ipython3
@@ -55,7 +62,7 @@ axs_1 = plt.subplot(121, projection='3d')
 axs_1.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000,1000),
+    yy_2d.reshape(1000,1000).T,
     linewidth=0,
     cmap="plasma",
     antialiased=False,
@@ -69,7 +76,7 @@ axs_1.set_title("Surface plot of (2nd) Franke", fontsize=14)
 # Contour
 axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
-    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000), cmap="plasma"
+    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
@@ -88,9 +95,18 @@ of height $0.0$ and (approximately) $\frac{2}{9}$.
 The two regions are joined by a sharp rise that runs diagonally from
 $(0.0, 0.0)$ to $(1.0, 1.0)$.
 
+```{note}
+The (2nd) Franke function is a modified form of the {ref}`McLain S5 function <test-functions:mclain-s5>`
+{cite}`McLain1974`.
+
+Specifically, the domain of the function is translated from $[1.0, 10.0]^2$
+to $[0.0, 1.0]^2$ with some additional slight modifications to "enhance the
+visual aspects" of the resulting surfaces.
+```
+
 ## Test function instance
 
-To create a default instance of the (second) Franke function:
+To create a default instance of the (2nd) Franke function:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Franke2()

@@ -21,16 +21,24 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The (third) Franke function is a two-dimensional scalar-valued function.
+The (3rd) Franke function is a two-dimensional scalar-valued function.
 The function was first introduced in {cite}`Franke1979` in the context of
 interpolation problem.
 
 ```{note}
 The Franke's original report {cite}`Franke1979` contains in total
-six two-dimensional test functions.
-The first function that appeared in the report is commonly known simply as
-the "{ref}`Franke function <test-functions:franke-1>`" (without further
-specification).
+six two-dimensional test functions:
+
+- {ref}`(1st) Franke function <test-functions:franke-1>`: Two Gaussian peaks
+  and a Gaussian dip on a surface slopping down the upper right boundary
+- {ref}`(2nd) Franke function <test-functions:franke-2>`: Two nearly flat
+  regions joined by a sharp rise running diagonally
+- {ref}`(3rd) Franke function <test-functions:franke-3>`: A saddle shaped
+  surface (_this function_)
+- {ref}`(4th) Franke function <test-functions:franke-4>`: A Gaussian hill
+  that slopes off in a gentle fashion
+
+The term "Franke function" typically only refers to the (1st) Franke function.
 ```
 
 ```{code-cell} ipython3
@@ -54,7 +62,7 @@ axs_1 = plt.subplot(121, projection='3d')
 axs_1.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000,1000),
+    yy_2d.reshape(1000,1000).T,
     linewidth=0,
     cmap="plasma",
     antialiased=False,
@@ -68,7 +76,7 @@ axs_1.set_title("Surface plot of (3rd) Franke", fontsize=14)
 # Contour
 axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
-    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000), cmap="plasma"
+    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
@@ -86,7 +94,7 @@ As shown in the plots above, the function features a saddle shaped surface.
 
 ## Test function instance
 
-To create a default instance of the (third) Franke function:
+To create a default instance of the (3rd) Franke function:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Franke3()
@@ -100,7 +108,7 @@ print(my_testfun)
 
 ## Description
 
-The Franke function is defined as follows:
+The (3rd) Franke function is defined as follows:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \frac{1.25 + \cos{(5.4 x_2)}}{6 (1 + (3 x_1 - 1)^2)}
