@@ -14,6 +14,8 @@ The six functions are:
   diagonally.
 - (3rd) Franke function: A saddle shaped surface.
 - (4th) Franke function: A Gaussian hill that slopes off in a gentle fashion.
+- (5th) Franke function: A steep Gaussian hill which becomes almost zero at
+  the boundaries.
 
 Four of the Franke functions, namely the 2nd, 4th, 5th, and 6th are modified
 from [3] (namely, S5, S3, S2 and S1, respectively).
@@ -44,7 +46,7 @@ from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import create_prob_input_from_available
 
-__all__ = ["Franke1", "Franke2", "Franke3", "Franke4"]
+__all__ = ["Franke1", "Franke2", "Franke3", "Franke4", "Franke5"]
 
 INPUT_MARGINALS_FRANKE1979 = [  # From Ref. [1]
     UnivDist(
@@ -258,6 +260,46 @@ class Franke4(UQTestFunABC):
         yy = (
             np.exp(
                 -81.0 / 16.0 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2)
+            )
+            / 3.0
+        )
+
+        return yy
+
+
+class Franke5(UQTestFunABC):
+    """A concrete implementation of the (5th) Franke function.
+
+    The function features a steep Gaussian hill.
+    """
+
+    _TAGS = COMMON_METADATA["_TAGS"]
+    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
+    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
+    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
+    _DESCRIPTION = f"(4th) Franke function {COMMON_METADATA['_DESCRIPTION']}"
+
+    __init__ = _init  # type: ignore
+
+    def evaluate(self, xx: np.ndarray):
+        """Evaluate the (5th) Franke function on a set of input values.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            Two-Dimensional input values given by N-by-2 arrays where
+            N is the number of input values.
+
+        Returns
+        -------
+        np.ndarray
+            The output of the (5th) Franke function evaluated
+            on the input values.
+            The output is a 1-dimensional array of length N.
+        """
+        yy = (
+            np.exp(
+                -81.0 / 4.0 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2)
             )
             / 3.0
         )

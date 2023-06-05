@@ -37,6 +37,8 @@ six two-dimensional test functions:
   surface (_this function_)
 - {ref}`(4th) Franke function <test-functions:franke-4>`: A Gaussian hill
   that slopes off in a gentle fashion
+- {ref}`(5th) Franke function <test-functions:franke-5>`: A steep Gaussian hill
+  that approaches zero at the boundaries
 
 The term "Franke function" typically only refers to the (1st) Franke function.
 ```

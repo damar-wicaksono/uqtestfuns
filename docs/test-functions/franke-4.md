@@ -37,6 +37,8 @@ six two-dimensional test functions:
   surface
 - {ref}`(4th) Franke function <test-functions:franke-4>`: A Gaussian hill
   that slopes off in a gentle fashion (_this function_)
+- {ref}`(5th) Franke function <test-functions:franke-5>`: A steep Gaussian hill
+  that approaches zero at the boundaries
 
 The term "Franke function" typically only refers to the (1st) Franke function.
 ```
@@ -92,6 +94,7 @@ plt.gcf().set_dpi(75);
 
 As shown in the plots above, the function features a Gaussian hill that slopes
 in a gentle fashion.
+The maximum of the function is located at $(0.5, 0.5)$ with a height of $\frac{1}{3}$.
 
 ```{note}
 The (4th) Franke function is a modified form of the {ref}`McLain S3 function <test-functions:mclain-s3>`
