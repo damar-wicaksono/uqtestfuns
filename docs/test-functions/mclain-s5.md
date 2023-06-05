@@ -31,7 +31,9 @@ that mathematically defines surfaces. The functions are:
 
 - {ref}`S1 <test-functions:mclain-s1>`: A part of a sphere
 - {ref}`S2 <test-functions:mclain-s2>`: A steep hill rising from a plain
-- {ref}`S5 <test-functions:mclain-s5>`: A plateau and plain separated by a steep cliff (this function)
+- {ref}`S3 <test-functions:mclain-s3>`: A less steep hill
+- {ref}`S4 <test-functions:mclain-s4>`: A long narrow hill
+- {ref}`S5 <test-functions:mclain-s5>`: A plateau and plain separated by a steep cliff (_this function_)
 ```
 
 ```{code-cell} ipython3
@@ -93,9 +95,9 @@ The McLain S5 function appeared in a modified form in the report
 of Franke {cite}`Franke1979`
 (specifically the {ref}`(2nd) Franke function <test-functions:franke-2>`).
 
-In fact, four of Franke's test functions are 
-slight modifications of McLain's, including the translation of the input domain
-from $[1.0, 10.0]$ to $[0.0, 1.0]$.
+In fact, four of the Franke's test functions (2, 4, 5, and 6) are 
+slight modifications of the McLain's, including the translation
+of the input domain from $[1.0, 10.0]$ to $[0.0, 1.0]$.
 ```
 
 ## Test function instance
@@ -114,7 +116,7 @@ print(my_testfun)
 
 ## Description
 
-The (2nd) Franke function is defined as follows:
+The McLain S5 function is defined as follows:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \tanh{\left( x_1 + x_2 - 11 \right)}
