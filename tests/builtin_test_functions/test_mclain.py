@@ -8,7 +8,13 @@ Notes
 """
 import numpy as np
 
-from uqtestfuns import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
+from uqtestfuns.test_functions import (
+    McLainS1,
+    McLainS2,
+    McLainS3,
+    McLainS4,
+    McLainS5,
+)
 
 
 def test_mclain_s1():

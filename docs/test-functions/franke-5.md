@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:franke-2)=
-# (2nd) Franke Function
+(test-functions:franke-5)=
+# (5th) Franke Function
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The (2nd) Franke function is a two-dimensional scalar-valued function.
-The function was introduced in {cite}`Franke1979` in the context of
+The (5th) Franke function is a two-dimensional scalar-valued function.
+The function was first introduced in {cite}`Franke1979` in the context of
 interpolation problem.
 
 ```{note}
@@ -32,13 +32,13 @@ six two-dimensional test functions:
 - {ref}`(1st) Franke function <test-functions:franke-1>`: Two Gaussian peaks
   and a Gaussian dip on a surface slopping down the upper right boundary
 - {ref}`(2nd) Franke function <test-functions:franke-2>`: Two nearly flat
-  regions joined by a sharp rise running diagonally (_this function_)
+  regions joined by a sharp rise running diagonally
 - {ref}`(3rd) Franke function <test-functions:franke-3>`: A saddle shaped
   surface
 - {ref}`(4th) Franke function <test-functions:franke-4>`: A Gaussian hill
   that slopes off in a gentle fashion
 - {ref}`(5th) Franke function <test-functions:franke-5>`: A steep Gaussian hill
-  that approaches zero at the boundaries
+  that approaches zero at the boundaries (_this function_)
 
 The term "Franke function" typically only refers to the (1st) Franke function.
 ```
@@ -48,7 +48,7 @@ The term "Franke function" typically only refers to the (1st) Franke function.
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-my_fun = uqtf.Franke2()
+my_fun = uqtf.Franke5()
 
 # --- Create 2D data
 xx_1d = np.linspace(0.0, 1.0, 1000)[:, np.newaxis]
@@ -64,7 +64,7 @@ axs_1 = plt.subplot(121, projection='3d')
 axs_1.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000,1000).T,
+    yy_2d.reshape(1000, 1000).T,
     linewidth=0,
     cmap="plasma",
     antialiased=False,
@@ -73,7 +73,7 @@ axs_1.plot_surface(
 axs_1.set_xlabel("$x_1$", fontsize=14)
 axs_1.set_ylabel("$x_2$", fontsize=14)
 axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_1.set_title("Surface plot of (2nd) Franke", fontsize=14)
+axs_1.set_title("Surface plot of (5th) Franke", fontsize=14)
 
 # Contour
 axs_2 = plt.subplot(122)
@@ -82,7 +82,7 @@ cf = axs_2.contourf(
 )
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_title("Contour plot of (2nd) Franke", fontsize=14)
+axs_2.set_title("Contour plot of (5th) Franke", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -92,13 +92,12 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the function features two nearly flat regions 
-of height $0.0$ and (approximately) $\frac{2}{9}$.
-The two regions are joined by a sharp rise that runs diagonally from
-$(0.0, 0.0)$ to $(1.0, 1.0)$.
+As shown in the plots above, the function features a Gaussian hill that slopes
+in a steeper fashion as compared to the {ref}`(4th) Franke function <test-functions:franke-4>`.
+The maximum of the function is located at $(0.5, 0.5)$ with a height of $\frac{1}{3}$.
 
 ```{note}
-The (2nd) Franke function is a modified form of the {ref}`McLain S5 function <test-functions:mclain-s5>`
+The (5th) Franke function is a modified form of the {ref}`McLain S2 function <test-functions:mclain-s2>`
 {cite}`McLain1974`.
 
 Specifically, the domain of the function is translated from $[1.0, 10.0]^2$
@@ -108,10 +107,10 @@ visual aspects" of the resulting surfaces.
 
 ## Test function instance
 
-To create a default instance of the (2nd) Franke function:
+To create a default instance of the (5th) Franke function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Franke2()
+my_testfun = uqtf.Franke5()
 ```
 
 Check if it has been correctly instantiated:
@@ -122,10 +121,10 @@ print(my_testfun)
 
 ## Description
 
-The (2nd) Franke function is defined as follows:
+The (4th) Franke function is defined as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \frac{1}{9} \left( \tanh{(9 (x_2 - x_1))} + 1 \right)
+\mathcal{M}(\boldsymbol{x}) = \frac{1}{3} \exp{\left[ -\frac{81}{4} \left( (x_1 - 0.5)^2 + (x_2 - 0.5)^2 \right) \right]}
 $$
 where $\boldsymbol{x} = \{ x_1, x_2 \}$
 is the two-dimensional vector of input variables further defined below.
