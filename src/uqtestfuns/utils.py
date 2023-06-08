@@ -8,7 +8,13 @@ from importlib import import_module
 from typing import List, Optional, Tuple, Any
 from types import ModuleType
 
-SUPPORTED_TAGS = ["sensitivity", "optimization", "metamodeling", "reliability"]
+SUPPORTED_TAGS = [
+    "sensitivity",
+    "optimization",
+    "metamodeling",
+    "reliability",
+    "integration",
+]
 
 
 def get_available_classes(

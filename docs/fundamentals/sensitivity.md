@@ -27,6 +27,7 @@ in the comparison of sensitivity analysis methods.
 |      {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |
 |          {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |      `SobolG()`      |
 |            {ref}`Sulfur <test-functions:sulfur>`            |         9         |      `Sulfur()`      |
+|    {ref}`Welch et al. (1992) <test-functions:welch1992>`    |        20         |    `Welch1992()`     |
 |       {ref}`Wing Weight <test-functions:wing-weight>`       |        10         |    `WingWeight()`    |
 
 In a Python terminal, you can list all the available functions relevant

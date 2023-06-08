@@ -14,10 +14,12 @@ parts:
     chapters:
       - file: fundamentals/metamodeling
         title: Metamodeling
-      - file: fundamentals/optimization
-        title: Optimization
       - file: fundamentals/sensitivity
         title: Sensitivity Analysis
+      - file: fundamentals/integration
+        title: Integration
+      - file: fundamentals/optimization
+        title: Optimization
       - file: test-functions/available
         title: All Available Functions
         sections:
@@ -63,6 +65,8 @@ parts:
             title: Sobol'-G
           - file: test-functions/sulfur
             title: Sulfur
+          - file: test-functions/welch1992
+            title: Welch et al. (1992)
           - file: test-functions/wing-weight
             title: Wing Weight
   - caption: Probabilistic Input

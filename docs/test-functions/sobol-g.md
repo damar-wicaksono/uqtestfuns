@@ -200,12 +200,21 @@ plt.xlabel("$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
+### Definite integration
+
+The integral value of the function over the whole domain $[0, 1]^M$
+is analytical:
+
+$$
+\int_{[0, 1]^M} \mathcal{M}(\boldsymbol{x}) \; d\boldsymbol{x} = 1.0.
+$$
+
 ### Moments estimation
 
 The mean and variance of the Sobol'-G function can be computed analytically,  
 and the results are:
   
-- $\mathbb{E}[Y] = 1.0$  
+- $\mathbb{E}[Y] = 1.0$[^integral]
 - $\mathbb{V}[Y] = \prod_{m = 1}^{M} \frac{\frac{4}{3} + 2 a_m + a_m^2}{(1 + a_m)^2} - 1$
 
 Notice that the values of these two moments depend on the choice of the parameter values.
@@ -365,3 +374,6 @@ tabulate(
 :style: plain
 :filter: docname in docnames
 ```
+
+[^integral]: The expected value is the same as the integral over the domain
+because the input is uniform in a unit hypercube.
