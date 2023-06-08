@@ -203,7 +203,7 @@ DEFAULT_DIMENSION_SELECTION = 2
 class SobolG(UQTestFunABC):
     """A concrete implementation of the M-dimensional Sobol'-G function."""
 
-    _TAGS = ["sensitivity"]
+    _TAGS = ["sensitivity", "integration"]
 
     _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
 
@@ -242,7 +242,7 @@ class SobolG(UQTestFunABC):
         )
         # Process the default name
         if name is None:
-            name = SobolG.__name__
+            name = self.__class__.__name__
 
         super().__init__(
             prob_input=prob_input, parameters=parameters, name=name

@@ -13,6 +13,7 @@ from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
 from .piston import Piston
 from .sobol_g import SobolG
 from .sulfur import Sulfur
+from .welch1992 import Welch1992
 from .wing_weight import WingWeight
 
 # NOTE: Import the new test function implementation class from its respective
@@ -40,5 +41,6 @@ __all__ = [
     "Piston",
     "SobolG",
     "Sulfur",
+    "Welch1992",
     "WingWeight",
 ]
