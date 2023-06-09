@@ -3,6 +3,7 @@ The init for the 'test_functions' subpackage of UQTestFuns.
 """
 from .ackley import Ackley
 from .borehole import Borehole
+from .bratley1992 import Bratley1992d
 from .damped_oscillator import DampedOscillator
 from .franke import Franke1, Franke2, Franke3, Franke4, Franke5, Franke6
 from .flood import Flood
@@ -22,6 +23,7 @@ from .wing_weight import WingWeight
 __all__ = [
     "Ackley",
     "Borehole",
+    "Bratley1992d",
     "DampedOscillator",
     "Flood",
     "Franke1",

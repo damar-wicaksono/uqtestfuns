@@ -21,13 +21,14 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Welch et al. (1992) test function is a 20-dimensional scalar valued
-function. The function features some strong non-linearities as well as some
+The Welch et al. (1992) test function (or the `Welch1992` function for short)
+is a 20-dimensional scalar-valued function.
+The function features some strong non-linearities as well as some
 pair interaction effects. Furthermore, a couple of two input variables
 are set to be inert.
 
 The function was introduced in Welch et al. (1992) {cite}`Welch1992`
-as a test function[^location] for metamodeling and sensitivity analysis purposes.
+as a test function for metamodeling and sensitivity analysis purposes.
 The function is also suitable for testing multi-dimensional integration
 algorithms.
 
@@ -47,7 +48,7 @@ print(my_testfun)
 
 ## Description
 
-The Welch et al. (1992) test function is defined as follows:
+The `Welch1992` function is defined as follows[^location]:
 
 $$
 \begin{aligned}
@@ -68,7 +69,7 @@ and therefore, missing from the expression.
 
 Based on {cite}`Welch1992`, the test function is defined on the 
 20-dimensional input space $[-0.5, 0.5]^{20}$.
-This input can be modeled using 20 inpedendent uniform random variables
+This input can be modeled using 20 independent uniform random variables
 shown in the table below.
 
 ```{code-cell} ipython3
@@ -104,7 +105,7 @@ The integral value of the test function over the domain $[-0.5, 0.5]^{20}$
 is analytical:
 
 $$
-\int_{[-0.5, 0.5]^{20}} \mathcal{M}(\boldsymbol{x}) \; d\boldsymbol{x} = \frac{41}{48}.
+I[\mathcal{M}] = \int_{[-0.5, 0.5]^{20}} \mathcal{M}(\boldsymbol{x}) \; d\boldsymbol{x} = \frac{41}{48}.
 $$
 
 ### Moments estimation
