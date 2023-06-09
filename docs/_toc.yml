@@ -27,6 +27,8 @@ parts:
             title: Ackley
           - file: test-functions/borehole
             title: Borehole
+          - file: test-functions/bratley1992d
+            title: Bratley et al. (1992) D
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
           - file: test-functions/flood

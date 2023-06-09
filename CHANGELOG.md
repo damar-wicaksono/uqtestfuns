@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   relevant for metamodeling exercises, are added as UQ test functions.
 - The two-dimensional McLain functions (S1, S2, S3, S4, and S5),
   relevant for metamodeling exercises, are added as UQ test functions.
+- An implementation of the Welch et al. (1992) test function, 
+  a 20-dimensional function used in the context of metamodeling and sensitivity
+  analysis.
+- An implementation of M-dimensional test functions (#4) from Bratley et al.
+  (1992) useful for testing multi-dimensional numerical integrations as well
+  as global sensitivity analysis.
 
 ## [0.1.1] - 2023-07-03
 

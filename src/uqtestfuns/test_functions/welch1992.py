@@ -42,7 +42,7 @@ AVAILABLE_INPUT_SPECS = {
     "Welch1992": {
         "name": "Welch1992",
         "description": (
-            "Input specification for the Welch1992 test function "
+            "Input specification for the test function "
             "from Welch et al. (1992)"
         ),
         "marginals": INPUT_MARGINALS_WELCH1992,
