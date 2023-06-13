@@ -34,15 +34,15 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
 from .utils import lognorm2norm_mean, lognorm2norm_std
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["DampedOscillator"]
 
 INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
-    UnivDist(
+    MarginalSpec(
         name="Mp",
         distribution="lognormal",
         parameters=[
@@ -51,7 +51,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary mass",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Ms",
         distribution="lognormal",
         parameters=[
@@ -60,7 +60,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary mass",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Kp",
         distribution="lognormal",
         parameters=[
@@ -69,7 +69,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary spring stiffness",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Ks",
         distribution="lognormal",
         parameters=[
@@ -78,7 +78,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary spring stiffness",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Zeta_p",
         distribution="lognormal",
         parameters=[
@@ -87,7 +87,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary damping ratio",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Zeta_s",
         distribution="lognormal",
         parameters=[
@@ -96,7 +96,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary damping ratio",
     ),
-    UnivDist(
+    MarginalSpec(
         name="S0",
         distribution="lognormal",
         parameters=[
@@ -108,15 +108,15 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "DerKiureghian1991": {
-        "name": "Damped-Oscillator-Der-Kiureghian-1991",
-        "description": (
+    "DerKiureghian1991": ProbInputSpec(
+        name="Damped-Oscillator-Der-Kiureghian-1991",
+        description=(
             "Probabilistic input model for the Damped Oscillator model "
             "from Der Kiureghian and De Stefano (1991)."
         ),
-        "marginals": INPUT_MARGINALS_DERKIUREGHIAN1991,
-        "copulas": None,
-    },
+        marginals=INPUT_MARGINALS_DERKIUREGHIAN1991,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "DerKiureghian1991"
@@ -145,10 +145,13 @@ class DampedOscillator(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Process the default name
         if name is None:

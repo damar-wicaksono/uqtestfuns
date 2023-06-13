@@ -62,64 +62,64 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["Sulfur"]
 
 INPUT_MARGINALS_PENNER1994 = [  # From [3] (Table 2)
-    UnivDist(
+    MarginalSpec(
         name="Q",
         distribution="lognormal",
         parameters=[np.log(71.0), np.log(1.15)],
         description="Source strength of anthropogenic Sulfur [10^12 g/year]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Y",
         distribution="lognormal",
         parameters=[np.log(0.5), np.log(1.5)],
         description="Fraction of SO2 oxidized to SO4(2-) aerosol [-]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="L",
         distribution="lognormal",
         parameters=[np.log(5.5), np.log(1.5)],
         description="Average lifetime of atmospheric SO4(2-) [days]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Psi_e",
         distribution="lognormal",
         parameters=[np.log(5.0), np.log(1.4)],
         description="Aerosol mass scattering efficiency [m^2/g]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="beta",
         distribution="lognormal",
         parameters=[np.log(0.3), np.log(1.3)],
         description="Fraction of light scattered upward hemisphere [-]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="f_Psi_e",
         distribution="lognormal",
         parameters=[np.log(1.7), np.log(1.2)],
         description="Fractional increase in aerosol scattering efficiency "
         "due to hygroscopic growth [-]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="T^2",
         distribution="lognormal",
         parameters=[np.log(0.58), np.log(1.4)],
         description="Square of atmospheric "
         "transmittance above aerosol layer [-]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="(1-Ac)",
         distribution="lognormal",
         parameters=[np.log(0.39), np.log(1.1)],
         description="Fraction of earth not covered by cloud [-]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="(1-Rs)^2",
         distribution="lognormal",
         parameters=[np.log(0.72), np.log(1.2)],
@@ -128,15 +128,15 @@ INPUT_MARGINALS_PENNER1994 = [  # From [3] (Table 2)
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Penner1994": {
-        "name": "Sulfur-Penner-1994",
-        "description": (
+    "Penner1994": ProbInputSpec(
+        name="Sulfur-Penner-1994",
+        description=(
             "Probabilistic input model for the Sulfur model "
             "from Penner et al. (1994)."
         ),
-        "marginals": INPUT_MARGINALS_PENNER1994,
-        "copulas": None,
-    }
+        marginals=INPUT_MARGINALS_PENNER1994,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Penner1994"
@@ -167,10 +167,13 @@ class Sulfur(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Process the default name
         if name is None:

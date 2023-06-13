@@ -25,44 +25,44 @@ import numpy as np
 from copy import copy
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["OTLCircuit"]
 
 INPUT_MARGINALS_BENARI2007 = [
-    UnivDist(
+    MarginalSpec(
         name="Rb1",
         distribution="uniform",
         parameters=[50.0, 150.0],
         description="Resistance b1 [kOhm]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Rb2",
         distribution="uniform",
         parameters=[25.0, 70.0],
         description="Resistance b2 [kOhm]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Rf",
         distribution="uniform",
         parameters=[0.5, 3.0],
         description="Resistance f [kOhm]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Rc1",
         distribution="uniform",
         parameters=[1.2, 2.5],
         description="Resistance c1 [kOhm]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Rc2",
         distribution="uniform",
         parameters=[0.25, 1.20],
         description="Resistance c2 [kOhm]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="beta",
         distribution="uniform",
         parameters=[50.0, 300.0],
@@ -73,7 +73,7 @@ INPUT_MARGINALS_BENARI2007 = [
 INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
 for i in range(14):
     INPUT_MARGINALS_MOON2010.append(
-        UnivDist(
+        MarginalSpec(
             name=f"Inert {i+1}",
             distribution="uniform",
             parameters=[100.0, 200.0],
@@ -82,24 +82,24 @@ for i in range(14):
     )
 
 AVAILABLE_INPUT_SPECS = {
-    "BenAri2007": {
-        "name": "OTL-Circuit-Ben-Ari-2007",
-        "description": (
+    "BenAri2007": ProbInputSpec(
+        name="OTL-Circuit-Ben-Ari-2007",
+        description=(
             "Probabilistic input model for the OTL Circuit function "
             "from Ben-Ari and Steinberg (2007)."
         ),
-        "marginals": INPUT_MARGINALS_BENARI2007,
-        "copulas": None,
-    },
-    "Moon2010": {
-        "name": "OTL-Circuit-Moon-2010",
-        "description": (
+        marginals=INPUT_MARGINALS_BENARI2007,
+        copulas=None,
+    ),
+    "Moon2010": ProbInputSpec(
+        name="OTL-Circuit-Moon-2010",
+        description=(
             "Probabilistic input model for the OTL Circuit function "
             "from Moon (2010)."
         ),
-        "marginals": INPUT_MARGINALS_MOON2010,
-        "copulas": None,
-    },
+        marginals=INPUT_MARGINALS_MOON2010,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "BenAri2007"
@@ -129,10 +129,13 @@ class OTLCircuit(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Process the default name
         if name is None:

@@ -15,7 +15,7 @@ from tabulate import tabulate
 from typing import Any, List, Optional, Union, Tuple
 
 from .univariate_distribution import UnivDist, FIELD_NAMES
-
+from .input_spec import ProbInputSpec, ProbInputSpecVarDim
 
 __all__ = ["ProbInput"]
 
@@ -182,6 +182,37 @@ class ProbInput:
         table += f"<p><b>Copulas</b>:&nbsp;{self.copulas}</p>"
 
         return table
+
+    @classmethod
+    def from_spec(
+        cls,
+        prob_input_spec: Union[ProbInputSpec, ProbInputSpecVarDim],
+        *,
+        spatial_dimension: Optional[int] = None,
+        rng_seed: Optional[int] = None,
+    ):
+        """Create an instance from a ProbInputSpec instance."""
+
+        if isinstance(prob_input_spec, ProbInputSpecVarDim):
+            if spatial_dimension is None:
+                raise ValueError("Spatial dimension must be specified!")
+            marginals_gen = prob_input_spec.marginals_generator
+            marginals_spec = marginals_gen(spatial_dimension)
+        else:
+            marginals_spec = prob_input_spec.marginals
+
+        # Create a list of UnivDist instances representing univariate marginals
+        marginals = [
+            UnivDist.from_spec(marginal) for marginal in marginals_spec
+        ]
+
+        return cls(
+            marginals=marginals,
+            copulas=prob_input_spec.copulas,
+            name=prob_input_spec.name,
+            description=prob_input_spec.description,
+            rng_seed=rng_seed,
+        )
 
 
 def _get_values_as_list(

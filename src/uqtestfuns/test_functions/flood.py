@@ -34,56 +34,56 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["Flood"]
 
 INPUT_MARGINALS_IOOSS2015 = [  # From Ref. [1]
-    UnivDist(
+    MarginalSpec(
         name="Q",
         distribution="trunc-gumbel",
         parameters=[1013.0, 558.0, 500.0, 3000.0],
         description="Maximum annual flow rate [m^3/s]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Ks",
         distribution="trunc-normal",
         parameters=[30.0, 8.0, 15.0, np.inf],
         description="Strickler coefficient [m^(1/3)/s]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Zv",
         distribution="triangular",
         parameters=[49.0, 51.0, 50.0],
         description="River downstream level [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Zm",
         distribution="triangular",
         parameters=[54.0, 56.0, 55.0],
         description="River upstream level [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Hd",
         distribution="uniform",
         parameters=[7.0, 9.0],
         description="Dyke height [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Cb",
         distribution="triangular",
         parameters=[55.0, 56.0, 55.5],
         description="Bank level [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="L",
         distribution="triangular",
         parameters=[4990.0, 5010.0, 5000.0],
         description="Length of the river stretch [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="B",
         distribution="triangular",
         parameters=[295.0, 305.0, 300.0],
@@ -92,15 +92,15 @@ INPUT_MARGINALS_IOOSS2015 = [  # From Ref. [1]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Iooss2015": {
-        "name": "Flood-Iooss-2015",
-        "description": (
+    "Iooss2015": ProbInputSpec(
+        name="Flood-Iooss-2015",
+        description=(
             "Probabilistic input model for the Flood model "
             "from Iooss and Lemaître (2015)."
         ),
-        "marginals": INPUT_MARGINALS_IOOSS2015,
-        "copulas": None,
-    }
+        marginals=INPUT_MARGINALS_IOOSS2015,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Iooss2015"
@@ -127,10 +127,13 @@ class Flood(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Process the default name
         if name is None:

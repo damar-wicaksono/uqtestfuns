@@ -25,57 +25,57 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["Borehole"]
 
 # From Ref. [1]
 INPUT_MARGINALS_HARPER1983 = [
-    UnivDist(
+    MarginalSpec(
         name="rw",
         distribution="normal",
         parameters=[0.10, 0.0161812],
         description="radius of the borehole [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="r",
         distribution="lognormal",
         parameters=[7.71, 1.0056],
         description="radius of influence [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Tu",
         distribution="uniform",
         parameters=[63070.0, 115600.0],
         description="transmissivity of upper aquifer [m^2/year]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Hu",
         distribution="uniform",
         parameters=[990.0, 1100.0],
         description="potentiometric head of upper aquifer [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Tl",
         distribution="uniform",
         parameters=[63.1, 116.0],
         description="transmissivity of lower aquifer [m^2/year]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Hl",
         distribution="uniform",
         parameters=[700.0, 820.0],
         description="potentiometric head of lower aquifer [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="L",
         distribution="uniform",
         parameters=[1120.0, 1680.0],
         description="length of the borehole [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Kw",
         distribution="uniform",
         parameters=[9985.0, 12045.0],
@@ -86,13 +86,13 @@ INPUT_MARGINALS_HARPER1983 = [
 # From Ref. [2]
 INPUT_MARGINALS_MORRIS1993 = list(INPUT_MARGINALS_HARPER1983)
 INPUT_MARGINALS_MORRIS1993[0:2] = [
-    UnivDist(
+    MarginalSpec(
         name="rw",
         distribution="uniform",
         parameters=[0.05, 0.15],
         description="radius of the borehole [m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="r",
         distribution="uniform",
         parameters=[100, 50000],
@@ -101,24 +101,24 @@ INPUT_MARGINALS_MORRIS1993[0:2] = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Harper1983": {
-        "name": "Borehole-Harper-1983",
-        "description": (
+    "Harper1983": ProbInputSpec(
+        name="Borehole-Harper-1983",
+        description=(
             "Probabilistic input model of the Borehole model "
             "from Harper and Gupta (1983)."
         ),
-        "marginals": INPUT_MARGINALS_HARPER1983,
-        "copulas": None,
-    },
-    "Morris1993": {
-        "name": "Borehole-Morris-1993",
-        "description": (
+        marginals=INPUT_MARGINALS_HARPER1983,
+        copulas=None,
+    ),
+    "Morris1993": ProbInputSpec(
+        name="Borehole-Morris-1993",
+        description=(
             "Probabilistic input model of the Borehole model "
             "from Morris et al. (1993)."
         ),
-        "marginals": INPUT_MARGINALS_MORRIS1993,
-        "copulas": None,
-    },
+        marginals=INPUT_MARGINALS_MORRIS1993,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Harper1983"
@@ -145,10 +145,13 @@ class Borehole(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Process the default name
         if name is None:
