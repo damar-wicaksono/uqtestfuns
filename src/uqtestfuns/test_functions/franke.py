@@ -79,11 +79,11 @@ AVAILABLE_INPUT_SPECS = {
 DEFAULT_INPUT_SELECTION = "Franke1979"
 
 COMMON_METADATA = dict(
-    _TAGS=["metamodeling"],
-    _AVAILABLE_INPUTS=tuple(AVAILABLE_INPUT_SPECS.keys()),
-    _AVAILABLE_PARAMETERS=None,
-    _DEFAULT_SPATIAL_DIMENSION=2,
-    _DESCRIPTION="from Franke (1979)",
+    _tags=["metamodeling"],
+    _available_inputs=tuple(AVAILABLE_INPUT_SPECS.keys()),
+    _available_parameters=None,
+    _default_spatial_dimension=2,
+    _description="from Franke (1979)",
 )
 
 
@@ -114,11 +114,11 @@ class Franke1(UQTestFunABC):
     The function features two Gaussian peaks and a Gaussian dip.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"(1st) Franke function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"(1st) Franke function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 
@@ -161,11 +161,11 @@ class Franke2(UQTestFunABC):
     The function features two plateaus joined by a steep hill.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"(2nd) Franke function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"(2nd) Franke function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 
@@ -196,11 +196,11 @@ class Franke3(UQTestFunABC):
     The function features a saddle shaped surface.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"(3rd) Franke function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"(3rd) Franke function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 
@@ -234,11 +234,11 @@ class Franke4(UQTestFunABC):
     The function features a gentle Gaussian hill.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"(4th) Franke function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"(4th) Franke function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 
@@ -274,11 +274,11 @@ class Franke5(UQTestFunABC):
     The function features a steep Gaussian hill.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"(5th) Franke function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"(5th) Franke function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 
@@ -314,11 +314,11 @@ class Franke6(UQTestFunABC):
     The function features a part of a sphere.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"(6th) Franke function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"(6th) Franke function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 

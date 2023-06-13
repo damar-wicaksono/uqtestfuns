@@ -55,15 +55,15 @@ DEFAULT_INPUT_SELECTION = "Welch1992"
 class Welch1992(UQTestFunABC):
     """A concrete implementation of the Welch et al. (1992) test function."""
 
-    _TAGS = ["metamodeling", "sensitivity", "integration"]
+    _tags = ["metamodeling", "sensitivity", "integration"]
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    _AVAILABLE_PARAMETERS = None
+    _available_parameters = None
 
-    _DEFAULT_SPATIAL_DIMENSION = 20
+    _default_spatial_dimension = 20
 
-    _DESCRIPTION = "20-Dimensional function from Welch et al. (1992)"
+    _description = "20-Dimensional function from Welch et al. (1992)"
 
     def __init__(
         self,

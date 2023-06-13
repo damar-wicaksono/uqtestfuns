@@ -105,15 +105,15 @@ class Ackley(UQTestFunABC):
         This is a keyword only parameter.
     """
 
-    _TAGS = ["optimization", "metamodeling"]
+    _tags = ["optimization", "metamodeling"]
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    _AVAILABLE_PARAMETERS = tuple(AVAILABLE_PARAMETERS.keys())
+    _available_parameters = tuple(AVAILABLE_PARAMETERS.keys())
 
-    _DEFAULT_SPATIAL_DIMENSION = None
+    _default_spatial_dimension = None
 
-    _DESCRIPTION = "Ackley function from Ackley (1987)"
+    _description = "Ackley function from Ackley (1987)"
 
     def __init__(
         self,

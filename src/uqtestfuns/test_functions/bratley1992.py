@@ -86,11 +86,11 @@ DEFAULT_DIMENSION_SELECTION = 2
 
 # Common metadata used in each class definition of Bratley test functions
 COMMON_METADATA = dict(
-    _TAGS=["integration", "sensitivity"],
-    _AVAILABLE_INPUTS=tuple(AVAILABLE_INPUT_SPECS.keys()),
-    _AVAILABLE_PARAMETERS=None,
-    _DEFAULT_SPATIAL_DIMENSION=None,
-    _DESCRIPTION="from Bratley et al. (1992)",
+    _tags=["integration", "sensitivity"],
+    _available_inputs=tuple(AVAILABLE_INPUT_SPECS.keys()),
+    _available_parameters=None,
+    _default_spatial_dimension=None,
+    _description="from Bratley et al. (1992)",
 )
 
 
@@ -145,12 +145,12 @@ class Bratley1992d(UQTestFunABC):
         This is a keyword only parameter.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = (
-        f"Integration test function #4 {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = (
+        f"Integration test function #4 {COMMON_METADATA['_description']}"
     )
 
     __init__ = _init  # type: ignore

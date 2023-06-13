@@ -67,11 +67,11 @@ AVAILABLE_INPUT_SPECS = {
 DEFAULT_INPUT_SELECTION = "McLain1974"
 
 COMMON_METADATA = dict(
-    _TAGS=["metamodeling"],
-    _AVAILABLE_INPUTS=tuple(AVAILABLE_INPUT_SPECS.keys()),
-    _AVAILABLE_PARAMETERS=None,
-    _DEFAULT_SPATIAL_DIMENSION=2,
-    _DESCRIPTION="from McLain (1974)",
+    _tags=["metamodeling"],
+    _available_inputs=tuple(AVAILABLE_INPUT_SPECS.keys()),
+    _available_parameters=None,
+    _default_spatial_dimension=2,
+    _description="from McLain (1974)",
 )
 
 
@@ -102,11 +102,11 @@ class McLainS1(UQTestFunABC):
     The function features a part of a sphere.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"McLain S1 function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"McLain S1 function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 
@@ -137,11 +137,11 @@ class McLainS2(UQTestFunABC):
     The function features a steep hill rising from a plain.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"McLain S2 function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"McLain S2 function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 
@@ -171,11 +171,11 @@ class McLainS3(UQTestFunABC):
     The function features a less steep hill (compared to S2).
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"McLain S3 function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"McLain S3 function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 
@@ -205,11 +205,11 @@ class McLainS4(UQTestFunABC):
     The function features a long narrow hill.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"McLain S4 function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"McLain S4 function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 
@@ -245,11 +245,11 @@ class McLainS5(UQTestFunABC):
     The function features two plateaus separated by a steep cliff.
     """
 
-    _TAGS = COMMON_METADATA["_TAGS"]
-    _AVAILABLE_INPUTS = COMMON_METADATA["_AVAILABLE_INPUTS"]
-    _AVAILABLE_PARAMETERS = COMMON_METADATA["_AVAILABLE_PARAMETERS"]
-    _DEFAULT_SPATIAL_DIMENSION = COMMON_METADATA["_DEFAULT_SPATIAL_DIMENSION"]
-    _DESCRIPTION = f"McLain S5 function {COMMON_METADATA['_DESCRIPTION']}"
+    _tags = COMMON_METADATA["_tags"]
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _description = f"McLain S5 function {COMMON_METADATA['_description']}"
 
     __init__ = _init  # type: ignore
 

@@ -203,15 +203,15 @@ DEFAULT_DIMENSION_SELECTION = 2
 class SobolG(UQTestFunABC):
     """A concrete implementation of the M-dimensional Sobol'-G function."""
 
-    _TAGS = ["sensitivity", "integration"]
+    _tags = ["sensitivity", "integration"]
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    _AVAILABLE_PARAMETERS = tuple(AVAILABLE_PARAMETERS.keys())
+    _available_parameters = tuple(AVAILABLE_PARAMETERS.keys())
 
-    _DEFAULT_SPATIAL_DIMENSION = None
+    _default_spatial_dimension = None
 
-    _DESCRIPTION = "Sobol'-G function from Radović et al. (1996)"
+    _description = "Sobol'-G function from Radović et al. (1996)"
 
     def __init__(
         self,

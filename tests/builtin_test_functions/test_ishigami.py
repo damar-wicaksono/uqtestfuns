@@ -13,7 +13,7 @@ from uqtestfuns import Ishigami
 import uqtestfuns.test_functions.ishigami as ishigami_mod
 
 # Test for different parameters to the Ishigami function
-available_parameters = Ishigami.AVAILABLE_PARAMETERS
+available_parameters = Ishigami.available_parameters
 
 
 @pytest.fixture(params=available_parameters)

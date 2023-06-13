@@ -87,15 +87,15 @@ DEFAULT_PARAMETERS_SELECTION = "Ishigami1991"
 class Ishigami(UQTestFunABC):
     """A concrete implementation of the Ishigami function."""
 
-    _TAGS = ["sensitivity"]
+    _tags = ["sensitivity"]
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    _AVAILABLE_PARAMETERS = tuple(AVAILABLE_PARAMETERS.keys())
+    _available_parameters = tuple(AVAILABLE_PARAMETERS.keys())
 
-    _DEFAULT_SPATIAL_DIMENSION = 3
+    _default_spatial_dimension = 3
 
-    _DESCRIPTION = "Ishigami function from Ishigami and Homma (1991)"
+    _description = "Ishigami function from Ishigami and Homma (1991)"
 
     def __init__(
         self,

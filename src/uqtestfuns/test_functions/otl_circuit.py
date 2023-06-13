@@ -108,15 +108,15 @@ DEFAULT_INPUT_SELECTION = "BenAri2007"
 class OTLCircuit(UQTestFunABC):
     """A concrete implementation of the OTL circuit test function."""
 
-    _TAGS = ["metamodeling", "sensitivity"]
+    _tags = ["metamodeling", "sensitivity"]
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    _AVAILABLE_PARAMETERS = None
+    _available_parameters = None
 
-    _DEFAULT_SPATIAL_DIMENSION = 6
+    _default_spatial_dimension = 6
 
-    _DESCRIPTION = (
+    _description = (
         "Output transformerless (OTL) circuit model "
         "from Ben-Ari and Steinberg (2007)"
     )

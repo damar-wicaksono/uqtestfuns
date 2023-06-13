@@ -149,15 +149,15 @@ DAYS_IN_YEAR = 365  # [days]
 class Sulfur(UQTestFunABC):
     """A concrete implementation of the Sulfur model test function."""
 
-    _TAGS = ["metamodeling", "sensitivity"]
+    _tags = ["metamodeling", "sensitivity"]
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    _AVAILABLE_PARAMETERS = None
+    _available_parameters = None
 
-    _DEFAULT_SPATIAL_DIMENSION = 9
+    _default_spatial_dimension = 9
 
-    _DESCRIPTION = "Sulfur model from Charlson et al. (1992)"
+    _description = "Sulfur model from Charlson et al. (1992)"
 
     def __init__(
         self,
