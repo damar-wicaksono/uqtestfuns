@@ -17,14 +17,14 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["OakleyOHagan1D"]
 
 INPUT_MARGINALS_OAKLEY2002 = [
-    UnivDist(
+    MarginalSpec(
         name="x",
         distribution="normal",
         parameters=[0.0, 4.0],
@@ -33,14 +33,15 @@ INPUT_MARGINALS_OAKLEY2002 = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Oakley2002": {
-        "name": "Oakley-OHagan-2002",
-        "description": (
+    "Oakley2002": ProbInputSpec(
+        name="Oakley-OHagan-2002",
+        description=(
             "Probabilistic input model for the one-dimensional function "
             "from Oakley-O'Hagan function (2002)"
         ),
-        "marginals": INPUT_MARGINALS_OAKLEY2002,
-    }
+        marginals=INPUT_MARGINALS_OAKLEY2002,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Oakley2002"
@@ -67,10 +68,13 @@ class OakleyOHagan1D(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Process the default name
         if name is None:

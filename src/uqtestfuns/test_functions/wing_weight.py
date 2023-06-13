@@ -23,69 +23,69 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 from .utils import deg2rad
 
 __all__ = ["WingWeight"]
 
 INPUT_MARGINALS_FORRESTER2008 = [
-    UnivDist(
+    MarginalSpec(
         name="Sw",
         distribution="uniform",
         parameters=[150.0, 200.0],
         description="wing area [ft^2]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Wfw",
         distribution="uniform",
         parameters=[220.0, 300.0],
         description="weight of fuel in the wing [lb]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="A",
         distribution="uniform",
         parameters=[6.0, 10.0],
         description="aspect ratio [-]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Lambda",
         distribution="uniform",
         parameters=[-10.0, 10.0],
         description="quarter-chord sweep [degrees]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="q",
         distribution="uniform",
         parameters=[16.0, 45.0],
         description="dynamic pressure at cruise [lb/ft^2]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="lambda",
         distribution="uniform",
         parameters=[0.5, 1.0],
         description="taper ratio [-]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="tc",
         distribution="uniform",
         parameters=[0.08, 0.18],
         description="aerofoil thickness to chord ratio [-]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Nz",
         distribution="uniform",
         parameters=[2.5, 6.0],
         description="ultimate load factor [-]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Wdg",
         distribution="uniform",
         parameters=[1700, 2500],
         description="flight design gross weight [lb]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Wp",
         distribution="uniform",
         parameters=[0.025, 0.08],
@@ -94,15 +94,15 @@ INPUT_MARGINALS_FORRESTER2008 = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Forrester2008": {
-        "name": "Wing-Weight-Forrester-2008",
-        "description": (
+    "Forrester2008": ProbInputSpec(
+        name="Wing-Weight-Forrester-2008",
+        description=(
             "Probabilistic input model for the Wing Weight model "
             "from Forrester et al. (2008)."
         ),
-        "marginals": INPUT_MARGINALS_FORRESTER2008,
-        "copulas": None,
-    }
+        marginals=INPUT_MARGINALS_FORRESTER2008,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Forrester2008"
@@ -129,14 +129,17 @@ class WingWeight(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Process the default name
         if name is None:
-            name = WingWeight.__name__
+            name = self.__class__.__name__
 
         super().__init__(prob_input=prob_input, name=name)
 

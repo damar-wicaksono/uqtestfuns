@@ -22,14 +22,15 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["Welch1992"]
 
+
 INPUT_MARGINALS_WELCH1992 = [
-    UnivDist(
+    MarginalSpec(
         name=f"x{i}",
         distribution="uniform",
         parameters=[-0.5, 0.5],
@@ -39,14 +40,15 @@ INPUT_MARGINALS_WELCH1992 = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Welch1992": {
-        "name": "Welch1992",
-        "description": (
+    "Welch1992": ProbInputSpec(
+        name="Welch1992",
+        description=(
             "Input specification for the test function "
             "from Welch et al. (1992)"
         ),
-        "marginals": INPUT_MARGINALS_WELCH1992,
-    }
+        marginals=INPUT_MARGINALS_WELCH1992,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Welch1992"
@@ -73,10 +75,13 @@ class Welch1992(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Process the default name
         if name is None:

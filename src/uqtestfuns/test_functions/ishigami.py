@@ -31,10 +31,11 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import (
-    create_prob_input_from_available,
+    get_prob_input_spec,
+    create_prob_input_from_spec,
     create_parameters_from_available,
 )
 
@@ -42,19 +43,19 @@ __all__ = ["Ishigami"]
 
 
 INPUT_MARGINALS_ISHIGAMI1991 = [
-    UnivDist(
+    MarginalSpec(
         name="X1",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
         description="None",
     ),
-    UnivDist(
+    MarginalSpec(
         name="X2",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
         description="None",
     ),
-    UnivDist(
+    MarginalSpec(
         name="X3",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
@@ -63,15 +64,15 @@ INPUT_MARGINALS_ISHIGAMI1991 = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Ishigami1991": {
-        "name": "Ishigami-1991",
-        "description": (
+    "Ishigami1991": ProbInputSpec(
+        name="Ishigami-1991",
+        description=(
             "Probabilistic input model for the Ishigami function "
             "from Ishigami and Homma (1991)."
         ),
-        "marginals": INPUT_MARGINALS_ISHIGAMI1991,
-        "copulas": None,
-    }
+        marginals=INPUT_MARGINALS_ISHIGAMI1991,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Ishigami1991"
@@ -106,10 +107,13 @@ class Ishigami(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Ishigami supports several different parameterizations
         parameters = create_parameters_from_available(

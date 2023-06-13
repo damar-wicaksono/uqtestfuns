@@ -25,51 +25,51 @@ import numpy as np
 from copy import copy
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["Piston"]
 
 # Marginals specification from [1]
 INPUT_MARGINALS_BENARI2007 = [
-    UnivDist(
+    MarginalSpec(
         name="M",
         distribution="uniform",
         parameters=[30.0, 60.0],
         description="Piston weight [kg]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="S",
         distribution="uniform",
         parameters=[0.005, 0.020],
         description="Piston surface area [m^2]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="V0",
         distribution="uniform",
         parameters=[0.002, 0.010],
         description="Initial gas volume [m^3]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="k",
         distribution="uniform",
         parameters=[1000.0, 5000.0],
         description="Spring coefficient [N/m]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="P0",
         distribution="uniform",
         parameters=[90000.0, 110000.0],
         description="Atmospheric pressure [N/m^2]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="Ta",
         distribution="uniform",
         parameters=[290.0, 296.0],
         description="Ambient temperature [K]",
     ),
-    UnivDist(
+    MarginalSpec(
         name="T0",
         distribution="uniform",
         parameters=[340.0, 360.0],
@@ -81,7 +81,7 @@ INPUT_MARGINALS_BENARI2007 = [
 INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
 for i in range(13):
     INPUT_MARGINALS_MOON2010.append(
-        UnivDist(
+        MarginalSpec(
             name=f"Inert {i+1}",
             distribution="uniform",
             parameters=[100.0, 200.0],
@@ -90,24 +90,24 @@ for i in range(13):
     )
 
 AVAILABLE_INPUT_SPECS = {
-    "BenAri2007": {
-        "name": "Piston-Ben-Ari-2007",
-        "description": (
+    "BenAri2007": ProbInputSpec(
+        name="Piston-Ben-Ari-2007",
+        description=(
             "Probabilistic input model for the Piston simulation model "
             "from Ben-Ari and Steinberg (2007)."
         ),
-        "marginals": INPUT_MARGINALS_BENARI2007,
-        "copulas": None,
-    },
-    "Moon2010": {
-        "name": "Piston-Moon-2010",
-        "description": (
+        marginals=INPUT_MARGINALS_BENARI2007,
+        copulas=None,
+    ),
+    "Moon2010": ProbInputSpec(
+        name="Piston-Moon-2010",
+        description=(
             "Probabilistic input model for the Piston simulation model "
             "from Moon (2010)."
         ),
-        "marginals": INPUT_MARGINALS_MOON2010,
-        "copulas": None,
-    },
+        marginals=INPUT_MARGINALS_MOON2010,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "BenAri2007"
@@ -134,10 +134,13 @@ class Piston(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            rng_seed=rng_seed_prob_input,
+        # Get the ProbInputSpec from available
+        prob_input_spec = get_prob_input_spec(
+            prob_input_selection, AVAILABLE_INPUT_SPECS
+        )
+        # Create a ProbInput
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, rng_seed=rng_seed_prob_input
         )
         # Process the default name
         if name is None:

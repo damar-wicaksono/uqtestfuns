@@ -24,16 +24,16 @@ import numpy as np
 from typing import List, Optional
 
 from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpecVarDim
 from .available import (
-    create_prob_input_from_available,
+    create_prob_input_from_spec,
     create_parameters_from_available,
 )
 
 __all__ = ["Ackley"]
 
 
-def _ackley_input(spatial_dimension: int) -> List[UnivDist]:
+def _ackley_input(spatial_dimension: int) -> List[MarginalSpec]:
     """Create a list of marginals for the M-dimensional Ackley function.
 
     Parameters
@@ -43,13 +43,13 @@ def _ackley_input(spatial_dimension: int) -> List[UnivDist]:
 
     Returns
     -------
-    List[UnivDist]
+    List[MarginalSpec]
         A list of marginals for the multivariate input following Ref. [1]
     """
     marginals = []
     for i in range(spatial_dimension):
         marginals.append(
-            UnivDist(
+            MarginalSpec(
                 name=f"X{i + 1}",
                 distribution="uniform",
                 parameters=[-32.768, 32.768],
@@ -61,15 +61,16 @@ def _ackley_input(spatial_dimension: int) -> List[UnivDist]:
 
 
 AVAILABLE_INPUT_SPECS = {
-    "Ackley1987": {
-        "name": "Ackley-Ackley-1987",
-        "description": (
+    "Ackley1987": ProbInputSpecVarDim(
+        name="Ackley-Ackley-1987",
+        description=(
             "Search domain for the Ackley function from Ackley (1987)."
         ),
-        "marginals": _ackley_input,
-        "copulas": None,
-    },
+        marginals_generator=_ackley_input,
+        copulas=None,
+    ),
 }
+
 
 DEFAULT_INPUT_SELECTION = "Ackley1987"
 
@@ -130,13 +131,17 @@ class Ackley(UQTestFunABC):
                 f"Spatial dimension is expected to be of 'int'. "
                 f"Got {type(spatial_dimension)} instead."
             )
+
+        # Get the ProbInputSpec from available
+        if prob_input_selection is None:
+            prob_input_spec = None
+        else:
+            prob_input_spec = AVAILABLE_INPUT_SPECS[prob_input_selection]
+
         # Ackley is an M-dimensional test function, either given / use default
         # Create the input according to spatial dimension
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
-            spatial_dimension,
-            rng_seed_prob_input,
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec, spatial_dimension, rng_seed_prob_input
         )
         # Create the parameters according to spatial dimension
         parameters = create_parameters_from_available(

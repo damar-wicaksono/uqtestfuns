@@ -49,17 +49,17 @@ import numpy as np
 
 from typing import List, Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpecVarDim
 from ..core.uqtestfun_abc import UQTestFunABC
 from .available import (
-    create_prob_input_from_available,
+    create_prob_input_from_spec,
     create_parameters_from_available,
 )
 
 __all__ = ["SobolG"]
 
 
-def _create_sobol_input(spatial_dimension: int) -> List[UnivDist]:
+def _create_sobol_input(spatial_dimension: int) -> List[MarginalSpec]:
     """Construct an input instance for a given dimension according to [1].
 
     Parameters
@@ -69,14 +69,14 @@ def _create_sobol_input(spatial_dimension: int) -> List[UnivDist]:
 
     Returns
     -------
-    List[UnivDist]
+    List[MarginalSpec]
         A list of M marginals as UnivariateInput instances to construct
         the MultivariateInput.
     """
     marginals = []
     for i in range(spatial_dimension):
         marginals.append(
-            UnivDist(
+            MarginalSpec(
                 name=f"X{i + 1}",
                 distribution="uniform",
                 parameters=[0.0, 1.0],
@@ -88,15 +88,15 @@ def _create_sobol_input(spatial_dimension: int) -> List[UnivDist]:
 
 
 AVAILABLE_INPUT_SPECS = {
-    "Radovic1996": {
-        "name": "Sobol-G-Radovic-1996",
-        "description": (
+    "Radovic1996": ProbInputSpecVarDim(
+        name="Sobol-G-Radovic-1996",
+        description=(
             "Probabilistic input model for the Sobol'-G function "
             "from Radović et al. (1996)."
         ),
-        "marginals": _create_sobol_input,
-        "copulas": None,
-    },
+        marginals_generator=_create_sobol_input,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Radovic1996"
@@ -223,6 +223,11 @@ class SobolG(UQTestFunABC):
         rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Arguments processing
+        # Get the ProbInputSpec from available
+        if prob_input_selection is None:
+            prob_input_spec = None
+        else:
+            prob_input_spec = AVAILABLE_INPUT_SPECS[prob_input_selection]
         if not isinstance(spatial_dimension, int):
             raise TypeError(
                 f"Spatial dimension is expected to be of 'int'. "
@@ -230,9 +235,8 @@ class SobolG(UQTestFunABC):
             )
         # Sobol-G is an M-dimensional test function, either given / use default
         # Create the input according to spatial dimension
-        prob_input = create_prob_input_from_available(
-            prob_input_selection,
-            AVAILABLE_INPUT_SPECS,
+        prob_input = create_prob_input_from_spec(
+            prob_input_spec,
             spatial_dimension,
             rng_seed_prob_input,
         )

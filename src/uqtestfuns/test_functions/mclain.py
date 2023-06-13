@@ -31,20 +31,20 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["McLainS1", "McLainS2", "McLainS3", "McLainS4", "McLainS5"]
 
 INPUT_MARGINALS_MCLAIN1974 = [  # From Ref. [1]
-    UnivDist(
+    MarginalSpec(
         name="X1",
         distribution="uniform",
         parameters=[1.0, 10.0],
         description="None",
     ),
-    UnivDist(
+    MarginalSpec(
         name="X2",
         distribution="uniform",
         parameters=[1.0, 10.0],
@@ -53,15 +53,15 @@ INPUT_MARGINALS_MCLAIN1974 = [  # From Ref. [1]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "McLain1974": {
-        "name": "McLain-1974",
-        "description": (
+    "McLain1974": ProbInputSpec(
+        name="McLain-1974",
+        description=(
             "Input specification for the McLain's test functions "
             "from McLain (1974)."
         ),
-        "marginals": INPUT_MARGINALS_MCLAIN1974,
-        "copulas": None,
-    }
+        marginals=INPUT_MARGINALS_MCLAIN1974,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "McLain1974"
@@ -84,10 +84,13 @@ def _init(
 ) -> None:
     """A common __init__ for all McLain's test functions."""
     # --- Arguments processing
-    prob_input = create_prob_input_from_available(
-        prob_input_selection,
-        AVAILABLE_INPUT_SPECS,
-        rng_seed=rng_seed_prob_input,
+    # Get the ProbInputSpec from available
+    prob_input_spec = get_prob_input_spec(
+        prob_input_selection, AVAILABLE_INPUT_SPECS
+    )
+    # Create a ProbInput
+    prob_input = create_prob_input_from_spec(
+        prob_input_spec, rng_seed=rng_seed_prob_input
     )
     # Process the default name
     if name is None:

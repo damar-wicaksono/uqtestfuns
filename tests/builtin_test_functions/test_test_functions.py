@@ -241,5 +241,5 @@ def test_evaluate_invalid_spatial_dim(builtin_testfun):
 
 def test_evaluate_invalid_input_selection(builtin_testfun):
     """Test if an exception is raised if invalid input selection is given."""
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         builtin_testfun(prob_input_selection=100)

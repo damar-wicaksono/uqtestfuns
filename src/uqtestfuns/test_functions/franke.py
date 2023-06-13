@@ -43,20 +43,20 @@ import numpy as np
 
 from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
+from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["Franke1", "Franke2", "Franke3", "Franke4", "Franke5", "Franke6"]
 
 INPUT_MARGINALS_FRANKE1979 = [  # From Ref. [1]
-    UnivDist(
+    MarginalSpec(
         name="X1",
         distribution="uniform",
         parameters=[0.0, 1.0],
         description="None",
     ),
-    UnivDist(
+    MarginalSpec(
         name="X2",
         distribution="uniform",
         parameters=[0.0, 1.0],
@@ -65,15 +65,15 @@ INPUT_MARGINALS_FRANKE1979 = [  # From Ref. [1]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Franke1979": {
-        "name": "Franke-1979",
-        "description": (
+    "Franke1979": ProbInputSpec(
+        name="Franke-1979",
+        description=(
             "Input specification for the Franke's test functions "
             "from Franke (1979)."
         ),
-        "marginals": INPUT_MARGINALS_FRANKE1979,
-        "copulas": None,
-    }
+        marginals=INPUT_MARGINALS_FRANKE1979,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Franke1979"
@@ -96,10 +96,13 @@ def _init(
 ) -> None:
     """A common __init__ for all Franke's test functions."""
     # --- Arguments processing
-    prob_input = create_prob_input_from_available(
-        prob_input_selection,
-        AVAILABLE_INPUT_SPECS,
-        rng_seed=rng_seed_prob_input,
+    # Get the ProbInputSpec from available
+    prob_input_spec = get_prob_input_spec(
+        prob_input_selection, AVAILABLE_INPUT_SPECS
+    )
+    # Create a ProbInput
+    prob_input = create_prob_input_from_spec(
+        prob_input_spec, rng_seed=rng_seed_prob_input
     )
     # Process the default name
     if name is None:

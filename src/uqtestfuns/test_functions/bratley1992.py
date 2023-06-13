@@ -35,13 +35,13 @@ import numpy as np
 from typing import List, Optional
 
 from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.univariate_distribution import UnivDist
-from .available import create_prob_input_from_available
+from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpecVarDim
+from .available import create_prob_input_from_spec
 
 __all__ = ["Bratley1992d"]
 
 
-def _bratley_input(spatial_dimension: int) -> List[UnivDist]:
+def _bratley_input(spatial_dimension: int) -> List[MarginalSpec]:
     """Create a list of marginals for the M-dimensional Bratley test functions.
 
     Parameters
@@ -51,13 +51,13 @@ def _bratley_input(spatial_dimension: int) -> List[UnivDist]:
 
     Returns
     -------
-    List[UnivDist]
+    List[MarginalSpec]
         A list of marginals for the multivariate input following Ref. [1]
     """
     marginals = []
     for i in range(spatial_dimension):
         marginals.append(
-            UnivDist(
+            MarginalSpec(
                 name=f"X{i + 1}",
                 distribution="uniform",
                 parameters=[0.0, 1.0],
@@ -69,14 +69,14 @@ def _bratley_input(spatial_dimension: int) -> List[UnivDist]:
 
 
 AVAILABLE_INPUT_SPECS = {
-    "Bratley1992": {
-        "name": "Bratley1992",
-        "description": (
+    "Bratley1992": ProbInputSpecVarDim(
+        name="Bratley1992",
+        description=(
             "Integration domain of the functions from Bratley et al. (1992)"
         ),
-        "marginals": _bratley_input,
-        "copulas": None,
-    },
+        marginals_generator=_bratley_input,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "Bratley1992"
@@ -104,6 +104,12 @@ def _init(
 ) -> None:
     """A common __init__ for all Bratley1992 test functions."""
     # --- Arguments processing
+    # Get the ProbInputSpec from available
+    if prob_input_selection is None:
+        prob_input_spec = None
+    else:
+        prob_input_spec = AVAILABLE_INPUT_SPECS[prob_input_selection]
+
     if not isinstance(spatial_dimension, int):
         raise TypeError(
             f"Spatial dimension is expected to be of 'int'. "
@@ -111,9 +117,8 @@ def _init(
         )
     # A Bratley1992 test function is an M-dimensional test function
     # Create the input according to spatial dimension
-    prob_input = create_prob_input_from_available(
-        prob_input_selection,
-        AVAILABLE_INPUT_SPECS,
+    prob_input = create_prob_input_from_spec(
+        prob_input_spec,
         spatial_dimension,
         rng_seed_prob_input,
     )
