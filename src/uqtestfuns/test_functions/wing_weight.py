@@ -111,15 +111,15 @@ DEFAULT_INPUT_SELECTION = "Forrester2008"
 class WingWeight(UQTestFunABC):
     """A concrete implementation of the wing weight test function."""
 
-    _TAGS = ["metamodeling", "sensitivity"]
+    _tags = ["metamodeling", "sensitivity"]
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    _AVAILABLE_PARAMETERS = None
+    _available_parameters = None
 
-    _DEFAULT_SPATIAL_DIMENSION = 10
+    _default_spatial_dimension = 10
 
-    _DESCRIPTION = "Wing weight model from Forrester et al. (2008)"
+    _description = "Wing weight model from Forrester et al. (2008)"
 
     def __init__(
         self,

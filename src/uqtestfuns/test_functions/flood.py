@@ -109,15 +109,15 @@ DEFAULT_INPUT_SELECTION = "Iooss2015"
 class Flood(UQTestFunABC):
     """Concrete implementation of the Flood model test function."""
 
-    _TAGS = ["metamodeling", "sensitivity"]
+    _tags = ["metamodeling", "sensitivity"]
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    _AVAILABLE_PARAMETERS = None
+    _available_parameters = None
 
-    _DEFAULT_SPATIAL_DIMENSION = 8
+    _default_spatial_dimension = 8
 
-    _DESCRIPTION = "Flood model from Iooss and Lemaître (2015)"
+    _description = "Flood model from Iooss and Lemaître (2015)"
 
     def __init__(
         self,

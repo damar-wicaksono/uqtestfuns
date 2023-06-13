@@ -49,15 +49,15 @@ DEFAULT_INPUT_SELECTION = "Oakley2002"
 class OakleyOHagan1D(UQTestFunABC):
     """A concrete implementation of the 1D Oakley-O'Hagan test function."""
 
-    _TAGS = ["metamodeling"]
+    _tags = ["metamodeling"]
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
 
-    _AVAILABLE_PARAMETERS = None
+    _available_parameters = None
 
-    _DEFAULT_SPATIAL_DIMENSION = 1
+    _default_spatial_dimension = 1
 
-    _DESCRIPTION = "One-dimensional function from Oakley and O'Hagan (2002)"
+    _description = "One-dimensional function from Oakley and O'Hagan (2002)"
 
     def __init__(
         self,

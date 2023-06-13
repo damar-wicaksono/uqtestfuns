@@ -11,7 +11,7 @@ import pytest
 
 from uqtestfuns import SobolG
 
-available_parameters = SobolG.AVAILABLE_PARAMETERS
+available_parameters = SobolG.available_parameters
 
 
 def test_wrong_param_selection():

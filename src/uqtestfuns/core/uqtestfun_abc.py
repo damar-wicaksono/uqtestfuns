@@ -12,11 +12,11 @@ from .utils import create_canonical_uniform_input
 __all__ = ["UQTestFunABC"]
 
 CLASS_HIDDEN_ATTRIBUTES = [
-    "_TAGS",
-    "_AVAILABLE_INPUTS",
-    "_AVAILABLE_PARAMETERS",
-    "_DEFAULT_SPATIAL_DIMENSION",
-    "_DESCRIPTION",
+    "_tags",
+    "_available_inputs",
+    "_available_parameters",
+    "_default_spatial_dimension",
+    "_description",
 ]
 
 
@@ -31,23 +31,7 @@ class classproperty(property):
 
 
 class UQTestFunABC(abc.ABC):
-    """An abstract class for UQ test functions.
-
-    Attributes
-    ----------
-    tags : List[str]
-        A List of tags to classify a test function given known field of
-        applications in the literature. This is an abstract class property.
-    available_inputs : Optional[Tuple[str, ...]]
-        A tuple of available probabilistic input model specification in the
-        literature. This is an abstract class property.
-    available_parameters : Optional[Tuple[str, ...]]
-        A tuple of available set of parameter values in the literature.
-        This is an abstract class property.
-    default_spatial_dimension : Optional[int]
-        The default spatial dimension of a UQ test function. If 'None' then
-        the function is a variable dimensional test function.
-    """
+    """An abstract class for UQ test functions."""
 
     def __init__(
         self,
@@ -89,29 +73,29 @@ class UQTestFunABC(abc.ABC):
                 )
 
     @classproperty
-    def TAGS(cls) -> Optional[List[str]]:
+    def tags(cls) -> Optional[List[str]]:
         """Tags to classify different UQ test functions."""
-        return cls._TAGS  # type: ignore
+        return cls._tags  # type: ignore
 
     @classproperty
-    def AVAILABLE_INPUTS(cls) -> Optional[Tuple[str, ...]]:
+    def available_inputs(cls) -> Optional[Tuple[str, ...]]:
         """All the keys to the available probabilistic input specifications."""
-        return cls._AVAILABLE_INPUTS  # type: ignore
+        return cls._available_inputs  # type: ignore
 
     @classproperty
-    def AVAILABLE_PARAMETERS(cls) -> Optional[Tuple[str, ...]]:
+    def available_parameters(cls) -> Optional[Tuple[str, ...]]:
         """All the keys to the available set of parameter values."""
-        return cls._AVAILABLE_PARAMETERS  # type: ignore
+        return cls._available_parameters  # type: ignore
 
     @classproperty
-    def DEFAULT_SPATIAL_DIMENSION(cls) -> Optional[int]:
+    def default_spatial_dimension(cls) -> Optional[int]:
         """To store the default dimension of a test function."""
-        return cls._DEFAULT_SPATIAL_DIMENSION  # type: ignore
+        return cls._default_spatial_dimension  # type: ignore
 
     @classproperty
-    def DESCRIPTION(cls) -> Optional[str]:
+    def description(cls) -> Optional[str]:
         """Short description of the UQ test function."""
-        return cls._DESCRIPTION  # type: ignore
+        return cls._description  # type: ignore
 
     @property
     def prob_input(self) -> Optional[ProbInput]:
@@ -145,7 +129,7 @@ class UQTestFunABC(abc.ABC):
         if self._prob_input is not None:
             return self._prob_input.spatial_dimension
         else:
-            return self.DEFAULT_SPATIAL_DIMENSION
+            return self.default_spatial_dimension
 
     @property
     def name(self) -> Optional[str]:
@@ -227,7 +211,7 @@ class UQTestFunABC(abc.ABC):
         out = (
             f"Name              : {self.name}\n"
             f"Spatial dimension : {self.spatial_dimension}\n"
-            f"Description       : {self.DESCRIPTION}"
+            f"Description       : {self.description}"
         )
 
         return out

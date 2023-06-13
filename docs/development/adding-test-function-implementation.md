@@ -329,15 +329,15 @@ They are useful for the organization and bookkeeping of the test functions.
 ```python
 class Branin(UQTestFunABC):
     ...
-    _TAGS = ["optimization"]  # Application tags
+    _tags = ["optimization"]  # Application tags
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())  # Input selection keywords
+    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())  # Input selection keywords
 
-    _AVAILABLE_PARAMETERS = tuple(AVAILABLE_PARAMETERS.keys())  # Parameters selection keywords
+    _available_parameters = tuple(AVAILABLE_PARAMETERS.keys())  # Parameters selection keywords
 
-    _DEFAULT_SPATIAL_DIMENSION = 2  # Spatial dimension of the function
+    _default_spatial_dimension = 2  # Spatial dimension of the function
 
-    _DESCRIPTION = "Branin function from Dixon and Szegö (1978)"  # Short description
+    _description = "Branin function from Dixon and Szegö (1978)"  # Short description
     ...
 ```
 

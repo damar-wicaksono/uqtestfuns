@@ -13,8 +13,8 @@ import pytest
 import copy
 
 from conftest import assert_call
-from uqtestfuns.utils import get_available_classes
 
+from uqtestfuns.utils import get_available_classes
 from uqtestfuns import test_functions
 
 AVAILABLE_FUNCTION_CLASSES = get_available_classes(test_functions)
@@ -71,11 +71,11 @@ def test_create_instance_with_prob_input(builtin_testfun):
     my_prob_input = copy.copy(my_fun.prob_input)
 
     # Create an instance without probabilistic input
-    if testfun_class.AVAILABLE_INPUTS is not None:
+    if testfun_class.available_inputs is not None:
         my_fun_2 = testfun_class(prob_input_selection=None)
         assert my_fun_2.prob_input is None
         assert my_fun_2.spatial_dimension == (
-            testfun_class.DEFAULT_SPATIAL_DIMENSION
+            testfun_class.default_spatial_dimension
         )
 
         # Assign the probabilistic input
@@ -102,7 +102,7 @@ def test_create_instance_with_parameters(builtin_testfun):
     my_fun = testfun_class()
     parameters = my_fun.parameters
 
-    if testfun_class.AVAILABLE_PARAMETERS is not None:
+    if testfun_class.available_parameters is not None:
         my_fun_2 = testfun_class(parameters_selection=None)
         assert my_fun_2.parameters is None
         my_fun_2.parameters = parameters
@@ -116,7 +116,7 @@ def test_available_inputs(builtin_testfun):
 
     testfun_class = builtin_testfun
 
-    available_inputs = testfun_class.AVAILABLE_INPUTS
+    available_inputs = testfun_class.available_inputs
 
     for available_input in available_inputs:
         assert_call(testfun_class, prob_input_selection=available_input)
@@ -127,7 +127,7 @@ def test_available_parameters(builtin_testfun):
 
     testfun_class = builtin_testfun
 
-    available_parameters = testfun_class.AVAILABLE_PARAMETERS
+    available_parameters = testfun_class.available_parameters
 
     if available_parameters is not None:
         for available_parameter in available_parameters:
@@ -234,7 +234,7 @@ def test_evaluate_wrong_input_domain(builtin_testfun):
 def test_evaluate_invalid_spatial_dim(builtin_testfun):
     """Test if an exception is raised if invalid spatial dimension is given."""
 
-    if builtin_testfun.DEFAULT_SPATIAL_DIMENSION is None:
+    if builtin_testfun.default_spatial_dimension is None:
         with pytest.raises(TypeError):
             builtin_testfun(spatial_dimension="10")
 
