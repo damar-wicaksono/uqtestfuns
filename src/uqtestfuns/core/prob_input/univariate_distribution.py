@@ -21,7 +21,7 @@ from .utils import (
     get_cdf_values,
     get_icdf_values,
 )
-from .input_spec import MarginalSpec
+from .input_spec import UnivDistSpec
 from ...global_settings import ARRAY_FLOAT
 
 __all__ = ["UnivDist"]
@@ -161,13 +161,13 @@ class UnivDist:
 
     @classmethod
     def from_spec(
-        cls, marginal_spec: MarginalSpec, rng_seed: Optional[int] = None
+        cls, marginal_spec: UnivDistSpec, rng_seed: Optional[int] = None
     ):
         """Create an instance of UnivDist from a marginal specification.
 
         Parameters
         ----------
-        marginal_spec : MarginalSpec
+        marginal_spec : UnivDistSpec
             The specification for the univariate marginal.
         rng_seed : int, optional
             The seed used to initialize the pseudo-random number generator.

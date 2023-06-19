@@ -116,6 +116,8 @@ parts:
         title: ProbInput
       - file: api/univdist
         title: UnivDist
+      - file: api/input-spec
+        title: ProbInputSpec
   - caption: Development
     chapters:
       - file: development/overview

@@ -13,7 +13,7 @@ from uqtestfuns import Ishigami
 import uqtestfuns.test_functions.ishigami as ishigami_mod
 
 # Test for different parameters to the Ishigami function
-available_parameters = Ishigami.available_parameters
+available_parameters = list(Ishigami.available_parameters.keys())
 
 
 @pytest.fixture(params=available_parameters)
@@ -72,5 +72,5 @@ def test_different_parameters(param_selection):
 
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         Ishigami(parameters_selection="marelli1")

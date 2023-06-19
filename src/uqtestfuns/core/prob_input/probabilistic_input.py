@@ -15,7 +15,7 @@ from tabulate import tabulate
 from typing import Any, List, Optional, Union, Tuple
 
 from .univariate_distribution import UnivDist, FIELD_NAMES
-from .input_spec import ProbInputSpec, ProbInputSpecVarDim
+from .input_spec import ProbInputSpecFixDim, ProbInputSpecVarDim
 
 __all__ = ["ProbInput"]
 
@@ -186,7 +186,7 @@ class ProbInput:
     @classmethod
     def from_spec(
         cls,
-        prob_input_spec: Union[ProbInputSpec, ProbInputSpecVarDim],
+        prob_input_spec: Union[ProbInputSpecFixDim, ProbInputSpecVarDim],
         *,
         spatial_dimension: Optional[int] = None,
         rng_seed: Optional[int] = None,

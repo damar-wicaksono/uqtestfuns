@@ -32,17 +32,14 @@ References
 """
 import numpy as np
 
-from typing import Optional
-
-from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
 from .utils import lognorm2norm_mean, lognorm2norm_std
-from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["DampedOscillator"]
 
 INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
-    MarginalSpec(
+    UnivDistSpec(
         name="Mp",
         distribution="lognormal",
         parameters=[
@@ -51,7 +48,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary mass",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Ms",
         distribution="lognormal",
         parameters=[
@@ -60,7 +57,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary mass",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Kp",
         distribution="lognormal",
         parameters=[
@@ -69,7 +66,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary spring stiffness",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Ks",
         distribution="lognormal",
         parameters=[
@@ -78,7 +75,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary spring stiffness",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Zeta_p",
         distribution="lognormal",
         parameters=[
@@ -87,7 +84,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary damping ratio",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Zeta_s",
         distribution="lognormal",
         parameters=[
@@ -96,7 +93,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary damping ratio",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="S0",
         distribution="lognormal",
         parameters=[
@@ -108,8 +105,8 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "DerKiureghian1991": ProbInputSpec(
-        name="Damped-Oscillator-Der-Kiureghian-1991",
+    "DerKiureghian1991": ProbInputSpecFixDim(
+        name="DampedOscillator-DerKiureghian1991",
         description=(
             "Probabilistic input model for the Damped Oscillator model "
             "from Der Kiureghian and De Stefano (1991)."
@@ -119,68 +116,9 @@ AVAILABLE_INPUT_SPECS = {
     ),
 }
 
-DEFAULT_INPUT_SELECTION = "DerKiureghian1991"
 
-
-class DampedOscillator(UQTestFunABC):
-    """A concrete implementation of the Damped oscillator test function."""
-
-    _tags = ["metamodeling", "sensitivity"]
-
-    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
-
-    _available_parameters = None
-
-    _default_spatial_dimension = 8
-
-    _description = (
-        "Damped oscillator model from Igusa and Der Kiureghian (1985)"
-    )
-
-    def __init__(
-        self,
-        *,
-        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-        name: Optional[str] = None,
-        rng_seed_prob_input: Optional[int] = None,
-    ):
-        # --- Arguments processing
-        # Get the ProbInputSpec from available
-        prob_input_spec = get_prob_input_spec(
-            prob_input_selection, AVAILABLE_INPUT_SPECS
-        )
-        # Create a ProbInput
-        prob_input = create_prob_input_from_spec(
-            prob_input_spec, rng_seed=rng_seed_prob_input
-        )
-        # Process the default name
-        if name is None:
-            name = DampedOscillator.__name__
-
-        super().__init__(prob_input=prob_input, name=name)
-
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the damped oscillator model on a set of input values.
-
-        Parameters
-        ----------
-        xx : np.ndarray
-            A 7-dimensional input values given by an N-by-7 array
-            where N is the number of input values.
-
-        Returns
-        -------
-        np.ndarray
-            The output of the damped oscillator model test function, i.e.,
-            the relative displacement of the secondary spring.
-        """
-        yy = evaluate_mean_square_displacement(xx)
-
-        return np.sqrt(yy)
-
-
-def evaluate_mean_square_displacement(xx: np.ndarray):
-    """Evaluate the mean-square displacement of the damped oscillator model.
+def evaluate(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the rms displacement of the damped oscillator model.
 
     Parameters
     ----------
@@ -231,4 +169,18 @@ def evaluate_mean_square_displacement(xx: np.ndarray):
     # NOTE: This is squared displacement
     xx_s = first_term * second_term * third_term
 
-    return xx_s
+    return np.sqrt(xx_s)
+
+
+class DampedOscillator(UQTestFunABC):
+    """A concrete implementation of the Damped oscillator test function."""
+
+    _tags = ["metamodeling", "sensitivity"]
+    _description = (
+        "Damped oscillator model from Igusa and Der Kiureghian (1985)"
+    )
+    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_parameters = None
+    _default_spatial_dimension = 8
+
+    eval_ = staticmethod(evaluate)

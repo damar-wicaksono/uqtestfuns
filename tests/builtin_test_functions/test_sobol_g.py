@@ -11,12 +11,12 @@ import pytest
 
 from uqtestfuns import SobolG
 
-available_parameters = SobolG.available_parameters
+available_parameters = list(SobolG.available_parameters.keys())
 
 
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         SobolG(parameters_selection="marelli1")
 
 

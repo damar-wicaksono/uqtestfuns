@@ -4,8 +4,8 @@ Test module for the prob. input specification class.
 from typing import List
 
 from uqtestfuns.core.prob_input.input_spec import (
-    MarginalSpec,
-    ProbInputSpec,
+    UnivDistSpec,
+    ProbInputSpecFixDim,
     ProbInputSpecVarDim,
 )
 
@@ -19,7 +19,7 @@ def test_marginalspec():
     description = "Filling gas temperature"
 
     # Create a MarginalSpec
-    my_marginalspec = MarginalSpec(
+    my_marginalspec = UnivDistSpec(
         name=name,
         distribution=distribution,
         parameters=parameters,
@@ -43,7 +43,7 @@ def test_probinputspec_list():
     name = "Some input"
     description = "Probabilistic input model from somewhere"
     copulas = None
-    my_probinputspec = ProbInputSpec(
+    my_probinputspec = ProbInputSpecFixDim(
         name=name,
         description=description,
         marginals=marginals,
@@ -81,10 +81,10 @@ def test_probinputspec_vardim():
     assert my_probinputspec.marginals_generator == marginals_gen
 
 
-def _create_marginals(spatial_dimension: int) -> List[MarginalSpec]:
+def _create_marginals(spatial_dimension: int) -> List[UnivDistSpec]:
     """Create a list of test marginals."""
     return [
-        MarginalSpec(
+        UnivDistSpec(
             name=f"x{i + 1}",
             distribution="uniform",
             parameters=[0.0, 1.0],

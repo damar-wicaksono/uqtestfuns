@@ -5,8 +5,9 @@ import pkg_resources
 
 from .core import UnivDist
 from .core import ProbInput
-from .core import UQTestFunABC
+from .core import UQTestFunBareABC, UQTestFunABC
 from .core import UQTestFun
+
 
 from . import test_functions
 from .test_functions import *  # noqa
@@ -21,6 +22,8 @@ __version__ = pkg_resources.require("uqtestfuns")[0].version
 __all__ = [
     "UnivDist",
     "ProbInput",
+    "UQTestFunABC",
+    "UQTestFunBareABC",
     "UQTestFunABC",
     "UQTestFun",
     "test_functions",

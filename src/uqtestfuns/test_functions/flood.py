@@ -32,58 +32,55 @@ References
 """
 import numpy as np
 
-from typing import Optional
-
-from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["Flood"]
 
 INPUT_MARGINALS_IOOSS2015 = [  # From Ref. [1]
-    MarginalSpec(
+    UnivDistSpec(
         name="Q",
         distribution="trunc-gumbel",
         parameters=[1013.0, 558.0, 500.0, 3000.0],
         description="Maximum annual flow rate [m^3/s]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Ks",
         distribution="trunc-normal",
         parameters=[30.0, 8.0, 15.0, np.inf],
         description="Strickler coefficient [m^(1/3)/s]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Zv",
         distribution="triangular",
         parameters=[49.0, 51.0, 50.0],
         description="River downstream level [m]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Zm",
         distribution="triangular",
         parameters=[54.0, 56.0, 55.0],
         description="River upstream level [m]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Hd",
         distribution="uniform",
         parameters=[7.0, 9.0],
         description="Dyke height [m]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Cb",
         distribution="triangular",
         parameters=[55.0, 56.0, 55.5],
         description="Bank level [m]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="L",
         distribution="triangular",
         parameters=[4990.0, 5010.0, 5000.0],
         description="Length of the river stretch [m]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="B",
         distribution="triangular",
         parameters=[295.0, 305.0, 300.0],
@@ -92,8 +89,8 @@ INPUT_MARGINALS_IOOSS2015 = [  # From Ref. [1]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Iooss2015": ProbInputSpec(
-        name="Flood-Iooss-2015",
+    "Iooss2015": ProbInputSpecFixDim(
+        name="Flood-Iooss2015",
         description=(
             "Probabilistic input model for the Flood model "
             "from Iooss and Lemaître (2015)."
@@ -103,75 +100,50 @@ AVAILABLE_INPUT_SPECS = {
     ),
 }
 
-DEFAULT_INPUT_SELECTION = "Iooss2015"
+
+def evaluate(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the flood model test function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        A six-dimensional input values given by an N-by-8 array
+        where N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the flood model test function, i.e.,
+        the height of a river.
+        The output is a one-dimensional array of length N.
+    """
+    qq = xx[:, 0]  # Maximum annual flow rate
+    kk_s = xx[:, 1]  # Strickler coefficient
+    zz_v = xx[:, 2]  # River downstream level
+    zz_m = xx[:, 3]  # River upstream level
+    hh_d = xx[:, 4]  # Dyke height
+    cc_b = xx[:, 5]  # Bank level
+    ll = xx[:, 6]  # Length of the river stretch
+    bb = xx[:, 7]  # River width
+
+    # Compute the maximum annual height of the river [m]
+    hh_w = (qq / (bb * kk_s * np.sqrt((zz_m - zz_v) / ll))) ** 0.6
+
+    # Compute the maximum annual underflow [m]
+    # NOTE: The sign compared to [1] has been inverted below, a negative
+    # value indicates an overflow
+    ss = cc_b + hh_d - zz_v - hh_w
+
+    return ss
 
 
 class Flood(UQTestFunABC):
     """Concrete implementation of the Flood model test function."""
 
     _tags = ["metamodeling", "sensitivity"]
-
-    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
-
+    _description = "Flood model from Iooss and Lemaître (2015)"
+    _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-
     _default_spatial_dimension = 8
 
-    _description = "Flood model from Iooss and Lemaître (2015)"
-
-    def __init__(
-        self,
-        *,
-        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-        name: Optional[str] = None,
-        rng_seed_prob_input: Optional[int] = None,
-    ):
-        # --- Arguments processing
-        # Get the ProbInputSpec from available
-        prob_input_spec = get_prob_input_spec(
-            prob_input_selection, AVAILABLE_INPUT_SPECS
-        )
-        # Create a ProbInput
-        prob_input = create_prob_input_from_spec(
-            prob_input_spec, rng_seed=rng_seed_prob_input
-        )
-        # Process the default name
-        if name is None:
-            name = Flood.__name__
-
-        super().__init__(prob_input=prob_input, name=name)
-
-    def evaluate(self, xx):
-        """Evaluate the flood model test function on a set of input values.
-
-        Parameters
-        ----------
-        xx : np.ndarray
-            A six-dimensional input values given by an N-by-8 array
-            where N is the number of input values.
-
-        Returns
-        -------
-        np.ndarray
-            The output of the flood model test function, i.e.,
-            the height of a river.
-            The output is a one-dimensional array of length N.
-        """
-        qq = xx[:, 0]  # Maximum annual flow rate
-        kk_s = xx[:, 1]  # Strickler coefficient
-        zz_v = xx[:, 2]  # River downstream level
-        zz_m = xx[:, 3]  # River upstream level
-        hh_d = xx[:, 4]  # Dyke height
-        cc_b = xx[:, 5]  # Bank level
-        ll = xx[:, 6]  # Length of the river stretch
-        bb = xx[:, 7]  # River width
-
-        # Compute the maximum annual height of the river [m]
-        hh_w = (qq / (bb * kk_s * np.sqrt((zz_m - zz_v) / ll))) ** 0.6
-
-        # Compute the maximum annual underflow [m]
-        # NOTE: The sign compared to [1] has been inverted below, a negative
-        # value indicates an overflow
-        ss = cc_b + hh_d - zz_v - hh_w
-
-        return ss
+    eval_ = staticmethod(evaluate)

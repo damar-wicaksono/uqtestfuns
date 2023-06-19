@@ -60,66 +60,63 @@ References
 """
 import numpy as np
 
-from typing import Optional
-
-from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["Sulfur"]
 
 INPUT_MARGINALS_PENNER1994 = [  # From [3] (Table 2)
-    MarginalSpec(
+    UnivDistSpec(
         name="Q",
         distribution="lognormal",
         parameters=[np.log(71.0), np.log(1.15)],
         description="Source strength of anthropogenic Sulfur [10^12 g/year]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Y",
         distribution="lognormal",
         parameters=[np.log(0.5), np.log(1.5)],
         description="Fraction of SO2 oxidized to SO4(2-) aerosol [-]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="L",
         distribution="lognormal",
         parameters=[np.log(5.5), np.log(1.5)],
         description="Average lifetime of atmospheric SO4(2-) [days]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="Psi_e",
         distribution="lognormal",
         parameters=[np.log(5.0), np.log(1.4)],
         description="Aerosol mass scattering efficiency [m^2/g]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="beta",
         distribution="lognormal",
         parameters=[np.log(0.3), np.log(1.3)],
         description="Fraction of light scattered upward hemisphere [-]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="f_Psi_e",
         distribution="lognormal",
         parameters=[np.log(1.7), np.log(1.2)],
         description="Fractional increase in aerosol scattering efficiency "
         "due to hygroscopic growth [-]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="T^2",
         distribution="lognormal",
         parameters=[np.log(0.58), np.log(1.4)],
         description="Square of atmospheric "
         "transmittance above aerosol layer [-]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="(1-Ac)",
         distribution="lognormal",
         parameters=[np.log(0.39), np.log(1.1)],
         description="Fraction of earth not covered by cloud [-]",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="(1-Rs)^2",
         distribution="lognormal",
         parameters=[np.log(0.72), np.log(1.2)],
@@ -128,8 +125,8 @@ INPUT_MARGINALS_PENNER1994 = [  # From [3] (Table 2)
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Penner1994": ProbInputSpec(
-        name="Sulfur-Penner-1994",
+    "Penner1994": ProbInputSpecFixDim(
+        name="Sulfur-Penner1994",
         description=(
             "Probabilistic input model for the Sulfur model "
             "from Penner et al. (1994)."
@@ -146,86 +143,63 @@ EARTH_AREA = 5.1e14  # [m^2] from [5]
 DAYS_IN_YEAR = 365  # [days]
 
 
+def evaluate(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the Sulfur model test function on a set of input values.
+
+    References
+    ----------
+    xx : np.ndarray
+        A nine-dimensional input values given by an N-by-9 array
+        where N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the Sulfur model test function, i.e.,
+        the direct radiative forcing by sulfate aerosols.
+    """
+    # Source strength of anthropogenic Sulfur (initially given in Teragram)
+    qq = xx[:, 0] * 1e12
+    # Fraction of SO2 oxidized to SO4(2-) aerosol
+    yy = xx[:, 1]
+    # Average lifetime of atmospheric SO4(2-)
+    ll = xx[:, 2]
+    # Aerosol mass scattering efficiency
+    psi_e = xx[:, 3]
+    # Fraction of light scattered upward hemisphere
+    beta = xx[:, 4]
+    # Fractional increase in aerosol scattering eff. due hygroscopic growth
+    ff_psi = xx[:, 5]
+    # Square of atmospheric transmittance above aerosol layer
+    tt_sq = xx[:, 6]
+    # Fraction of earth not covered by cloud
+    aa_c_complement = xx[:, 7]
+    # Square of surface coalbedo
+    co_rr_s_sq = xx[:, 8]
+
+    # Sulfate burden (Eq. (5) in [1], notation from [2])
+    # NOTE: Factor 3.0 due to conversion of mass from S to SO4(2-)
+    # NOTE: Factor 1/365.0 due to average lifetime is given in [days]
+    #       while qq is in [gS / year]
+    sulfate_burden = 3.0 * qq * yy * ll / EARTH_AREA / DAYS_IN_YEAR
+
+    # Loading of sulfate aerosol (Eq. (4) in [1], notation from [2])
+    sulfate_loading = psi_e * ff_psi * sulfate_burden
+
+    # Direct radiative forcing by sulfate aerosols
+    factor_1 = SOLAR_CONSTANT * aa_c_complement * tt_sq * co_rr_s_sq * beta
+    dd_f = -0.5 * factor_1 * sulfate_loading
+
+    return dd_f
+
+
 class Sulfur(UQTestFunABC):
     """A concrete implementation of the Sulfur model test function."""
 
     _tags = ["metamodeling", "sensitivity"]
-
-    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())
-
+    _description = "Sulfur model from Charlson et al. (1992)"
+    _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-
     _default_spatial_dimension = 9
 
-    _description = "Sulfur model from Charlson et al. (1992)"
-
-    def __init__(
-        self,
-        *,
-        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-        name: Optional[str] = None,
-        rng_seed_prob_input: Optional[int] = None,
-    ):
-        # --- Arguments processing
-        # Get the ProbInputSpec from available
-        prob_input_spec = get_prob_input_spec(
-            prob_input_selection, AVAILABLE_INPUT_SPECS
-        )
-        # Create a ProbInput
-        prob_input = create_prob_input_from_spec(
-            prob_input_spec, rng_seed=rng_seed_prob_input
-        )
-        # Process the default name
-        if name is None:
-            name = Sulfur.__name__
-
-        super().__init__(prob_input=prob_input, name=name)
-
-    def evaluate(self, xx):
-        """Evaluate the Sulfur model test function on a set of input values.
-
-        References
-        ----------
-        xx : np.ndarray
-            A nine-dimensional input values given by an N-by-9 array
-            where N is the number of input values.
-
-        Returns
-        -------
-        np.ndarray
-            The output of the Sulfur model test function, i.e.,
-            the direct radiative forcing by sulfate aerosols.
-        """
-        # Source strength of anthropogenic Sulfur (initially given in Teragram)
-        qq = xx[:, 0] * 1e12
-        # Fraction of SO2 oxidized to SO4(2-) aerosol
-        yy = xx[:, 1]
-        # Average lifetime of atmospheric SO4(2-)
-        ll = xx[:, 2]
-        # Aerosol mass scattering efficiency
-        psi_e = xx[:, 3]
-        # Fraction of light scattered upward hemisphere
-        beta = xx[:, 4]
-        # Fractional increase in aerosol scattering eff. due hygroscopic growth
-        ff_psi = xx[:, 5]
-        # Square of atmospheric transmittance above aerosol layer
-        tt_sq = xx[:, 6]
-        # Fraction of earth not covered by cloud
-        aa_c_complement = xx[:, 7]
-        # Square of surface coalbedo
-        co_rr_s_sq = xx[:, 8]
-
-        # Sulfate burden (Eq. (5) in [1], notation from [2])
-        # NOTE: Factor 3.0 due to conversion of mass from S to SO4(2-)
-        # NOTE: Factor 1/365.0 due to average lifetime is given in [days]
-        #       while qq is in [gS / year]
-        sulfate_burden = 3.0 * qq * yy * ll / EARTH_AREA / DAYS_IN_YEAR
-
-        # Loading of sulfate aerosol (Eq. (4) in [1], notation from [2])
-        sulfate_loading = psi_e * ff_psi * sulfate_burden
-
-        # Direct radiative forcing by sulfate aerosols
-        factor_1 = SOLAR_CONSTANT * aa_c_complement * tt_sq * co_rr_s_sq * beta
-        dd_f = -0.5 * factor_1 * sulfate_loading
-
-        return dd_f
+    eval_ = staticmethod(evaluate)

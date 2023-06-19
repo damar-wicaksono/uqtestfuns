@@ -4,6 +4,12 @@ from tabulate import tabulate
 from typing import List, Any
 
 from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
+from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
+from uqtestfuns.core.prob_input.input_spec import (
+    UnivDistSpec,
+    ProbInputSpecFixDim,
+    ProbInputSpecVarDim,
+)
 from conftest import create_random_marginals
 
 
@@ -233,6 +239,77 @@ def test_pass_random_seed(spatial_dimension):
 
     # Assertion: Both samples are identical because the seed is identical
     assert np.allclose(xx_1, xx_2)
+
+
+@pytest.mark.parametrize("spatial_dimension", [1, 2, 10, 100])
+def test_create_from_spec(spatial_dimension):
+    """Test creating an instance from specification NamedTuple"""
+    marginals: List[UnivDist] = create_random_marginals(spatial_dimension)
+
+    # Create a ProbInputSpecFixDim
+    name = "Test Name"
+    description = "Test description"
+    copulas = None
+    prob_spec = ProbInputSpecFixDim(
+        name=name,
+        description=description,
+        marginals=[
+            UnivDistSpec(
+                name=marginal.name,
+                description=marginal.description,
+                distribution=marginal.distribution,
+                parameters=marginal.parameters,  # type: ignore
+            )
+            for marginal in marginals
+        ],
+        copulas=copulas,
+    )
+
+    # Create from spec
+    my_input = ProbInput.from_spec(prob_spec)
+
+    # Assertions
+    assert my_input.name == name
+    assert my_input.description == description
+    assert my_input.copulas == copulas
+
+    # Create a ProbInputSpecVarDim
+    def _test_vardim(spatial_dimension):
+        marginals_spec = [
+            UnivDistSpec(
+                name=f"x{i+1}",
+                description="None",
+                distribution="uniform",
+                parameters=[0, 1],
+            )
+            for i in range(spatial_dimension)
+        ]
+
+        return marginals_spec
+
+    name = "Test Name"
+    description = "Test description"
+    copulas = None
+    prob_spec_vardim = ProbInputSpecVarDim(
+        name=name,
+        description=description,
+        marginals_generator=_test_vardim,
+        copulas=copulas,
+    )
+
+    # Create from spec
+    my_input = ProbInput.from_spec(
+        prob_spec_vardim, spatial_dimension=spatial_dimension
+    )
+
+    # Assertions
+    assert my_input.name == name
+    assert my_input.description == description
+    assert my_input.copulas == copulas
+    assert my_input.spatial_dimension == spatial_dimension
+
+    with pytest.raises(ValueError):
+        ProbInput.from_spec(prob_spec_vardim)
 
 
 #

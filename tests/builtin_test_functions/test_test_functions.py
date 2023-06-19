@@ -72,11 +72,7 @@ def test_create_instance_with_prob_input(builtin_testfun):
 
     # Create an instance without probabilistic input
     if testfun_class.available_inputs is not None:
-        my_fun_2 = testfun_class(prob_input_selection=None)
-        assert my_fun_2.prob_input is None
-        assert my_fun_2.spatial_dimension == (
-            testfun_class.default_spatial_dimension
-        )
+        my_fun_2 = testfun_class()
 
         # Assign the probabilistic input
         my_fun_2.prob_input = my_prob_input
@@ -103,8 +99,7 @@ def test_create_instance_with_parameters(builtin_testfun):
     parameters = my_fun.parameters
 
     if testfun_class.available_parameters is not None:
-        my_fun_2 = testfun_class(parameters_selection=None)
-        assert my_fun_2.parameters is None
+        my_fun_2 = testfun_class()
         my_fun_2.parameters = parameters
         assert my_fun_2.parameters is parameters
     else:
@@ -234,7 +229,7 @@ def test_evaluate_wrong_input_domain(builtin_testfun):
 def test_evaluate_invalid_spatial_dim(builtin_testfun):
     """Test if an exception is raised if invalid spatial dimension is given."""
 
-    if builtin_testfun.default_spatial_dimension is None:
+    if hasattr(builtin_testfun, "default_spatial_dimension"):
         with pytest.raises(TypeError):
             builtin_testfun(spatial_dimension="10")
 

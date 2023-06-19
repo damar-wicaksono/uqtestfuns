@@ -32,16 +32,15 @@ References
 """
 import numpy as np
 
-from typing import List, Optional
+from typing import List
 
 from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpecVarDim
-from .available import create_prob_input_from_spec
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
 
 __all__ = ["Bratley1992d"]
 
 
-def _bratley_input(spatial_dimension: int) -> List[MarginalSpec]:
+def _bratley_input(spatial_dimension: int) -> List[UnivDistSpec]:
     """Create a list of marginals for the M-dimensional Bratley test functions.
 
     Parameters
@@ -51,13 +50,13 @@ def _bratley_input(spatial_dimension: int) -> List[MarginalSpec]:
 
     Returns
     -------
-    List[MarginalSpec]
+    List[UnivDistSpec]
         A list of marginals for the multivariate input following Ref. [1]
     """
     marginals = []
     for i in range(spatial_dimension):
         marginals.append(
-            MarginalSpec(
+            UnivDistSpec(
                 name=f"X{i + 1}",
                 distribution="uniform",
                 parameters=[0.0, 1.0],
@@ -79,108 +78,51 @@ AVAILABLE_INPUT_SPECS = {
     ),
 }
 
-DEFAULT_INPUT_SELECTION = "Bratley1992"
-
-# The dimension is variable so define a default for fallback
-DEFAULT_DIMENSION_SELECTION = 2
-
 # Common metadata used in each class definition of Bratley test functions
 COMMON_METADATA = dict(
     _tags=["integration", "sensitivity"],
-    _available_inputs=tuple(AVAILABLE_INPUT_SPECS.keys()),
+    _available_inputs=AVAILABLE_INPUT_SPECS,
     _available_parameters=None,
     _default_spatial_dimension=None,
     _description="from Bratley et al. (1992)",
 )
 
 
-def _init(
-    self,
-    spatial_dimension: int = DEFAULT_DIMENSION_SELECTION,
-    *,
-    prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-    name: Optional[str] = None,
-    rng_seed_prob_input: Optional[int] = None,
-) -> None:
-    """A common __init__ for all Bratley1992 test functions."""
-    # --- Arguments processing
-    # Get the ProbInputSpec from available
-    if prob_input_selection is None:
-        prob_input_spec = None
-    else:
-        prob_input_spec = AVAILABLE_INPUT_SPECS[prob_input_selection]
-
-    if not isinstance(spatial_dimension, int):
-        raise TypeError(
-            f"Spatial dimension is expected to be of 'int'. "
-            f"Got {type(spatial_dimension)} instead."
-        )
-    # A Bratley1992 test function is an M-dimensional test function
-    # Create the input according to spatial dimension
-    prob_input = create_prob_input_from_spec(
-        prob_input_spec,
-        spatial_dimension,
-        rng_seed_prob_input,
-    )
-    # Process the default name
-    if name is None:
-        name = self.__class__.__name__
-
-    UQTestFunABC.__init__(self, prob_input=prob_input, name=name)
-
-
-class Bratley1992d(UQTestFunABC):
-    """A concrete implementation of the function 4 from Bratley et al. (1988).
+def evaluate_bratley1992d(xx: np.ndarray):
+    """Evaluate the test function on a set of input values.
 
     Parameters
     ----------
-    spatial_dimension : int
-        The requested number of spatial_dimension. If not specified,
-        the default is set to 2.
-    prob_input_selection : str, optional
-        The selection of a probabilistic input model from a list of
-        available specifications. This is a keyword only parameter.
-    name : str, optional
-        The name of the instance; if not given the default name is used.
-        This is a keyword only parameter.
-    rng_seed_prob_input : int, optional
-        The seed number for the pseudo-random number generator of the
-        corresponding `ProbInput`; if not given `None` is used
-        (taken from the system entropy).
-        This is a keyword only parameter.
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-M array where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
     """
 
+    num_points, num_dim = xx.shape
+    yy = np.zeros(num_points)
+
+    # Compute the function
+    for j in range(num_dim):
+        yy += (-1) ** (j + 1) * np.prod(xx[:, : j + 1], axis=1)
+
+    return yy
+
+
+class Bratley1992d(UQTestFunABC):
+    """An implementation of the test function 4 from Bratley et al. (1988)."""
+
     _tags = COMMON_METADATA["_tags"]
-    _available_inputs = COMMON_METADATA["_available_inputs"]
-    _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
     _description = (
         f"Integration test function #4 {COMMON_METADATA['_description']}"
     )
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = None
 
-    __init__ = _init  # type: ignore
-
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the test function on a set of input values.
-
-        Parameters
-        ----------
-        xx : np.ndarray
-            M-Dimensional input values given by an N-by-M array where
-            N is the number of input values.
-
-        Returns
-        -------
-        np.ndarray
-            The output of the test function evaluated on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-
-        num_points, num_dim = xx.shape
-        yy = np.zeros(num_points)
-
-        # Compute the function
-        for j in range(num_dim):
-            yy += (-1) ** (j + 1) * np.prod(xx[:, : j + 1], axis=1)
-
-        return yy
+    eval_ = staticmethod(evaluate_bratley1992d)
