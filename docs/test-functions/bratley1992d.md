@@ -29,8 +29,7 @@ It was used in {cite}`Kucherenko2009` and {cite}`Saltelli2010` in the context
 of global sensitivity analysis.
 
 ```{note}
-There are four other test functions used in Bratley et al. {cite}`Bratley1992`
-
+There are four other test functions used in Bratley et al. {cite}`Bratley1992`.
 ```
 
 The plots for one-dimensional and two-dimensional `Bratley1992d` functions
@@ -110,20 +109,14 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the spatial dimension is set to $2$.
+By default, the spatial dimension is set to $2$[^default_dimension].
 To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (or as the first argument).
+pass an integer to the parameter `spatial_dimension` (keyword only).
 For example, to create an instance of 10-dimensional `Bratley1992d` function,
 type:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Bratley1992d(spatial_dimension=10)
-```
-
-Or alternatively, pass the dimension as the first argument:
-
-```{code-cell} ipython3
-my_testfun = uqtf.Bratley1992d(10)
 ```
 
 ## Description
@@ -224,3 +217,6 @@ where:
 
 [^location]: see Section 5.1, p. 207 (test function no. 4)
 in {cite}`Bratley1992`.
+
+[^default_dimension]: This default dimension applies to all variable dimension
+test functions. It will be used if the `spatial_dimension` argument is not given.

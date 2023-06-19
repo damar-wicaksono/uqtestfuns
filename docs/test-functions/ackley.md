@@ -104,21 +104,15 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
   
-By default, the spatial dimension is set to $2$.
+By default, the spatial dimension is set to $2$[^default_dimension].
 To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (or as the first argument).
+pass an integer to the parameter `spatial_dimension` (keyword only).
 For example, to create an instance of 10-dimensional Ackley function, type:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Ackley(spatial_dimension=10)
 ```
 
-Or alternatively, pass the dimension as the first argument:
-
-```{code-cell} ipython3
-my_testfun = uqtf.Ackley(10)
-```
-  
 In the subsequent section, this 10-dimensional Ackley function will be used
 for illustration.
 
@@ -185,3 +179,6 @@ $\mathcal{M}(\boldsymbol{x}^*) = 0$ at  $x_m^* = 0,\, m = 1, \ldots, M$.
 :style: unsrt
 :filter: docname in docnames
 ```
+
+[^default_dimension]: This default dimension applies to all variable dimension
+test functions. It will be used if the `spatial_dimension` argument is not given.

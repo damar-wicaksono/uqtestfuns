@@ -104,20 +104,14 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the spatial dimension is set to $2$.
+By default, the spatial dimension is set to $2$[^default_dimension].
 To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (or as the first argument).
+pass an integer to the parameter `spatial_dimension` (keyword only).
 For example, to create an instance of the Sobol'-G function in six dimensions,
 type:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.SobolG(spatial_dimension=6)
-```
-
-Or, alternatively as the first argument:
-
-```{code-cell} ipython3
-my_testfun = uqtf.SobolG(6)
 ```
 
 In the subsequent section, the function will be illustrated
@@ -377,3 +371,6 @@ tabulate(
 
 [^integral]: The expected value is the same as the integral over the domain
 because the input is uniform in a unit hypercube.
+
+[^default_dimension]: This default dimension applies to all variable dimension
+test functions. It will be used if the `spatial_dimension` argument is not given.

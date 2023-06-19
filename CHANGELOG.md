@@ -22,6 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - An implementation of M-dimensional test functions (#4) from Bratley et al.
   (1992) useful for testing multi-dimensional numerical integrations as well
   as global sensitivity analysis.
+- Two base classes are now available `UQTestFunBareABC` and `UQTestFunABC`.
+  The former is used to implement a _bare_ UQ test function
+  (with only `evaluate()` and `ProbInput`), while the latter is used to
+  implement _published_ UQ test functions in the code base (i.e., with 
+  additional metadata such as tags and description).
 
 ## [0.1.1] - 2023-07-03
 

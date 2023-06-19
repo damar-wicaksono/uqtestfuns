@@ -29,22 +29,19 @@ References
 """
 import numpy as np
 
-from typing import Optional
-
-from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["McLainS1", "McLainS2", "McLainS3", "McLainS4", "McLainS5"]
 
 INPUT_MARGINALS_MCLAIN1974 = [  # From Ref. [1]
-    MarginalSpec(
+    UnivDistSpec(
         name="X1",
         distribution="uniform",
         parameters=[1.0, 10.0],
         description="None",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="X2",
         distribution="uniform",
         parameters=[1.0, 10.0],
@@ -53,7 +50,7 @@ INPUT_MARGINALS_MCLAIN1974 = [  # From Ref. [1]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "McLain1974": ProbInputSpec(
+    "McLain1974": ProbInputSpecFixDim(
         name="McLain-1974",
         description=(
             "Input specification for the McLain's test functions "
@@ -64,39 +61,34 @@ AVAILABLE_INPUT_SPECS = {
     ),
 }
 
-DEFAULT_INPUT_SELECTION = "McLain1974"
-
 COMMON_METADATA = dict(
     _tags=["metamodeling"],
-    _available_inputs=tuple(AVAILABLE_INPUT_SPECS.keys()),
+    _available_inputs=AVAILABLE_INPUT_SPECS,
     _available_parameters=None,
     _default_spatial_dimension=2,
     _description="from McLain (1974)",
 )
 
 
-def _init(
-    self,
-    *,
-    prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-    name: Optional[str] = None,
-    rng_seed_prob_input: Optional[int] = None,
-) -> None:
-    """A common __init__ for all McLain's test functions."""
-    # --- Arguments processing
-    # Get the ProbInputSpec from available
-    prob_input_spec = get_prob_input_spec(
-        prob_input_selection, AVAILABLE_INPUT_SPECS
-    )
-    # Create a ProbInput
-    prob_input = create_prob_input_from_spec(
-        prob_input_spec, rng_seed=rng_seed_prob_input
-    )
-    # Process the default name
-    if name is None:
-        name = self.__class__.__name__
+def evaluate_mclain_s1(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the McLain S1 function on a set of input values.
 
-    UQTestFunABC.__init__(self, prob_input=prob_input, name=name)
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the McLain S1 function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = np.sqrt(64 - (xx[:, 0] - 5.5) ** 2 - (xx[:, 1] - 5.5) ** 2)
+
+    return yy
 
 
 class McLainS1(UQTestFunABC):
@@ -106,32 +98,32 @@ class McLainS1(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"McLain S1 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"McLain S1 function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
+    eval_ = staticmethod(evaluate_mclain_s1)
 
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the McLain S1 function on a set of input values.
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
+def evaluate_mclain_s2(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the McLain S2 function on a set of input values.
 
-        Returns
-        -------
-        np.ndarray
-            The output of the McLain S1 function evaluated
-            on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        yy = np.sqrt(64 - (xx[:, 0] - 5.5) ** 2 - (xx[:, 1] - 5.5) ** 2)
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
 
-        return yy
+    Returns
+    -------
+    np.ndarray
+        The output of the McLain S2 function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = np.exp(-1.0 * ((xx[:, 0] - 5) ** 2 + (xx[:, 1] - 5) ** 2))
+
+    return yy
 
 
 class McLainS2(UQTestFunABC):
@@ -141,31 +133,32 @@ class McLainS2(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"McLain S2 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"McLain S2 function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
+    eval_ = staticmethod(evaluate_mclain_s2)
 
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the McLain S2 function on a set of input values.
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
+def evaluate_mclain_s3(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the McLain S3 function on a set of input values.
 
-        Returns
-        -------
-        np.ndarray
-            The output of the McLain S2 function evaluated on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        yy = np.exp(-1.0 * ((xx[:, 0] - 5) ** 2 + (xx[:, 1] - 5) ** 2))
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
 
-        return yy
+    Returns
+    -------
+    np.ndarray
+        The output of the McLain S3 function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = np.exp(-0.25 * ((xx[:, 0] - 5) ** 2 + (xx[:, 1] - 5) ** 2))
+
+    return yy
 
 
 class McLainS3(UQTestFunABC):
@@ -175,31 +168,35 @@ class McLainS3(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"McLain S3 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"McLain S3 function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
+    eval_ = staticmethod(evaluate_mclain_s3)
 
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the McLain S3 function on a set of input values.
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
+def evaluate_mclain_s4(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the McLain S4 function on a set of input values.
 
-        Returns
-        -------
-        np.ndarray
-            The output of the McLain S3 function evaluated on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        yy = np.exp(-0.25 * ((xx[:, 0] - 5) ** 2 + (xx[:, 1] - 5) ** 2))
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
 
-        return yy
+    Returns
+    -------
+    np.ndarray
+        The output of the McLain S4 function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = np.exp(
+        -1
+        * ((xx[:, 0] + xx[:, 1] - 11) ** 2 + (xx[:, 0] - xx[:, 1]) ** 2 / 10.0)
+    )
+
+    return yy
 
 
 class McLainS4(UQTestFunABC):
@@ -209,37 +206,32 @@ class McLainS4(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"McLain S4 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"McLain S4 function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
+    eval_ = staticmethod(evaluate_mclain_s4)
 
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the McLain S4 function on a set of input values.
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
+def evaluate_mclain_s5(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the McLain S5 function on a set of input values.
 
-        Returns
-        -------
-        np.ndarray
-            The output of the McLain S4 function evaluated on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        yy = np.exp(
-            -1
-            * (
-                (xx[:, 0] + xx[:, 1] - 11) ** 2
-                + (xx[:, 0] - xx[:, 1]) ** 2 / 10.0
-            )
-        )
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
 
-        return yy
+    Returns
+    -------
+    np.ndarray
+        The output of the McLain S5 function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = np.tanh(xx[:, 0] + xx[:, 1] - 11)
+
+    return yy
 
 
 class McLainS5(UQTestFunABC):
@@ -249,28 +241,9 @@ class McLainS5(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"McLain S5 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"McLain S5 function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
-
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the McLain S5 function on a set of input values.
-
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
-
-        Returns
-        -------
-        np.ndarray
-            The output of the McLain S5 function evaluated on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        yy = np.tanh(xx[:, 0] + xx[:, 1] - 11)
-
-        return yy
+    eval_ = staticmethod(evaluate_mclain_s5)

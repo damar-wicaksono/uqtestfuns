@@ -41,22 +41,19 @@ References
 """
 import numpy as np
 
-from typing import Optional
-
-from ..core.prob_input.input_spec import MarginalSpec, ProbInputSpec
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import get_prob_input_spec, create_prob_input_from_spec
 
 __all__ = ["Franke1", "Franke2", "Franke3", "Franke4", "Franke5", "Franke6"]
 
 INPUT_MARGINALS_FRANKE1979 = [  # From Ref. [1]
-    MarginalSpec(
+    UnivDistSpec(
         name="X1",
         distribution="uniform",
         parameters=[0.0, 1.0],
         description="None",
     ),
-    MarginalSpec(
+    UnivDistSpec(
         name="X2",
         distribution="uniform",
         parameters=[0.0, 1.0],
@@ -65,11 +62,10 @@ INPUT_MARGINALS_FRANKE1979 = [  # From Ref. [1]
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Franke1979": ProbInputSpec(
-        name="Franke-1979",
+    "Franke1979": ProbInputSpecFixDim(
+        name="Franke1979",
         description=(
-            "Input specification for the Franke's test functions "
-            "from Franke (1979)."
+            "Input specification for the test functions from Franke (1979)."
         ),
         marginals=INPUT_MARGINALS_FRANKE1979,
         copulas=None,
@@ -80,35 +76,44 @@ DEFAULT_INPUT_SELECTION = "Franke1979"
 
 COMMON_METADATA = dict(
     _tags=["metamodeling"],
-    _available_inputs=tuple(AVAILABLE_INPUT_SPECS.keys()),
+    _available_inputs=AVAILABLE_INPUT_SPECS,
     _available_parameters=None,
     _default_spatial_dimension=2,
     _description="from Franke (1979)",
 )
 
 
-def _init(
-    self,
-    *,
-    prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-    name: Optional[str] = None,
-    rng_seed_prob_input: Optional[int] = None,
-) -> None:
-    """A common __init__ for all Franke's test functions."""
-    # --- Arguments processing
-    # Get the ProbInputSpec from available
-    prob_input_spec = get_prob_input_spec(
-        prob_input_selection, AVAILABLE_INPUT_SPECS
-    )
-    # Create a ProbInput
-    prob_input = create_prob_input_from_spec(
-        prob_input_spec, rng_seed=rng_seed_prob_input
-    )
-    # Process the default name
-    if name is None:
-        name = self.__class__.__name__
+def evaluate_franke1(xx: np.ndarray):
+    """Evaluate the (1st) Franke function on a set of input values.
 
-    UQTestFunABC.__init__(self, prob_input=prob_input, name=name)
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the (1st) Franke function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+
+    xx0 = 9 * xx[:, 0]
+    xx1 = 9 * xx[:, 1]
+
+    # Compute the (first) Franke function
+    term_1 = 0.75 * np.exp(-0.25 * ((xx0 - 2) ** 2 + (xx1 - 2) ** 2))
+    term_2 = 0.75 * np.exp(
+        -1.00 * ((xx0 + 1) ** 2 / 49.0 + (xx1 + 1) ** 2 / 10.0)
+    )
+    term_3 = 0.50 * np.exp(-0.25 * ((xx0 - 7) ** 2 + (xx1 - 3) ** 2))
+    term_4 = 0.20 * np.exp(-1.00 * ((xx0 - 4) ** 2 + (xx1 - 7) ** 2))
+
+    yy = term_1 + term_2 + term_3 - term_4
+
+    return yy
 
 
 class Franke1(UQTestFunABC):
@@ -118,44 +123,33 @@ class Franke1(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"(1st) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"(1st) Franke function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
+    eval_ = staticmethod(evaluate_franke1)
 
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the (1st) Franke function on a set of input values.
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
+def evaluate_franke2(xx: np.ndarray):
+    """Evaluate the (2nd) Franke function on a set of input values.
 
-        Returns
-        -------
-        np.ndarray
-            The output of the (1st) Franke function evaluated
-            on the input values.
-            The output is a 1-dimensional array of length N.
-        """
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
 
-        xx0 = 9 * xx[:, 0]
-        xx1 = 9 * xx[:, 1]
+    Returns
+    -------
+    np.ndarray
+        The output of the (2nd) Franke function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = (np.tanh(9 * (xx[:, 1] - xx[:, 0])) + 1) / 9.0
 
-        # Compute the (first) Franke function
-        term_1 = 0.75 * np.exp(-0.25 * ((xx0 - 2) ** 2 + (xx1 - 2) ** 2))
-        term_2 = 0.75 * np.exp(
-            -1.00 * ((xx0 + 1) ** 2 / 49.0 + (xx1 + 1) ** 2 / 10.0)
-        )
-        term_3 = 0.50 * np.exp(-0.25 * ((xx0 - 7) ** 2 + (xx1 - 3) ** 2))
-        term_4 = 0.20 * np.exp(-1.00 * ((xx0 - 4) ** 2 + (xx1 - 7) ** 2))
-
-        yy = term_1 + term_2 + term_3 - term_4
-
-        return yy
+    return yy
 
 
 class Franke2(UQTestFunABC):
@@ -165,32 +159,36 @@ class Franke2(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"(2nd) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"(2nd) Franke function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
+    eval_ = staticmethod(evaluate_franke2)
 
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the (2nd) Franke function on a set of input values.
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
+def evaluate_franke3(xx: np.ndarray):
+    """Evaluate the (3rd) Franke function on a set of input values.
 
-        Returns
-        -------
-        np.ndarray
-            The output of the (2nd) Franke function evaluated
-            on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        yy = (np.tanh(9 * (xx[:, 1] - xx[:, 0])) + 1) / 9.0
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
 
-        return yy
+    Returns
+    -------
+    np.ndarray
+        The output of the (3rd) Franke function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    term_1 = 1.25 + np.cos(5.4 * xx[:, 1])
+    term_2 = 6 * (1 + (3 * xx[:, 0] - 1) ** 2)
+
+    yy = term_1 / term_2
+
+    return yy
 
 
 class Franke3(UQTestFunABC):
@@ -200,35 +198,36 @@ class Franke3(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"(3rd) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"(3rd) Franke function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
+    eval_ = staticmethod(evaluate_franke3)
 
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the (3rd) Franke function on a set of input values.
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
+def evaluate_franke4(xx: np.ndarray):
+    """Evaluate the (4th) Franke function on a set of input values.
 
-        Returns
-        -------
-        np.ndarray
-            The output of the (3rd) Franke function evaluated
-            on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        term_1 = 1.25 + np.cos(5.4 * xx[:, 1])
-        term_2 = 6 * (1 + (3 * xx[:, 0] - 1) ** 2)
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
 
-        yy = term_1 / term_2
+    Returns
+    -------
+    np.ndarray
+        The output of the (4th) Franke function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = (
+        np.exp(-81.0 / 16.0 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2))
+        / 3.0
+    )
 
-        return yy
+    return yy
 
 
 class Franke4(UQTestFunABC):
@@ -238,37 +237,36 @@ class Franke4(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"(4th) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"(4th) Franke function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
+    eval_ = staticmethod(evaluate_franke4)
 
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the (4th) Franke function on a set of input values.
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
+def evaluate_franke5(xx: np.ndarray):
+    """Evaluate the (5th) Franke function on a set of input values.
 
-        Returns
-        -------
-        np.ndarray
-            The output of the (4th) Franke function evaluated
-            on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        yy = (
-            np.exp(
-                -81.0 / 16.0 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2)
-            )
-            / 3.0
-        )
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
 
-        return yy
+    Returns
+    -------
+    np.ndarray
+        The output of the (5th) Franke function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = (
+        np.exp(-81.0 / 4.0 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2))
+        / 3.0
+    )
+
+    return yy
 
 
 class Franke5(UQTestFunABC):
@@ -278,37 +276,37 @@ class Franke5(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"(5th) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"(5th) Franke function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
+    eval_ = staticmethod(evaluate_franke5)
 
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the (5th) Franke function on a set of input values.
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
+def evaluate_franke6(xx: np.ndarray):
+    """Evaluate the (6th) Franke function on a set of input values.
 
-        Returns
-        -------
-        np.ndarray
-            The output of the (5th) Franke function evaluated
-            on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        yy = (
-            np.exp(
-                -81.0 / 4.0 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2)
-            )
-            / 3.0
-        )
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
 
-        return yy
+    Returns
+    -------
+    np.ndarray
+        The output of the (6th) Franke function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = (
+        np.sqrt(64 - 81 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2))
+        / 9.0
+        - 0.5
+    )
+
+    return yy
 
 
 class Franke6(UQTestFunABC):
@@ -318,33 +316,9 @@ class Franke6(UQTestFunABC):
     """
 
     _tags = COMMON_METADATA["_tags"]
+    _description = f"(6th) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
-    _description = f"(6th) Franke function {COMMON_METADATA['_description']}"
 
-    __init__ = _init  # type: ignore
-
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the (6th) Franke function on a set of input values.
-
-        Parameters
-        ----------
-        xx : np.ndarray
-            Two-Dimensional input values given by N-by-2 arrays where
-            N is the number of input values.
-
-        Returns
-        -------
-        np.ndarray
-            The output of the (6th) Franke function evaluated
-            on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        yy = (
-            np.sqrt(64 - 81 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2))
-            / 9.0
-            - 0.5
-        )
-
-        return yy
+    eval_ = staticmethod(evaluate_franke6)

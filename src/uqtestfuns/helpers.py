@@ -9,7 +9,7 @@ Notes
 from tabulate import tabulate as tbl  # 'tabulate' is used as a parameter name
 from .utils import get_available_classes, SUPPORTED_TAGS
 from . import test_functions
-from typing import List, Optional, Tuple, Union, Dict
+from typing import List, Optional, Union
 
 from .core import UQTestFunABC
 
@@ -54,9 +54,7 @@ def list_functions(
     _verify_input_args(spatial_dimension, tag, tabulate)
 
     # --- Get all the available classes that implement the test functions
-    available_classes: List[Tuple[str, UQTestFunABC]] = get_available_classes(
-        test_functions
-    )
+    available_classes = get_available_classes(test_functions)
     available_classes_dict = dict(available_classes)
 
     # --- Filter according to the requested spatial dimension
@@ -108,9 +106,12 @@ def list_functions(
     ):
         available_class = available_classes_dict[available_class_name]
 
-        default_spatial_dimension = available_class.default_spatial_dimension
-        if not default_spatial_dimension:
+        if not available_class.default_spatial_dimension:
             default_spatial_dimension = "M"
+        else:
+            default_spatial_dimension = (
+                available_class.default_spatial_dimension
+            )
 
         tags = ", ".join(available_class.tags)
 
@@ -212,7 +213,7 @@ def _verify_input_args(
 
 
 def _get_functions_from_dimension(
-    available_classes: Dict[str, UQTestFunABC],
+    available_classes: dict,
     spatial_dimension: Union[int, str],
 ) -> List[str]:
     """Get the function keys that satisfy the spatial dimension filter."""
@@ -238,9 +239,7 @@ def _get_functions_from_dimension(
     return values
 
 
-def _get_functions_from_tag(
-    available_classes: Dict[str, UQTestFunABC], tag: str
-) -> List[str]:
+def _get_functions_from_tag(available_classes: dict, tag: str) -> List[str]:
     """Get the function keys that satisfy the tag filter."""
     values = []
 

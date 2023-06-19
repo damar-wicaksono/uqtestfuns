@@ -1,17 +1,20 @@
 """
 Module with definition of data structure to hold information on prob. input.
 
-The probabilistic input specification should be stored in a built-in Python
+A probabilistic input specification may be stored in a built-in Python
 data type that contains the only information required to construct
-a ProbInput instance. The container type should be free of custom methods.
+a ``UnivDist`` (for one-dimensional marginals) and ``ProbInput``
+(for probabilistic input models) instances.
+The container type should be free of custom methods and derived from
+``NamedTuple`` class to provide typing information.
 """
 from typing import Any, Callable, List, NamedTuple, Optional, Tuple, Union
 
 
-__all__ = ["MarginalSpec", "ProbInputSpec", "ProbInputSpecVarDim"]
+__all__ = ["UnivDistSpec", "ProbInputSpecFixDim", "ProbInputSpecVarDim"]
 
 
-class MarginalSpec(NamedTuple):
+class UnivDistSpec(NamedTuple):
     """A univariate marginal distribution specification.
 
     Parameters
@@ -26,14 +29,14 @@ class MarginalSpec(NamedTuple):
         Short description of the univariate marginal.
     """
 
-    name: str
+    name: Optional[str]
     distribution: str
     parameters: Union[List[Union[int, float]], Tuple[Union[int, float], ...]]
-    description: str
+    description: Optional[str]
 
 
-class ProbInputSpec(NamedTuple):
-    """All the information required for constructing a ProbInput instance.
+class ProbInputSpecFixDim(NamedTuple):
+    """All the information to construct a ProbInput w/ a fixed dimension.
 
     Parameters
     ----------
@@ -41,23 +44,23 @@ class ProbInputSpec(NamedTuple):
         The name of the probabilistic input model.
     description : str
         A short description of the probabilistic input model.
-    marginals : Union[Callable, List[MarginalSpec]]
+    marginals : Union[Callable, List[UnivDistSpec]]
         A list of univariate marginal specifications or a callable
         to construct the list of marginal specifications.
     copulas : Optional[Any]
         The copula specification of the probabilistic input model.
     """
 
-    name: str
-    description: str
-    marginals: List[MarginalSpec]
+    name: Optional[str]
+    description: Optional[str]
+    marginals: List[UnivDistSpec]
     copulas: Optional[Any]
 
 
 class ProbInputSpecVarDim(NamedTuple):
     """All the information to construct a ProbInput w/ variable dimension."""
 
-    name: str
-    description: str
-    marginals_generator: Callable[[int], List[MarginalSpec]]
+    name: Optional[str]
+    description: Optional[str]
+    marginals_generator: Callable[[int], List[UnivDistSpec]]
     copulas: Optional[Any]

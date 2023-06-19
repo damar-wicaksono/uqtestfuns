@@ -14,7 +14,7 @@ as explained {ref}`here <development:setting-up-dev-env>`.
 ```
 
 Similar to creating a new test function on runtime,
-we are going to use the Branin function as the motivating problem.
+we are going to use the Branin function {cite}`Dixon1978` as the motivating problem.
 The function is defined as follows:
 
 $$
@@ -55,7 +55,6 @@ If you have a look at the directory you'll see the following (or something simil
 ├── test_functions              <- Sub-package that contains all UQ test function modules
 │   ├── __init__.py
 │   ├── ackley.py               <- An implementation of the Ackley function
-│   ├── available.py            <- Utility functions of the sub-package
 │   ├── borehole.py             <- An implementation of the borehole function
 │   ├── damped_oscillator.py    <- An implementation of the damped oscillator model
 │   ├── ...
@@ -109,14 +108,8 @@ Here are the few things we usually use:
 ```python
 import numpy as np
 
-from typing import Optional
-
 from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.univariate_distribution import UnivDist
-from .available import (
-    create_prob_input_from_available,
-    create_parameters_from_available,
-)
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 
 __all__ = ["Branin"]
 ```
@@ -124,106 +117,98 @@ __all__ = ["Branin"]
 Here are some explanations:
 
 - NumPy is usually a must, especially for implementing the evaluation function.
-- All test functions are concrete implementations of the abstract base class `UQTestFunABC`.
-- One-dimensional marginals are defined using the `UnivDist` class.
-- `create_prob_input_from_available` and `create_parameters_from_available` are internal functions used to allow users to select a particular probabilistic input
-  and/or parameters specifications (from several available selections) using a keyword passed in the class constructor.
+- All built-in test functions are concrete implementations of the abstract base
+  class `UQTestFunABC`.
+- The specification for a probabilistic input model is stored in `UnivDistSpec`
+  (the one-dimensional marginal specification) and `ProbInputSpecFixDim`
+  (the probabilistic input model). These are lightweight _containers_
+  (meaning no custom methods) of all the information required to construct,
+  later on, `UnivDist` and `ProbInput` instances, respectively.
 
-### Implementing a concrete class
-
-Each built-in test function is an implementation of the abstract base class `UQTestFunABC`.
-`UQTestFunABC` prescribes an abstract method called `evaluate`
-and a few class-level properties that must be implemented in the concrete class.
-More about them is below.
-
-But first, we create a new class called `Branin` derived from this abstract base class:
-
-```python
-class Branin(UQTestFunABC):
-    ...
+```{note}
+There is also the corresponding `ProbInputSpecVarDim` to store the information
+required to construct probabilistic input model with variable dimension.
 ```
 
-Afterward, we need to define the constructor of the class.
-The rules regarding the signature of the constructor are not written in stone (yet, or ever).
-But keep in mind that you should be able to call the constructor without any obligatory parameters.
+### Implementing a concrete evaluation function
 
-Following the precedence of how signatures for the other test functions are written, we write the constructor along with its body:
+For an implementation of a test function, create a top module-level function
+(conventionally named `evaluate()` if there is only one test function in the
+module):
 
 ```python
-class Branin(UQTestFunABC):
-    """A concrete implementation of the 2-dimensional Branin test function.
+def evaluate(xx: np.ndarray, parameters: Any) -> np.ndarray:
+    """Evaluate the Branin function on a set of input values.
 
     Parameters
     ----------
-    spatial_dimension : int
-        The requested number of spatial_dimension. If not specified,
-        the default is set to 2.
-    prob_input_selection : str, optional
-        The selection of a probabilistic input model from a list of
-        available specifications. This is a keyword-only parameter.
-    parameters_selection : str, optional
-        The selection of a parameters set from a list of available
-        parameter sets. This is a keyword-only parameter.
+    xx : np.ndarray
+        2-Dimensional input values given by an N-by-2 array where
+        N is the number of input values.
+    parameters : Any
+        The parameters of the test function (six numbers)
+
+    Returns
+    -------
+    np.ndarray
+        The output of the Branin function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
     """
+    params = parameters
+    yy = (
+        params[0]
+        * (
+            xx[:, 1]
+            - params[1] * xx[:, 0] ** 2
+            + params[2] * xx[:, 0]
+            - params[3]
+        )
+        ** 2
+        + params[4] * (1 - params[5]) * np.cos(xx[:, 0])
+        + params[4]
+    )
 
-    def __init__(
-        self,
-        *,
-        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-        parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
-        name: Optional[str] = None,
-    ):
-        # --- Arguments processing
-        # Create a probabilistic input model based on the selection
-        prob_input = create_prob_input_from_available(
-            prob_input_selection, AVAILABLE_INPUT_SPECS
-        )
-        # Select parameters
-        parameters = create_parameters_from_available(
-            parameters_selection, AVAILABLE_PARAMETERS
-        )
-        # Process the default name
-        if name is None:
-            name = Branin.__name__
-
-        super().__init__(
-            prob_input=prob_input, parameters=parameters, name=name
-        )
+    return yy
 ```
 
-Here we expose the following (optional) parameters in the constructor:
-
-- `prob_input_selection`: so a keyword selecting a particular probabilistic input specification can be passed
-- `parameters_selection`: so a keyword selecting a particular set of parameters values can be passed
-- `name`: so a custom name of an instance can be passed
-
-Notice that these parameters are all optional and must be given as keyword arguments (it's good to be explicit).
-
-There are a couple of missing things in the constructor definition above: 
-
-- `DEFAULT_INPUT_SELECTION` and `AVAILABLE_INPUT_SPECS`
-- `DEFAULT_PARAMETERS_SELECTION` and `AVAILABLE_PARAMETERS`
+Notice that for a test function with parameters, the signature should also
+include the parameters.
 
 ### Specifying probabilistic input model
 
-`AVAILABLE_INPUT_SPECS` is a module-level variable that stores a dictionary containing
-all the available input specifications available in UQTestFuns for the Branin function.
+The specification of the probabilistic model is stored in a module-level
+dictionary. While you're free to name the dictionary anything you like,
+the convention is `AVAILABLE_INPUT_SPECS`.
 We define the variable as follows:
 
 ```python
 AVAILABLE_INPUT_SPECS = {
-    "Dixon1978": {
-        "name": "Branin-Dixon-2008",
-        "description": (
+    "Dixon1978": ProbInputSpecFixDim(
+        name="Branin-Dixon-2008",
+        description=(
             "Search domain for the Branin function from Dixon and Szegö (1978)."
         ),
-        "marginals": INPUT_MARGINALS_DIXON1978,
-        "copulas": None,
-    }
+        marginals=[
+          UnivDistSpec(
+            name="x1",
+            distribution="uniform",
+            parameters=[-5, 10],
+            description="None",
+          ),
+          UnivDistSpec(
+            name="x2",
+            distribution="uniform",
+            parameters=[0.0, 15.0],
+            description="None",
+          )
+        ],
+        copulas=None,
+    ),
 }
 ```
 
-Each element of this dictionary contains the arguments to create an input model as an instance of the `ProbInput` class.
+Each key-value pair of this dictionary contains a complete specification
+to create an input model as an instance of the `ProbInput` class.
 For this particular example, we only have one input specification available.
 If there were more, we would add them here in the dictionary each with a unique keyword.
 
@@ -231,46 +216,17 @@ If there were more, we would add them here in the dictionary each with a unique 
 The keyword is, by convention, the citation key of the particular reference as listed in the BibTeX file. 
 ```
 
-In the code above, we store the specification of the marginal inside another variable.
-The marginals specification is a list of instances of `UnivDist` describing each of the input variables.
-
-```python
-INPUT_MARGINALS_DIXON1978 = [
-    UnivDist(
-        name="x1",
-        distribution="uniform",
-        parameters=[-5, 10],
-        description="None",
-    ),
-    UnivDist(
-        name="x2",
-        distribution="uniform",
-        parameters=[0.0, 15.0],
-        description="None",
-    ),
-]
-```
-
-Finally, we need to tell UQTestFuns which input specification needs to be used by default.
-We put the keyword selecting the default specification inside the variable `DEFAULT_INPUT_SELECTION`:
-
-```python
-DEFAULT_INPUT_SELECTION = "Dixon1978"
-```
+Also notice that in the code above, we store the specifications of the marginals
+in a list of {ref}`api_reference_input_spec_univdist`.
+Each element of this list is used to create an instance of `UnivDist`.
 
 With that, we have completed the input specification of the Branin function.
 
 ### Specifying parameters
 
-Similar to the previous step, `DEFAULT_PARAMETERS_SELECTION` is a module-level variable that stores a string keyword referring
-to the default set of parameter values for the Branin function.
-
-```python
-DEFAULT_PARAMETERS_SELECTION = "Dixon1978"
-```
-
-As before, the keyword refers to a dictionary that contains all the available parameter values.
-For this example, we need to define the dictionary inside a module-level variable called `AVAILABLE_PARAMETERS`:
+For a parameterized test function, we also need to define a module-level
+dictionary that stores the parameter sets.
+Conventionally, we name this variable `AVAILABLE_PARAMETERS`:
 
 ```python
 AVAILABLE_PARAMETERS = {
@@ -280,66 +236,49 @@ AVAILABLE_PARAMETERS = {
 }
 ```
 
-### Implementing a concrete evaluation method
+The value of the parameters can be of any type, as long as it is consistent
+with how the parameters are going to be consumed by the `evaluate()` function.
 
-For an implementation of a test function, the abstract method `evaluate()` must be implemented.
+As before, if there are multiple parameter sets available in the literature,
+additional key-value pair should be added here.
 
-```python
-    ...
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the Branin function on a set of input values.
+### Implementing a concrete class
 
-        Parameters
-        ----------
-        xx : np.ndarray
-            2-Dimensional input values given by an N-by-2 array where
-            N is the number of input values.
+Each built-in test function is an implementation of the abstract base class
+`UQTestFunABC`.
+A concrete implementation of this base class requires the following:
 
-        Returns
-        -------
-        np.ndarray
-            The output of the Branin func. evaluated on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        params = self.parameters
-        yy = (
-            params[0]
-            * (
-                xx[:, 1]
-                - params[1] * xx[:, 0] ** 2
-                + params[2] * xx[:, 0]
-                - params[3]
-            )
-            ** 2
-            + params[4] * (1 - params[5]) * np.cos(xx[:, 0])
-            + params[4]
-        )
+- a static method named `eval_()`
+- several class-level properties, namely: `_tags`, `_description`, 
+  `_available_inputs`, `_available_parameters`, `_default_spatial_dimension`,
+  `_default_input`, and `_default_parameters`.
 
-        return yy
-```
-
-Notice that the stored function parameters are accessible as a property of the instance and can be accessed via `self`;
-the parameter should not be directly passed in the calling of the method.
-
-### Adding concrete class properties
-
-Several class properties must be defined for a concrete implementation.
-They are useful for the organization and bookkeeping of the test functions.
+The full definition of the class for the Branin test function is shown below.
 
 ```python
-class Branin(UQTestFunABC):
-    ...
+class Branin(UQTestFunFixDimABC):
+    """A concrete implementation of the Branin test function."""
+  
     _tags = ["optimization"]  # Application tags
-
-    _available_inputs = tuple(AVAILABLE_INPUT_SPECS.keys())  # Input selection keywords
-
-    _available_parameters = tuple(AVAILABLE_PARAMETERS.keys())  # Parameters selection keywords
-
-    _default_spatial_dimension = 2  # Spatial dimension of the function
-
     _description = "Branin function from Dixon and Szegö (1978)"  # Short description
-    ...
+    _available_inputs = AVAILABLE_INPUT_SPECS    # As defined above 
+    _available_parameters = AVAILABLE_PARAMETERS # As defined above
+    _default_spatial_dimension = 2  # Spatial dimension of the function
+    _default_input = "Dixon1978"       # Optional, if only one input is available
+    _default_parameters = "Dixon1978"  # Optional, if only one set of parameters is available
+
+    eval_ = staticmethod(evaluate)  # assuming `evaluate()` has been defined
 ```
+
+There is no need to define an `__init__()` method.
+We will use the default `__init__()` from the base class.
+
+
+Notice the two last class properties: `_default_input` and `_default_parameters`.
+In case of only one input specification (resp. set of parameters) is available,
+these properties are optional.
+With more than one specification (resp. set), you must explicitly tell UQTestFuns
+which specification and set should be used by default (i.e., when not specified).
 
 With this, the test function implementation is complete.
 We now need to import the test function at the package level.
@@ -355,13 +294,14 @@ from .branin import Branin
 ...
 
 __all__ = [
-  ...
+  ...,
   "Branin",
-  ...
+  ...,
 ]
 ```
 
-Now you can check if all has been correctly set up by listing the available built-in function from a Python terminal.
+Now you can check if all has been correctly set up by listing the available
+built-in functions from a Python terminal.
 
 ```python
 >>> import uqtestfuns as uqtf
@@ -432,3 +372,10 @@ on how to add the documentation for a test function.
 
 Congratulations you just successfully implemented your first UQ test function
 and add it to the code base!
+
+## References
+
+```{bibliography}
+:style: unsrtalpha
+:filter: docname in docnames
+```
