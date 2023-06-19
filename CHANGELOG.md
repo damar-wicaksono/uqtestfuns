@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (with only `evaluate()` and `ProbInput`), while the latter is used to
   implement _published_ UQ test functions in the code base (i.e., with 
   additional metadata such as tags and description).
+- An implementation of the one-dimensional function from Forrester et al.
+  (2008). The function was used as a test function for optimization approaches
+  using metamodels.
 
 ## [0.1.1] - 2023-07-03
 
