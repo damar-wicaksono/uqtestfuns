@@ -20,6 +20,7 @@ in the comparison of global optimization methods.
 |                            Name                             | Spatial Dimension |     Constructor      |
 |:-----------------------------------------------------------:|:-----------------:|:--------------------:|
 |            {ref}`Ackley <test-functions:ackley>`            |         M         |      `Ackley()`      |
+| {ref}`Forrester et al. (2008) <test-functions:forrester>`   |         1         |  `Forrester2008()`   |
 
 In a Python terminal, you can list all the available functions relevant
 for optimization applications using ``list_functions()`` and filter the results

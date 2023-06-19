@@ -5,8 +5,9 @@ from .ackley import Ackley
 from .borehole import Borehole
 from .bratley1992 import Bratley1992d
 from .damped_oscillator import DampedOscillator
-from .franke import Franke1, Franke2, Franke3, Franke4, Franke5, Franke6
 from .flood import Flood
+from .forrester import Forrester2008
+from .franke import Franke1, Franke2, Franke3, Franke4, Franke5, Franke6
 from .ishigami import Ishigami
 from .oakley_ohagan_1d import OakleyOHagan1D
 from .otl_circuit import OTLCircuit
@@ -26,6 +27,7 @@ __all__ = [
     "Bratley1992d",
     "DampedOscillator",
     "Flood",
+    "Forrester2008",
     "Franke1",
     "Franke2",
     "Franke3",

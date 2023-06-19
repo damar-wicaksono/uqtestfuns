@@ -25,6 +25,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 | {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>` |         M         |   `Bratley1992d()`   |
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>`  |         7         | `DampedOscillator()` |
 |             {ref}`Flood <test-functions:flood>`              |         8         |      `Flood()`       |
+|  {ref}`Forrester et al. (2008) <test-functions:forrester>`   |         1         |  `Forrester2008()`   |
 |        {ref}`(1st) Franke <test-functions:franke-1>`         |         2         |     `Franke1()`      |
 |        {ref}`(2nd) Franke <test-functions:franke-2>`         |         2         |     `Franke2()`      |
 |        {ref}`(3rd) Franke <test-functions:franke-3>`         |         2         |     `Franke3()`      |

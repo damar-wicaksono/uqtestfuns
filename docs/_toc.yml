@@ -33,6 +33,8 @@ parts:
             title: Damped Oscillator
           - file: test-functions/flood
             title: Flood
+          - file: test-functions/forrester
+            title: Forrester et al. (2008)
           - file: test-functions/franke-1
             title: (1st) Franke
           - file: test-functions/franke-2
