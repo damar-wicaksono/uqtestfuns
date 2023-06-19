@@ -171,7 +171,7 @@ plt.gcf().set_dpi(150);
 ### Optimum values
 
 The global optimum value of the Ackley function is
-$\mathcal{M}(\boldsymbol{x}^*) = 0$ at  $x_m^* = 0,\, m = 1, \ldots, M$.
+$\mathcal{M}(\boldsymbol{x}^*) = 0$ at $x_m^* = 0,\, m = 1, \ldots, M$.
 
 ## References
 
