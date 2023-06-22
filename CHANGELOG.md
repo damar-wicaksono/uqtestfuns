@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - An implementation of the Welch et al. (1992) test function, 
   a 20-dimensional function used in the context of metamodeling and sensitivity
   analysis.
-- An implementation of M-dimensional test functions (#4) from Bratley et al.
+- Three M-dimensional test functions (#2, #3, #4) from Bratley et al.
   (1992) useful for testing multi-dimensional numerical integrations as well
   as global sensitivity analysis.
 - Two base classes are now available `UQTestFunBareABC` and `UQTestFunABC`.

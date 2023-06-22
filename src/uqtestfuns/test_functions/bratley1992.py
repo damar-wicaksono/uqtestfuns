@@ -34,12 +34,13 @@ References
 """
 import numpy as np
 
+from scipy.special import eval_chebyt
 from typing import List
 
 from ..core.uqtestfun_abc import UQTestFunABC
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
 
-__all__ = ["Bratley1992b", "Bratley1992d"]
+__all__ = ["Bratley1992b", "Bratley1992c", "Bratley1992d"]
 
 
 def _bratley_input(spatial_dimension: int) -> List[UnivDistSpec]:
@@ -131,6 +132,51 @@ class Bratley1992b(UQTestFunABC):
     _default_spatial_dimension = None
 
     eval_ = staticmethod(evaluate_bratley1992b)
+
+
+def evaluate_bratley1992c(xx: np.ndarray):
+    """Evaluate the test function #3 of Bratley et al. (1992).
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-M array where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+
+    num_points, num_dim = xx.shape
+    yy = np.ones(num_points)
+
+    # Compute the function
+    for m in range(1, num_dim + 1):
+        mi = m % 4 + 1
+        yy *= eval_chebyt(mi, 2 * xx[:, m - 1] - 1)
+
+    return yy
+
+
+class Bratley1992c(UQTestFunABC):
+    """An implementation of the test function 2 from Bratley et al. (1992).
+
+    The function (used as an integrand) is a product of a trigonometric
+    function.
+    """
+
+    _tags = COMMON_METADATA["_tags"]
+    _description = (
+        f"Integration test function #3 {COMMON_METADATA['_description']}"
+    )
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = None
+
+    eval_ = staticmethod(evaluate_bratley1992c)
 
 
 def evaluate_bratley1992d(xx: np.ndarray):

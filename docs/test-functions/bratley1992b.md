@@ -31,6 +31,8 @@ There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
 
 - {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`:
   A product of trigonometric function (_this function_)
+- {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`:
+  A product of the Chebyshev polynomial of the first kind
 - {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`:
   A sum of product
 ```
