@@ -31,7 +31,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (2008). The function was used as a test function for optimization approaches
   using metamodels.
 
-## [0.1.1] - 2023-07-03
+### Changed
+
+- The date format in CHANGELOG.md has been changed from YYYY-DD-MM to the 
+  ISO format YYYY-MM-DD.
+
+## [0.1.1] - 2023-03-07
 
 ### Fixed
 
@@ -39,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   latest version of UQTestFuns that was planned for v0.1.0 is now v0.1.1
 - Missing link in CHANGELOG.md
 
-## [0.1.0] - 2023-07-03
+## [0.1.0] - 2023-03-07
 
 ### Added
 
@@ -60,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Relax the numerical tolerance of a test (i.e., univariate beta distribution)
 - Minor edit in the docs
 
-## [0.0.1] - 2023-06-03
+## [0.0.1] - 2023-03-06
 
 First public release of UQTestFuns.
 
