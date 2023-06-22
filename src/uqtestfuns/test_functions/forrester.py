@@ -47,7 +47,9 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     ----------
 
     """
-    return (6 * xx - 2) ** 2 * np.sin(12 * xx - 4)
+    yy = (6 * xx[:, 0] - 2) ** 2 * np.sin(12 * xx[:, 0] - 4)
+
+    return yy
 
 
 class Forrester2008(UQTestFunABC):
