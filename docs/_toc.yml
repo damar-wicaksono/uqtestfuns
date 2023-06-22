@@ -29,6 +29,8 @@ parts:
             title: Borehole
           - file: test-functions/bratley1992b
             title: Bratley et al. (1992) B
+          - file: test-functions/bratley1992c
+            title: Bratley et al. (1992) C
           - file: test-functions/bratley1992d
             title: Bratley et al. (1992) D
           - file: test-functions/damped-oscillator
