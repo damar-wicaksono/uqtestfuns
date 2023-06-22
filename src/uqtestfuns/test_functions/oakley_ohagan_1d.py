@@ -56,7 +56,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
         on the input values.
         The output is a 1-dimensional array of length N.
     """
-    yy = 5 + xx + np.cos(xx)
+    yy = 5 + xx[:, 0] + np.cos(xx[:, 0])
 
     return yy
 
