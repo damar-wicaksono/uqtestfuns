@@ -19,6 +19,7 @@ in the testing and comparison of numerical integration method.
 
 |                             Name                             | Spatial Dimension |   Constructor    |
 |:------------------------------------------------------------:|:-----------------:|:----------------:|
+| {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>` |         M         | `Bratley1992b()` |
 | {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>` |         M         | `Bratley1992d()` |
 |           {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |    `SobolG()`    |
 |    {ref}`Welch et al. (1992) <test-functions:welch1992>`     |        20         |  `Welch1992()`   |

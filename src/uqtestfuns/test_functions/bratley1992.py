@@ -8,6 +8,8 @@ of global sensitivity analysis.
 
 The four functions are:
 
+- Bratley1992b: A product of trigonometric function;
+  integration test function #2
 - Bratley1992d: A sum of products integrand; integration test function #4
 
 The Bratley1992d function may also be referred to as the "Bratley function"
@@ -37,7 +39,7 @@ from typing import List
 from ..core.uqtestfun_abc import UQTestFunABC
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
 
-__all__ = ["Bratley1992d"]
+__all__ = ["Bratley1992b", "Bratley1992d"]
 
 
 def _bratley_input(spatial_dimension: int) -> List[UnivDistSpec]:
@@ -88,6 +90,49 @@ COMMON_METADATA = dict(
 )
 
 
+def evaluate_bratley1992b(xx: np.ndarray):
+    """Evaluate the test function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-M array where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+
+    num_dim = xx.shape[1]
+
+    # Compute the function
+    ii = np.arange(1, num_dim + 1)
+    yy = np.prod(ii * np.cos(ii * xx), axis=1)
+
+    return yy
+
+
+class Bratley1992b(UQTestFunABC):
+    """An implementation of the test function 2 from Bratley et al. (1992).
+
+    The function (used as an integrand) is a product of a trigonometric
+    function.
+    """
+
+    _tags = COMMON_METADATA["_tags"]
+    _description = (
+        f"Integration test function #2 {COMMON_METADATA['_description']}"
+    )
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = None
+
+    eval_ = staticmethod(evaluate_bratley1992b)
+
+
 def evaluate_bratley1992d(xx: np.ndarray):
     """Evaluate the test function on a set of input values.
 
@@ -115,7 +160,10 @@ def evaluate_bratley1992d(xx: np.ndarray):
 
 
 class Bratley1992d(UQTestFunABC):
-    """An implementation of the test function 4 from Bratley et al. (1988)."""
+    """An implementation of the test function 4 from Bratley et al. (1992).
+
+    The function (used as an integrand) is a sum of products.
+    """
 
     _tags = COMMON_METADATA["_tags"]
     _description = (
