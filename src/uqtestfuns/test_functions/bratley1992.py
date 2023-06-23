@@ -37,10 +37,12 @@ import numpy as np
 from scipy.special import eval_chebyt
 from typing import List
 
+from .sobol_g import evaluate as evaluate_sobol_g
+
 from ..core.uqtestfun_abc import UQTestFunABC
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
 
-__all__ = ["Bratley1992b", "Bratley1992c", "Bratley1992d"]
+__all__ = ["Bratley1992a", "Bratley1992b", "Bratley1992c", "Bratley1992d"]
 
 
 def _bratley_input(spatial_dimension: int) -> List[UnivDistSpec]:
@@ -89,6 +91,49 @@ COMMON_METADATA = dict(
     _default_spatial_dimension=None,
     _description="from Bratley et al. (1992)",
 )
+
+
+def evaluate_bratley1992a(xx: np.ndarray):
+    """Evaluate the test function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-M array where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    # The function is the Sobol'-G function with all the parameters set to 0.
+    parameters = np.zeros(xx.shape[1])
+    yy = evaluate_sobol_g(xx, parameters)
+
+    return yy
+
+
+class Bratley1992a(UQTestFunABC):
+    """An implementation of the test function 1 from Bratley et al. (1992).
+
+    The function (used as an integrand) is a product of an absolute function.
+
+    Notes
+    -----
+    - The function is the Sobol'-G function with all the parameters set to 0.
+    """
+
+    _tags = COMMON_METADATA["_tags"]
+    _description = (
+        f"Integration test function #1 {COMMON_METADATA['_description']}"
+    )
+    _available_inputs = COMMON_METADATA["_available_inputs"]
+    _available_parameters = COMMON_METADATA["_available_parameters"]
+    _default_spatial_dimension = None
+
+    eval_ = staticmethod(evaluate_bratley1992a)
 
 
 def evaluate_bratley1992b(xx: np.ndarray):

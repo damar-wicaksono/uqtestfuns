@@ -19,9 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - An implementation of the Welch et al. (1992) test function, 
   a 20-dimensional function used in the context of metamodeling and sensitivity
   analysis.
-- Three M-dimensional test functions (#2, #3, #4) from Bratley et al.
-  (1992) useful for testing multi-dimensional numerical integrations as well
-  as global sensitivity analysis.
+- Four M-dimensional test functions from Bratley et al. (1992) useful for
+  testing multi-dimensional numerical integrations as well as 
+  global sensitivity analysis.
+- Add a new parameterization to the Sobol'-G function taken from
+  Bratley et al. (1992) and Saltelli and Sobol' (1995).
 - Two base classes are now available `UQTestFunBareABC` and `UQTestFunABC`.
   The former is used to implement a _bare_ UQ test function
   (with only `evaluate()` and `ProbInput`), while the latter is used to
@@ -35,6 +37,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The date format in CHANGELOG.md has been changed from YYYY-DD-MM to the 
   ISO format YYYY-MM-DD.
+
+### Fixed
+
+- The original citation for the Sobol'-G function has been fixed;
+  it is now referred to Saltelli and Sobol' (1995).
 
 ## [0.1.1] - 2023-03-07
 

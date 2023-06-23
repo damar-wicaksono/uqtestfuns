@@ -31,12 +31,18 @@ of global sensitivity analysis.
 ```{note}
 There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
 
+- {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`:
+  A product of an absolute function 
 - {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`:
-  A product of trigonometric function
+  A product of a trigonometric function
 - {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`:
   A product of the Chebyshev polynomial of the first kind
 - {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`:
   A sum of product (_this function_)
+  
+The function was reintroduced in {cite}`Saltelli1995` with additional
+parameters for global sensitivity analysis purposes.
+The "generalized" function became known as the {ref}`Sobol'-G <test-functions:sobol-g>`. 
 ```
 
 The plots for one-dimensional and two-dimensional `Bratley1992d` functions
