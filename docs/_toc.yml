@@ -27,6 +27,8 @@ parts:
             title: Ackley
           - file: test-functions/borehole
             title: Borehole
+          - file: test-functions/bratley1992a
+            title: Bratley et al. (1992) A
           - file: test-functions/bratley1992b
             title: Bratley et al. (1992) B
           - file: test-functions/bratley1992c

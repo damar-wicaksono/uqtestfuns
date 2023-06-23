@@ -29,12 +29,18 @@ for multi-dimensional numerical integration using low discrepancy sequences.
 ```{note}
 There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
 
+- {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`:
+  A product of an absolute function 
 - {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`:
-  A product of trigonometric function
+  A product of a trigonometric function
 - {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`:
   A product of the Chebyshev polynomial of the first kind (_this function_)
 - {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`:
   A sum of product
+  
+The function was reintroduced in {cite}`Saltelli1995` with additional
+parameters for global sensitivity analysis purposes.
+The "generalized" function became known as the {ref}`Sobol'-G <test-functions:sobol-g>`. 
 ```
 
 The plots for one-dimensional and two-dimensional `Bratley1992c` functions
@@ -65,7 +71,7 @@ axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
 axs_1.set_xlabel("$x$", fontsize=14)
 axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
-axs_1.set_title("1D Bratley1992d")
+axs_1.set_title("1D Bratley1992c")
 
 # Surface
 axs_2 = plt.subplot(132, projection='3d')
@@ -81,7 +87,7 @@ axs_2.plot_surface(
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
 axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_2.set_title("Surface plot of 2D Bratley1992d", fontsize=14)
+axs_2.set_title("Surface plot of 2D Bratley1992c", fontsize=14)
 
 # Contour
 axs_3 = plt.subplot(133)
@@ -90,7 +96,7 @@ cf = axs_3.contourf(
 )
 axs_3.set_xlabel("$x_1$", fontsize=14)
 axs_3.set_ylabel("$x_2$", fontsize=14)
-axs_3.set_title("Contour plot of 2D Bratley1992d", fontsize=14)
+axs_3.set_title("Contour plot of 2D Bratley1992c", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -121,18 +127,19 @@ For example, to create an instance of 10-dimensional `Bratley1992c` function,
 type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Bratley1992d(spatial_dimension=10)
+my_testfun = uqtf.Bratley1992c(spatial_dimension=10)
 ```
 
 ## Description
 
-The `Bratley1992d` function is defined as follows[^location]:
+The `Bratley1992c` function is defined as follows[^location]:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^M T_{n_m} (2 x_m - 1)
 $$
 
-where $n_m = m \bmod 4 + 1$ and
+where $T_{n_m}$ is the Chebyshev polynomial (of the first kind)
+of degree $n_m$, $n_m = m \bmod 4 + 1$, and
 $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$
 is the $M$-dimensional vector of input variables further defined below.
 

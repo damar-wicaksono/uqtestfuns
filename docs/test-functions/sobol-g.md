@@ -21,6 +21,18 @@ algorithms (e.g., quasi-Monte-Carlo; see for instance {cite}`Sobol1998`.
 Later on, it becomes a popular testing function for global sensitivity analysis
 methods; see, for instances, {cite}`Marrel2008, Marrel2009, Kucherenko2011`.
 
+
+The Sobol'-G function is an M-dimensional scalar-valued function.
+It was introduced in [1] for testing numerical integration algorithms
+(e.g., quasi-Monte-Carlo; see also for instance [2] and [3]).
+The current form (and name) was from [4] and used in the context of global
+sensitivity analysis. There, the function was generalized by introducing
+a set of parameters that determines the importance of each input variable.
+Later on, it becomes a popular testing function for global sensitivity analysis
+methods; see, for instances, [5], [6], and [7].
+
+
+
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
@@ -119,7 +131,7 @@ using six dimensions.
 
 ## Description
 
-The Sobol'-G function is defined as follows:
+The Sobol'-G function is defined as follows[^location]:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^M \frac{\lvert 4 x_m - 2 \rvert + a_m}{1 + a_m}
@@ -146,15 +158,17 @@ input variable.
 There are several sets of parameters used in the literature
 as shown in the table below.  
   
-| No. |                       Value                       |         Keyword          |               Source                |                              Remark                              |  
-|:---:|:-------------------------------------------------:|:------------------------:|:-----------------------------------:|:----------------------------------------------------------------:|  
-|  1  |            $a_1 = \ldots = a_M = 0.01$            |      `Sobol1998-1`       |    {cite}`Sobol1998` (choice 1)     |    The supremum of the function grows exponentially at $2^M$     |  
-|  2  |            $a_1 = \ldots = a_M = 1.0$             |      `Sobol1998-2`       |    {cite}`Sobol1998` (choice 2)     |   The supremum of the function grows exponentially at  $1.5^M$   |  
-|  3  |       $a_m = m$<br> $\, 1 \leq m \leq M$          |      `Sobol1998-3`       |    {cite}`Sobol1998` (choice 3)     | The supremum of the function grows linearly at $1 + \frac{M}{2}$ |  
-|  4  |         $a_m = m^2$<br> $1 \leq m \leq M$         |      `Sobol1998-4`       |    {cite}`Sobol1998` (choice 4)     |                 The supremum is bounded at $1.0$                 |  
-|  5  | $a_1 = a_2 = 0.0$<br> $a_3 = \ldots = a_M = 6.52$ |   `Kucherenko2011-2a`    | {cite}`Kucherenko2011` (Problem 2A) |                      Originally, $M = 100$                       |  
-|  6  |        $a_m = 6,52$<br> $1 \leq m \leq M$         |   `Kucherenko2011-3b`    | {cite}`Kucherenko2011` (Problem 3B) |                                                                  |  
-|  7  |  $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$  | `Crestaux2007` (default) |        {cite}`Crestaux2007`         |                                                                  |
+| No. |                             Value                              |         Keyword          |                             Source                             |                                             Remark                                             |  
+|:---:|:--------------------------------------------------------------:|:------------------------:|:--------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|  
+|  1  |                    $a_1 = \ldots = a_M = 0$                    |     `Saltelli1995-1`     |  {cite}`Saltelli1995` (Example 1) (also {cite}`Bratley1992`)   |                           All input variables are equally important                            |  
+|  2  | $a_1 = a_2 = 0.0$<br> $a_3 = 3$<br> $a_3 = \ldots = a_M = 9.9$ |     `Saltelli1995-2`     |                {cite}`Saltelli1995` (Example 2)                | The first two are important, the next is moderately important, and the rest is non-influential |  
+|  3  |        $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$         |     `Saltelli1995-3`     | {cite}`Saltelli1995` (Example 3) (also {cite}`Crestaux2007`  ) |              The most important input is the first one, the least is the last one              |
+|  4  |                  $a_1 = \ldots = a_M = 0.01$                   |      `Sobol1998-1`       |                  {cite}`Sobol1998` (choice 1)                  |                   The supremum of the function grows exponentially at $2^M$                    |  
+|  5  |                   $a_1 = \ldots = a_M = 1.0$                   |      `Sobol1998-2`       |                  {cite}`Sobol1998` (choice 2)                  |                  The supremum of the function grows exponentially at  $1.5^M$                  |  
+|  6  |               $a_m = m$<br> $\, 1 \leq m \leq M$               |      `Sobol1998-3`       |                  {cite}`Sobol1998` (choice 3)                  |                The supremum of the function grows linearly at $1 + \frac{M}{2}$                |  
+|  7  |               $a_m = m^2$<br> $1 \leq m \leq M$                |      `Sobol1998-4`       |                  {cite}`Sobol1998` (choice 4)                  |                                The supremum is bounded at $1.0$                                |  
+|  8  |       $a_1 = a_2 = 0.0$<br> $a_3 = \ldots = a_M = 6.52$        |   `Kucherenko2011-2a`    |              {cite}`Kucherenko2011` (Problem 2A)               |                                     Originally, $M = 100$                                      |  
+|  9  |               $a_m = 6,52$<br> $1 \leq m \leq M$               |   `Kucherenko2011-3b`    |              {cite}`Kucherenko2011` (Problem 3B)               |                                                                                                |  
 
 ```{note}
 The parameter values used in {cite}`Marrel2008` and {cite}`Marrel2009`
@@ -365,9 +379,11 @@ tabulate(
 ## References
 
 ```{bibliography}
-:style: plain
+:style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^location]: see Eqs. (23) and (24), p. 234 in {cite}`Saltelli1995`.
 
 [^integral]: The expected value is the same as the integral over the domain
 because the input is uniform in a unit hypercube.

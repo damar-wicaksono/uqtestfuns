@@ -17,13 +17,14 @@ kernelspec:
 The table below listed the available test functions typically used
 in the testing and comparison of numerical integration method.
 
-|                             Name                             | Spatial Dimension |    Constructor     |
-|:------------------------------------------------------------:|:-----------------:|:------------------:|
-| {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>` |         M         |  `Bratley1992b()`  |
-| {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>` |         M         | `Bratley1992c()`   |
-| {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>` |         M         |  `Bratley1992d()`  |
-|           {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |     `SobolG()`     |
-|    {ref}`Welch et al. (1992) <test-functions:welch1992>`     |        20         |   `Welch1992()`    |
+|                             Name                             | Spatial Dimension |     Constructor     |
+|:------------------------------------------------------------:|:-----------------:|:-------------------:|
+| {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>` |         M         |  `Bratley1992a()`   |
+| {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>` |         M         |  `Bratley1992b()`   |
+| {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>` |         M         |  `Bratley1992c()`   |
+| {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>` |         M         |  `Bratley1992d()`   |
+|           {ref}`Sobol'-G <test-functions:sobol-g>`           |         M         |     `SobolG()`      |
+|    {ref}`Welch et al. (1992) <test-functions:welch1992>`     |        20         |    `Welch1992()`    |
 
 In a Python terminal, you can list all the available functions relevant
 for metamodeling applications using ``list_functions()`` and filter the results
