@@ -53,6 +53,8 @@ In a Python terminal, you can list all the available functions
 along with the corresponding constructor using ``list_functions()``:
 
 ```{code-cell} ipython3
+:tags: ["output_scroll"]
+
 import uqtestfuns as uqtf
 
 uqtf.list_functions()

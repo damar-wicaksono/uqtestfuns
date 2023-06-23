@@ -27,6 +27,8 @@ for optimization applications using ``list_functions()`` and filter the results
 using the ``tag`` parameter:
 
 ```{code-cell} ipython3
+:tags: ["output_scroll"]
+
 import uqtestfuns as uqtf
 
 uqtf.list_functions(tag="optimization")
