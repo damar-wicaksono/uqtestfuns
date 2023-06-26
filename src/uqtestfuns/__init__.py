@@ -1,7 +1,7 @@
 """
 This is the package init for UQTestFuns.
 """
-import pkg_resources
+import sys
 
 from .core import UnivDist
 from .core import ProbInput
@@ -17,7 +17,12 @@ from .meta import UQMetaTestFun
 
 from .helpers import list_functions
 
-__version__ = pkg_resources.require("uqtestfuns")[0].version
+if sys.version_info >= (3, 8):
+    from importlib import metadata
+else:
+    import importlib_metadata as metadata
+
+__version__ = metadata.version("uqtestfuns")
 
 __all__ = [
     "UnivDist",
