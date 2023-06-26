@@ -31,7 +31,7 @@ in the comparison of metamodeling approaches.
 |         {ref}`(5th) Franke <test-functions:franke-5>`          |         2         |     `Franke5()`      |
 |         {ref}`(6th) Franke <test-functions:franke-6>`          |         2         |     `Franke6()`      |
 | {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>` |         1         |  `Gramacy1DSine()`   |
-|   {ref}`Oakley-O'Hagan 1D <test-functions:oakley-ohagan-1d>`   |         1         |  `OakleyOHagan1D()`  |
+| {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>` |         1         |     `Oakley1D()`     |
 |        {ref}`OTL Circuit <test-functions:otl-circuit>`         |      6 / 20       |    `OTLCircuit()`    |
 |          {ref}`McLain S1 <test-functions:mclain-s1>`           |         2         |     `McLainS1()`     |
 |          {ref}`McLain S2 <test-functions:mclain-s2>`           |         2         |     `McLainS2()`     |

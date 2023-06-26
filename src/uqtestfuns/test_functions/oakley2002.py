@@ -1,8 +1,9 @@
 """
-Module with an implementation of the 1D Oakley-O'Hagan test function.
+Module with implementations of test functions from Oakley and O'Hagan (2002).
 
-The 1D Oakley-O'Hagan test function is a one-dimensional scalar-valued
-function. It was used in [1] as a test function for illustrating metamodeling
+The 1D test function from Oakley and O'Hagan (2002) (or `Oakley1D` function
+for short) is a one-dimensional scalar-valued function.
+It was used in [1] as a test function for illustrating metamodeling
 and uncertainty propagation approaches.
 
 References
@@ -18,7 +19,7 @@ import numpy as np
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
 
-__all__ = ["OakleyOHagan1D"]
+__all__ = ["Oakley1D"]
 
 AVAILABLE_INPUT_SPECS = {
     "Oakley2002": ProbInputSpecFixDim(
@@ -61,8 +62,8 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class OakleyOHagan1D(UQTestFunABC):
-    """A concrete implementation of the 1D Oakley-O'Hagan test function."""
+class Oakley1D(UQTestFunABC):
+    """An implementation of the 1D function from Oakley & O'Hagan (2002)."""
 
     _tags = ["metamodeling"]
     _description = "One-dimensional function from Oakley and O'Hagan (2002)"

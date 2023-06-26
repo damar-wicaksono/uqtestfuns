@@ -7,33 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2023-06-26
+
 ### Added
 
-- An instance of NumPy random number generator is now attached to instances of
-  `UnivDist` and `ProbInput`. The random seed
-  number may be passed to the corresponding constructor for reproducibility.
 - The two-dimensional Franke functions (1st, 2nd, 3rd, 4th, 5th, and 6th),
   relevant for metamodeling exercises, are added as UQ test functions.
 - The two-dimensional McLain functions (S1, S2, S3, S4, and S5),
   relevant for metamodeling exercises, are added as UQ test functions.
-- An implementation of the Welch et al. (1992) test function, 
-  a 20-dimensional function used in the context of metamodeling and sensitivity
-  analysis.
+- An implementation of the Welch et al. (1992) test function, a 20-dimensional
+  function used in the context of metamodeling and sensitivity analysis.
 - Four M-dimensional test functions from Bratley et al. (1992) useful for
   testing multi-dimensional numerical integrations as well as 
-  global sensitivity analysis.
+  global sensitivity analysis methods.
 - Add a new parameterization to the Sobol'-G function taken from
   Bratley et al. (1992) and Saltelli and Sobol' (1995).
-- Two base classes are now available `UQTestFunBareABC` and `UQTestFunABC`.
-  The former is used to implement a _bare_ UQ test function
-  (with only `evaluate()` and `ProbInput`), while the latter is used to
-  implement _published_ UQ test functions in the code base (i.e., with 
-  additional metadata such as tags and description).
 - An implementation of the one-dimensional function from Forrester et al.
   (2008). The function was used as a test function for optimization approaches
   using metamodels.
 - An implementation of the Gramacy (2007) one-dimensional sine function,
   a function with two regimes.
+- Two base classes are now available `UQTestFunBareABC` and `UQTestFunABC`.
+  The former is used to implement a _bare_ UQ test function
+  (with only `evaluate()` and `ProbInput`), while the latter is used to
+  implement _published_ UQ test functions in the code base (i.e., with 
+  additional metadata such as tags and description).
+- An instance of NumPy random number generator is now attached to instances of
+  `UnivDist` and `ProbInput`. The random seed number may be passed 
+  to the corresponding constructor for reproducibility.
+- CITATION.cff file to the code base.
 
 ### Changed
 
@@ -43,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (alphanumeric labels, sorted by order of appearance).
 - When `list_functions()` is called with a `tag` argument,
   then the application tags are no longer displayed to save terminal spaces.
+- The one-dimensional `OakleyOHagan1D` function has been renamed to
+  `Oakley1D`.
 
 ### Fixed
 
@@ -51,7 +55,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - If a function is used as parameters in a test function (e.g., if
   variable dimension), then it must have the keyword parameter
   "spatial_dimension" for the function to be called when an instance of
-  a UQ test function is created.
+  a UQ test function is created. This is to allow an arbitrary function
+  (without a parameter named "spatial_dimension") to be a parameter of
+  UQ test function.
 - One-dimensional test function now returns a one-dimensional array.
 
 ## [0.1.1] - 2023-03-07
@@ -101,6 +107,7 @@ First public release of UQTestFuns.
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
 [Unreleased]: https://github.com/damar-wicaksono/uqtestfuns/compare/main...dev
+[0.2.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/damar-wicaksono/uqtestfuns/releases/tag/v0.0.1
