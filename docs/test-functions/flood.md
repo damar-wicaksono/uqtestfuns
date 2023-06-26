@@ -210,6 +210,6 @@ tabulate(
 ## References
 
 ```{bibliography}
-:style: plain
+:style: unsrtalpha
 :filter: docname in docnames
 ```

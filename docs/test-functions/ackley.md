@@ -176,7 +176,7 @@ $\mathcal{M}(\boldsymbol{x}^*) = 0$ at $x_m^* = 0,\, m = 1, \ldots, M$.
 ## References
 
 ```{bibliography}
-:style: unsrt
+:style: unsrtalpha
 :filter: docname in docnames
 ```
 

@@ -158,6 +158,6 @@ plt.gcf().set_dpi(150);
 ## References
 
 ```{bibliography}
-:style: plain
+:style: unsrtalpha
 :filter: docname in docnames
 ```

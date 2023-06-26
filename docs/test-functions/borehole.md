@@ -224,6 +224,6 @@ tabulate(
 ## References
 
 ```{bibliography}
-:style: unsrt
+:style: unsrtalpha
 :filter: docname in docnames
 ```
