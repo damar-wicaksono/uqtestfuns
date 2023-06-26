@@ -92,13 +92,21 @@ def list_functions(
         return constructors
 
     # --- Create a tabulated view of the list
-    header_names = [
-        "No.",
-        "Constructor",
-        "Spatial Dimension",
-        "Application",
-        "Description",
-    ]
+    if tag is None:
+        header_names = [
+            "No.",
+            "Constructor",
+            "Dimension",
+            "Application",
+            "Description",
+        ]
+    else:
+        header_names = [
+            "No.",
+            "Constructor",
+            "Dimension",
+            "Description",
+        ]
 
     values = []
     for idx, available_class_name in enumerate(
@@ -113,26 +121,41 @@ def list_functions(
                 available_class.default_spatial_dimension
             )
 
-        tags = ", ".join(available_class.tags)
-
         description = available_class.description
 
-        value = [
-            idx + 1,
-            f"{available_class_name}()",
-            f"{default_spatial_dimension}",
-            tags,
-            f"{description}",
-        ]
+        if tag is None:
+            tags = ", ".join(available_class.tags)
+            value = [
+                idx + 1,
+                f"{available_class_name}()",
+                f"{default_spatial_dimension}",
+                tags,
+                f"{description}",
+            ]
+        else:
+            value = [
+                idx + 1,
+                f"{available_class_name}()",
+                f"{default_spatial_dimension}",
+                f"{description}",
+            ]
 
         values.append(value)
 
-    table = tbl(
-        values,
-        headers=header_names,
-        stralign="center",
-        colalign=("center", "center", "center", "center", "left"),
-    )
+    if tag is None:
+        table = tbl(
+            values,
+            headers=header_names,
+            stralign="center",
+            colalign=("center", "center", "center", "center", "left"),
+        )
+    else:
+        table = tbl(
+            values,
+            headers=header_names,
+            stralign="center",
+            colalign=("center", "center", "center", "left"),
+        )
 
     print(table)
 
