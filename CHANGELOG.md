@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ISO format YYYY-MM-DD.
 - The bibliography style in the docs has been changed to 'unsrtalpha'
   (alphanumeric labels, sorted by order of appearance).
+- When `list_functions()` is called with a `tag` argument,
+  then the application tags are no longer displayed to save terminal spaces.
 
 ### Fixed
 

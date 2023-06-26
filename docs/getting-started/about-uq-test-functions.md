@@ -212,6 +212,6 @@ Satisfying all the above requirements is exactly the goal
 of the UQTestFuns package.
 
 ```{bibliography}
-:style: plain
+:style: unsrtalpha
 :filter: docname in docnames
 ```
