@@ -12,16 +12,18 @@ import numpy as np
 import pytest
 import copy
 
+from typing import Type
+
 from conftest import assert_call
 
 from uqtestfuns.utils import get_available_classes
-from uqtestfuns import test_functions
+from uqtestfuns import test_functions, UQTestFunABC
 
 AVAILABLE_FUNCTION_CLASSES = get_available_classes(test_functions)
 
 
 @pytest.fixture(params=AVAILABLE_FUNCTION_CLASSES)
-def builtin_testfun(request):
+def builtin_testfun(request) -> Type[UQTestFunABC]:
     _, testfun = request.param
 
     return testfun
@@ -143,6 +145,21 @@ def test_call_instance(builtin_testfun):
 
     # Assertions
     assert_call(my_fun, xx)
+
+
+def test_str(builtin_testfun):
+    """Test the __str__() method of a test function instance."""
+
+    # Create an instance
+    my_fun = builtin_testfun()
+
+    str_ref = (
+        f"Name              : {my_fun.name}\n"
+        f"Spatial dimension : {my_fun.spatial_dimension}\n"
+        f"Description       : {my_fun.description}"
+    )
+
+    assert my_fun.__str__() == str_ref
 
 
 def test_transform_input(builtin_testfun):

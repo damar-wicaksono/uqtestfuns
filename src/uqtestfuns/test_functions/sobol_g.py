@@ -133,8 +133,6 @@ def _get_params_saltelli_1995_2(spatial_dimension: int) -> np.ndarray:
       are used then the remaining dimension is also non-influential.
     """
     yy = np.zeros(spatial_dimension)
-    if spatial_dimension > 0:
-        yy[0] = 0
 
     if spatial_dimension > 1:
         yy[1] = 0

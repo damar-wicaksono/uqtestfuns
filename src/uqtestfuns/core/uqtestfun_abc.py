@@ -4,6 +4,7 @@ This module provides abstract base classes for defining a test function class.
 import abc
 import numpy as np
 
+from inspect import signature
 from typing import Any, Callable, Dict, List, Optional, Union
 
 from .prob_input.probabilistic_input import ProbInput
@@ -29,7 +30,7 @@ class classproperty(property):
     def __get__(self, owner_self, owner_cls):
         return self.fget(owner_cls)  # type: ignore
 
-    def __set__(self, owner_self, owner_cls):
+    def __set__(self, owner_self, owner_cls):  # pragma: no cover
         raise AttributeError("can't set attribute")
 
 
@@ -73,8 +74,8 @@ class UQTestFunBareABC(abc.ABC):
             self._prob_input = value
         else:
             raise TypeError(
-                f"Probabilistic input model must be either a 'None' or "
-                f"of a 'ProbInput' type! Got instead {type(value)}."
+                f"Probabilistic input model must be of "
+                f"a 'ProbInput' type! Got instead {type(value)}."
             )
 
     @property
@@ -121,11 +122,6 @@ class UQTestFunBareABC(abc.ABC):
             Transformed sampled values from the specified uniform domain to
             the domain of the function as defined the `input` property.
         """
-        if self.prob_input is None or self.spatial_dimension is None:
-            raise ValueError(
-                "There is not ProbInput attached to the function! "
-                "A sample can't be generated."
-            )
 
         # Verify the uniform bounds
         assert min_value < max_value, (
@@ -156,18 +152,14 @@ class UQTestFunBareABC(abc.ABC):
 
     def __call__(self, xx):
         """Evaluation of the test function by calling the instance."""
-        if self.prob_input and self.spatial_dimension:
-            # Verify the shape of the input
-            _verify_sample_shape(xx, self.spatial_dimension)
+        # Verify the shape of the input
+        _verify_sample_shape(xx, self.spatial_dimension)
 
-            if self.prob_input is not None:
-                # If ProbInput is attached, verify the domain of the input
-                for dim_idx in range(self.spatial_dimension):
-                    lb = self.prob_input.marginals[dim_idx].lower
-                    ub = self.prob_input.marginals[dim_idx].upper
-                    _verify_sample_domain(
-                        xx[:, dim_idx], min_value=lb, max_value=ub
-                    )
+        # Verify the domain of the input
+        for dim_idx in range(self.spatial_dimension):
+            lb = self.prob_input.marginals[dim_idx].lower
+            ub = self.prob_input.marginals[dim_idx].upper
+            _verify_sample_domain(xx[:, dim_idx], min_value=lb, max_value=ub)
 
         return self.evaluate(xx)
 
@@ -266,7 +258,7 @@ class UQTestFunABC(UQTestFunBareABC):
 
         # --- Select the parameters set, when applicable
         available_parameters = self.available_parameters
-        if available_parameters:
+        if available_parameters is not None:
             if not parameters_selection:
                 parameters_selection = self.default_parameters
             if parameters_selection not in available_parameters:
@@ -278,7 +270,11 @@ class UQTestFunABC(UQTestFunBareABC):
             # If the parameters set is a function of spatial dimension
             if isinstance(prob_input_spec, ProbInputSpecVarDim):
                 if isinstance(parameters, Callable):  # type: ignore
-                    parameters = parameters(spatial_dimension)
+                    func_signature = signature(parameters).parameters
+                    if "spatial_dimension" in func_signature:
+                        parameters = parameters(
+                            spatial_dimension=spatial_dimension
+                        )
 
         else:
             parameters = None
@@ -402,7 +398,7 @@ class UQTestFunABC(UQTestFunBareABC):
 
     @staticmethod
     @abc.abstractmethod
-    def eval_(*args):
+    def eval_(*args):  # pragma: no cover
         """Static method for the concrete function implementation.
 
         Notes

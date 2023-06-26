@@ -9,7 +9,7 @@ Notes
 import numpy as np
 import pytest
 
-from uqtestfuns import SobolG
+from uqtestfuns.test_functions import SobolG
 
 available_parameters = list(SobolG.available_parameters.keys())
 
@@ -22,7 +22,7 @@ def test_wrong_param_selection():
 
 # ATTENTION: some parameters choice (e.g., "sobol-1")
 # can't be estimated properly with low N at high dimension
-@pytest.mark.parametrize("spatial_dimension", [1, 2, 10])
+@pytest.mark.parametrize("spatial_dimension", [1, 2, 3, 10])
 @pytest.mark.parametrize("params_selection", available_parameters)
 def test_compute_mean(spatial_dimension, params_selection):
     """Test the mean computation as the result is analytical."""
@@ -50,7 +50,7 @@ def test_compute_mean(spatial_dimension, params_selection):
 
 
 # ATTENTION: parameters with "Sobol-1" is unstable at large dimension >= 15
-@pytest.mark.parametrize("spatial_dimension", [1, 2, 10])
+@pytest.mark.parametrize("spatial_dimension", [1, 2, 3, 10])
 @pytest.mark.parametrize("params_selection", available_parameters)
 def test_compute_variance(spatial_dimension, params_selection):
     """Test the variance computation as the result is analytical."""
