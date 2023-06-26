@@ -10,7 +10,7 @@ from .forrester import Forrester2008
 from .franke import Franke1, Franke2, Franke3, Franke4, Franke5, Franke6
 from .gramacy2007 import Gramacy1DSine
 from .ishigami import Ishigami
-from .oakley_ohagan_1d import OakleyOHagan1D
+from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
 from .piston import Piston
@@ -40,7 +40,7 @@ __all__ = [
     "Franke6",
     "Gramacy1DSine",
     "Ishigami",
-    "OakleyOHagan1D",
+    "Oakley1D",
     "OTLCircuit",
     "McLainS1",
     "McLainS2",

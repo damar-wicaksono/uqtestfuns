@@ -12,12 +12,13 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:oakley-ohagan-1d)=
-# One-dimensional (1D) Oakley-O'Hagan Function
+(test-functions:oakley-1d)=
+# Oakley and O'Hagan (2002) One-dimensional (1D) Function
 
-The 1D Oakley-O'Hagan function is a one-dimensional scalar-valued function.
-It was used in {cite}`Oakley2002` as a test function for illustrating
-metamodeling and uncertainty propagation approaches.
+The 1D function from Oakley and O'Hagan (2002) (or `Oakley1D` function
+for short) is a scalar-valued test function.
+It was used in {cite}`Oakley2002` as a test function for illustrating metamodeling
+and uncertainty propagation approaches.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -30,7 +31,7 @@ A plot of the function is shown below for $x \in [-12, 12]$.
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_testfun = uqtf.OakleyOHagan1D()
+my_testfun = uqtf.Oakley1D()
 xx = np.linspace(-12, 12, 1000)[:, np.newaxis]
 yy = my_testfun(xx)
 
@@ -45,11 +46,10 @@ plt.gcf().set_dpi(150);
 
 ## Test function instance
 
-To create a default instance of the one-dimensional Oakley-O'Hagan
-test function:
+To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.OakleyOHagan1D()
+my_testfun = uqtf.Oakley1D()
 ```
 
 Check if it has been correctly instantiated:
