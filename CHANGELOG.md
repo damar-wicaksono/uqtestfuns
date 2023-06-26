@@ -32,16 +32,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - An implementation of the one-dimensional function from Forrester et al.
   (2008). The function was used as a test function for optimization approaches
   using metamodels.
+- An implementation of the Gramacy (2007) one-dimensional sine function,
+  a function with two regimes.
 
 ### Changed
 
 - The date format in CHANGELOG.md has been changed from YYYY-DD-MM to the 
   ISO format YYYY-MM-DD.
+- The bibliography style in the docs has been changed to 'unsrtalpha'
+  (alphanumeric labels, sorted by order of appearance).
 
 ### Fixed
 
 - The original citation for the Sobol'-G function has been fixed;
   it is now referred to Saltelli and Sobol' (1995).
+- If a function is used as parameters in a test function (e.g., if
+  variable dimension), then it must have the keyword parameter
+  "spatial_dimension" for the function to be called when an instance of
+  a UQ test function is created.
+- One-dimensional test function now returns a one-dimensional array.
 
 ## [0.1.1] - 2023-03-07
 
