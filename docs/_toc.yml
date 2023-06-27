@@ -39,6 +39,8 @@ parts:
             title: Bratley et al. (1992) D
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
+          - file: test-functions/damped-oscillator-reliability
+            title: Damped Oscillator Reliability
           - file: test-functions/flood
             title: Flood
           - file: test-functions/forrester

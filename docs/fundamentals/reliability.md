@@ -17,9 +17,10 @@ kernelspec:
 The table below listed the available test functions typically used
 in the comparison of reliability analysis methods.
 
-|                     Name                      | Spatial Dimension |  Constructor   |
-|:---------------------------------------------:|:-----------------:|:--------------:|
-| {ref}`Gayton Hat <test-functions:gayton-hat>` |         2         | `GaytonHat()`  |
+|                                        Name                                         | Spatial Dimension |           Constructor           |
+|:-----------------------------------------------------------------------------------:|:-----------------:|:-------------------------------:|
+| {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |         8         | `DampedOscillatorReliability()` |
+|                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |         2         |          `GaytonHat()`          |
 
 In a Python terminal, you can list all the available functions relevant
 for metamodeling applications using ``list_functions()`` and filter the results

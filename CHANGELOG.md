@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The two-dimensional Gayton Hat function from Echard et al. (2013) used
+  in the context of reliability analysis.
+- The eight-dimensional damped oscillator reliability problem from
+  Der Kiureghian and De Stefano (1990); the problem is based on the existing
+  Damped Oscillator model in the code base.
+- New docs section on list of functions for reliability analysis.
+
 ## [0.2.0] - 2023-06-26
 
 ### Added
