@@ -38,6 +38,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 |                    {ref}`(6th) Franke <test-functions:franke-6>`                    |         2         |           `Franke6()`           |
 |                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |         2         |          `GaytonHat()`          |
 |           {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>`            |         1         |        `Gramacy1DSine()`        |
+|               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |         2         |         `HyperSphere()`         |
 |                      {ref}`Ishigami <test-functions:ishigami>`                      |         3         |          `Ishigami()`           |
 |           {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`            |         1         |          `Oakley1D()`           |
 |                   {ref}`OTL Circuit <test-functions:otl-circuit>`                   |      6 / 20       |         `OTLCircuit()`          |
