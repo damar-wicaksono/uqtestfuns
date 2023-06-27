@@ -59,6 +59,8 @@ parts:
             title: (6th) Franke
           - file: test-functions/gayton-hat
             title: Gayton Hat
+          - file: test-functions/hyper-sphere
+            title: Hyper-sphere Bound
           - file: test-functions/gramacy-1d-sine
             title: Gramacy (2007) Sine
           - file: test-functions/ishigami

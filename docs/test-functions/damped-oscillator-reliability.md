@@ -53,7 +53,7 @@ The reliability of the system depends on the secondary spring as described
 by the following performance function {cite}`DerKiureghian1990, Dubourg2011` [^location]:
 
 $$
-g(\boldsymbol{X}; p) = F_s - p k_s \mathcal{M}(M_p, M_s, K_p, K_s, \zeta_p, \zeta_s, S_0),
+g(\boldsymbol{x}; p) = F_s - p k_s \mathcal{M}(M_p, M_s, K_p, K_s, \zeta_p, \zeta_s, S_0),
 $$
 
 $$
@@ -67,9 +67,9 @@ $$
 \end{aligned}
 $$
 
-where $\boldsymbol{X} = \{ M_p, M_s, K_p, K_s, \zeta_p, \zeta_s, S_0, F_s \}$
-is the eight-dimensional random vector of input variables further defined below
-and $p$ is the parameter of the function (i.e., the peak factor).
+where $\boldsymbol{x} = \{ M_p, M_s, K_p, K_s, \zeta_p, \zeta_s, S_0, F_s \}$
+is the eight-dimensional vector of input variables probabilistically defined
+further below and $p$ is the parameter of the function (i.e., the peak factor).
 
 The failure event and the failure probability are defined as
 $g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{x}) \leq 0]$,

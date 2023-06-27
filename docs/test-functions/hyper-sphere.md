@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:gayton-hat)=
-# Gayton Hat Function
+(test-functions:hyper-sphere)=
+# Hyper-sphere Bound
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Gayton Hat function is a two-dimensional function used
-in {cite}`Echard2013` as a test function for reliability analysis algorithms.
+The hyper-sphere bound problem is a two-dimensional function used
+in {cite}`Li2018` as a test function for reliability analysis algorithms.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour
@@ -33,7 +33,7 @@ overlaid.
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_fun = uqtf.GaytonHat(rng_seed_prob_input=237324)
+my_fun = uqtf.HyperSphere(rng_seed_prob_input=237324)
 xx = my_fun.prob_input.get_sample(1000000)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
@@ -65,8 +65,8 @@ axs_0.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_0.set_xlabel("$U_1$", fontsize=14)
-axs_0.set_ylabel("$U_2$", fontsize=14)
+axs_0.set_xlabel("$X_1$", fontsize=14)
+axs_0.set_ylabel("$X_2$", fontsize=14)
 axs_0.set_zlabel("$g$", fontsize=14)
 
 # Contour plot
@@ -80,8 +80,8 @@ cf = axs_1.contour(
 )
 axs_1.set_xlim([lb_1, ub_1])
 axs_1.set_ylim([lb_2, ub_2])
-axs_1.set_xlabel("$U_1$", fontsize=14)
-axs_1.set_ylabel("$U_2$", fontsize=14)
+axs_1.set_xlabel("$X_1$", fontsize=14)
+axs_1.set_ylabel("$X_2$", fontsize=14)
 axs_1.set_aspect("equal", "box")
 axs_1.clabel(cf, inline=True, fontsize=14)
 
@@ -112,8 +112,8 @@ axs_2.scatter(
 )
 axs_2.set_xlim([lb_1, ub_1])
 axs_2.set_ylim([lb_2, ub_2])
-axs_2.set_xlabel("$U_1$", fontsize=14)
-axs_2.set_ylabel("$U_2$", fontsize=14)
+axs_2.set_xlabel("$X_1$", fontsize=14)
+axs_2.set_ylabel("$X_2$", fontsize=14)
 axs_2.set_aspect("equal", "box")
 axs_2.clabel(cf, inline=True, fontsize=14)
 axs_2.legend(fontsize=14, loc="lower right");
@@ -127,7 +127,7 @@ plt.gcf().set_dpi(150);
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.GaytonHat()
+my_testfun = uqtf.HyperSphere()
 ```
 
 Check if it has been correctly instantiated:
@@ -139,13 +139,13 @@ print(my_testfun)
 ## Description
 
 The test function (i.e., the performance function) is analytically defined
-as follows:
+as follows [^location]:
 
 $$
-g(\boldsymbol{x}) = 0.5 (u_1 - 2)^2 - 1.5 (u_2 - 5)^3 - 3,
+g(\boldsymbol{x}) = 1 - x_1^3 - x_2^3
 $$
 
-where $\boldsymbol{x} = \{ u_1, u_2 \}$ is the two-dimensional vector of
+where $\boldsymbol{x} = \{ x_1, x_2 \}$ is the two-dimensional vector of
 input variables probabilistically defined further below.
 
 The failure event and the failure probability are defined as
@@ -154,7 +154,7 @@ respectively.
 
 ## Probabilistic input
 
-Based on {cite}`Echard2013`, the probabilistic input model for
+Based on {cite}`Li2018`, the probabilistic input model for
 the test function consists of two independent standard normal random variables
 (see the table below).
 
@@ -194,12 +194,12 @@ plt.gcf().set_dpi(150);
 Some reference values for the failure probability $P_f$ from the literature
 are summarized in the table below.
 
-| Method |         $N$         |      $\hat{P}_f$      | $\mathrm{CoV}[\hat{P}_f]$ |       Source       | Remark                         |
-|:------:|:-------------------:|:---------------------:|:-------------------------:|:------------------:|--------------------------------|
-|  MCS   |   $5 \times 10^7$   | $2.85 \times 10^{-5}$ |         $2.64 \%$         | {cite}`Echard2013` | Median over $100$ replications |
-|  FORM  |        $19$         | $4.21 \times 10^{-5}$ |          &#8212;          | {cite}`Echard2013` | Median over $100$ replications |
-|   IS   | $19 + \times 10^4$  | $2.86 \times 10^{-5}$ |         $2.39 \%$         | {cite}`Echard2013` | Median over $100$ replications |
-| AK+IS  |      $19 + 7$       | $2.86 \times 10^{-5}$ |         $2.39 \%$         | {cite}`Echard2013` | Median over $100$ replications |
+|   Method    |  $N$   |      $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |     Source     |
+|:-----------:|:------:|:----------------------:|:-------------------------:|:--------------:|
+|     MCS     | $10^6$ | $3.381 \times 10^{-2}$ |    &#8212;[^error-li]     | {cite}`Li2018` |
+|    FORM     |  $15$  | $1.891 \times 10^{-2}$ |          &#8212;          | {cite}`Li2018` |
+|    SORM     |  $20$  | $2.672 \times 10^{-2}$ |          &#8212;          | {cite}`Li2018` |
+| SSRM[^ssrm] |  $12$  | $3.381 \times 10^{-2}$ |    &#8212;[^error-li]     | {cite}`Li2018` |
 
 
 ## References
@@ -208,3 +208,10 @@ are summarized in the table below.
 :style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^location]: see Eq. (10) in {cite}`Li2018`.
+
+[^ssrm]: Sequential surrogate reliability method
+
+[^error-li]: The coefficient of variations of the failure probability estimates
+in {cite}`Li2018` were not reported.
