@@ -35,6 +35,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 |         {ref}`(4th) Franke <test-functions:franke-4>`          |         2         |     `Franke4()`      |
 |         {ref}`(5th) Franke <test-functions:franke-5>`          |         2         |     `Franke5()`      |
 |         {ref}`(6th) Franke <test-functions:franke-6>`          |         2         |     `Franke6()`      |
+|         {ref}`Gayton Hat <test-functions:gayton-hat>`          |         2         |    `GaytonHat()`     |
 | {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>` |         1         |  `Gramacy1DSine()`   |
 |           {ref}`Ishigami <test-functions:ishigami>`            |         3         |     `Ishigami()`     |
 | {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>` |         1         |     `Oakley1D()`     |
