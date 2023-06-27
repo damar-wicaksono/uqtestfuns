@@ -21,12 +21,13 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Gayton Hat function is a two-dimensional limit-state function used
+The Gayton Hat function is a two-dimensional function used
 in {cite}`Echard2013` as a test function for reliability analysis algorithms.
 
-The plots of the function are shown below. The left plot shows the contour
+The plots of the function are shown below. The left plot shows the surface
+plot of the performance function, the center plot shows the contour
 plot with a single contour line at function value of $0.0$ (the limit-state
-surface) and the right plot shows the same plot with $10^6$ sample points
+surface), and the right plot shows the same plot with $10^6$ sample points
 overlaid.
 
 ```{code-cell} ipython3
@@ -53,8 +54,23 @@ yy_2d = my_fun(xx_2d)
 # --- Create the plot
 fig = plt.figure(figsize=(10, 5))
 
+# Surface
+axs_0 = plt.subplot(131, projection='3d')
+axs_0.plot_surface(
+    mesh_2d[0],
+    mesh_2d[1],
+    yy_2d.reshape(1000,1000).T,
+    linewidth=0,
+    cmap="plasma",
+    antialiased=False,
+    alpha=0.5
+)
+axs_0.set_xlabel("$U_1$", fontsize=14)
+axs_0.set_ylabel("$U_2$", fontsize=14)
+axs_0.set_zlabel("$g$", fontsize=14)
+
 # Contour plot
-axs_1 = plt.subplot(121)
+axs_1 = plt.subplot(132)
 cf = axs_1.contour(
     mesh_2d[0],
     mesh_2d[1],
@@ -71,7 +87,7 @@ axs_1.set_aspect("equal", "box")
 axs_1.clabel(cf, inline=True, fontsize=14)
 
 # Scatter plot
-axs_2 = plt.subplot(122)
+axs_2 = plt.subplot(133)
 cf = axs_2.contour(
     mesh_2d[0],
     mesh_2d[1],
@@ -104,7 +120,7 @@ axs_2.set_aspect("equal", "box")
 axs_2.clabel(cf, inline=True, fontsize=14)
 axs_2.legend(fontsize=14, loc="lower right");
 
-plt.gcf().tight_layout(pad=3.0)
+plt.gcf().tight_layout(pad=4.0)
 plt.gcf().set_dpi(150);
 ```
 
@@ -124,14 +140,19 @@ print(my_testfun)
 
 ## Description
 
-The test function is analytically defined as follows:
+The test function (i.e., the performance function) is analytically defined
+as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = 0.5 (U_1 - 2)^2 - 1.5 (U_2 - 5)^3 - 3,
+g(\boldsymbol{X}) = 0.5 (U_1 - 2)^2 - 1.5 (U_2 - 5)^3 - 3,
 $$
 
-where $\boldsymbol{x} = \{ U_1, U_2 \}$ is the two-dimensional vector of
+where $\boldsymbol{X} = \{ U_1, U_2 \}$ is the two-dimensional random vector of
 input variables further defined below.
+
+The failure event and the failure probability are defined as
+$g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{x}) \leq 0]$,
+respectively.
 
 ## Probabilistic input
 
@@ -160,13 +181,13 @@ yy_test = my_testfun(xx_test)
 idx_pos = yy_test > 0
 idx_neg = yy_test <= 0
 
-plt.hist(yy_test[idx_pos], bins="auto", color="#0571b0");
-plt.hist(yy_test[idx_neg], bins="auto", color="#ca0020");
-plt.axvline(0, linewidth=1.5, color="#ca0020");
+hist_pos = plt.hist(yy_test, bins="auto", color="#0571b0")
+plt.hist(yy_test[idx_neg], bins=hist_pos[1], color="#ca0020")
+plt.axvline(0, linewidth=1.0, color="#ca0020")
 
-plt.grid();
-plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.grid()
+plt.ylabel("Counts [-]")
+plt.xlabel("$\mathcal{M}(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 
