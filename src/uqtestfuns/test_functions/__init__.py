@@ -8,6 +8,7 @@ from .damped_oscillator import DampedOscillator
 from .flood import Flood
 from .forrester import Forrester2008
 from .franke import Franke1, Franke2, Franke3, Franke4, Franke5, Franke6
+from .gayton_hat import GaytonHat
 from .gramacy2007 import Gramacy1DSine
 from .ishigami import Ishigami
 from .oakley2002 import Oakley1D
@@ -38,6 +39,7 @@ __all__ = [
     "Franke4",
     "Franke5",
     "Franke6",
+    "GaytonHat",
     "Gramacy1DSine",
     "Ishigami",
     "Oakley1D",

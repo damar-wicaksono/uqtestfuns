@@ -56,7 +56,7 @@ plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
 
-Note that the function is discontinous at $x = 9.6%$ which also pinpoint
+Note that the function is discontinuous at $x = 9.6%$ which also pinpoints
 the change of regime.
 
 ## Test function instance
