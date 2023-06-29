@@ -72,7 +72,7 @@ is the eight-dimensional vector of input variables probabilistically defined
 further below and $p$ is the parameter of the function (i.e., the peak factor).
 
 The failure event and the failure probability are defined as
-$g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{x}) \leq 0]$,
+$g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{X}) \leq 0]$,
 respectively.
 
 ## Probabilistic input
@@ -138,20 +138,20 @@ Some reference values for the failure probability $P_f$ and from the literature
 are summarized in the table below ($\mu_{F_s}$ is the log-normal distribution
 mean of $F_s$).
 
-| $\mu_{F_s}$ |         Method          |       $N$       |      $\hat{P}_f$      | $\mathrm{CoV}[\hat{P}_f]$ |                 Source                  |
-|:-----------:|:-----------------------:|:---------------:|:---------------------:|:-------------------------:|:---------------------------------------:|
-|    $15$     |          FORM           |     $1'179$     | $2.19 \times 10^{-2}$ |          &#8212;          | {cite}`DerKiureghian1990, Bourinet2011` |
-|             |       Subset Sim.       | $3 \times 10^5$ | $4.63 \times 10^{-3}$ |          $< 3\%$          |           {cite}`Dubourg2011`           |
-|             |    Meta-IS[^meta-is]    |   $464 + 600$   | $4.80 \times 10^{-3}$ |          $< 5\%$          |           {cite}`Dubourg2011`           |
-|             | SVM[^svm] + Subset Sim. |     $1'719$     | $4.78 \times 10^{-3}$ |          $< 4\%$          |          {cite}`Bourinet2011`           |
-|   $21.5$    |          FORM           |     $2'520$     | $3.50 \times 10^{-4}$ |          &#8212;          | {cite}`DerKiureghian1990, Bourinet2011` |
-|             |       Subset Sim.       | $5 \times 10^5$ | $4.75 \times 10^{-5}$ |          $< 4\%$          |           {cite}`Dubourg2011`           |
-|             |         Meta-IS         |   $336 + 400$   | $4.46 \times 10^{-5}$ |          $< 5\%$          |           {cite}`Dubourg2011`           |
-|             |    SVM + Subset Sim.    |     $2'865$     | $4.42 \times 10^{-5}$ |          $< 7\%$          |          {cite}`Bourinet2011`           |
-|   $27.5$    |          FORM           |     $2'727$     | $3.91 \times 10^{-6}$ |          &#8212;          | {cite}`DerKiureghian1990, Bourinet2011` |
-|             |       Subset Sim.       | $7 \times 10^5$ | $3.47 \times 10^{-7}$ |          $< 5\%$          |           {cite}`Dubourg2011`           |
-|             |         Meta-IS         |   $480 + 200$   | $3.76 \times 10^{-7}$ |          $< 5\%$          |           {cite}`Dubourg2011`           |
-|             |    SVM + Subset Sim.    |     $4'011$     | $3.66 \times 10^{-7}$ |         $< 10\%$          |          {cite}`Bourinet2011`           |
+| $\mu_{F_s}$ |          Method          |       $N$       |      $\hat{P}_f$      | $\mathrm{CoV}[\hat{P}_f]$ |                 Source                  |
+|:-----------:|:------------------------:|:---------------:|:---------------------:|:-------------------------:|:---------------------------------------:|
+|    $15$     |       {term}`FORM`       |     $1'179$     | $2.19 \times 10^{-2}$ |          &#8212;          | {cite}`DerKiureghian1990, Bourinet2011` |
+|             |        {term}`SS`        | $3 \times 10^5$ | $4.63 \times 10^{-3}$ |          $< 3\%$          |           {cite}`Dubourg2011`           |
+|             |    Meta-IS[^meta-is]     |   $464 + 600$   | $4.80 \times 10^{-3}$ |          $< 5\%$          |           {cite}`Dubourg2011`           |
+|             | {term}`SVM` + {term}`SS` |     $1'719$     | $4.78 \times 10^{-3}$ |          $< 4\%$          |          {cite}`Bourinet2011`           |
+|   $21.5$    |       {term}`FORM`       |     $2'520$     | $3.50 \times 10^{-4}$ |          &#8212;          | {cite}`DerKiureghian1990, Bourinet2011` |
+|             |        {term}`SS`        | $5 \times 10^5$ | $4.75 \times 10^{-5}$ |          $< 4\%$          |           {cite}`Dubourg2011`           |
+|             |     Meta-{term}`IS`      |   $336 + 400$   | $4.46 \times 10^{-5}$ |          $< 5\%$          |           {cite}`Dubourg2011`           |
+|             | {term}`SVM` + {term}`SS` |     $2'865$     | $4.42 \times 10^{-5}$ |          $< 7\%$          |          {cite}`Bourinet2011`           |
+|   $27.5$    |       {term}`FORM`       |     $2'727$     | $3.91 \times 10^{-6}$ |          &#8212;          | {cite}`DerKiureghian1990, Bourinet2011` |
+|             |        {term}`SS`        | $7 \times 10^5$ | $3.47 \times 10^{-7}$ |          $< 5\%$          |           {cite}`Dubourg2011`           |
+|             |         Meta-IS          |   $480 + 200$   | $3.76 \times 10^{-7}$ |          $< 5\%$          |           {cite}`Dubourg2011`           |
+|             | {term}`SVM` + {term}`SS` |     $4'011$     | $3.66 \times 10^{-7}$ |         $< 10\%$          |          {cite}`Bourinet2011`           |
 
 Note that in the table above the total number of model evaluations for
 metamodel-based Importance Sampling (Meta-IS) is the sum of training runs
@@ -164,9 +164,7 @@ and the correction runs {cite}`Dubourg2011`.
 :filter: docname in docnames
 ```
 
-[^location]: see, for instance,
+[^location]: see, for instance, 
 Eqs. (5.5) and (5.7), pp. 184-185 in {cite}`Dubourg2011`.
 
 [^meta-is]: Metamodel-based Importance Sampling
-
-[^svm]: Support Vector Machines

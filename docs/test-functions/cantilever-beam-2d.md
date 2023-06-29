@@ -256,12 +256,12 @@ are summarized in the table below.
 
 |    Method    |   $N$    |       $\hat{P}_f$        | $\mathrm{CoV}[\hat{P}_f]$ |         Source          | Remark                                  |
 |:------------:|:--------:|:------------------------:|:-------------------------:|:-----------------------:|-----------------------------------------|
-|     MCS      |  $10^6$  |  $9.594 \times 10^{-3}$  |          &#8212;          |     {cite}`Li2018`      | Monte Carlo Simulation (MCS)            |
-|     FORM     |   $27$   |  $9.88 \times 10^{-3}$   |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
-|     FORM     | &#8212;  | $9.9031 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | First-order Second-moment method        |
-|     SORM     |   $32$   |  $9.88 \times 10^{-3}$   |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
-|      IS      |  $10^3$  | $9.6071 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | Importance Sampling (IS)                |
-|      IS      | $9'312$  |  $1.00 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | &#8212;                                 |
+| {term}`MCS`  |  $10^6$  |  $9.594 \times 10^{-3}$  |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
+| {term}`FORM` |   $27$   |  $9.88 \times 10^{-3}$   |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
+| {term}`FORM` | &#8212;  | $9.9031 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
+| {term}`SORM` |   $32$   |  $9.88 \times 10^{-3}$   |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
+|  {term}`IS`  |  $10^3$  | $9.6071 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | Importance Sampling (IS)                |
+|  {term}`IS`  | $9'312$  |  $1.00 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | &#8212;                                 |
 |   IS + RS    | $2'192$  |  $9.00 \times 10^{-3}$   |          &#8212;          | {cite}`Schueremans2005` | IS + Response Surface (RS)              |
 |   IS + SP    |  $358$   |  $1.00 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | IS + Splines (SP)                       |
 |   IS + NN    |   $63$   |  $1.20 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | IS + Neural Networks (NN)               |

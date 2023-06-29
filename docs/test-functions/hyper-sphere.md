@@ -194,12 +194,12 @@ plt.gcf().set_dpi(150);
 Some reference values for the failure probability $P_f$ from the literature
 are summarized in the table below.
 
-|   Method    |  $N$   |      $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |     Source     |
-|:-----------:|:------:|:----------------------:|:-------------------------:|:--------------:|
-|     MCS     | $10^6$ | $3.381 \times 10^{-2}$ |    &#8212;[^error-li]     | {cite}`Li2018` |
-|    FORM     |  $15$  | $1.891 \times 10^{-2}$ |          &#8212;          | {cite}`Li2018` |
-|    SORM     |  $20$  | $2.672 \times 10^{-2}$ |          &#8212;          | {cite}`Li2018` |
-| SSRM[^ssrm] |  $12$  | $3.381 \times 10^{-2}$ |    &#8212;[^error-li]     | {cite}`Li2018` |
+|    Method     |  $N$   |      $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |     Source     |
+|:-------------:|:------:|:----------------------:|:-------------------------:|:--------------:|
+|  {term}`MCS`  | $10^6$ | $3.381 \times 10^{-2}$ |    &#8212;[^error-li]     | {cite}`Li2018` |
+| {term}`FORM`  |  $15$  | $1.891 \times 10^{-2}$ |          &#8212;          | {cite}`Li2018` |
+| {term}`SORM`  |  $20$  | $2.672 \times 10^{-2}$ |          &#8212;          | {cite}`Li2018` |
+| {term}`SSRM`  |  $12$  | $3.381 \times 10^{-2}$ |    &#8212;[^error-li]     | {cite}`Li2018` |
 
 
 ## References
@@ -210,8 +210,6 @@ are summarized in the table below.
 ```
 
 [^location]: see Eq. (10) in {cite}`Li2018`.
-
-[^ssrm]: Sequential surrogate reliability method
 
 [^error-li]: The coefficient of variations of the failure probability estimates
 in {cite}`Li2018` were not reported.

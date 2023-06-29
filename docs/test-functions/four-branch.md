@@ -145,7 +145,7 @@ The test function (i.e., the performance function) is analytically defined
 as follows:
 
 $$
-g(\boldsymbol{x}) = \min \begin{Bmatrix}
+g(\boldsymbol{x}; p) = \min \begin{Bmatrix}
 3 + 0.1 (x_1 - x_2)^2 - \frac{x_1 + x_2}{\sqrt{2}} \\
 3 + 0.1 (x_1 - x_2)^2 + \frac{x_1 + x_2}{\sqrt{2}} \\
 (x_1 - x_2) + p \\
@@ -216,12 +216,12 @@ are summarized in the table below.
 |         $p$          |    Method    |     $N$     |        $\hat{P}_f$        | $\mathrm{CoV}[\hat{P}_f]$ |          Source          |
 |:--------------------:|:------------:|:-----------:|:-------------------------:|:-------------------------:|:------------------------:|
 |    $3.5 \sqrt{2}$    |  Analytical  |   &#8212;   | $2.185961 \times 10^{-3}$ |          &#8212;          |    {cite}`Waarts2000`    |
-|                      |     MCS      |   $10^5$    | $2.185961 \times 10^{-3}$ |          &#8212;          |    {cite}`Waarts2000`    |
-|                      |     FORM     |    $32$     | $2.326291 \times 10^{-4}$ |          &#8212;          |    {cite}`Waarts2000`    |
-|                      |     SORM     |    $12$     | $8.740315 \times 10^{-4}$ |          &#8212;          |    {cite}`Waarts2000`    |
-| $\frac{6}{\sqrt{2}}$ |     MCS      |   $10^8$    |  $4.460 \times 10^{-3}$   |         $1.5 \%$          |   {cite}`Schoebi2017`    |
-|                      |     MCS      |   $10^6$    |  $4.416 \times 10^{-3}$   |         $0.15 \%$         |    {cite}`Echard2011`    |
-|                      |      IS      |   $1'469$   |   $4.9 \times 10^{-3}$    |          &#8212;          |    {cite}`Echard2011`    |
+|                      | {term}`MCS`  |   $10^5$    | $2.185961 \times 10^{-3}$ |          &#8212;          |    {cite}`Waarts2000`    |
+|                      | {term}`FORM` |    $32$     | $2.326291 \times 10^{-4}$ |          &#8212;          |    {cite}`Waarts2000`    |
+|                      | {term}`SORM` |    $12$     | $8.740315 \times 10^{-4}$ |          &#8212;          |    {cite}`Waarts2000`    |
+| $\frac{6}{\sqrt{2}}$ | {term}`MCS`  |   $10^8$    |  $4.460 \times 10^{-3}$   |         $1.5 \%$          |   {cite}`Schoebi2017`    |
+|                      | {term}`MCS`  |   $10^6$    |  $4.416 \times 10^{-3}$   |         $0.15 \%$         |    {cite}`Echard2011`    |
+|                      |  {term}`IS`  |   $1'469$   |   $4.9 \times 10^{-3}$    |          &#8212;          |    {cite}`Echard2011`    |
 
 
 ## References
