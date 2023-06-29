@@ -26,6 +26,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 |            {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`             |         M         |        `Bratley1992b()`         |
 |            {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`             |         M         |        `Bratley1992c()`         |
 |            {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`             |         M         |        `Bratley1992d()`         |
+|            {ref}`2D Cantilever Beam <test-functions:cantilever-beam-2d>`            |         2         |       `CantileverBeam2D `       |
 |             {ref}`Damped Oscillator <test-functions:damped-oscillator>`             |         7         |      `DampedOscillator()`       |
 | {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |         8         | `DampedOscillatorReliability()` |
 |                         {ref}`Flood <test-functions:flood>`                         |         8         |            `Flood()`            |

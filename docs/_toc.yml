@@ -37,6 +37,8 @@ parts:
             title: Bratley et al. (1992) C
           - file: test-functions/bratley1992d
             title: Bratley et al. (1992) D
+          - file: test-functions/cantilever-beam-2d
+            title: Cantilever Beam (2D)
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
           - file: test-functions/damped-oscillator-reliability
@@ -59,10 +61,10 @@ parts:
             title: (6th) Franke
           - file: test-functions/gayton-hat
             title: Gayton Hat
+          - file: test-functions/gramacy-1d-sine
+            title: Gramacy (2007) 1D Sine
           - file: test-functions/hyper-sphere
             title: Hyper-sphere Bound
-          - file: test-functions/gramacy-1d-sine
-            title: Gramacy (2007) Sine
           - file: test-functions/ishigami
             title: Ishigami
           - file: test-functions/oakley-1d

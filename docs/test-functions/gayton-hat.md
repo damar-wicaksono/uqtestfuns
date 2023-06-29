@@ -65,8 +65,8 @@ axs_0.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_0.set_xlabel("$U_1$", fontsize=14)
-axs_0.set_ylabel("$U_2$", fontsize=14)
+axs_0.set_xlabel("$x_1$", fontsize=14)
+axs_0.set_ylabel("$x_2$", fontsize=14)
 axs_0.set_zlabel("$g$", fontsize=14)
 
 # Contour plot
@@ -80,8 +80,8 @@ cf = axs_1.contour(
 )
 axs_1.set_xlim([lb_1, ub_1])
 axs_1.set_ylim([lb_2, ub_2])
-axs_1.set_xlabel("$U_1$", fontsize=14)
-axs_1.set_ylabel("$U_2$", fontsize=14)
+axs_1.set_xlabel("$x_1$", fontsize=14)
+axs_1.set_ylabel("$x_2$", fontsize=14)
 axs_1.set_aspect("equal", "box")
 axs_1.clabel(cf, inline=True, fontsize=14)
 
@@ -100,7 +100,7 @@ axs_2.scatter(
     color="#ca0020",
     marker=".",
     s=30,
-    label="$\mathcal{M}(x) \leq 0$"
+    label="$g(x) \leq 0$"
 )
 axs_2.scatter(
     xx[idx_pos, 0],
@@ -108,12 +108,12 @@ axs_2.scatter(
     color="#0571b0",
     marker=".",
     s=30,
-    label="$\mathcal{M}(x) > 0$"
+    label="$g(x) > 0$"
 )
 axs_2.set_xlim([lb_1, ub_1])
 axs_2.set_ylim([lb_2, ub_2])
-axs_2.set_xlabel("$U_1$", fontsize=14)
-axs_2.set_ylabel("$U_2$", fontsize=14)
+axs_2.set_xlabel("$x_1$", fontsize=14)
+axs_2.set_ylabel("$x_2$", fontsize=14)
 axs_2.set_aspect("equal", "box")
 axs_2.clabel(cf, inline=True, fontsize=14)
 axs_2.legend(fontsize=14, loc="lower right");
