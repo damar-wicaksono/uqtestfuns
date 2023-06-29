@@ -8,6 +8,7 @@ from .cantilever_beam_2d import CantileverBeam2D
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
 from .flood import Flood
 from .forrester import Forrester2008
+from .four_branch import FourBranch
 from .franke import Franke1, Franke2, Franke3, Franke4, Franke5, Franke6
 from .gayton_hat import GaytonHat
 from .gramacy2007 import Gramacy1DSine
@@ -37,6 +38,7 @@ __all__ = [
     "DampedOscillatorReliability",
     "Flood",
     "Forrester2008",
+    "FourBranch",
     "Franke1",
     "Franke2",
     "Franke3",

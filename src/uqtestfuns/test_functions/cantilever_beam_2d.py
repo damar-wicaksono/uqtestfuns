@@ -2,7 +2,7 @@
 Module with an implementation of the 2D cantilever beam reliability problem.
 
 The 2D cantilever beam problem is a reliability test function from [1].
-This is an often revisited problem in reliability analysis ([2]).
+This is an often revisited problem in reliability analysis ([2], [3]).
 
 The problem consists of a cantilever beam with a rectangular cross-section
 subjected to uniformly distributed loading.
@@ -16,10 +16,14 @@ References
    surface approach for reliability analysis,” Structural Safety,
    vol. 12, no. 3, pp. 205–220, 1993.
    DOI: 10.1016/0167-4730(93)90003-J
-2. X. Li, C. Gong, L. Gu, W. Gao, Z. Jing, and H. Su, “A sequential surrogate
+2. Luc Schueremans and Dionys Van Gemert, “Benefit of splines and neural
+   networks in simulation based structural reliability analysis,” Structural
+   Safety, vol. 27, no. 3, pp. 246–261, 2005.
+   DOI: 10.1016/j.strusafe.2004.11.001
+3. X. Li, C. Gong, L. Gu, W. Gao, Z. Jing, and H. Su, “A sequential surrogate
    method for reliability analysis based on radial basis function,”
    Structural Safety, vol. 73, pp. 42–53, 2018.
-   DOI: 10.1016/j.strusafe.2018.02.005.
+   DOI: 10.1016/j.strusafe.2018.02.005
 """
 import numpy as np
 
