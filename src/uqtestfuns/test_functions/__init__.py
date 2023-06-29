@@ -19,6 +19,7 @@ from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
 from .piston import Piston
 from .sobol_g import SobolG
+from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
 from .welch1992 import Welch1992
 from .wing_weight import WingWeight
@@ -58,6 +59,7 @@ __all__ = [
     "McLainS5",
     "Piston",
     "SobolG",
+    "SpeedReducerShaft",
     "Sulfur",
     "Welch1992",
     "WingWeight",

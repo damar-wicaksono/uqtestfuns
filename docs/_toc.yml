@@ -87,6 +87,8 @@ parts:
             title: Piston Simulation
           - file: test-functions/sobol-g
             title: Sobol'-G
+          - file: test-functions/speed-reducer-shaft
+            title: Speed Reducer Shaft
           - file: test-functions/sulfur
             title: Sulfur
           - file: test-functions/welch1992

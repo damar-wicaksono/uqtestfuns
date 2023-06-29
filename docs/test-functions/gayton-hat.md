@@ -194,12 +194,12 @@ plt.gcf().set_dpi(150);
 Some reference values for the failure probability $P_f$ from the literature
 are summarized in the table below.
 
-| Method |         $N$         |      $\hat{P}_f$      | $\mathrm{CoV}[\hat{P}_f]$ |       Source       | Remark                         |
-|:------:|:-------------------:|:---------------------:|:-------------------------:|:------------------:|--------------------------------|
-|  MCS   |   $5 \times 10^7$   | $2.85 \times 10^{-5}$ |         $2.64 \%$         | {cite}`Echard2013` | Median over $100$ replications |
-|  FORM  |        $19$         | $4.21 \times 10^{-5}$ |          &#8212;          | {cite}`Echard2013` | Median over $100$ replications |
-|   IS   | $19 + \times 10^4$  | $2.86 \times 10^{-5}$ |         $2.39 \%$         | {cite}`Echard2013` | Median over $100$ replications |
-| AK+IS  |      $19 + 7$       | $2.86 \times 10^{-5}$ |         $2.39 \%$         | {cite}`Echard2013` | Median over $100$ replications |
+|    Method     |         $N$         |      $\hat{P}_f$      | $\mathrm{CoV}[\hat{P}_f]$ |       Source       | Remark                         |
+|:-------------:|:-------------------:|:---------------------:|:-------------------------:|:------------------:|--------------------------------|
+|  {term}`MCS`  |   $5 \times 10^7$   | $2.85 \times 10^{-5}$ |         $2.64 \%$         | {cite}`Echard2013` | Median over $100$ replications |
+| {term}`FORM`  |        $19$         | $4.21 \times 10^{-5}$ |          &#8212;          | {cite}`Echard2013` | Median over $100$ replications |
+|  {term}`IS`   | $19 + \times 10^4$  | $2.86 \times 10^{-5}$ |         $2.39 \%$         | {cite}`Echard2013` | Median over $100$ replications |
+| AK+IS[^ak-is] |      $19 + 7$       | $2.86 \times 10^{-5}$ |         $2.39 \%$         | {cite}`Echard2013` | Median over $100$ replications |
 
 
 ## References
@@ -208,3 +208,5 @@ are summarized in the table below.
 :style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^ak-is]: Adaptive-Kriging importance sampling
