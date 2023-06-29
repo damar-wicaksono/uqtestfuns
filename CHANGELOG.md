@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   from Katsuki and Frangopol (1994).
 - The five-dimensional speed reducer shaft reliability problem
   from Du and Sudjianto (2004).
+- The two-dimensional reliability problem of a circular pipe crack
+  under a bending moment under Verma et al. (2015).
 - New docs section on list of functions for reliability analysis.
 
 ## [0.2.0] - 2023-06-26
