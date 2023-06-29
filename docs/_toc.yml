@@ -39,6 +39,8 @@ parts:
             title: Bratley et al. (1992) D
           - file: test-functions/cantilever-beam-2d
             title: Cantilever Beam (2D)
+          - file: test-functions/circular-pipe-crack
+            title: Circular Pipe Crack
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
           - file: test-functions/damped-oscillator-reliability

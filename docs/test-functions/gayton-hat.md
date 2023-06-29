@@ -52,7 +52,7 @@ xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_fun(xx_2d)
 
 # --- Create the plot
-fig = plt.figure(figsize=(10, 5))
+fig = plt.figure(figsize=(15, 5))
 
 # Surface
 axs_0 = plt.subplot(131, projection='3d')
@@ -65,9 +65,10 @@ axs_0.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_0.set_xlabel("$x_1$", fontsize=14)
-axs_0.set_ylabel("$x_2$", fontsize=14)
-axs_0.set_zlabel("$g$", fontsize=14)
+axs_0.view_init(30, -45)
+axs_0.set_xlabel("$x_1$", fontsize=18)
+axs_0.set_ylabel("$x_2$", fontsize=18)
+axs_0.set_zlabel("$g$", fontsize=18)
 
 # Contour plot
 axs_1 = plt.subplot(132)
@@ -77,13 +78,15 @@ cf = axs_1.contour(
     yy_2d.reshape(1000, 1000).T,
     levels=0,
     colors=["#ca0020"],
+    linewidths=[3.0],
 )
 axs_1.set_xlim([lb_1, ub_1])
 axs_1.set_ylim([lb_2, ub_2])
-axs_1.set_xlabel("$x_1$", fontsize=14)
-axs_1.set_ylabel("$x_2$", fontsize=14)
+axs_1.set_xlabel("$x_1$", fontsize=18)
+axs_1.set_ylabel("$x_2$", fontsize=18)
+axs_1.tick_params(labelsize=16)
 axs_1.set_aspect("equal", "box")
-axs_1.clabel(cf, inline=True, fontsize=14)
+axs_1.clabel(cf, inline=True, fontsize=18)
 
 # Scatter plot
 axs_2 = plt.subplot(133)
@@ -93,6 +96,7 @@ cf = axs_2.contour(
     yy_2d.reshape(1000, 1000).T,
     levels=0,
     colors=["#ca0020"],
+    linewidths=[3.0],
 )
 axs_2.scatter(
     xx[idx_neg, 0],
@@ -112,11 +116,12 @@ axs_2.scatter(
 )
 axs_2.set_xlim([lb_1, ub_1])
 axs_2.set_ylim([lb_2, ub_2])
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
+axs_2.set_xlabel("$x_1$", fontsize=18)
+axs_2.set_ylabel("$x_2$", fontsize=18)
+axs_2.tick_params(labelsize=16)
 axs_2.set_aspect("equal", "box")
-axs_2.clabel(cf, inline=True, fontsize=14)
-axs_2.legend(fontsize=14, loc="lower right");
+axs_2.clabel(cf, inline=True, fontsize=18)
+axs_2.legend(fontsize=18, loc="lower right");
 
 plt.gcf().tight_layout(pad=4.0)
 plt.gcf().set_dpi(150);

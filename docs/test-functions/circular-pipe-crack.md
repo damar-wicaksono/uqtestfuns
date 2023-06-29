@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:four-branch)=
-# Four-branch Function
+(test-functions:circular-pipe-crack)=
+# Circular Pipe Crack
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,11 +21,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The two-dimensional four-branch function was introduced in {cite}`Katsuki1994`
-and became a commonly used test function for reliability analysis algorithms
-(see, for instance, {cite}`Waarts2000, Schueremans2005, Echard2011, Schoebi2017`)
-The test function describes the failure of a series system with four distinct
-performance function components.
+The two-dimensional circular pipe crack reliability problem
+was introduced in {cite}`Verma2015` and used, for instance, in {cite}`Li2018`.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour
@@ -36,7 +33,7 @@ overlaid.
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_fun = uqtf.FourBranch(rng_seed_prob_input=237324)
+my_fun = uqtf.CircularPipeCrack(rng_seed_prob_input=237324)
 xx = my_fun.prob_input.get_sample(1000000)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
@@ -68,6 +65,7 @@ axs_0.plot_surface(
     antialiased=False,
     alpha=0.5
 )
+#axs_0.view_init(30, 135)
 axs_0.set_xlabel("$x_1$", fontsize=18)
 axs_0.set_ylabel("$x_2$", fontsize=18)
 axs_0.set_zlabel("$g$", fontsize=18)
@@ -87,7 +85,6 @@ axs_1.set_ylim([lb_2, ub_2])
 axs_1.set_xlabel("$x_1$", fontsize=18)
 axs_1.set_ylabel("$x_2$", fontsize=18)
 axs_1.tick_params(labelsize=16)
-axs_1.set_aspect("equal", "box")
 axs_1.clabel(cf, inline=True, fontsize=18)
 
 # Scatter plot
@@ -121,7 +118,6 @@ axs_2.set_ylim([lb_2, ub_2])
 axs_2.set_xlabel("$x_1$", fontsize=18)
 axs_2.set_ylabel("$x_2$", fontsize=18)
 axs_2.tick_params(labelsize=16)
-axs_2.set_aspect("equal", "box")
 axs_2.clabel(cf, inline=True, fontsize=18)
 axs_2.legend(fontsize=18, loc="lower right");
 
@@ -134,7 +130,7 @@ plt.gcf().set_dpi(150);
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.FourBranch()
+my_testfun = uqtf.CircularPipeCrack()
 ```
 
 Check if it has been correctly instantiated:
@@ -145,21 +141,17 @@ print(my_testfun)
 
 ## Description
 
-The test function (i.e., the performance function) is analytically defined
-as follows:
+The system under consideration is as a circular pipe with a circumferential
+through-wall crack under a bending moment. 
+The performance function is analytically defined as follows[^location]:
 
 $$
-g(\boldsymbol{x}; p) = \min \begin{Bmatrix}
-3 + 0.1 (x_1 - x_2)^2 - \frac{x_1 + x_2}{\sqrt{2}} \\
-3 + 0.1 (x_1 - x_2)^2 + \frac{x_1 + x_2}{\sqrt{2}} \\
-(x_1 - x_2) + p \\
-(x_2 - x_1) + p \\
-\end{Bmatrix}
+g(\boldsymbol{x}; \boldsymbol{p}) = 4 t \sigma_f R^2 \left( \cos{(\frac{\theta}{2})} - \frac{1}{2} \sin{(\theta)} \right) - M
 $$
 
-where $\boldsymbol{x} = \{ x_1, x_2 \}$ is the two-dimensional vector of
-input variables probabilistically defined further below and $p$ is the 
-parameter of the test function (see the corresponding section below).
+where $\boldsymbol{x} = \{ \sigma_f, \theta \}$ is the two-dimensional vector of
+input variables probabilistically defined further below;
+and $\boldsymbol{p} = \{ t, R, M \}$ is the vector of parameters.
 
 The failure event and the failure probability are defined as
 $g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{x}) \leq 0]$,
@@ -167,7 +159,7 @@ respectively.
 
 ## Probabilistic input
 
-Based on {cite}`Katsuki1994`, the probabilistic input model for
+Based on {cite}`Echard2013`, the probabilistic input model for
 the test function consists of two independent standard normal random variables
 (see the table below).
 
@@ -177,13 +169,13 @@ my_testfun.prob_input
 
 ## Parameters
 
-The test function is parameterized by a single value $p$. Some values available
-in the literature is given in the table below.
+From {cite}`Verma2015`, the values of the parameters are as follows:
 
-|         $p$          |           Keyword           |         Source          |
-|:--------------------:|:---------------------------:|:-----------------------:|
-|    $3.5 \sqrt{2}$    |        `Katsuki1994`        |   {cite}`Katsuki1994`   |
-| $\frac{6}{\sqrt{2}}$ | `Schueremans2005` (default) | {cite}`Schueremans2005` |
+| Parameter |         Value          | Description                             |
+|:---------:|:----------------------:|-----------------------------------------|
+|    $t$    | $3.377 \times 10^{-1}$ | Radius of the pipe $[\mathrm{m}]$       |
+|    $R$    | $3.377 \times 10^{-2}$ | Thickness of the pipe $[\mathrm{m}]$    |
+|    $M$    |         $3.0$          | Applied bending moment $[\mathrm{MNm}]$ |
 
 ## Reference results
 
@@ -217,15 +209,13 @@ plt.gcf().set_dpi(150);
 Some reference values for the failure probability $P_f$ from the literature
 are summarized in the table below.
 
-|         $p$          |    Method    |     $N$     |        $\hat{P}_f$        | $\mathrm{CoV}[\hat{P}_f]$ |          Source          |
-|:--------------------:|:------------:|:-----------:|:-------------------------:|:-------------------------:|:------------------------:|
-|    $3.5 \sqrt{2}$    |  Analytical  |   &#8212;   | $2.185961 \times 10^{-3}$ |          &#8212;          |    {cite}`Waarts2000`    |
-|                      | {term}`MCS`  |   $10^5$    | $2.185961 \times 10^{-3}$ |          &#8212;          |    {cite}`Waarts2000`    |
-|                      | {term}`FORM` |    $32$     | $2.326291 \times 10^{-4}$ |          &#8212;          |    {cite}`Waarts2000`    |
-|                      | {term}`SORM` |    $12$     | $8.740315 \times 10^{-4}$ |          &#8212;          |    {cite}`Waarts2000`    |
-| $\frac{6}{\sqrt{2}}$ | {term}`MCS`  |   $10^8$    |  $4.460 \times 10^{-3}$   |         $1.5 \%$          |   {cite}`Schoebi2017`    |
-|                      | {term}`MCS`  |   $10^6$    |  $4.416 \times 10^{-3}$   |         $0.15 \%$         |    {cite}`Echard2011`    |
-|                      |  {term}`IS`  |   $1'469$   |   $4.9 \times 10^{-3}$    |          &#8212;          |    {cite}`Echard2011`    |
+|    Method    |  $N$   |       $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |      Source       |
+|:------------:|:------:|:-----------------------:|:-------------------------:|:-----------------:|
+| {term}`MCS`  | $10^6$ | $3.4353 \times 10^{-2}$ |          &#8212;          |  {cite}`Li2018`   |
+| {term}`FORM` |  $6$   | $3.3065 \times 10^{-2}$ |          &#8212;          | {cite}`Verma2015` |
+| {term}`FORM` |  $9$   | $3.3065 \times 10^{-2}$ |          &#8212;          |  {cite}`Li2018`   |
+| {term}`SORM` |  $14$  | $3.4211 \times 10^{-2}$ |          &#8212;          |  {cite}`Li2018`   |
+| {term}`SSRM` |  $7$   | $3.4347 \times 10^{-2}$ |          &#8212;          |  {cite}`Li2018`   |
 
 
 ## References
@@ -234,3 +224,5 @@ are summarized in the table below.
 :style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^location]: see Example 5, p. 266 in {cite}`Verma2015`.
