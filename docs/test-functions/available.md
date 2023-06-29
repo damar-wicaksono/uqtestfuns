@@ -31,6 +31,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 | {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |         8         | `DampedOscillatorReliability()` |
 |                         {ref}`Flood <test-functions:flood>`                         |         8         |            `Flood()`            |
 |              {ref}`Forrester et al. (2008) <test-functions:forrester>`              |         1         |        `Forrester2008()`        |
+|                   {ref}`Four-branch <test-functions:four-branch>`                   |         2         |         `FourBranch()`          |
 |                    {ref}`(1st) Franke <test-functions:franke-1>`                    |         2         |           `Franke1()`           |
 |                    {ref}`(2nd) Franke <test-functions:franke-2>`                    |         2         |           `Franke2()`           |
 |                    {ref}`(3rd) Franke <test-functions:franke-3>`                    |         2         |           `Franke3()`           |
@@ -41,13 +42,13 @@ available in the current UQTestFuns, regardless of their typical applications.
 |           {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>`            |         1         |        `Gramacy1DSine()`        |
 |               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |         2         |         `HyperSphere()`         |
 |                      {ref}`Ishigami <test-functions:ishigami>`                      |         3         |          `Ishigami()`           |
-|           {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`            |         1         |          `Oakley1D()`           |
-|                   {ref}`OTL Circuit <test-functions:otl-circuit>`                   |      6 / 20       |         `OTLCircuit()`          |
 |                     {ref}`McLain S1 <test-functions:mclain-s1>`                     |         2         |          `McLainS1()`           |
 |                     {ref}`McLain S2 <test-functions:mclain-s2>`                     |         2         |          `McLainS2()`           |
 |                     {ref}`McLain S3 <test-functions:mclain-s3>`                     |         2         |          `McLainS3()`           |
 |                     {ref}`McLain S4 <test-functions:mclain-s4>`                     |         2         |          `McLainS4()`           |
 |                     {ref}`McLain S5 <test-functions:mclain-s5>`                     |         2         |          `McLainS5()`           |
+|           {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`            |         1         |          `Oakley1D()`           |
+|                   {ref}`OTL Circuit <test-functions:otl-circuit>`                   |      6 / 20       |         `OTLCircuit()`          |
 |                  {ref}`Piston Simulation <test-functions:piston>`                   |      7 / 20       |           `Piston()`            |
 |                      {ref}`Sobol'-G <test-functions:sobol-g>`                       |         M         |           `SobolG()`            |
 |                        {ref}`Sulfur <test-functions:sulfur>`                        |         9         |           `Sulfur()`            |

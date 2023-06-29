@@ -47,6 +47,8 @@ parts:
             title: Flood
           - file: test-functions/forrester
             title: Forrester et al. (2008)
+          - file: test-functions/four-branch
+            title: Four-branch
           - file: test-functions/franke-1
             title: (1st) Franke
           - file: test-functions/franke-2
@@ -67,10 +69,6 @@ parts:
             title: Hyper-sphere Bound
           - file: test-functions/ishigami
             title: Ishigami
-          - file: test-functions/oakley-1d
-            title: Oakley & O'Hagan (2002) 1D
-          - file: test-functions/otl-circuit
-            title: OTL Circuit
           - file: test-functions/mclain-s1
             title: McLain S1
           - file: test-functions/mclain-s2
@@ -81,6 +79,10 @@ parts:
             title: McLain S4
           - file: test-functions/mclain-s5
             title: McLain S5
+          - file: test-functions/oakley-1d
+            title: Oakley & O'Hagan (2002) 1D
+          - file: test-functions/otl-circuit
+            title: OTL Circuit
           - file: test-functions/piston
             title: Piston Simulation
           - file: test-functions/sobol-g

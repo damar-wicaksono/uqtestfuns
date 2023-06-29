@@ -53,7 +53,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        1-Dimensional input values given by an N-by-1 array
+        A two-Dimensional input values given by an N-by-2 array
         where N is the number of input values.
 
     Returns

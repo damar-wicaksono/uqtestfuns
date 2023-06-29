@@ -31,13 +31,13 @@ in the comparison of metamodeling approaches.
 |         {ref}`(5th) Franke <test-functions:franke-5>`          |         2         |     `Franke5()`      |
 |         {ref}`(6th) Franke <test-functions:franke-6>`          |         2         |     `Franke6()`      |
 | {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>` |         1         |  `Gramacy1DSine()`   |
-| {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>` |         1         |     `Oakley1D()`     |
-|        {ref}`OTL Circuit <test-functions:otl-circuit>`         |      6 / 20       |    `OTLCircuit()`    |
 |          {ref}`McLain S1 <test-functions:mclain-s1>`           |         2         |     `McLainS1()`     |
 |          {ref}`McLain S2 <test-functions:mclain-s2>`           |         2         |     `McLainS2()`     |
 |          {ref}`McLain S3 <test-functions:mclain-s3>`           |         2         |     `McLainS3()`     |
 |          {ref}`McLain S4 <test-functions:mclain-s4>`           |         2         |     `McLainS4()`     |
 |          {ref}`McLain S5 <test-functions:mclain-s5>`           |         2         |     `McLainS5()`     |
+| {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>` |         1         |     `Oakley1D()`     |
+|        {ref}`OTL Circuit <test-functions:otl-circuit>`         |      6 / 20       |    `OTLCircuit()`    |
 |        {ref}`Piston Simulation <test-functions:piston>`        |      7 / 20       |      `Piston()`      |
 |             {ref}`Sulfur <test-functions:sulfur>`              |         9         |      `Sulfur()`      |
 |          {ref}`Welch1992 <test-functions:welch1992>`           |        20         |    `Welch1992()`     |

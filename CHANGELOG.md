@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   from Li et al. (2018).
 - The two-dimensional cantilever beam reliability problem from
   Rajashekhar and Ellington (1993).
+- The two-dimensional four-branch function for reliability analysis
+  from Katsuki and Frangopol (1994).
 - New docs section on list of functions for reliability analysis.
 
 ## [0.2.0] - 2023-06-26
