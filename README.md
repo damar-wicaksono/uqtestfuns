@@ -1,5 +1,5 @@
 # UQTestFuns
-[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.7703922-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.7703922)
+[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.8109901-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.8109901)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![Python 3.8](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
