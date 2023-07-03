@@ -129,7 +129,7 @@ AVAILABLE_INPUT_SPECS_RELIABILITY = {
     "DerKiureghian1990a": ProbInputSpecFixDim(
         name="DampedOscillatorReliability-DerKiureghian1990a",
         description=(
-            "Probabilistic input #1 for the damped oscillator reliability "
+            "Input model #1 for the damped oscillator reliability "
             "from Der Kiureghian and De Stefano (1990)"
         ),
         marginals=INPUT_MARGINALS_DERKIUREGHIAN1991
@@ -149,7 +149,7 @@ AVAILABLE_INPUT_SPECS_RELIABILITY = {
     "DerKiureghian1990b": ProbInputSpecFixDim(
         name="DampedOscillatorReliability-DerKiureghian1990b",
         description=(
-            "Probabilistic input #2 for the damped oscillator reliability "
+            "Input model #2 for the damped oscillator reliability "
             "from Der Kiureghian and De Stefano (1990)"
         ),
         marginals=INPUT_MARGINALS_DERKIUREGHIAN1991
@@ -169,7 +169,7 @@ AVAILABLE_INPUT_SPECS_RELIABILITY = {
     "DerKiureghian1990c": ProbInputSpecFixDim(
         name="DampedOscillatorReliability-DerKiureghian1990c",
         description=(
-            "Probabilistic input #3 for the damped oscillator reliability "
+            "Input model #3 for the damped oscillator reliability "
             "from Der Kiureghian and De Stefano (1990)"
         ),
         marginals=INPUT_MARGINALS_DERKIUREGHIAN1991

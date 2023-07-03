@@ -158,11 +158,12 @@ g(\boldsymbol{x}; p) = \min \begin{Bmatrix}
 $$
 
 where $\boldsymbol{x} = \{ x_1, x_2 \}$ is the two-dimensional vector of
-input variables probabilistically defined further below and $p$ is the 
-parameter of the test function (see the corresponding section below).
+input variables probabilistically defined further below
+and $p$ is a deterministic parameter of the test function
+(see the corresponding section below).
 
-The failure event and the failure probability are defined as
-$g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{x}) \leq 0]$,
+The failure state and the failure probability are defined as
+$g(\boldsymbol{x}; p) \leq 0$ and $\mathbb{P}[g(\boldsymbol{X}; p) \leq 0]$,
 respectively.
 
 ## Probabilistic input

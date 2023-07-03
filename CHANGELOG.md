@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2023-07-03
+
 ### Added
 
 - The two-dimensional Gayton Hat function from Echard et al. (2013) used
@@ -24,7 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   from Du and Sudjianto (2004).
 - The two-dimensional reliability problem of a circular pipe crack
   under a bending moment under Verma et al. (2015).
-- New docs section on list of functions for reliability analysis.
+- New docs section on list of functions for reliability analysis including
+  a brief description on the reliability analysis problem.
 
 ## [0.2.0] - 2023-06-26
 
@@ -126,6 +129,7 @@ First public release of UQTestFuns.
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
 [Unreleased]: https://github.com/damar-wicaksono/uqtestfuns/compare/main...dev
+[0.3.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.0.1...v0.1.0

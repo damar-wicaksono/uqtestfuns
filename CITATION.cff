@@ -14,8 +14,8 @@ authors:
     orcid: 'https://orcid.org/0000-0001-8587-7730'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.7703922
-    description: The Zenodo URL of version 0.2.0 of the package
+    value: 10.5281/zenodo.8109901
+    description: The Zenodo URL of version 0.3.0 of the package
 repository-code: 'https://github.com/damar-wicaksono/uqtestfuns'
 url: 'https://uqtestfuns.readthedocs.io/en/latest/'
 repository-artifact: 'https://pypi.org/project/uqtestfuns/'
@@ -35,5 +35,5 @@ keywords:
   - sensitivity-analysis
   - metamodeling
 license: MIT
-version: 0.2.0
-date-released: '2023-06-26'
+version: 0.3.0
+date-released: '2023-07-03'

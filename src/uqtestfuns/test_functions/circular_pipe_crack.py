@@ -35,7 +35,7 @@ AVAILABLE_INPUT_SPECS = {
     "Verma2015": ProbInputSpecFixDim(
         name="CircularPipeCrack-Verma2015",
         description=(
-            "Probabilistic input model for the circular pipe crack problem "
+            "Input model for the circular pipe crack problem "
             "from Verma et al. (2015)"
         ),
         marginals=[

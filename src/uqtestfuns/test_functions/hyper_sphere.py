@@ -24,7 +24,7 @@ AVAILABLE_INPUT_SPECS = {
     "Li2018": ProbInputSpecFixDim(
         name="Li2018",
         description=(
-            "Probabilistic input for the hyper-sphere reliability problem "
+            "Input model for the hyper-sphere reliability problem "
             "from Li et al. (2018)"
         ),
         marginals=[

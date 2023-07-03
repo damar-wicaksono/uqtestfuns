@@ -64,7 +64,7 @@ involve a complex expensive-to-evaluate computational model&mdash;researchers
 and developers may prefer to initially use the so-called UQ test functions
 for validation and benchmarking purposes.
 
-UQ test functions are, in principle, mathematical functions taken as blackboxes;
+UQ test functions are, in principle, mathematical functions taken as black boxes;
 they take a set of input values and produce output values.
 However, in a typical UQ analysis, the input variables are considered uncertain
 and thus modeled probabilistically.
@@ -138,7 +138,7 @@ one may need to learn some basic usage and specific terminologies of the package
 Both also acknowledge the particularity of UQ test functions
 that require combining a test function
 and the corresponding probabilistic input specification.
-There are, however, major differences:
+There are, however, some major differences:
 
 - `UQTestFuns` is more lightweight with fewer dependencies,
   while `otbenchmark` is coupled to the package OpenTURNS.
@@ -256,7 +256,7 @@ the task of the analysis is to accurately estimate the probability where $g(\bol
 
 Consider the Sobol'-G function,
 an $M$-dimensional function commonly used
-for testing sensitivity analysis methods[@Saltelli1995]:
+for testing sensitivity analysis methods [@Saltelli1995]:
 $$
 \mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^M \frac{\lvert 4 x_m - 2 \rvert + a_m}{1 + a_m},
 $$

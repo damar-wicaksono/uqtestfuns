@@ -146,20 +146,20 @@ through-wall crack under a bending moment.
 The performance function is analytically defined as follows[^location]:
 
 $$
-g(\boldsymbol{x}; \boldsymbol{p}) = 4 t \sigma_f R^2 \left( \cos{(\frac{\theta}{2})} - \frac{1}{2} \sin{(\theta)} \right) - M
+g(\boldsymbol{x}; \boldsymbol{p}) = 4 t \sigma_f R^2 \left( \cos{\left(\frac{\theta}{2}\right)} - \frac{1}{2} \sin{(\theta)} \right) - M
 $$
 
 where $\boldsymbol{x} = \{ \sigma_f, \theta \}$ is the two-dimensional vector of
 input variables probabilistically defined further below;
-and $\boldsymbol{p} = \{ t, R, M \}$ is the vector of parameters.
+and $\boldsymbol{p} = \{ t, R, M \}$ is the vector of deterministic parameters.
 
-The failure event and the failure probability are defined as
-$g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{x}) \leq 0]$,
-respectively.
+The failure state and the failure probability are defined as
+$g(\boldsymbol{x}; \boldsymbol{p}) \leq 0$
+and $\mathbb{P}[g(\boldsymbol{X}; \boldsymbol{p}) \leq 0]$, respectively.
 
 ## Probabilistic input
 
-Based on {cite}`Echard2013`, the probabilistic input model for
+Based on {cite}`Verma2015`, the probabilistic input model for
 the test function consists of two independent standard normal random variables
 (see the table below).
 
@@ -200,7 +200,7 @@ plt.axvline(0, linewidth=1.0, color="#ca0020")
 
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel("$g(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 
