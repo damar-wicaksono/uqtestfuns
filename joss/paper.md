@@ -114,8 +114,8 @@ Below are some examples from the Python applied UQ community
 (the numbers are as of 2023-06-30; once again,
 the list is non-exhaustive):
 
-- UncertainPy [@Tennoe:2018a; @Tennoe:2018b] includes 8 test functions (mainly in
-  the context of neuroscience) for illustrating the package capabilities.
+- SALib [@Herman2017; @Iwanaga2022] includes 6 test functions
+  mainly for illustrating the package capabilities.
 - PyApprox [@Jakeman2019] includes 18 test functions,
   including some non-algebraic functions for benchmarking purposes.
 - Surrogate Modeling Toolbox (SMT) [@Bouhlel2019; @Bouhlel2023] includes 
