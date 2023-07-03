@@ -43,7 +43,7 @@ AVAILABLE_INPUT_SPECS = {
     "Katsuki1994": ProbInputSpecFixDim(
         name="FourBranch-Katsuki1994",
         description=(
-            "Probabilistic input for the four-branch function "
+            "Input model for the four-branch function "
             "from Katsuki and Frangopol (1994)"
         ),
         marginals=[

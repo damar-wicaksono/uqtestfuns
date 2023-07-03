@@ -38,7 +38,7 @@ AVAILABLE_INPUT_SPECS = {
     "Rajashekhar1993": ProbInputSpecFixDim(
         name="Cantilever2D-Rajashekhar1993",
         description=(
-            "Probabilistic input model for the 2D cantilever beam problem "
+            "Input model for the cantilever beam problem "
             "from Rajashekhar and Ellingwood (1993)"
         ),
         marginals=[
@@ -108,7 +108,7 @@ class CantileverBeam2D(UQTestFunABC):
 
     _tags = ["reliability"]
     _description = (
-        "Two-dimensional cantilever beam reliability "
+        "Cantilever beam reliability problem "
         "from Rajashekhar and Ellington (1993)"
     )
     _available_inputs = AVAILABLE_INPUT_SPECS

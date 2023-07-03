@@ -152,8 +152,8 @@ $$
 where $\boldsymbol{x} = \{ x_1, x_2 \}$ is the two-dimensional vector of
 input variables probabilistically defined further below.
 
-The failure event and the failure probability are defined as
-$g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{x}) \leq 0]$,
+The failure state and the failure probability are defined as
+$g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{X}) \leq 0]$,
 respectively.
 
 ## Probabilistic input

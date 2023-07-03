@@ -32,6 +32,8 @@ import uqtestfuns as uqtf
 To list all the test functions currently available:
 
 ```{code-cell} ipython3
+:tags: ["output_scroll"]
+
 uqtf.list_functions()
 ```
 

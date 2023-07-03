@@ -25,7 +25,7 @@ AVAILABLE_INPUT_SPECS = {
     "Echard2013": ProbInputSpecFixDim(
         name="Echard2013",
         description=(
-            "Probabilistic input for the Gayton Hat function "
+            "Input model for the Gayton Hat function "
             "from Echard et al. (2013)"
         ),
         marginals=[
