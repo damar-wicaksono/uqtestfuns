@@ -94,18 +94,18 @@ def _create_sobol_input(spatial_dimension: int) -> List[UnivDistSpec]:
 
 
 AVAILABLE_INPUT_SPECS = {
-    "Radovic1996": ProbInputSpecVarDim(
-        name="Sobol-G-Radovic-1996",
+    "Saltelli1995": ProbInputSpecVarDim(
+        name="Sobol-G-Saltelli1995",
         description=(
             "Probabilistic input model for the Sobol'-G function "
-            "from Radović et al. (1996)."
+            "from Saltelli and Sobol' (1995)"
         ),
         marginals_generator=_create_sobol_input,
         copulas=None,
     ),
 }
 
-DEFAULT_INPUT_SELECTION = "Radovic1996"
+DEFAULT_INPUT_SELECTION = "Saltelli1995"
 
 
 def _get_params_saltelli_1995_1(spatial_dimension: int) -> np.ndarray:

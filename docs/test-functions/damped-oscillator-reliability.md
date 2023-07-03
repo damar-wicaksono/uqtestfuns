@@ -69,10 +69,11 @@ $$
 
 where $\boldsymbol{x} = \{ M_p, M_s, K_p, K_s, \zeta_p, \zeta_s, S_0, F_s \}$
 is the eight-dimensional vector of input variables probabilistically defined
-further below and $p$ is the parameter of the function (i.e., the peak factor).
+further below and $p$ is a deterministic parameter of the function
+(i.e., the peak factor).
 
-The failure event and the failure probability are defined as
-$g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{X}) \leq 0]$,
+The failure state and the failure probability are defined as
+$g(\boldsymbol{x}; p) \leq 0$ and $\mathbb{P}[g(\boldsymbol{X}; p) \leq 0]$,
 respectively.
 
 ## Probabilistic input

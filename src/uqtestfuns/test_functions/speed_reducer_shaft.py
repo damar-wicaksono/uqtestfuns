@@ -33,7 +33,7 @@ AVAILABLE_INPUT_SPECS = {
     "Du2004": ProbInputSpecFixDim(
         name="SpeedReducerShaft-Du2004",
         description=(
-            "Probabilistic input model for the speed reducer shaft problem "
+            "Input model for the speed reducer shaft problem "
             "from Du and Sudjianto (2004)"
         ),
         marginals=[

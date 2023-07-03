@@ -145,15 +145,15 @@ print(my_testfun)
 ## Description
 
 The problem consists of a cantilever beam with a rectangular cross-section
-subjected to uniformly distributed loading. The maximum deflection at the free
-end is taken to be the performance criterion and the performance function
-reads[^location]:
+subjected to a uniformly distributed loading.
+The maximum deflection at the free end is taken to be the performance criterion
+and the performance function reads[^location]:
 
 $$
 g(\boldsymbol{x}) = \frac{l}{325} - \frac{w b l^4}{8 E I},
 $$
 
-where $I$, the moment inertia of the cross-section, is given as:
+where $I$, the moment inertia of the cross-section, is given as follows:
 
 $$
 I = \frac{b h^3}{12}.
@@ -163,7 +163,7 @@ By plugging in the above expression to the performance function, the following
 expression for the performance function is obtained:
 
 $$
-g(\boldsymbol{x}) = \frac{l}{325} - \frac{12 l^4 w}{8 E h^3},
+g(\boldsymbol{x}; \boldsymbol{p}) = \frac{l}{325} - \frac{12 l^4 w}{8 E h^3},
 $$
 
 where $\boldsymbol{x} = \{ w, h \}$ is the two-dimensional vector of
@@ -171,12 +171,14 @@ input variables, namely the load per unit area and the depth of
 the cross-section.
 These inputs are probabilistically defined further below.
 
-The parameters of the test function, namely $E$ (the beam's modulus
-of elasticity) and $l$ (the span of the beam) are set to
+The parameters of the test function $\boldsymbol{p} = \{ E, l \}$,
+namely the beam's modulus of elasticity ($E$)
+and the span of the beam ($l$) are set to
 $2.6 \times 10^{4} \; \mathrm{[MPa]}$ and $6.0 \; \mathrm{[m]}$, respectively.
 
-The failure event and the failure probability are defined as
-$g(\boldsymbol{x}) \leq 0$ and $\mathbb{P}[g(\boldsymbol{X}) \leq 0]$,
+The failure state and the failure probability are defined as
+$g(\boldsymbol{x}; \boldsymbol{p}) \leq 0$
+and $\mathbb{P}[g(\boldsymbol{X}; \boldsymbol{p}) \leq 0]$,
 respectively.
 
 ## Probabilistic input
