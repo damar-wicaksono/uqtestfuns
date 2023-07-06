@@ -35,7 +35,7 @@ taken from the literature for validation purposes.
 Afterward, they employ these test functions as a common ground
 to compare the performance of the novel method
 against that of the state-of-the-art methods
-in terms of some accuracy and efficiency measures.
+in terms of accuracy and efficiency measures.
 
 `UQTestFuns` is an open-source Python3 library of test functions
 commonly used within the applied UQ community.
@@ -46,8 +46,8 @@ Specifically, the package provides:
   available in the UQ literature
 - a **single entry point** collecting test functions _and_
   their probabilistic input specifications in a single Python package
-- an **opportunity for an open-source contribution**
-  where one can implement new test functions and post reference results.
+- an **opportunity for an open-source contribution**, supporting
+  the implementation of new test functions and posting reference results.
 
 `UQTestFuns` aims to save the researchers' and developers' time
 from having to reimplement many of the commonly used test functions
@@ -82,11 +82,10 @@ UQ test functions are widely used in the community for several reasons:
   at least _faster_ than their real-world counterparts.
 - There are many test functions _available in the literature_
   for various types of analyses.
-- Although test functions are taken as black boxes,
-  _the features of test functions are known_; 
-  this knowledge enables a thorough diagnosis of a method.
+- Although test functions are taken as black boxes, _their features are known_; 
+  this knowledge enables a thorough diagnosis of a UQ method.
 - Test functions provide _a common ground_ for comparing the performance
-  of various methods in solving the same class of problems. 
+  of various UQ methods in solving the same class of problems. 
 
 Several efforts have been made to provide relevant UQ test functions
 to the community.
@@ -108,12 +107,12 @@ to obtain UQ test functions (the list is by no means exhaustive):
   in Python. It is not, however, a stand-alone Python package.
 
 Using these online resources, one either needs to download each test function 
-separately[^rprepo] or implement the test functions following
-the provided formula (in the programming language of their choice).
+separately[^rprepo] or implement the functions following
+the provided formula (in the programming language of choice).
 
 As an alternative way for obtaining test functions,
 UQ analysis packages are often shipped with a selection of test functions
-of their own either for illustration, validation, or benchmarking purposes.
+of their own, either for illustration, validation, or benchmarking purposes.
 Examples from the applied UQ community in the Python ecosystem are
 (the numbers are as of 2023-06-30; once again, the list is non-exhaustive):
 
@@ -153,12 +152,11 @@ combining a test function and the corresponding probabilistic input
 specification.
 There are, however, some major differences:
 
-- `UQTestFuns` has fewer dependencies and is more lean
-  in its implementations, while `otbenchmark` is built on top of
-  and coupled to OpenTURNS.
-  This is to be expected as one of `otbenchmark`'s main goals is to provide
-  the OpenTURNS development team with a tool for helping
-  with the implementation of new algorithms.
+- One of the `otbenchmark`'s main aims is to provide the OpenTURNS development
+  team with a tool for helping with the implementation of new algorithms.
+  As such, it is built on top of and coupled to OpenTURNS.
+  `UQTestFuns`, on the other hand, has fewer dependencies and is more lean 
+  in its implementations.
 - `UQTestFuns` is more modest in its scope, that is, simply to provide
   a library of UQ test functions implemented in Python
   with a consistent interface and an online reference
@@ -275,7 +273,7 @@ that fall in the failure and safe domain.
 As illustrated in the previous series of plots,
 the task for a reliability analysis method is to estimate
 the probability where $g(\mathbf{X}) \leq 0$ as accurately
-and with as few function evaluations as possible.
+and with as few model evaluations as possible.
 `UQTestFuns` includes test functions used in reliability analysis exercises
 in various dimensions having different complexities of the limit-state surface.
 
@@ -306,12 +304,11 @@ in the original specification is attached to the instance of the test function
 The task of a sensitivity analysis method is to ascertain either qualitatively
 or quantitatively the most important input variables
 (for _factor prioritization_) or the least important input variables
-(for _factor fixing/screening_);
+(for _factor fixing/screening_) with as few model evaluations as possible;
 for details on this topic, please refer to @Saltelli2007 and @Iooss2015.
 `UQTestFuns` includes test functions used in sensitivity analysis exercises
-in various dimensions ($M > 1$)
-having different complexities in terms of the interactions
-between input variables.
+in various dimensions having different complexities
+in terms of the interactions between input variables.
 
 ## Metamodeling
 
