@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Some background information in the documentation has been changed
+  to match the description in the JOSS paper draft.
+
+### Fixed
+
+- A mistake in one the parameter values of the Sobol'-G function has been fixed. 
+
 ## [0.3.0] - 2023-07-03
 
 ### Added
