@@ -1,4 +1,4 @@
-name: Packaging
+name: Testing and packaging
 
 on:
   - push
@@ -52,6 +52,8 @@ jobs:
             toxenv: "py38"
           - version: "3.9"
             toxenv: "py39"
+          - version: "3.11"
+            toxenv: "py311"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4.0.0
