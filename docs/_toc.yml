@@ -91,6 +91,8 @@ parts:
             title: OTL Circuit
           - file: test-functions/piston
             title: Piston Simulation
+          - file: test-functions/rs-circular-bar
+            title: RS - Circular Bar
           - file: test-functions/rs-quadratic
             title: RS - Quadratic
           - file: test-functions/sobol-g

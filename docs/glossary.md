@@ -9,6 +9,9 @@ CDF
 FORM
     First-order reliability method
 
+FOSM
+    First-order Second-moment method
+
 FOSPA
     First-order Saddlepoint Approximation reliability method {cite}`Du2004`
 
