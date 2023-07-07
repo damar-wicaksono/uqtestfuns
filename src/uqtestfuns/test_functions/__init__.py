@@ -26,6 +26,7 @@ from .rs_quadratic import RSQuadratic
 from .sobol_g import SobolG
 from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
+from .webster import Webster2D
 from .welch1992 import Welch1992
 from .wing_weight import WingWeight
 
@@ -71,6 +72,7 @@ __all__ = [
     "SobolG",
     "SpeedReducerShaft",
     "Sulfur",
+    "Webster2D",
     "Welch1992",
     "WingWeight",
 ]

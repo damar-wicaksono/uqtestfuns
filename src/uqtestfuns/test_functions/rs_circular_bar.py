@@ -55,6 +55,8 @@ def evaluate(xx: np.ndarray, parameter: float) -> np.ndarray:
     xx : np.ndarray
         A two-dimensional input values given by an N-by-2 array
         where N is the number of input values.
+    parameter : float
+        The parameter of the function (i.e., the diameter of the bar in [mm]).
 
     Returns
     -------

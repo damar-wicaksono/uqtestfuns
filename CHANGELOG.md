@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New instance method for `UnivDist` and `ProbInput` classes
   called `reset_rng()`. When called (optionally with a seed number),
   a new instance of NumPy default RNG will be created and attached to the instance.
+- The two-dimensional polynomial function with random inputs
+  from Webster et al. (1996) for metamodeling exercises.
 
 ### Changed
 
