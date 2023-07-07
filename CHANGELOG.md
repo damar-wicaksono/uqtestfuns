@@ -10,7 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - The two-dimensional convex failure domain problem for reliability
-  analysis from Borri and Speranzini (1997).
+  analysis exercises from Borri and Speranzini (1997).
+- The two-dimensional Quadratic RS problem for reliability analysis
+  exercises from Waarts (2000). This is a variant of the classic RS 
+  problem with one quadratic term.
 
 ### Changed
 

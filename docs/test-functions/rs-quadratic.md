@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:convex-fail-domain)=
-# Convex Failure Domain Reliability Problem
+(test-functions:rs-quadratic)=
+# Quadratic RS Reliability Problem
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Convex failure domain is a test function 
-from {cite}`Borri1997` for reliability analysis exercises {cite}`Waarts2000`.
+The Quadratic RS reliability problem is a variant of the classic RS problem
+with one quadratic term {cite}`Waarts2000`.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour
@@ -33,7 +33,7 @@ overlaid.
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_fun = uqtf.ConvexFailDomain(rng_seed_prob_input=237324)
+my_fun = uqtf.RSQuadratic(rng_seed_prob_input=237324)
 xx = my_fun.prob_input.get_sample(1000000)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
@@ -129,7 +129,7 @@ plt.gcf().set_dpi(150);
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.ConvexFailDomain()
+my_testfun = uqtf.RSQuadratic()
 ```
 
 Check if it has been correctly instantiated:
@@ -144,7 +144,7 @@ The test function (i.e., the performance function) is analytically defined
 as follows:
 
 $$
-g(\boldsymbol{x}) = 0.1 (x_1 - x_2)^2 - \frac{(x_1 + x_2)}{\sqrt{2}} + 2.5,
+g(\boldsymbol{x}) = x_1 - x_2^2,
 $$
 
 where $\boldsymbol{x} = \{ x_1, x_2 \}$ is the two-dimensional vector of
@@ -156,7 +156,7 @@ and $\mathbb{P}[g(\boldsymbol{X}) \leq 0]$, respectively.
 
 ## Probabilistic input
 
-Based on {cite}`Borri1997`, the probabilistic input model for
+Based on {cite}`Waarts2000`, the probabilistic input model for
 the test function consists of two independent standard normal random variables
 (see the table below).
 
@@ -233,11 +233,10 @@ plt.gcf().set_dpi(150);
 Some reference values for the failure probability $P_f$ from the literature
 are summarized in the table below.
 
-|    Method    |   $N$    |       $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |       Source       | Remark                    |
-|:------------:|:--------:|:-----------------------:|:-------------------------:|:------------------:|---------------------------|
-|    Exact     | &#8212;  | $4.2692 \times 10^{-3}$ |          &#8212;          | {cite}`Waarts2000` | Annex E.6 Table: Results  |
-| {term}`FORM` |   $8$    | $6.2097 \times 10^{-3}$ |          &#8212;          | {cite}`Waarts2000` | Annex E.6 Table: Results  |
-| {term}`MCS`  | $10^{4}$ | $4.2692 \times 10^{-3}$ |          $0.02$           | {cite}`Waarts2000` | Annex E.6 Table: Results  |
+|    Method    |   $N$    |       $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |       Source       | Remark                   |
+|:------------:|:--------:|:-----------------------:|:-------------------------:|:------------------:|--------------------------|
+|    Exact     | &#8212;  | $2.7009 \times 10^{-4}$ |          &#8212;          | {cite}`Waarts2000` | Annex E.3 Table: Results |
+| {term}`FORM` |   $12$   | $2.6023 \times 10^{-4}$ |          &#8212;          | {cite}`Waarts2000` | Annex E.3 Table: Results |
 
 ## References
 
@@ -246,4 +245,4 @@ are summarized in the table below.
 :filter: docname in docnames
 ```
 
-[^location]: see Annex E.6, p.154 in {cite}`Waarts2000`.
+[^location]: see Annex E.3, p.151 in {cite}`Waarts2000`.
