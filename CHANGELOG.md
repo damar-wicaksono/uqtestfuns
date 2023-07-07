@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The two-dimensional convex failure domain problem for reliability
+  analysis from Borri and Speranzini (1997).
+
 ### Changed
 
 - Some background information in the documentation has been changed
