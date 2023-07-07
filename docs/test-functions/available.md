@@ -28,6 +28,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 |            {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`             |         M         |        `Bratley1992d()`         |
 |           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |         2         |       `CantileverBeam2D `       |
 |           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |         2         |      `CircularPipeCrack()`      |
+|          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |         2         |      `ConvexFailDomain()`       |
 |             {ref}`Damped Oscillator <test-functions:damped-oscillator>`             |         7         |      `DampedOscillator()`       |
 | {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |         8         | `DampedOscillatorReliability()` |
 |                         {ref}`Flood <test-functions:flood>`                         |         8         |            `Flood()`            |

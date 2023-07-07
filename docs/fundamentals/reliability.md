@@ -21,6 +21,7 @@ in the comparison of reliability analysis methods.
 |:-----------------------------------------------------------------------------------:|:-----------------:|:-------------------------------:|
 |           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |         2         |       `CantileverBeam2D `       |
 |           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |         2         |      `CircularPipeCrack()`      |
+|          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |         2         |      `ConvexFailDomain()`       |
 | {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |         8         | `DampedOscillatorReliability()` |
 |                   {ref}`Four-branch <test-functions:four-branch>`                   |         2         |         `FourBranch()`          |
 |                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |         2         |          `GaytonHat()`          |
