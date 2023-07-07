@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2023-07-07
+
 ### Added
 
 - The two-dimensional convex failure domain problem for reliability
@@ -18,11 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   from an example in Santner et al. (2018).
 - The two-dimensional circular bar RS problem for reliability analysis
   exercises taken from an example in Verma et al. (2015).
-- New instance method for `UnivDist` and `ProbInput` classes
-  called `reset_rng()`. When called (optionally with a seed number),
-  a new instance of NumPy default RNG will be created and attached to the instance.
 - The two-dimensional polynomial function with random inputs
   from Webster et al. (1996) for metamodeling exercises.
+- New instance method for `UnivDist` and `ProbInput` classes
+  called `reset_rng()`. When called (optionally with a seed number), a new
+  instance of NumPy default RNG will be created and attached to the instance.
+- GitHub actions now include testing on Python v3.11 via Tox.
 
 ### Changed
 
@@ -36,7 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- A mistake in one the parameter values of the Sobol'-G function has been fixed. 
+- A mistake in one the parameter values of the Sobol'-G function
+  has been fixed. 
 
 ## [0.3.0] - 2023-07-03
 
@@ -160,6 +164,7 @@ First public release of UQTestFuns.
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
 [Unreleased]: https://github.com/damar-wicaksono/uqtestfuns/compare/main...dev
+[0.4.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.0...v0.1.1
