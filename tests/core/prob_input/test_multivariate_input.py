@@ -242,6 +242,30 @@ def test_pass_random_seed(spatial_dimension):
 
 
 @pytest.mark.parametrize("spatial_dimension", [1, 2, 10, 100])
+def test_reset_rng(spatial_dimension):
+    """Test resetting the RNG once an instance has been created."""
+    marginals = create_random_marginals(spatial_dimension)
+
+    # Create two instances with an identical seed number
+    rng_seed = 42
+    my_input = ProbInput(marginals, rng_seed=rng_seed)
+
+    # Generate sample points
+    xx_1 = my_input.get_sample(1000)
+    xx_2 = my_input.get_sample(1000)
+
+    # Assertion: Both samples should not be equal
+    assert not np.allclose(xx_1, xx_2)
+
+    # Reset the RNG and generate new sample points
+    my_input.reset_rng(rng_seed)
+    xx_2 = my_input.get_sample(1000)
+
+    # Assertion: Both samples should now be equal
+    assert np.allclose(xx_1, xx_2)
+
+
+@pytest.mark.parametrize("spatial_dimension", [1, 2, 10, 100])
 def test_create_from_spec(spatial_dimension):
     """Test creating an instance from specification NamedTuple"""
     marginals: List[UnivDist] = create_random_marginals(spatial_dimension)
