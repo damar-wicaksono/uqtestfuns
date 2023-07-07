@@ -18,9 +18,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   from an example in Santner et al. (2018).
 - The two-dimensional circular bar RS problem for reliability analysis
   exercises taken from an example in Verma et al. (2015).
+- New instance method for `UnivDist` and `ProbInput` classes
+  called `reset_rng()`. When called (optionally with a seed number),
+  a new instance of NumPy default RNG will be created and attached to the instance.
 
 ### Changed
 
+- `rng_seed_prob_input` keyword parameter has been removed from the list
+  of parameters to the constructor of all UQ test functions.
+  The accepted way to reset an RNG with a seed is to use the instance
+  method `reset_rng()` (optionally with a seed number)
+  of the `ProbInput` instance attached.
 - Some background information in the documentation has been changed
   to match the description in the JOSS paper draft.
 

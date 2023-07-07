@@ -33,7 +33,8 @@ overlaid.
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_fun = uqtf.RSQuadratic(rng_seed_prob_input=237324)
+my_fun = uqtf.RSQuadratic()
+my_fun.prob_input.reset_rng(237324)
 xx = my_fun.prob_input.get_sample(1000000)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0

@@ -193,11 +193,6 @@ class UQTestFunABC(UQTestFunBareABC):
         The name of the UQ test function.
         If not given, `None` is used as name.
         This is a keyword only parameter.
-    rng_seed_prob_input : int, optional
-        The seed number for the pseudo-random number generator of the
-        corresponding `ProbInput`; if not given, `None` is used
-        (taken from the system entropy).
-        This is a keyword only parameter.
 
     Notes
     -----
@@ -223,7 +218,6 @@ class UQTestFunABC(UQTestFunBareABC):
         prob_input_selection: Optional[str] = None,
         parameters_selection: Optional[str] = None,
         name: Optional[str] = None,
-        rng_seed_prob_input: Optional[int] = None,
     ):
         # --- Create a probabilistic input model
         # Select the probabilistic input model
@@ -249,12 +243,9 @@ class UQTestFunABC(UQTestFunBareABC):
             prob_input = ProbInput.from_spec(
                 prob_input_spec,
                 spatial_dimension=spatial_dimension,
-                rng_seed=rng_seed_prob_input,
             )
         else:
-            prob_input = ProbInput.from_spec(
-                prob_input_spec, rng_seed=rng_seed_prob_input
-            )
+            prob_input = ProbInput.from_spec(prob_input_spec)
 
         # --- Select the parameters set, when applicable
         available_parameters = self.available_parameters

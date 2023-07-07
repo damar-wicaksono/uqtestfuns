@@ -49,20 +49,7 @@ in the context of metamodeling and sensitivity analysis.
 To instantiate a borehole test function, call the constructor as follows:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Borehole(rng_seed_prob_input=176326)
-```
-
-```{note}
-The parameter `rng_seed_prob_input` is optional; if not specified,
-the system entropy is used to initialized
-the [NumPy default random generator](https://numpy.org/doc/stable/reference/random/generator.html#numpy.random.default_rng).
-The number is given here such that the example is more or less reproducible.
-
-In UQTestFuns, each instance of test function carries its own pseudo-random
-number generator (RNG) for the corresponding probabilitic input model
-to avoid using the global NumPy random RNG.
-See this [blog post](https://albertcthomas.github.io/good-practices-random-number-generators/)
-regarding some good practices on using NumPy RNG.
+my_testfun = uqtf.Borehole()
 ```
 
 To verify whether the instance has been created,
@@ -147,6 +134,21 @@ plt.grid()
 plt.xlabel("$\mathcal{M}(\mathbf{X})$")
 plt.ylabel("Counts [-]")
 plt.gcf().set_dpi(150);
+```
+
+```{note}
+An `ProbInput` instance has a method called `reset_rng()`;
+You can call this method to create a new underlying RNG
+perhaps with a seed number.
+In that case, the seed number is optional; if not specified,
+the system entropy is used to initialized
+the [NumPy default random generator](https://numpy.org/doc/stable/reference/random/generator.html#numpy.random.default_rng).
+
+In UQTestFuns, each instance of probabilistic input model carries
+its own pseudo-random number generator (RNG)
+to avoid using the global NumPy random RNG.
+See this [blog post](https://albertcthomas.github.io/good-practices-random-number-generators/)
+regarding some good practices on using NumPy RNG.
 ```
 
 ## Transformation to the function domain
