@@ -21,6 +21,7 @@ in the comparison of metamodeling approaches.
 |:--------------------------------------------------------------:|:-----------------:|:--------------------:|
 |             {ref}`Ackley <test-functions:ackley>`              |         M         |      `Ackley()`      |
 |           {ref}`Borehole <test-functions:borehole>`            |         8         |     `Borehole()`     |
+|      {ref}`Damped Cosine <test-functions:damped-cosine>`       |         1         |   `DampedCosine()`   |
 |  {ref}`Damped Oscillator <test-functions:damped-oscillator>`   |         7         | `DampedOscillator()` |
 |              {ref}`Flood <test-functions:flood>`               |         8         |      `Flood()`       |
 |   {ref}`Forrester et al. (2008) <test-functions:forrester>`    |         1         |  `Forrester2008()`   |

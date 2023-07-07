@@ -81,7 +81,7 @@ $$
 \mathcal{M}(x) = \begin{cases}
 \sin{(\frac{\pi x}{5})} + \frac{1}{5} \cos{(\frac{4 \pi x}{5})}, & x \leq 9.6 \\
 \frac{1}{10} x - 1, & x > 9.6
-\end{cases}
+\end{cases},
 $$
 where $x$ is defined below.
 

@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The two-dimensional Quadratic RS problem for reliability analysis
   exercises from Waarts (2000). This is a variant of the classic RS 
   problem with one quadratic term.
+- The one-dimensional damped cosine function for metamodeling exercises
+  from an example in Santner et al. (2018).
 
 ### Changed
 

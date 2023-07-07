@@ -43,6 +43,8 @@ parts:
             title: Circular Pipe Crack
           - file: test-functions/convex-fail-domain
             title: Convex Failure Domain
+          - file: test-functions/damped-cosine
+            title: Damped Cosine
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
           - file: test-functions/damped-oscillator-reliability
