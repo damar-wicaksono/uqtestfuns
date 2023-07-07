@@ -14,8 +14,8 @@ authors:
     orcid: 'https://orcid.org/0000-0001-8587-7730'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.8109901
-    description: The Zenodo URL of version 0.3.0 of the package
+    value: 10.5281/zenodo.8125015
+    description: The Zenodo URL of version 0.4.0 of the package
 repository-code: 'https://github.com/damar-wicaksono/uqtestfuns'
 url: 'https://uqtestfuns.readthedocs.io/en/latest/'
 repository-artifact: 'https://pypi.org/project/uqtestfuns/'
@@ -23,17 +23,20 @@ abstract: >-
   UQTestFuns is an open-source Python3 library of test
   functions commonly used within the uncertainty
   quantification (UQ) community. The package aims to provide
-  a lightweight implementation (with minimal dependencies)
+  an implementation with minimal dependencies and a common interface
   of many test functions available in the UQ literature,
-  a single entry point (combining models and their
-  probabilistic input specification) to a wide range of test
-  functions, and an opportunity for an open-source contribution
-  where new test functions and reference results are posted.
+  a single entry point collecting test functions and their probabilistic
+  input specifications in a single Python package,
+  and an opportunity for an open-source contribution,
+  supporting the implementation of new test functions
+  or posting reference results.
 keywords:
   - uncertainty-quantification
   - test-functions
   - sensitivity-analysis
   - metamodeling
+  - reliability-analysis
+  - surrogate-modeling
 license: MIT
-version: 0.3.0
-date-released: '2023-07-03'
+version: 0.4.0
+date-released: '2023-07-07'

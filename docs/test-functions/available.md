@@ -15,8 +15,9 @@ kernelspec:
 (test-functions:available)=
 # All Available Functions
 
-The table below lists all the available _classic_ test functions from the literature
-available in the current UQTestFuns, regardless of their typical applications.
+The table below lists all the test functions available in UQTestFuns
+from the uncertainty quantification (UQ) literature,
+regardless of their typical applications.
 
 |                                        Name                                         | Spatial Dimension |           Constructor           |
 |:-----------------------------------------------------------------------------------:|:-----------------:|:-------------------------------:|
