@@ -52,6 +52,7 @@ available in the current UQTestFuns, regardless of their typical applications.
 |           {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`            |         1         |          `Oakley1D()`           |
 |                   {ref}`OTL Circuit <test-functions:otl-circuit>`                   |      6 / 20       |         `OTLCircuit()`          |
 |                  {ref}`Piston Simulation <test-functions:piston>`                   |      7 / 20       |           `Piston()`            |
+|                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |         2         |         `RSQuadratic()`         |
 |                      {ref}`Sobol'-G <test-functions:sobol-g>`                       |         M         |           `SobolG()`            |
 |           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |         5         |      `SpeedReducerShaft()`      |
 |                        {ref}`Sulfur <test-functions:sulfur>`                        |         9         |           `Sulfur()`            |

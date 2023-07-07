@@ -20,6 +20,7 @@ from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
 from .piston import Piston
+from .rs_quadratic import RSQuadratic
 from .sobol_g import SobolG
 from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
@@ -62,6 +63,7 @@ __all__ = [
     "McLainS4",
     "McLainS5",
     "Piston",
+    "RSQuadratic",
     "SobolG",
     "SpeedReducerShaft",
     "Sulfur",

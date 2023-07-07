@@ -26,6 +26,7 @@ in the comparison of reliability analysis methods.
 |                   {ref}`Four-branch <test-functions:four-branch>`                   |         2         |         `FourBranch()`          |
 |                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |         2         |          `GaytonHat()`          |
 |               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |         2         |         `HyperSphere()`         |
+|                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |         2         |         `RSQuadratic()`         |
 |           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |         5         |      `SpeedReducerShaft()`      |
 
 In a Python terminal, you can list all the available functions relevant
