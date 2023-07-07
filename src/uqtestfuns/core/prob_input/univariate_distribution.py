@@ -122,6 +122,19 @@ class UnivDist:
             xx, self.distribution, self.parameters, self.lower, self.upper
         )
 
+    def reset_rng(self, rng_seed: Optional[int]) -> None:
+        """Reset the random number generator.
+
+        Parameters
+        ----------
+        rng_seed : int, optional.
+            The seed used to initialize the pseudo-random number generator.
+            If not specified, the value is taken from the system entropy.
+        """
+        rng = np.random.default_rng(rng_seed)
+        object.__setattr__(self, "_rng", rng)
+        object.__setattr__(self, "rng_seed", rng_seed)
+
     def pdf(self, xx: Union[float, np.ndarray]) -> ARRAY_FLOAT:
         """Compute the PDF of the distribution on a set of values."""
         # TODO: check if you put a scalar inside
