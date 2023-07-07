@@ -37,7 +37,7 @@ def test_compute_mean(spatial_dimension, params_selection):
     assert my_fun.prob_input is not None
 
     # Compute mean via Monte Carlo
-    xx = my_fun.prob_input.get_sample(500000)
+    xx = my_fun.prob_input.get_sample(1000000)
     yy = my_fun(xx)
 
     mean_mc = np.mean(yy)
