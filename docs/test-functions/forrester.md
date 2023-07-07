@@ -76,7 +76,7 @@ print(my_testfun)
 The test function is analytically defined as follows:
 
 $$
-\mathcal{M}(x) = (6 x - 2)^2 \sin{(12 x - 4)}
+\mathcal{M}(x) = (6 x - 2)^2 \sin{(12 x - 4)},
 $$
 where $x$ is defined below.
 

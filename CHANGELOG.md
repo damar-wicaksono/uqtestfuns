@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The two-dimensional convex failure domain problem for reliability
+  analysis exercises from Borri and Speranzini (1997).
+- The two-dimensional Quadratic RS problem for reliability analysis
+  exercises from Waarts (2000). This is a variant of the classic RS 
+  problem with one quadratic term.
+- The one-dimensional damped cosine function for metamodeling exercises
+  from an example in Santner et al. (2018).
+- The two-dimensional circular bar RS problem for reliability analysis
+  exercises taken from an example in Verma et al. (2015).
+- New instance method for `UnivDist` and `ProbInput` classes
+  called `reset_rng()`. When called (optionally with a seed number),
+  a new instance of NumPy default RNG will be created and attached to the instance.
+- The two-dimensional polynomial function with random inputs
+  from Webster et al. (1996) for metamodeling exercises.
+
+### Changed
+
+- `rng_seed_prob_input` keyword parameter has been removed from the list
+  of parameters to the constructor of all UQ test functions.
+  The accepted way to reset an RNG with a seed is to use the instance
+  method `reset_rng()` (optionally with a seed number)
+  of the `ProbInput` instance attached.
+- Some background information in the documentation has been changed
+  to match the description in the JOSS paper draft.
+
+### Fixed
+
+- A mistake in one the parameter values of the Sobol'-G function has been fixed. 
+
 ## [0.3.0] - 2023-07-03
 
 ### Added

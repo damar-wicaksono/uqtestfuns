@@ -21,10 +21,13 @@ in the comparison of reliability analysis methods.
 |:-----------------------------------------------------------------------------------:|:-----------------:|:-------------------------------:|
 |           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |         2         |       `CantileverBeam2D `       |
 |           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |         2         |      `CircularPipeCrack()`      |
+|          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |         2         |      `ConvexFailDomain()`       |
 | {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |         8         | `DampedOscillatorReliability()` |
 |                   {ref}`Four-branch <test-functions:four-branch>`                   |         2         |         `FourBranch()`          |
 |                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |         2         |          `GaytonHat()`          |
 |               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |         2         |         `HyperSphere()`         |
+|              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |         2         |        `RSCircularBar()`        |
+|                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |         2         |         `RSQuadratic()`         |
 |           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |         5         |      `SpeedReducerShaft()`      |
 
 In a Python terminal, you can list all the available functions relevant
@@ -114,7 +117,8 @@ accurately with as few function/model evaluations as possible.
 import numpy as np
 import matplotlib.pyplot as plt
 
-my_fun = uqtf.CircularPipeCrack(rng_seed_prob_input=237324)
+my_fun = uqtf.CircularPipeCrack()
+my_fun.prob_input.reset_rng(237324)
 xx = my_fun.prob_input.get_sample(1000000)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0

@@ -28,6 +28,8 @@ available in the current UQTestFuns, regardless of their typical applications.
 |            {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`             |         M         |        `Bratley1992d()`         |
 |           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |         2         |       `CantileverBeam2D `       |
 |           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |         2         |      `CircularPipeCrack()`      |
+|          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |         2         |      `ConvexFailDomain()`       |
+|                 {ref}`Damped Cosine <test-functions:damped-cosine>`                 |         1         |        `DampedCosine()`         |
 |             {ref}`Damped Oscillator <test-functions:damped-oscillator>`             |         7         |      `DampedOscillator()`       |
 | {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |         8         | `DampedOscillatorReliability()` |
 |                         {ref}`Flood <test-functions:flood>`                         |         8         |            `Flood()`            |
@@ -51,9 +53,12 @@ available in the current UQTestFuns, regardless of their typical applications.
 |           {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`            |         1         |          `Oakley1D()`           |
 |                   {ref}`OTL Circuit <test-functions:otl-circuit>`                   |      6 / 20       |         `OTLCircuit()`          |
 |                  {ref}`Piston Simulation <test-functions:piston>`                   |      7 / 20       |           `Piston()`            |
+|              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |         2         |        `RSCircularBar()`        |
+|                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |         2         |         `RSQuadratic()`         |
 |                      {ref}`Sobol'-G <test-functions:sobol-g>`                       |         M         |           `SobolG()`            |
 |           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |         5         |      `SpeedReducerShaft()`      |
 |                        {ref}`Sulfur <test-functions:sulfur>`                        |         9         |           `Sulfur()`            |
+|             {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`             |         2         |          `Webster2D()`          |
 |                     {ref}`Welch1992 <test-functions:welch1992>`                     |        20         |          `Welch1992()`          |
 |                   {ref}`Wing Weight <test-functions:wing-weight>`                   |        10         |         `WingWeight()`          |
 

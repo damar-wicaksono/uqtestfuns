@@ -6,6 +6,8 @@ from .borehole import Borehole
 from .bratley1992 import Bratley1992a, Bratley1992b, Bratley1992c, Bratley1992d
 from .cantilever_beam_2d import CantileverBeam2D
 from .circular_pipe_crack import CircularPipeCrack
+from .convex_fail_domain import ConvexFailDomain
+from .damped_cosine import DampedCosine
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
 from .flood import Flood
 from .forrester import Forrester2008
@@ -19,9 +21,12 @@ from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
 from .piston import Piston
+from .rs_circular_bar import RSCircularBar
+from .rs_quadratic import RSQuadratic
 from .sobol_g import SobolG
 from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
+from .webster import Webster2D
 from .welch1992 import Welch1992
 from .wing_weight import WingWeight
 
@@ -37,6 +42,8 @@ __all__ = [
     "Bratley1992d",
     "CantileverBeam2D",
     "CircularPipeCrack",
+    "ConvexFailDomain",
+    "DampedCosine",
     "DampedOscillator",
     "DampedOscillatorReliability",
     "Flood",
@@ -60,9 +67,12 @@ __all__ = [
     "McLainS4",
     "McLainS5",
     "Piston",
+    "RSCircularBar",
+    "RSQuadratic",
     "SobolG",
     "SpeedReducerShaft",
     "Sulfur",
+    "Webster2D",
     "Welch1992",
     "WingWeight",
 ]

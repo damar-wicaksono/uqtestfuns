@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:cantilever-beam-2d)=
-# Two-dimensional (2D) Cantilever Beam Reliability Problem
+(test-functions:rs-circular-bar)=
+# Circular Bar RS Reliability Problem
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,11 +21,9 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-
-The 2D cantilever beam problem is a reliability test function from
-{cite}`Rajashekhar1993`.
-This is an often revisited problem in reliability analysis
-(see, for instance, {cite}`Li2018`).
+The circular bar RS reliability problem from {cite}`Verma2015` is a variation
+on a theme of the classic RS reliability problem. This particular variant
+put it in the context of a circular bar subjected to an axial force.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour
@@ -36,18 +34,17 @@ overlaid.
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_fun = uqtf.CantileverBeam2D()
+my_fun = uqtf.RSCircularBar()
 my_fun.prob_input.reset_rng(237324)
 xx = my_fun.prob_input.get_sample(1000000)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
 idx_pos = yy > 0.0
 
-# The plotting bounds are specifically chosen for the 2D cantilever beam
-lb_1 = 0.1
-ub_1 = np.max(xx[:, 0])
-lb_2 = 75
-ub_2 = np.max(xx[:, 1])
+lb_1 = my_fun.prob_input.marginals[0].lower
+ub_1 = my_fun.prob_input.marginals[0].upper
+lb_2 = my_fun.prob_input.marginals[1].lower
+ub_2 = my_fun.prob_input.marginals[1].upper
 
 # Create 2-dimensional grid
 xx_1 = np.linspace(lb_1, ub_1, 1000)[:, np.newaxis]
@@ -123,7 +120,7 @@ axs_2.set_xlabel("$x_1$", fontsize=18)
 axs_2.set_ylabel("$x_2$", fontsize=18)
 axs_2.tick_params(labelsize=16)
 axs_2.clabel(cf, inline=True, fontsize=18)
-axs_2.legend(fontsize=18, loc="upper right");
+axs_2.legend(fontsize=18, loc="lower right");
 
 fig.tight_layout(pad=4.0);
 plt.gcf().set_dpi(150);
@@ -134,7 +131,7 @@ plt.gcf().set_dpi(150);
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.CantileverBeam2D()
+my_testfun = uqtf.RSCircularBar()
 ```
 
 Check if it has been correctly instantiated:
@@ -145,52 +142,37 @@ print(my_testfun)
 
 ## Description
 
-The problem consists of a cantilever beam with a rectangular cross-section
-subjected to a uniformly distributed loading.
-The maximum deflection at the free end is taken to be the performance criterion
-and the performance function reads[^location]:
+The reliability problem consists of a carbon-steel circular bar subjected 
+to an axial force.
+The test function (i.e., the performance function) is analytically defined
+as follows[^location]:
 
 $$
-g(\boldsymbol{x}) = \frac{l}{325} - \frac{w b l^4}{8 E I},
+g(\boldsymbol{x}; p) = Y - \frac{F}{\frac{1}{4} \pi d^2},
 $$
 
-where $I$, the moment inertia of the cross-section, is given as follows:
-
-$$
-I = \frac{b h^3}{12}.
-$$
-
-By plugging in the above expression to the performance function, the following
-expression for the performance function is obtained:
-
-$$
-g(\boldsymbol{x}; \boldsymbol{p}) = \frac{l}{325} - \frac{12 l^4 w}{8 E h^3},
-$$
-
-where $\boldsymbol{x} = \{ w, h \}$ is the two-dimensional vector of
-input variables, namely the load per unit area and the depth of
-the cross-section.
-These inputs are probabilistically defined further below.
-
-The parameters of the test function $\boldsymbol{p} = \{ E, l \}$,
-namely the beam's modulus of elasticity ($E$)
-and the span of the beam ($l$) are set to
-$2.6 \times 10^{4} \; \mathrm{[MPa]}$ and $6.0 \; \mathrm{[m]}$, respectively.
+where $\boldsymbol{x} = \{ Y, F \}$ is the two-dimensional vector of
+input variables probabilistically defined further below;
+and $p = \{ d \}$ is the deterministic parameter of the function.
 
 The failure state and the failure probability are defined as
-$g(\boldsymbol{x}; \boldsymbol{p}) \leq 0$
-and $\mathbb{P}[g(\boldsymbol{X}; \boldsymbol{p}) \leq 0]$,
-respectively.
+$g(\boldsymbol{x}; p) \leq 0$
+and $\mathbb{P}[g(\boldsymbol{X}; p) \leq 0]$, respectively.
 
 ## Probabilistic input
 
-Based on {cite}`Rajashekhar1993`, the probabilistic input model for
+Based on {cite}`Verma2015`, the probabilistic input model for
 the test function consists of two independent standard normal random variables
 (see the table below).
 
 ```{code-cell} ipython3
 my_testfun.prob_input
 ```
+
+## Parameter
+
+The parameter of the function is $d$ which from {cite}`Verma2015` is set to
+$25\;\mathrm{[mm]}$.
 
 ## Reference results
 
@@ -261,27 +243,9 @@ plt.gcf().set_dpi(150);
 Some reference values for the failure probability $P_f$ from the literature
 are summarized in the table below.
 
-|    Method    |   $N$    |       $\hat{P}_f$        | $\mathrm{CoV}[\hat{P}_f]$ |         Source          | Remark                                  |
-|:------------:|:--------:|:------------------------:|:-------------------------:|:-----------------------:|-----------------------------------------|
-| {term}`MCS`  |  $10^6$  |  $9.594 \times 10^{-3}$  |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
-| {term}`FORM` |   $27$   |  $9.88 \times 10^{-3}$   |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
-| {term}`FORM` | &#8212;  | $9.9031 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| {term}`SORM` |   $32$   |  $9.88 \times 10^{-3}$   |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
-|  {term}`IS`  |  $10^3$  | $9.6071 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | Importance Sampling (IS)                |
-|  {term}`IS`  | $9'312$  |  $1.00 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | &#8212;                                 |
-|   IS + RS    | $2'192$  |  $9.00 \times 10^{-3}$   |          &#8212;          | {cite}`Schueremans2005` | IS + Response Surface (RS)              |
-|   IS + SP    |  $358$   |  $1.00 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | IS + Splines (SP)                       |
-|   IS + NN    |   $63$   |  $1.20 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | IS + Neural Networks (NN)               |
-|      DS      |  $551$   |  $1.000 \times 10^{-2}$  |          &#8212;          | {cite}`Schueremans2005` | Directional sampling (DS)               |
-|   DS + RS    |   $60$   |  $6.00 \times 10^{-3}$   |          &#8212;          | {cite}`Schueremans2005` | DS + Response Surface (RS)              |
-|   DS + SP    |   $57$   |  $7.00 \times 10^{-3}$   |          &#8212;          | {cite}`Schueremans2005` | DS + Splines (SP                        |
-|   DS + NN    |   $40$   |  $8.00 \times 10^{-3}$   |          &#8212;          | {cite}`Schueremans2005` | DS + Neural Networks (NN)               |
-|     SSRM     |   $18$   |  $9.499 \times 10^{-3}$  |          &#8212;          |     {cite}`Li2018`      | Sequential surrogate reliability method |
-|   Bucher's   | &#8212;  | $1.37538 \times 10^{-2}$ |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| Approach A-0 | &#8212;  | $9.5410 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| Approach A-1 | &#8212;  | $9.6398 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| Approach A-2 | &#8212;  | $1.11508 \times 10^{-2}$ |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| Approach A-3 | &#8212;  | $9.5410 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
+|    Method    |   $N$    |       $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |      Source       | Remark                   |
+|:------------:|:--------:|:-----------------------:|:-------------------------:|:-----------------:|--------------------------|
+| {term}`FOSM` |   $12$   | $9.4231 \times 10^{-5}$ |          &#8212;          | {cite}`Verma2015` | $\beta = 3.734$ (p. 261) |
 
 ## References
 
@@ -290,4 +254,4 @@ are summarized in the table below.
 :filter: docname in docnames
 ```
 
-[^location]: see Eq. (10), p. 213 in {cite}`Rajashekhar1993`.
+[^location]: see Example 1, Chapter 8, p. 260 in {cite}`Verma2015`.

@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:cantilever-beam-2d)=
-# Two-dimensional (2D) Cantilever Beam Reliability Problem
+(test-functions:rs-quadratic)=
+# Quadratic RS Reliability Problem
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,11 +21,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-
-The 2D cantilever beam problem is a reliability test function from
-{cite}`Rajashekhar1993`.
-This is an often revisited problem in reliability analysis
-(see, for instance, {cite}`Li2018`).
+The Quadratic RS reliability problem is a variant of the classic RS problem
+with one quadratic term {cite}`Waarts2000`.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour
@@ -36,18 +33,17 @@ overlaid.
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_fun = uqtf.CantileverBeam2D()
+my_fun = uqtf.RSQuadratic()
 my_fun.prob_input.reset_rng(237324)
 xx = my_fun.prob_input.get_sample(1000000)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
 idx_pos = yy > 0.0
 
-# The plotting bounds are specifically chosen for the 2D cantilever beam
-lb_1 = 0.1
-ub_1 = np.max(xx[:, 0])
-lb_2 = 75
-ub_2 = np.max(xx[:, 1])
+lb_1 = my_fun.prob_input.marginals[0].lower
+ub_1 = my_fun.prob_input.marginals[0].upper
+lb_2 = my_fun.prob_input.marginals[1].lower
+ub_2 = my_fun.prob_input.marginals[1].upper
 
 # Create 2-dimensional grid
 xx_1 = np.linspace(lb_1, ub_1, 1000)[:, np.newaxis]
@@ -123,7 +119,7 @@ axs_2.set_xlabel("$x_1$", fontsize=18)
 axs_2.set_ylabel("$x_2$", fontsize=18)
 axs_2.tick_params(labelsize=16)
 axs_2.clabel(cf, inline=True, fontsize=18)
-axs_2.legend(fontsize=18, loc="upper right");
+axs_2.legend(fontsize=18, loc="lower right");
 
 fig.tight_layout(pad=4.0);
 plt.gcf().set_dpi(150);
@@ -134,7 +130,7 @@ plt.gcf().set_dpi(150);
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.CantileverBeam2D()
+my_testfun = uqtf.RSQuadratic()
 ```
 
 Check if it has been correctly instantiated:
@@ -145,46 +141,23 @@ print(my_testfun)
 
 ## Description
 
-The problem consists of a cantilever beam with a rectangular cross-section
-subjected to a uniformly distributed loading.
-The maximum deflection at the free end is taken to be the performance criterion
-and the performance function reads[^location]:
+The test function (i.e., the performance function) is analytically defined
+as follows:
 
 $$
-g(\boldsymbol{x}) = \frac{l}{325} - \frac{w b l^4}{8 E I},
+g(\boldsymbol{x}) = x_1 - x_2^2,
 $$
 
-where $I$, the moment inertia of the cross-section, is given as follows:
-
-$$
-I = \frac{b h^3}{12}.
-$$
-
-By plugging in the above expression to the performance function, the following
-expression for the performance function is obtained:
-
-$$
-g(\boldsymbol{x}; \boldsymbol{p}) = \frac{l}{325} - \frac{12 l^4 w}{8 E h^3},
-$$
-
-where $\boldsymbol{x} = \{ w, h \}$ is the two-dimensional vector of
-input variables, namely the load per unit area and the depth of
-the cross-section.
-These inputs are probabilistically defined further below.
-
-The parameters of the test function $\boldsymbol{p} = \{ E, l \}$,
-namely the beam's modulus of elasticity ($E$)
-and the span of the beam ($l$) are set to
-$2.6 \times 10^{4} \; \mathrm{[MPa]}$ and $6.0 \; \mathrm{[m]}$, respectively.
+where $\boldsymbol{x} = \{ x_1, x_2 \}$ is the two-dimensional vector of
+input variables probabilistically defined further below.
 
 The failure state and the failure probability are defined as
-$g(\boldsymbol{x}; \boldsymbol{p}) \leq 0$
-and $\mathbb{P}[g(\boldsymbol{X}; \boldsymbol{p}) \leq 0]$,
-respectively.
+$g(\boldsymbol{x}) \leq 0$
+and $\mathbb{P}[g(\boldsymbol{X}) \leq 0]$, respectively.
 
 ## Probabilistic input
 
-Based on {cite}`Rajashekhar1993`, the probabilistic input model for
+Based on {cite}`Waarts2000`, the probabilistic input model for
 the test function consists of two independent standard normal random variables
 (see the table below).
 
@@ -261,27 +234,10 @@ plt.gcf().set_dpi(150);
 Some reference values for the failure probability $P_f$ from the literature
 are summarized in the table below.
 
-|    Method    |   $N$    |       $\hat{P}_f$        | $\mathrm{CoV}[\hat{P}_f]$ |         Source          | Remark                                  |
-|:------------:|:--------:|:------------------------:|:-------------------------:|:-----------------------:|-----------------------------------------|
-| {term}`MCS`  |  $10^6$  |  $9.594 \times 10^{-3}$  |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
-| {term}`FORM` |   $27$   |  $9.88 \times 10^{-3}$   |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
-| {term}`FORM` | &#8212;  | $9.9031 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| {term}`SORM` |   $32$   |  $9.88 \times 10^{-3}$   |          &#8212;          |     {cite}`Li2018`      | &#8212;                                 |
-|  {term}`IS`  |  $10^3$  | $9.6071 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | Importance Sampling (IS)                |
-|  {term}`IS`  | $9'312$  |  $1.00 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | &#8212;                                 |
-|   IS + RS    | $2'192$  |  $9.00 \times 10^{-3}$   |          &#8212;          | {cite}`Schueremans2005` | IS + Response Surface (RS)              |
-|   IS + SP    |  $358$   |  $1.00 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | IS + Splines (SP)                       |
-|   IS + NN    |   $63$   |  $1.20 \times 10^{-2}$   |          &#8212;          | {cite}`Schueremans2005` | IS + Neural Networks (NN)               |
-|      DS      |  $551$   |  $1.000 \times 10^{-2}$  |          &#8212;          | {cite}`Schueremans2005` | Directional sampling (DS)               |
-|   DS + RS    |   $60$   |  $6.00 \times 10^{-3}$   |          &#8212;          | {cite}`Schueremans2005` | DS + Response Surface (RS)              |
-|   DS + SP    |   $57$   |  $7.00 \times 10^{-3}$   |          &#8212;          | {cite}`Schueremans2005` | DS + Splines (SP                        |
-|   DS + NN    |   $40$   |  $8.00 \times 10^{-3}$   |          &#8212;          | {cite}`Schueremans2005` | DS + Neural Networks (NN)               |
-|     SSRM     |   $18$   |  $9.499 \times 10^{-3}$  |          &#8212;          |     {cite}`Li2018`      | Sequential surrogate reliability method |
-|   Bucher's   | &#8212;  | $1.37538 \times 10^{-2}$ |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| Approach A-0 | &#8212;  | $9.5410 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| Approach A-1 | &#8212;  | $9.6398 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| Approach A-2 | &#8212;  | $1.11508 \times 10^{-2}$ |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
-| Approach A-3 | &#8212;  | $9.5410 \times 10^{-3}$  |          &#8212;          | {cite}`Rajashekhar1993` | &#8212;                                 |
+|    Method    |   $N$    |       $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |       Source       | Remark                   |
+|:------------:|:--------:|:-----------------------:|:-------------------------:|:------------------:|--------------------------|
+|    Exact     | &#8212;  | $2.7009 \times 10^{-4}$ |          &#8212;          | {cite}`Waarts2000` | Annex E.3 Table: Results |
+| {term}`FORM` |   $12$   | $2.6023 \times 10^{-4}$ |          &#8212;          | {cite}`Waarts2000` | Annex E.3 Table: Results |
 
 ## References
 
@@ -290,4 +246,4 @@ are summarized in the table below.
 :filter: docname in docnames
 ```
 
-[^location]: see Eq. (10), p. 213 in {cite}`Rajashekhar1993`.
+[^location]: see Annex E.3, p.151 in {cite}`Waarts2000`.

@@ -41,6 +41,10 @@ parts:
             title: Cantilever Beam (2D)
           - file: test-functions/circular-pipe-crack
             title: Circular Pipe Crack
+          - file: test-functions/convex-fail-domain
+            title: Convex Failure Domain
+          - file: test-functions/damped-cosine
+            title: Damped Cosine
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
           - file: test-functions/damped-oscillator-reliability
@@ -87,12 +91,18 @@ parts:
             title: OTL Circuit
           - file: test-functions/piston
             title: Piston Simulation
+          - file: test-functions/rs-circular-bar
+            title: RS - Circular Bar
+          - file: test-functions/rs-quadratic
+            title: RS - Quadratic
           - file: test-functions/sobol-g
             title: Sobol'-G
           - file: test-functions/speed-reducer-shaft
             title: Speed Reducer Shaft
           - file: test-functions/sulfur
             title: Sulfur
+          - file: test-functions/webster-2d
+            title: Webster et al. (1996) 2D
           - file: test-functions/welch1992
             title: Welch et al. (1992)
           - file: test-functions/wing-weight
