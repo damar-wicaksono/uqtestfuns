@@ -169,7 +169,8 @@ def test_transform_input(builtin_testfun):
     rng_seed = 32
 
     # Create an instance
-    my_fun = testfun(rng_seed_prob_input=rng_seed)
+    my_fun = testfun()
+    my_fun.prob_input.reset_rng(rng_seed)
 
     sample_size = 100
 
@@ -192,7 +193,8 @@ def test_transform_input_non_default(builtin_testfun):
     rng_seed = 1232
 
     # Create an instance
-    my_fun = testfun(rng_seed_prob_input=rng_seed)
+    my_fun = testfun()
+    my_fun.prob_input.reset_rng(rng_seed)
 
     sample_size = 100
 
