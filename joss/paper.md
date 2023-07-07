@@ -155,8 +155,9 @@ There are, however, some major differences:
 - One of the `otbenchmark`'s main aims is to provide the OpenTURNS development
   team with a tool for helping with the implementation of new algorithms.
   As such, it is built on top of and coupled to OpenTURNS.
-  `UQTestFuns`, on the other hand, has fewer dependencies and is more lean 
-  in its implementations.
+  `UQTestFuns`, on the other hand, has fewer dependencies and is leaner 
+  in its implementations;
+  it is more agnostic with respect to any particular UQ analysis package.
 - `UQTestFuns` is more modest in its scope, that is, simply to provide
   a library of UQ test functions implemented in Python
   with a consistent interface and an online reference
