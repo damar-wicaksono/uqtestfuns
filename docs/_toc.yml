@@ -8,6 +8,8 @@ parts:
     chapters:
       - file: getting-started/obtaining-and-installing
       - file: getting-started/creating-a-built-in
+      - file: getting-started/tutorial-sensitivity
+      - file: getting-started/tutorial-reliability
       - file: getting-started/creating-a-custom
       - file: getting-started/about-uq-test-functions
   - caption: Test Functions
