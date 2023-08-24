@@ -17,22 +17,15 @@ Specifically, the package provides:
 :::{grid-item-card} Getting Started
 :text-align: center
 New to, but ready to use, UQTestFuns?
-You can check out the guide on how to create a built-in test function
-or a custom one.
+You can check out the tutorials!
 Need some background info first?
 Check out the what & why of these test functions.
 +++
-```{button-ref} getting-started:creating-a-built-in
+```{button-ref} getting-started:tutorials
 :ref-type: myst
 :color: primary
 :outline:
-How to create a built-in test function
-```
-```{button-ref} getting-started:creating-a-custom
-:ref-type: myst
-:color: primary
-:outline:
-How to create a custom test function
+To the UQTestFuns Tutorials
 ```
 ```{button-ref} getting-started:about-uq-test-functions
 :ref-type: myst

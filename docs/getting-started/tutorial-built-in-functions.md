@@ -12,10 +12,18 @@ kernelspec:
   name: python3
 ---
 
-(getting-started:creating-a-built-in)=
-# Creating a Built-in Test Function
+(getting-started:tutorial-built-in-functions)=
+# Tutorial: Create Built-in Test Functions
 
-_Built-in test functions_ are test functions that are delivered with UQTestFuns.
+UQTestFuns includes a wide range of test functions from the uncertainty
+quantification community; these functions are referred to
+as the _built-in test functions_.
+This tutorial provides you with an overview of the package;
+you'll learn about the built-in test functions, their common interfaces,
+as well as their important properties and methods.
+
+By the end of this tutorial, you'll be able to create any test function
+available in UQTestFuns and access its basic but important functionalities.
 
 UQTestFuns is designed to work with minimal dependency within the numerical
 Python ecosystem.
@@ -43,8 +51,8 @@ as well as a short description.
 
 ## A Callable instance
 
-Take, for instance, the {ref}`borehole <test-functions:borehole>` function,
-an eight-dimensional test function typically used
+Take, for instance, the {ref}`borehole <test-functions:borehole>` function
+{cite}`Harper1983`, an eight-dimensional test function typically used
 in the context of metamodeling and sensitivity analysis.
 To instantiate a borehole test function, call the constructor as follows:
 
@@ -228,7 +236,7 @@ In principle, these parameter values can be anything:
 numerical values, flags, selection using strings, etc.
 
 For instance, consider the {ref}`Ishigami <test-functions:ishigami>` function
-defined as follows:
+{cite}`Ishigami1991` defined as follows:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \sin{(x_1)} + a \sin^2{(x_2)} + b x_3^4 \sin{(x_1)}
@@ -289,7 +297,8 @@ Some test functions support a _variable dimension_, meaning that an instance
 of a test function can be constructed for any number (positive integer, please) 
 of spatial dimension.
 
-Consider, for instance, the {ref}`Sobol'-G <test-functions:sobol-g>` function,
+Consider, for instance, the {ref}`Sobol'-G <test-functions:sobol-g>` function
+{cite}`Saltelli1995`,
 a test function whose dimension can be varied
 and a popular choice in the context of sensitivity analysis.
 It is defined as follows:
@@ -302,11 +311,10 @@ of input variables,
 and $\boldsymbol{a} = \{ a_1, \ldots, a_M \}$ are parameters of the function.
 
 To create a six-dimensional Sobol'-G function,
-use the parameter `spatial_dimension`
-(or the first positional parameter) to specify the desired dimensionality:
+use the parameter `spatial_dimension` to specify the desired dimensionality:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolG(spatial_dimension=6)  # Alternatively, uqtf.SobolG(6)
+my_testfun = uqtf.SobolG(spatial_dimension=6)
 ```
 
 Verify that the function is indeed a six-dimension one:
@@ -321,8 +329,9 @@ and:
 print(my_testfun.prob_input)
 ```
 
-```{note}
-Only test functions that support variable dimensions can accept `spatial_dimension`
-argument. Such functions are indicated with `M` as its spatial dimension
-in the list produced by `uqtf.list_functions()`.
+## References
+
+```{bibliography}
+:style: unsrtalpha
+:filter: docname in docnames
 ```
