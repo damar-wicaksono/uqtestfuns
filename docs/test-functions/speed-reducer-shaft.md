@@ -103,8 +103,7 @@ plt.gcf().set_dpi(150);
 ### Failure probability
 
 Some reference values for the failure probability $P_f$ and from the literature
-are summarized in the table below ($\mu_{F_s}$ is the log-normal distribution
-mean of $F_s$).
+are summarized in the table below.
 
 |    Method     |   $N$   |       $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |           Source           |
 |:-------------:|:-------:|:-----------------------:|:-------------------------:|:--------------------------:|

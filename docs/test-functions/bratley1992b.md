@@ -135,7 +135,7 @@ my_testfun = uqtf.Bratley1992b(spatial_dimension=10)
 The `Bratley1992b` function is defined as follows[^location]:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^{M} m \cos{(m x)},
+\mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^{M} m \cos{(m x_m)},
 $$
 
 where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$
