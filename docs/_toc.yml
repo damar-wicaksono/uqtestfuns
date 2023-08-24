@@ -7,10 +7,16 @@ parts:
   - caption: Getting Started
     chapters:
       - file: getting-started/obtaining-and-installing
-      - file: getting-started/creating-a-built-in
-      - file: getting-started/tutorial-sensitivity
-      - file: getting-started/tutorial-reliability
-      - file: getting-started/creating-a-custom
+      - file: getting-started/tutorials
+        sections:
+          - file: getting-started/tutorial-built-in-functions
+            title: Built-in Test Functions
+          - file: getting-started/tutorial-sensitivity
+            title: Sensitivity Analysis
+          - file: getting-started/tutorial-reliability
+            title: Reliability Analysis
+          - file: getting-started/tutorial-custom-functions
+            title: Custom Test Functions
       - file: getting-started/about-uq-test-functions
   - caption: Test Functions
     chapters:

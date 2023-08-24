@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (getting-started:tutorial-reliability)=
-# Tutorial: Reliability Analysis
+# Tutorial: Test a Reliability Analysis Method
 
 UQTestFuns includes several test functions from the literature employed
 in a reliability analysis exercise.

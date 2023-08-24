@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (getting-started:tutorial-sensitivity)=
-# Tutorial: Sensitivity Analysis
+# Tutorial: Test a Sensitivity Analysis Method
 
 UQTestFuns includes a wide range of test functions from the literature
 employed in a sensitivity analysis exercise.
@@ -403,7 +403,9 @@ Compute the analytical values for the given parameters:
 first_order_ref, total_effect_ref = compute_sobol_indices(*ishigami.parameters)
 ```
 
-The estimated indices as a function of sample size is plotted below.
+The estimated indices as a function of sample size is plotted below;
+the estimated values are in solid lines while the analytical values are in
+dashed lines.
 
 ```{code-cell} ipython3
 :tags: [hide-input]

@@ -215,6 +215,8 @@ Specifically, none of them provides:
 Satisfying all the above requirements is exactly the goal
 of the UQTestFuns package.
 
+## References
+
 ```{bibliography}
 :style: unsrtalpha
 :filter: docname in docnames
