@@ -2,7 +2,8 @@
 # Adding a New Test Function Implementation
 
 In this guide, we will explain how to implement a new UQ test function into the UQTestFuns code base.
-A test function may be added on runtime using the ``UQTestFun`` class as illustrated {ref}`here <getting-started:creating-a-custom>`.
+A test function may be added on runtime using the ``UQTestFun`` class
+as illustrated {ref}`here <getting-started:tutorial-custom-functions>`.
 However, adding the test function directly to the code base is advantageous
 that it becomes exposed to the high-level convenient functionalities
 (such as `list_functions()`).
