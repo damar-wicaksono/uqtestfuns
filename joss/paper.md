@@ -342,7 +342,13 @@ to update the documentation are also available.
 The package documentation is available
 on the `UQTestFuns` [readthedocs](https://uqtestfuns.readthedocs.io).
 
-# Acknowledgements
+# Authors contribution statement and acknowledgments
+
+The contributions to this paper are listed according to the CRediT
+(Contributor Roles Taxonomy). **Damar Wicaksono**: Conceptualization,
+methodology, software, validation, writing - original draft. 
+**Michael Hecht**: Conceptualization, writing - review and editing,
+project administration, and funding acquisition.
 
 This work was partly funded by the Center for Advanced Systems Understanding
 (CASUS) that is financed by Germany's Federal Ministry of Education
