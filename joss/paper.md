@@ -346,7 +346,7 @@ on the `UQTestFuns` [readthedocs](https://uqtestfuns.readthedocs.io).
 
 The contributions to this paper are listed according to the CRediT
 (Contributor Roles Taxonomy). **Damar Wicaksono**: Conceptualization,
-methodology, software, validation, writing - original draft. 
+methodology, software, validation, and writing - original draft. 
 **Michael Hecht**: Conceptualization, writing - review and editing,
 project administration, and funding acquisition.
 
