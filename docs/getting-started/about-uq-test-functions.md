@@ -1,8 +1,11 @@
 (getting-started:about-uq-test-functions)=
 # About UQ Test Functions
 
-If you're interested in some background information about the what and why of uncertainty quantification (UQ) test functions,
-their role within UQ analysis methods development, and how to usually get them, read on.
+This page provides some background information about the what and why
+of uncertainty quantification (UQ) test functions,
+their role within UQ analysis methods development,
+how to usually get them,
+as well as the motivation behind UQTestFuns.
 
 ## What are UQ test functions
 
@@ -212,8 +215,14 @@ Specifically, none of them provides:
 - an _opportunity for an open-source contribution_, supporting
   the implementation of new test functions or posting reference results.
 
-Satisfying all the above requirements is exactly the goal
+Satisfying all the above requirements is exactly the goal 
 of the UQTestFuns package.
+In essence, UQTestFuns aims to save the researchers' and developers' time 
+from having to reimplement many of the commonly used test functions from the
+UQ literature themselves.
+The available functions in UQTestFuns are ready to use
+for testing and benchmarking purposes.
+
 
 ## References
 

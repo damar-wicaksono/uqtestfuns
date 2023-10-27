@@ -11,6 +11,12 @@ Specifically, the package provides:
 - an _opportunity for an open-source contribution_, supporting
   the implementation of new test functions or posting reference results.
 
+UQTestFuns aims to save the researchers' and developers' time from having to
+reimplement many of the commonly used test functions (and the corresponding
+probabilistic input specifications) from the UQ literature themselves.
+More background information regarding UQ test functions and UQTestFuns
+can be found {ref}`here <getting-started:about-uq-test-functions>`.
+
 ::::{grid}
 :gutter: 2
 
@@ -31,15 +37,15 @@ To the UQTestFuns Tutorials
 :ref-type: myst
 :color: primary
 :outline:
-The what & why of UQ test functions
+About UQ Test Functions
 ```
 :::
 
 :::{grid-item-card} User Guide
 :text-align: center
 
-Be sure to browse through all the available test functions in UQTestFuns;
-they are also crudely classified into their usage in typical UQ analyses.
+Browse through all the available test functions in UQTestFuns;
+they are crudely classified into their usage in typical UQ analyses.
 Need a reference on how to define a probabilistic input model,
 there's a dedicated section on that!
 +++

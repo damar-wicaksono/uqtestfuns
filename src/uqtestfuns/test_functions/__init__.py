@@ -17,6 +17,7 @@ from .gayton_hat import GaytonHat
 from .gramacy2007 import Gramacy1DSine
 from .hyper_sphere import HyperSphere
 from .ishigami import Ishigami
+from .alemazkoor import Alemazkoor2D
 from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
@@ -35,6 +36,7 @@ from .wing_weight import WingWeight
 
 __all__ = [
     "Ackley",
+    "Alemazkoor2D",
     "Borehole",
     "Bratley1992a",
     "Bratley1992b",

@@ -45,7 +45,16 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
 
     Parameters
     ----------
+    xx : np.ndarray
+        One-dimensional input values given by an N-by-1 array
+        where N is the number of input values.
 
+    Returns
+    -------
+    np.ndarray
+        The output of the 1D Forrester et al. (2008) function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
     """
     yy = (6 * xx[:, 0] - 2) ** 2 * np.sin(12 * xx[:, 0] - 4)
 
