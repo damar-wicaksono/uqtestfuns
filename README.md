@@ -1,5 +1,5 @@
 # UQTestFuns
-[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.8125015-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.8125015)
+[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.10047512-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.10047512)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
@@ -33,16 +33,17 @@ To list the available functions:
 ```python-repl
 >>> import uqtestfuns as uqtf
 >>> uqtf.list_functions()
-No.            Constructor            Dimension                Application                Description
+ No.            Constructor            Dimension                Application                Description
 -----  -----------------------------  -----------  --------------------------------------  ----------------------------------------------------------------------------
   1              Ackley()                  M             optimization, metamodeling        Optimization test function from Ackley (1987)
-  2             Borehole()                 8             metamodeling, sensitivity         Borehole function from Harper and Gupta (1983)
-  3           Bratley1992a()               M              integration, sensitivity         Integration test function #1 from Bratley et al. (1992)
-  4           Bratley1992b()               M              integration, sensitivity         Integration test function #2 from Bratley et al. (1992)
-  5           Bratley1992c()               M              integration, sensitivity         Integration test function #3 from Bratley et al. (1992)
-  6           Bratley1992d()               M              integration, sensitivity         Integration test function #4 from Bratley et al. (1992)
-  7         CantileverBeam2D()             2                    reliability                Cantilever beam reliability problem from Rajashekhar and Ellington (1993)
-  8         CircularPipeCrack()            2                    reliability                Circular pipe under bending moment from Verma et al. (2015)
+  2           Alemazkoor2D()               2                    metamodeling               Two-dimensional high-degree polynomial from Alemazkoor & Meidani (2018)
+  3             Borehole()                 8             metamodeling, sensitivity         Borehole function from Harper and Gupta (1983)
+  4           Bratley1992a()               M              integration, sensitivity         Integration test function #1 from Bratley et al. (1992)
+  5           Bratley1992b()               M              integration, sensitivity         Integration test function #2 from Bratley et al. (1992)
+  6           Bratley1992c()               M              integration, sensitivity         Integration test function #3 from Bratley et al. (1992)
+  7           Bratley1992d()               M              integration, sensitivity         Integration test function #4 from Bratley et al. (1992)
+  8         CantileverBeam2D()             2                    reliability                Cantilever beam reliability problem from Rajashekhar and Ellington (1993)
+  9         CircularPipeCrack()            2                    reliability                Circular pipe under bending moment from Verma et al. (2015)
 ...
 ```
 
@@ -158,9 +159,8 @@ UQTestFuns is currently maintained by:
 
 - Damar Wicaksono ([HZDR/CASUS](https://www.casus.science/))
 
-with scientific supervision from:
-
-- Michael Hecht ([HZDR/CASUS](https://www.casus.science/))
+under the Mathematical Foundations of Complex System Science Group
+led by Michael Hecht ([HZDR/CASUS](https://www.casus.science/)) at CASUS.
 
 ## License
 

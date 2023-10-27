@@ -25,7 +25,7 @@ __all__ = ["Alemazkoor2D"]
 
 AVAILABLE_INPUT_SPECS_2D = {
     "Alemazkoor2018": ProbInputSpecFixDim(
-        name="Alemazkoor2018",
+        name="2D-Alemazkoor2018",
         description=(
             "Input specification for the 2D test function "
             "from Alemazkoor & Meidani (2018)"

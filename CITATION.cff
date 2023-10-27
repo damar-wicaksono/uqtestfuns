@@ -14,8 +14,8 @@ authors:
     orcid: 'https://orcid.org/0000-0001-8587-7730'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.8125015
-    description: The Zenodo URL of version 0.4.0 of the package
+    value: 10.5281/zenodo.10047512
+    description: The Zenodo URL of version 0.4.1 of the package
 repository-code: 'https://github.com/damar-wicaksono/uqtestfuns'
 url: 'https://uqtestfuns.readthedocs.io/en/latest/'
 repository-artifact: 'https://pypi.org/project/uqtestfuns/'
@@ -38,5 +38,5 @@ keywords:
   - reliability-analysis
   - surrogate-modeling
 license: MIT
-version: 0.4.0
-date-released: '2023-07-07'
+version: 0.4.1
+date-released: '2023-10-27'
