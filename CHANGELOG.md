@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The two-dimensional polynomial function of high-degree for metamodeling
+  exercises from Alemazkoor and Meidani (2008).
+
 ## [0.4.0] - 2023-07-07
 
 ### Added
