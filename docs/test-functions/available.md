@@ -22,6 +22,7 @@ regardless of their typical applications.
 |                                        Name                                         | Spatial Dimension |           Constructor           |
 |:-----------------------------------------------------------------------------------:|:-----------------:|:-------------------------------:|
 |                        {ref}`Ackley <test-functions:ackley>`                        |         M         |           `Ackley()`            |
+|          {ref}`Low-Dimensional High-Degree <test-functions:alemazkoor-2d>`          |         2         |        `Alemazkoor2D()`         |
 |                      {ref}`Borehole <test-functions:borehole>`                      |         8         |          `Borehole()`           |
 |            {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`             |         M         |        `Bratley1992a()`         |
 |            {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`             |         M         |        `Bratley1992b()`         |

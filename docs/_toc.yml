@@ -35,6 +35,8 @@ parts:
         sections:
           - file: test-functions/ackley
             title: Ackley
+          - file: test-functions/alemazkoor-2d
+            title: Alemazkoor & Meidani (2018) 2D
           - file: test-functions/borehole
             title: Borehole
           - file: test-functions/bratley1992a
