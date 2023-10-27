@@ -12,6 +12,10 @@ authors:
     family-names: Wicaksono
     affiliation: CASUS/HZDR
     orcid: 'https://orcid.org/0000-0001-8587-7730'
+  - given-names: Michael
+    family-names: Hecht
+    affiliation: CASUS/HZDR
+    orcid: 'https://orcid.org/0000-0001-9214-8253'
 identifiers:
   - type: doi
     value: 10.5281/zenodo.10047512
