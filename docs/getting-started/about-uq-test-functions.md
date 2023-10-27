@@ -1,8 +1,11 @@
 (getting-started:about-uq-test-functions)=
 # About UQ Test Functions
 
-If you're interested in some background information about the what and why of uncertainty quantification (UQ) test functions,
-their role within UQ analysis methods development, and how to usually get them, read on.
+This page provides some background information about the what and why
+of uncertainty quantification (UQ) test functions,
+their role within UQ analysis methods development,
+how to usually get them,
+as well as the motivation behind UQTestFuns.
 
 ## What are UQ test functions
 
@@ -62,7 +65,7 @@ Granted, this model is an oversimplification of the real situation and most prob
 But as far as a test function goes, this function exhibits some challenging features for a UQ analysis method.
 Specifically, the function:
 
-- is multidimensional
+- is multi-dimensional
 - contains non-uniform random variables
 - involves some interaction terms between the input variables
 
@@ -76,24 +79,25 @@ science and engineering encompasses many activities,
 including uncertainty propagation, sensitivity analysis, reliability analysis,
 optimization, etc.
 New methods for each of the UQ analyses are continuously being developed.
-Although such a method is eventually aimed at solving
-real-world problems&mdash;typically involved a complex expensive-to-evaluate computational model&mdash;,
-during the development phase,
-developers prefer to use the so-called _test functions_
-for validation and benchmarking purposes because:
+Although such a method is eventually aimed at addressing
+real-world problems&mdash;typically involved a complex expensive-to-evaluate computational model&mdash;
+researchers and developers may prefer to use the so-called _test functions_
+during the development phase for validation and benchmarking purposes.
 
 ```{margin}
 Many UQ test functions have analytical forms, but this is not in any way a requirement
 ```
 
-- test functions are _fast to evaluate_, at least, _faster_ than the real ones
-- there are _many of them available_ in the literature
-  for various types of analyses
-- while a UQ analysis usually takes the computational model of interest as a blackbox,
-  the _test functions are known_
-  (and for some, the results are also analytically known)
-  such that developers can do proper diagnostics based on particular structures 
-  of the function
+In particular, UQ test functions are widely used in the community for several
+reasons:
+
+- Test functions are _fast to evaluate_, at least, _faster_ than the real ones.
+- There are _many of them available_ in the literature
+  for various types of analyses.
+- Although test functions are taken as black boxes, _their features are known_;
+  this enables a thorough diagnosis of a UQ method.
+- Test functions provide _a common ground_ for comparing the performance of
+  various UQ methods in solving the same class of problems.
 
 Assuming that real models are expensive to evaluate,
 the cost of analysis is typically measured in the number of function evaluations
@@ -107,7 +111,7 @@ Online resources to get UQ test functions
 
 Several online resources provide a wide range of test functions relevant
 to the applied UQ community.
-For example:
+For example and by no means an exhaustive list:
 
 - The [Virtual Library of Simulation Experiments: Test Functions and Datasets](https://www.sfu.ca/~ssurjano/index.html)
   is the definitive repository for UQ test functions.
@@ -122,10 +126,14 @@ For example:
   Although the implementations themselves are of generic MATLAB,
   they are geared towards usage in [UQLab](https://uqlab.com)
   (a framework for UQ in MATLAB).
+- [RPrepo](https://gitlab.com/rozsasarpi/rprepo)&mdash;a reliability problems: This
+  repository contains numerous reliability analysis test functions implemented
+  in Python. It is not, however, a stand-alone Python package.
 
 Common to all these online resources are the requirement to either:
 
-- implement the test function oneself following the specification, or
+- implement the test function oneself following the specification
+  in the programming language of choice, or
 - when available, download each of the test functions separately.
 
 Both are neither time-efficient nor convenient.
@@ -137,9 +145,11 @@ Alternative sources of UQ test functions: test functions inside an analysis pack
 Alternatively, in a given programming language,
 some UQ analysis packages are often shipped with a selection of test functions
 either for illustration, validation, or benchmarking.
-Some examples within the Python UQ community are
-(the data below is as of 2023-02-28):
+Some examples from the applied UQ community in the Python ecosystem are
+(the data below is as of 2023-06-30):
 
+- [SALib](https://github.com/SALib/SALib) includes six test functions mainly
+  for illustrating the package capabilities in the examples {cite}`Herman2017`.
 - [UncertainPy](https://github.com/simetenn/uncertainpy)
   includes 8 test functions (mainly in the context of neuroscience)
   for illustrating the package capabilities {cite}`Tennoee2018`.
@@ -198,20 +208,25 @@ We think "yes"
 And yet, we think none of them is satisfactory.
 Specifically, none of them provides:
 
-- _a lightweight implementation_ (with minimal dependencies)
-  of many test functions available in the UQ literature;
-  this means our package will be free of any implementations
-  of any UQ analysis methods resulting in a minimal overhead
-  in setting up the test functions,
-- _a single entry point_ (combining models and input specification)
-  to a wide range of test functions,
-- an opportunity for an _open-source contribution_ where new test functions are
-  added and new reference results are posted.
+- an implementation _with minimal dependencies_ (i.e., NumPy and SciPy) and
+  _a common interface_ of many test functions available in the UQ literature
+- a _single entry point_ collecting test functions _and_ their probabilistic
+  input specifications in a single Python package
+- an _opportunity for an open-source contribution_, supporting
+  the implementation of new test functions or posting reference results.
 
-Satisfying all the above requirements is exactly the goal
+Satisfying all the above requirements is exactly the goal 
 of the UQTestFuns package.
+In essence, UQTestFuns aims to save the researchers' and developers' time 
+from having to reimplement many of the commonly used test functions from the
+UQ literature themselves.
+The available functions in UQTestFuns are ready to use
+for testing and benchmarking purposes.
+
+
+## References
 
 ```{bibliography}
-:style: plain
+:style: unsrtalpha
 :filter: docname in docnames
 ```

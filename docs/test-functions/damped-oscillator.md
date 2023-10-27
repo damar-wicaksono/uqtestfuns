@@ -26,10 +26,10 @@ The model was first proposed in {cite}`Igusa1985` and used in the context of
 reliability analysis in {cite}`DerKiureghian1991, Dubourg2011`.
 
 ```{note}
-The reliability analysis variant differs from this base model.
-Used in the context of reliability analysis, the model also includes additional
-parameters to a capacity factor and load such that the performance function can
-be computed.
+The {ref}`reliability analysis variant <test-functions:damped-oscillator-reliability>`
+differs from this base model. Used in the context of reliability analysis,
+the model also includes additional parameters of a capacity factor and
+load such that the performance function can be computed.
 This base model only computes the relative displacement of the spring.
 ```
 
@@ -54,10 +54,10 @@ primary-secondary mechanical system characterized by two masses,
 two springs, and the corresponding damping ratios.
 Originally, the model computes the mean-square relative displacement of
 the secondary spring under a white noise base acceleration using
-the following analytical formula:
+the following analytical formula[^location]:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = k_s \left( \pi \frac{S_0}{4 \zeta_s \omega_s^3} \frac{\zeta_a \zeta_s}{\zeta_p \zeta_s (4 \zeta_a^2 + \theta^2) + \gamma \zeta_a^2} \frac{(\zeta_p \omega_p^3 + \zeta_s \omega_s^3) \omega_p}{4 \zeta_a \omega_a^4} \right)^{0.5}
+\mathcal{M}(\boldsymbol{x}) = \left( \pi \frac{S_0}{4 \zeta_s \omega_s^3} \frac{\zeta_a \zeta_s}{\zeta_p \zeta_s (4 \zeta_a^2 + \theta^2) + \gamma \zeta_a^2} \frac{(\zeta_p \omega_p^3 + \zeta_s \omega_s^3) \omega_p}{4 \zeta_a \omega_a^4} \right)^{0.5}
 $$
 
 $$
@@ -221,6 +221,8 @@ tabulate(
 ## References
 
 ```{bibliography}
-:style: plain
+:style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^location]: see, for instance, Eqs. (5.5), pp. 184 in {cite}`Dubourg2011`.

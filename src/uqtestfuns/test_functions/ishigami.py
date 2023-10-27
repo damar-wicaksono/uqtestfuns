@@ -29,32 +29,28 @@ References
 """
 import numpy as np
 
-from typing import Optional
+from typing import Tuple
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import (
-    create_prob_input_from_available,
-    create_parameters_from_available,
-)
 
 __all__ = ["Ishigami"]
 
 
 INPUT_MARGINALS_ISHIGAMI1991 = [
-    UnivDist(
+    UnivDistSpec(
         name="X1",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
         description="None",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="X2",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
         description="None",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="X3",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
@@ -63,18 +59,16 @@ INPUT_MARGINALS_ISHIGAMI1991 = [
 ]
 
 AVAILABLE_INPUT_SPECS = {
-    "Ishigami1991": {
-        "name": "Ishigami-1991",
-        "description": (
+    "Ishigami1991": ProbInputSpecFixDim(
+        name="Ishigami1991",
+        description=(
             "Probabilistic input model for the Ishigami function "
             "from Ishigami and Homma (1991)."
         ),
-        "marginals": INPUT_MARGINALS_ISHIGAMI1991,
-        "copulas": None,
-    }
+        marginals=INPUT_MARGINALS_ISHIGAMI1991,
+        copulas=None,
+    ),
 }
-
-DEFAULT_INPUT_SELECTION = "Ishigami1991"
 
 AVAILABLE_PARAMETERS = {
     "Ishigami1991": (7, 0.05),  # from [1]
@@ -84,65 +78,41 @@ AVAILABLE_PARAMETERS = {
 DEFAULT_PARAMETERS_SELECTION = "Ishigami1991"
 
 
+def evaluate(xx: np.ndarray, parameters: Tuple[float, float]):
+    """Evaluate the Ishigami function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        3-Dimensional input values given by N-by-3 arrays where
+        N is the number of input values.
+    parameters : Tuple[float, float]
+        Tuple of two values as the parameters of the function.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the Ishigami function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    # Compute the Ishigami function
+    term_1 = np.sin(xx[:, 0])
+    term_2 = parameters[0] * np.sin(xx[:, 1]) ** 2
+    term_3 = parameters[1] * xx[:, 2] ** 4 * np.sin(xx[:, 0])
+
+    yy = term_1 + term_2 + term_3
+
+    return yy
+
+
 class Ishigami(UQTestFunABC):
-    """A concrete implementation of the Ishigami function."""
+    """An implementation of the Ishigami test function."""
 
-    _TAGS = ["sensitivity"]
+    _tags = ["sensitivity"]
+    _description = "Ishigami function from Ishigami and Homma (1991)"
+    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_parameters = AVAILABLE_PARAMETERS
+    _default_parameters = DEFAULT_PARAMETERS_SELECTION
+    _default_spatial_dimension = 3
 
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
-
-    _AVAILABLE_PARAMETERS = tuple(AVAILABLE_PARAMETERS.keys())
-
-    _DEFAULT_SPATIAL_DIMENSION = 3
-
-    _DESCRIPTION = "Ishigami function from Ishigami and Homma (1991)"
-
-    def __init__(
-        self,
-        *,
-        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-        parameters_selection: Optional[str] = DEFAULT_PARAMETERS_SELECTION,
-        name: Optional[str] = None,
-    ):
-        # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection, AVAILABLE_INPUT_SPECS
-        )
-        # Ishigami supports several different parameterizations
-        parameters = create_parameters_from_available(
-            parameters_selection, AVAILABLE_PARAMETERS
-        )
-        # Process the default name
-        if name is None:
-            name = Ishigami.__name__
-
-        super().__init__(
-            prob_input=prob_input, parameters=parameters, name=name
-        )
-
-    def evaluate(self, xx):
-        """Evaluate the Ishigami function on a set of input values.
-
-        Parameters
-        ----------
-        xx : np.ndarray
-            3-Dimensional input values given by N-by-3 arrays where
-            N is the number of input values.
-        params : tuple
-            Tuple of two values as the parameters of the function.
-
-        Returns
-        -------
-        np.ndarray
-            The output of the Ishigami function evaluated on the input values.
-            The output is a 1-dimensional array of length N.
-        """
-        # Compute the Ishigami function
-        parameters = self.parameters
-        term_1 = np.sin(xx[:, 0])
-        term_2 = parameters[0] * np.sin(xx[:, 1]) ** 2
-        term_3 = parameters[1] * xx[:, 2] ** 4 * np.sin(xx[:, 0])
-
-        yy = term_1 + term_2 + term_3
-
-        return yy
+    eval_ = staticmethod(evaluate)

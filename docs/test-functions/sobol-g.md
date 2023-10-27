@@ -21,6 +21,18 @@ algorithms (e.g., quasi-Monte-Carlo; see for instance {cite}`Sobol1998`.
 Later on, it becomes a popular testing function for global sensitivity analysis
 methods; see, for instances, {cite}`Marrel2008, Marrel2009, Kucherenko2011`.
 
+
+The Sobol'-G function is an M-dimensional scalar-valued function.
+It was introduced in [1] for testing numerical integration algorithms
+(e.g., quasi-Monte-Carlo; see also for instance [2] and [3]).
+The current form (and name) was from [4] and used in the context of global
+sensitivity analysis. There, the function was generalized by introducing
+a set of parameters that determines the importance of each input variable.
+Later on, it becomes a popular testing function for global sensitivity analysis
+methods; see, for instances, [5], [6], and [7].
+
+
+
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
@@ -62,7 +74,7 @@ axs_2 = plt.subplot(132, projection='3d')
 axs_2.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000,1000),
+    yy_2d.reshape(1000, 1000).T,
     cmap="plasma",
     linewidth=0,
     antialiased=False,
@@ -76,7 +88,7 @@ axs_2.set_title("Surface plot of 2D Sobol'-G", fontsize=14)
 # Contour
 axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
-    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000), cmap="plasma"
+    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
 axs_3.set_xlabel("$x_1$", fontsize=14)
 axs_3.set_ylabel("$x_2$", fontsize=14)
@@ -104,9 +116,9 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the spatial dimension is set to $2$.
+By default, the spatial dimension is set to $2$[^default_dimension].
 To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (or as the first argument).
+pass an integer to the parameter `spatial_dimension` (keyword only).
 For example, to create an instance of the Sobol'-G function in six dimensions,
 type:
 
@@ -114,18 +126,12 @@ type:
 my_testfun = uqtf.SobolG(spatial_dimension=6)
 ```
 
-Or, alternatively as the first argument:
-
-```{code-cell} ipython3
-my_testfun = uqtf.SobolG(6)
-```
-
 In the subsequent section, the function will be illustrated
 using six dimensions.
 
 ## Description
 
-The Sobol'-G function is defined as follows:
+The Sobol'-G function is defined as follows[^location]:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^M \frac{\lvert 4 x_m - 2 \rvert + a_m}{1 + a_m}
@@ -152,15 +158,17 @@ input variable.
 There are several sets of parameters used in the literature
 as shown in the table below.  
   
-| No. |                       Value                       |         Keyword          |               Source                |                              Remark                              |  
-|:---:|:-------------------------------------------------:|:------------------------:|:-----------------------------------:|:----------------------------------------------------------------:|  
-|  1  |            $a_1 = \ldots = a_M = 0.01$            |      `Sobol1998-1`       |    {cite}`Sobol1998` (choice 1)     |    The supremum of the function grows exponentially at $2^M$     |  
-|  2  |            $a_1 = \ldots = a_M = 1.0$             |      `Sobol1998-2`       |    {cite}`Sobol1998` (choice 2)     |   The supremum of the function grows exponentially at  $1.5^M$   |  
-|  3  |       $a_m = m$<br> $\, 1 \leq m \leq M$          |      `Sobol1998-3`       |    {cite}`Sobol1998` (choice 3)     | The supremum of the function grows linearly at $1 + \frac{M}{2}$ |  
-|  4  |         $a_m = m^2$<br> $1 \leq m \leq M$         |      `Sobol1998-4`       |    {cite}`Sobol1998` (choice 4)     |                 The supremum is bounded at $1.0$                 |  
-|  5  | $a_1 = a_2 = 0.0$<br> $a_3 = \ldots = a_M = 6.52$ |   `Kucherenko2011-2a`    | {cite}`Kucherenko2011` (Problem 2A) |                      Originally, $M = 100$                       |  
-|  6  |        $a_m = 6,52$<br> $1 \leq m \leq M$         |   `Kucherenko2011-3b`    | {cite}`Kucherenko2011` (Problem 3B) |                                                                  |  
-|  7  |  $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$  | `Crestaux2007` (default) |        {cite}`Crestaux2007`         |                                                                  |
+| No. |                           Value                            |          Keyword           |                             Source                             |                                             Remark                                             |  
+|:---:|:----------------------------------------------------------:|:--------------------------:|:--------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|  
+|  1  |                  $a_1 = \ldots = a_M = 0$                  |      `Saltelli1995-1`      |  {cite}`Saltelli1995` (Example 1) (also {cite}`Bratley1992`)   |                           All input variables are equally important                            |  
+|  2  | $a_1 = a_2 = 0$<br> $a_3 = 3$<br> $a_3 = \ldots = a_M = 9$ |      `Saltelli1995-2`      |                {cite}`Saltelli1995` (Example 2)                | The first two are important, the next is moderately important, and the rest is non-influential |  
+|  3  |      $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$       | `Saltelli1995-3` (default) | {cite}`Saltelli1995` (Example 3) (also {cite}`Crestaux2007`  ) |              The most important input is the first one, the least is the last one              |
+|  4  |                $a_1 = \ldots = a_M = 0.01$                 |       `Sobol1998-1`        |                  {cite}`Sobol1998` (choice 1)                  |                   The supremum of the function grows exponentially at $2^M$                    |  
+|  5  |                 $a_1 = \ldots = a_M = 1.0$                 |       `Sobol1998-2`        |                  {cite}`Sobol1998` (choice 2)                  |                  The supremum of the function grows exponentially at  $1.5^M$                  |  
+|  6  |             $a_m = m$<br> $\, 1 \leq m \leq M$             |       `Sobol1998-3`        |                  {cite}`Sobol1998` (choice 3)                  |                The supremum of the function grows linearly at $1 + \frac{M}{2}$                |  
+|  7  |             $a_m = m^2$<br> $1 \leq m \leq M$              |       `Sobol1998-4`        |                  {cite}`Sobol1998` (choice 4)                  |                                The supremum is bounded at $1.0$                                |  
+|  8  |     $a_1 = a_2 = 0.0$<br> $a_3 = \ldots = a_M = 6.52$      |    `Kucherenko2011-2a`     |              {cite}`Kucherenko2011` (Problem 2A)               |                                     Originally, $M = 100$                                      |  
+|  9  |             $a_m = 6,52$<br> $1 \leq m \leq M$             |    `Kucherenko2011-3b`     |              {cite}`Kucherenko2011` (Problem 3B)               |                                                                                                |  
 
 ```{note}
 The parameter values used in {cite}`Marrel2008` and {cite}`Marrel2009`
@@ -200,12 +208,21 @@ plt.xlabel("$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
+### Definite integration
+
+The integral value of the function over the whole domain $[0, 1]^M$
+is analytical:
+
+$$
+\int_{[0, 1]^M} \mathcal{M}(\boldsymbol{x}) \; d\boldsymbol{x} = 1.0.
+$$
+
 ### Moments estimation
 
 The mean and variance of the Sobol'-G function can be computed analytically,  
 and the results are:
   
-- $\mathbb{E}[Y] = 1.0$  
+- $\mathbb{E}[Y] = 1.0$[^integral]
 - $\mathbb{V}[Y] = \prod_{m = 1}^{M} \frac{\frac{4}{3} + 2 a_m + a_m^2}{(1 + a_m)^2} - 1$
 
 Notice that the values of these two moments depend on the choice of the parameter values.
@@ -362,6 +379,14 @@ tabulate(
 ## References
 
 ```{bibliography}
-:style: plain
+:style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^location]: see Eqs. (23) and (24), p. 234 in {cite}`Saltelli1995`.
+
+[^integral]: The expected value is the same as the integral over the domain
+because the input is uniform in a unit hypercube.
+
+[^default_dimension]: This default dimension applies to all variable dimension
+test functions. It will be used if the `spatial_dimension` argument is not given.

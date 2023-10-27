@@ -12,12 +12,11 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:oakley-ohagan-1d)=
-# One-dimensional (1D) Oakley-O'Hagan Function
+(test-functions:damped-cosine)=
+# One-dimensional (1D) Damped Cosine Function
 
-The 1D Oakley-O'Hagan function is a one-dimensional scalar-valued function.
-It was used in {cite}`Oakley2002` as a test function for illustrating
-metamodeling and uncertainty propagation approaches.
+The 1D damped cosine function from Santner et al. {cite}`Santner2018` is
+a scalar-valued test function for metamodeling exercises.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -25,13 +24,15 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-A plot of the function is shown below for $x \in [-12, 12]$.
+A plot of the function is shown below for $x \in [0, 1]$.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_testfun = uqtf.OakleyOHagan1D()
-xx = np.linspace(-12, 12, 1000)[:, np.newaxis]
+my_testfun = uqtf.DampedCosine()
+lb = my_testfun.prob_input.marginals[0].lower
+ub = my_testfun.prob_input.marginals[0].upper
+xx = np.linspace(lb, ub, 1000)[:, np.newaxis]
 yy = my_testfun(xx)
 
 # --- Create the plot
@@ -45,11 +46,10 @@ plt.gcf().set_dpi(150);
 
 ## Test function instance
 
-To create a default instance of the one-dimensional Oakley-O'Hagan
-test function:
+To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.OakleyOHagan1D()
+my_testfun = uqtf.DampedCosine()
 ```
 
 Check if it has been correctly instantiated:
@@ -60,18 +60,18 @@ print(my_testfun)
 
 ## Description
 
-The test function is analytically defined as follows:
+The test function is analytically defined as follows[^location]:
 
 $$
-\mathcal{M}(x) = 5 + x + \cos{x}
+\mathcal{M}(x) = e^{(-1.4 x)} \cos{(3.5 \pi x)},
 $$
-where $x$ is probabilistically defined below.
+where $x$ is defined below.
 
 ## Probabilistic input
 
-Based on {cite}`Oakley2002`, the probabilistic input model for the 1D
-Oakley-O'Hagan function consists of a normal random variable
-with the parameters shown in the table below.
+Based on {cite}`Santner2018`, the domain of the function is in $[0, 1]$.
+In UQTestFuns, this domain can be represented as a probabilistic input model
+using the uniform distribution shown in the table below.
 
 ```{code-cell} ipython3
 my_testfun.prob_input
@@ -219,6 +219,8 @@ tabulate(
 ## References
 
 ```{bibliography}
-:style: plain
+:style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^location]: see Example 3.3 in {cite}`Santner2018`.

@@ -12,16 +12,18 @@ import numpy as np
 import pytest
 import copy
 
-from conftest import assert_call
-from uqtestfuns.utils import get_available_classes
+from typing import Type
 
-from uqtestfuns import test_functions
+from conftest import assert_call
+
+from uqtestfuns.utils import get_available_classes
+from uqtestfuns import test_functions, UQTestFunABC
 
 AVAILABLE_FUNCTION_CLASSES = get_available_classes(test_functions)
 
 
 @pytest.fixture(params=AVAILABLE_FUNCTION_CLASSES)
-def builtin_testfun(request):
+def builtin_testfun(request) -> Type[UQTestFunABC]:
     _, testfun = request.param
 
     return testfun
@@ -71,12 +73,8 @@ def test_create_instance_with_prob_input(builtin_testfun):
     my_prob_input = copy.copy(my_fun.prob_input)
 
     # Create an instance without probabilistic input
-    if testfun_class.AVAILABLE_INPUTS is not None:
-        my_fun_2 = testfun_class(prob_input_selection=None)
-        assert my_fun_2.prob_input is None
-        assert my_fun_2.spatial_dimension == (
-            testfun_class.DEFAULT_SPATIAL_DIMENSION
-        )
+    if testfun_class.available_inputs is not None:
+        my_fun_2 = testfun_class()
 
         # Assign the probabilistic input
         my_fun_2.prob_input = my_prob_input
@@ -102,9 +100,8 @@ def test_create_instance_with_parameters(builtin_testfun):
     my_fun = testfun_class()
     parameters = my_fun.parameters
 
-    if testfun_class.AVAILABLE_PARAMETERS is not None:
-        my_fun_2 = testfun_class(parameters_selection=None)
-        assert my_fun_2.parameters is None
+    if testfun_class.available_parameters is not None:
+        my_fun_2 = testfun_class()
         my_fun_2.parameters = parameters
         assert my_fun_2.parameters is parameters
     else:
@@ -116,7 +113,7 @@ def test_available_inputs(builtin_testfun):
 
     testfun_class = builtin_testfun
 
-    available_inputs = testfun_class.AVAILABLE_INPUTS
+    available_inputs = testfun_class.available_inputs
 
     for available_input in available_inputs:
         assert_call(testfun_class, prob_input_selection=available_input)
@@ -127,7 +124,7 @@ def test_available_parameters(builtin_testfun):
 
     testfun_class = builtin_testfun
 
-    available_parameters = testfun_class.AVAILABLE_PARAMETERS
+    available_parameters = testfun_class.available_parameters
 
     if available_parameters is not None:
         for available_parameter in available_parameters:
@@ -150,30 +147,42 @@ def test_call_instance(builtin_testfun):
     assert_call(my_fun, xx)
 
 
+def test_str(builtin_testfun):
+    """Test the __str__() method of a test function instance."""
+
+    # Create an instance
+    my_fun = builtin_testfun()
+
+    str_ref = (
+        f"Name              : {my_fun.name}\n"
+        f"Spatial dimension : {my_fun.spatial_dimension}\n"
+        f"Description       : {my_fun.description}"
+    )
+
+    assert my_fun.__str__() == str_ref
+
+
 def test_transform_input(builtin_testfun):
     """Test transforming a set of input values in the default unif. domain."""
 
     testfun = builtin_testfun
+    rng_seed = 32
 
     # Create an instance
     my_fun = testfun()
+    my_fun.prob_input.reset_rng(rng_seed)
 
     sample_size = 100
 
     # Transformation from the default uniform domain to the input domain
-    np.random.seed(315)
-    # NOTE: Direct sample from the input property is done by column to column,
-    # for reproducibility using the same RNG seed the reference input must be
-    # filled in column by column as well with the. The call to NumPy random
-    # number generators below yields the same effect.
-    xx_1 = -1 + 2 * np.random.rand(my_fun.spatial_dimension, sample_size).T
+    rng = np.random.default_rng(rng_seed)
+    xx_1 = -1 + 2 * rng.random((sample_size, my_fun.spatial_dimension))
     xx_1 = my_fun.transform_sample(xx_1)
 
     # Directly sample from the input property
-    np.random.seed(315)
     xx_2 = my_fun.prob_input.get_sample(sample_size)
 
-    # Assertion: two sampled values are equal
+    # Assertion: Both samples are equal because the seed is identical
     assert np.allclose(xx_1, xx_2)
 
 
@@ -181,26 +190,23 @@ def test_transform_input_non_default(builtin_testfun):
     """Test transforming an input from non-default domain."""
 
     testfun = builtin_testfun
+    rng_seed = 1232
 
     # Create an instance
     my_fun = testfun()
+    my_fun.prob_input.reset_rng(rng_seed)
 
     sample_size = 100
 
     # Transformation from non-default uniform domain to the input domain
-    np.random.seed(315)
-    # NOTE: Direct sample from the input property is done by column to column,
-    # for reproducibility using the same RNG seed the reference input must be
-    # filled in column by column as well with the. The call to NumPy random
-    # number generators below yields the same effect.
-    xx_1 = np.random.rand(my_fun.spatial_dimension, sample_size).T
+    rng = np.random.default_rng(rng_seed)
+    xx_1 = rng.random((sample_size, my_fun.spatial_dimension))
     xx_1 = my_fun.transform_sample(xx_1, min_value=0.0, max_value=1.0)
 
     # Directly sample from the input property
-    np.random.seed(315)
     xx_2 = my_fun.prob_input.get_sample(sample_size)
 
-    # Assertion: two sampled values are equal
+    # Assertion: Both samples are equal because the seed is identical
     assert np.allclose(xx_1, xx_2)
 
 
@@ -242,12 +248,12 @@ def test_evaluate_wrong_input_domain(builtin_testfun):
 def test_evaluate_invalid_spatial_dim(builtin_testfun):
     """Test if an exception is raised if invalid spatial dimension is given."""
 
-    if builtin_testfun.DEFAULT_SPATIAL_DIMENSION is None:
+    if hasattr(builtin_testfun, "default_spatial_dimension"):
         with pytest.raises(TypeError):
             builtin_testfun(spatial_dimension="10")
 
 
 def test_evaluate_invalid_input_selection(builtin_testfun):
     """Test if an exception is raised if invalid input selection is given."""
-    with pytest.raises(ValueError):
+    with pytest.raises(KeyError):
         builtin_testfun(prob_input_selection=100)

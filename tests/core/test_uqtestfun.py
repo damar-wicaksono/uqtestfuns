@@ -66,8 +66,7 @@ def test_str(uqtestfun):
 
     str_ref = (
         f"Name              : {uqtestfun_instance.name}\n"
-        f"Spatial dimension : {uqtestfun_instance.spatial_dimension}\n"
-        f"Description       : {uqtestfun_instance.DESCRIPTION}"
+        f"Spatial dimension : {uqtestfun_instance.spatial_dimension}"
     )
 
     assert uqtestfun_instance.__str__() == str_ref

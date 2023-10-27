@@ -8,12 +8,14 @@ is defined by an instance of the ``UnivDist`` class.
 from __future__ import annotations
 
 import numpy as np
+
+from dataclasses import dataclass, field
+from numpy.random._generator import Generator
 from tabulate import tabulate
 from typing import Any, List, Optional, Union, Tuple
-from dataclasses import dataclass, field
 
 from .univariate_distribution import UnivDist, FIELD_NAMES
-
+from .input_spec import ProbInputSpecFixDim, ProbInputSpecVarDim
 
 __all__ = ["ProbInput"]
 
@@ -25,19 +27,26 @@ class ProbInput:
     Parameters
     ----------
     marginals : Union[List[UnivDist], Tuple[UnivDist, ...]]
-        A list of one-dimensional marginals (univariate random variables)
+        A list of one-dimensional marginals (univariate random variables).
     copulas : Any
         Copulas between univariate inputs that define dependence structure
-        (currently not used)
+        (currently not used).
     name : str, optional
-        The name of the probabilistic input model
+        The name of the probabilistic input model.
     description : str, optional
-        The short description regarding the input model
+        The short description regarding the input model.
+    rng_seed : int, optional.
+        The seed used to initialize the pseudo-random number generator.
+        If not specified, the value is taken from the system entropy.
 
     Attributes
     ----------
     spatial_dimension : int
         Number of constituents (random) input variables.
+    _rng : Generator
+        The default pseudo-random number generator of NumPy.
+        The generator is only created if or when needed (e.g., generating
+        a random sample from the distribution).
     """
 
     spatial_dimension: int = field(init=False)
@@ -45,6 +54,8 @@ class ProbInput:
     copulas: Any = None
     name: Optional[str] = None
     description: Optional[str] = None
+    rng_seed: Optional[int] = field(default=None, repr=False)
+    _rng: Optional[Generator] = field(init=False, default=None, repr=False)
 
     def __post_init__(self):
         self.spatial_dimension = len(self.marginals)
@@ -88,17 +99,32 @@ class ProbInput:
             where :math:`N` and :math:`M` are the sample size
             and the number of spatial dimensions, respectively.
         """
+        if self._rng is None:  # pragma: no cover
+            # Create a pseudo-random number generator (lazy evaluation)
+            self._rng = np.random.default_rng(self.rng_seed)
 
-        xx = np.empty((sample_size, self.spatial_dimension))
-        # Transform the sample in [0, 1] to the domain of the distribution
+        xx = self._rng.random((sample_size, self.spatial_dimension))
         if not self.copulas:
-            # Independent inputs generate sample marginal by marginal
+            # Transform the sample in [0, 1] to the domain of the distribution
             for idx_dim, marginal in enumerate(self.marginals):
-                xx[:, idx_dim] = marginal.get_sample(sample_size)
+                xx[:, idx_dim] = marginal.icdf(xx[:, idx_dim])
         else:
             raise ValueError("Copulas are not currently supported!")
 
         return xx
+
+    def reset_rng(self, rng_seed: Optional[int]) -> None:
+        """Reset the random number generator.
+
+        Parameters
+        ----------
+        rng_seed : int, optional.
+            The seed used to initialize the pseudo-random number generator.
+            If not specified, the value is taken from the system entropy.
+        """
+        rng = np.random.default_rng(rng_seed)
+        object.__setattr__(self, "_rng", rng)
+        object.__setattr__(self, "rng_seed", rng_seed)
 
     def pdf(self, xx: np.ndarray) -> np.ndarray:
         """Get the PDF value of the distribution on a set of values.
@@ -169,6 +195,37 @@ class ProbInput:
         table += f"<p><b>Copulas</b>:&nbsp;{self.copulas}</p>"
 
         return table
+
+    @classmethod
+    def from_spec(
+        cls,
+        prob_input_spec: Union[ProbInputSpecFixDim, ProbInputSpecVarDim],
+        *,
+        spatial_dimension: Optional[int] = None,
+        rng_seed: Optional[int] = None,
+    ):
+        """Create an instance from a ProbInputSpec instance."""
+
+        if isinstance(prob_input_spec, ProbInputSpecVarDim):
+            if spatial_dimension is None:
+                raise ValueError("Spatial dimension must be specified!")
+            marginals_gen = prob_input_spec.marginals_generator
+            marginals_spec = marginals_gen(spatial_dimension)
+        else:
+            marginals_spec = prob_input_spec.marginals
+
+        # Create a list of UnivDist instances representing univariate marginals
+        marginals = [
+            UnivDist.from_spec(marginal) for marginal in marginals_spec
+        ]
+
+        return cls(
+            marginals=marginals,
+            copulas=prob_input_spec.copulas,
+            name=prob_input_spec.name,
+            description=prob_input_spec.description,
+            rng_seed=rng_seed,
+        )
 
 
 def _get_values_as_list(

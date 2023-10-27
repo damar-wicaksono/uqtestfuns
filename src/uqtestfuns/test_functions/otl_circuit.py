@@ -23,46 +23,44 @@ References
 import numpy as np
 
 from copy import copy
-from typing import Optional
 
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
-from .available import create_prob_input_from_available
 
 __all__ = ["OTLCircuit"]
 
 INPUT_MARGINALS_BENARI2007 = [
-    UnivDist(
+    UnivDistSpec(
         name="Rb1",
         distribution="uniform",
         parameters=[50.0, 150.0],
         description="Resistance b1 [kOhm]",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="Rb2",
         distribution="uniform",
         parameters=[25.0, 70.0],
         description="Resistance b2 [kOhm]",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="Rf",
         distribution="uniform",
         parameters=[0.5, 3.0],
         description="Resistance f [kOhm]",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="Rc1",
         distribution="uniform",
         parameters=[1.2, 2.5],
         description="Resistance c1 [kOhm]",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="Rc2",
         distribution="uniform",
         parameters=[0.25, 1.20],
         description="Resistance c2 [kOhm]",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="beta",
         distribution="uniform",
         parameters=[50.0, 300.0],
@@ -73,7 +71,7 @@ INPUT_MARGINALS_BENARI2007 = [
 INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
 for i in range(14):
     INPUT_MARGINALS_MOON2010.append(
-        UnivDist(
+        UnivDistSpec(
             name=f"Inert {i+1}",
             distribution="uniform",
             parameters=[100.0, 200.0],
@@ -82,99 +80,83 @@ for i in range(14):
     )
 
 AVAILABLE_INPUT_SPECS = {
-    "BenAri2007": {
-        "name": "OTL-Circuit-Ben-Ari-2007",
-        "description": (
+    "BenAri2007": ProbInputSpecFixDim(
+        name="OTLCircuit-BenAri2007",
+        description=(
             "Probabilistic input model for the OTL Circuit function "
             "from Ben-Ari and Steinberg (2007)."
         ),
-        "marginals": INPUT_MARGINALS_BENARI2007,
-        "copulas": None,
-    },
-    "Moon2010": {
-        "name": "OTL-Circuit-Moon-2010",
-        "description": (
+        marginals=INPUT_MARGINALS_BENARI2007,
+        copulas=None,
+    ),
+    "Moon2010": ProbInputSpecFixDim(
+        name="OTLCircuit-Moon2010",
+        description=(
             "Probabilistic input model for the OTL Circuit function "
             "from Moon (2010)."
         ),
-        "marginals": INPUT_MARGINALS_MOON2010,
-        "copulas": None,
-    },
+        marginals=INPUT_MARGINALS_MOON2010,
+        copulas=None,
+    ),
 }
 
 DEFAULT_INPUT_SELECTION = "BenAri2007"
 
 
+def evaluate(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the OTL circuit test function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        (At least) 6-dimensional input values given by N-by-6 arrays
+        where N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the OTL circuit test function,
+        i.e., the mid-point voltage in Volt.
+        The output is a one-dimensional array of length N.
+
+    Notes
+    -----
+    - The variant of this test function has 14 additional inputs,
+      but they are all taken to be inert and therefore should not affect
+      the output.
+    """
+    rr_b1 = xx[:, 0]  # Resistance b1
+    rr_b2 = xx[:, 1]  # Resistance b2
+    rr_f = xx[:, 2]  # Resistance f
+    rr_c1 = xx[:, 3]  # Resistance c1
+    rr_c2 = xx[:, 4]  # Resistance c2
+    beta = xx[:, 5]  # Current gain
+
+    # Compute the voltage across b1
+    vb1 = 12 * rr_b2 / (rr_b1 + rr_b2)
+
+    # Compute the mid-point voltage
+    denom = beta * (rr_c2 + 9) + rr_f
+    term_1 = ((vb1 + 0.74) * beta * (rr_c2 + 9)) / denom
+    term_2 = 11.35 * rr_f / denom
+    term_3 = 0.74 * rr_f * beta * (rr_c2 + 9) / (rr_c1 * denom)
+
+    vm = term_1 + term_2 + term_3
+
+    return vm
+
+
 class OTLCircuit(UQTestFunABC):
     """A concrete implementation of the OTL circuit test function."""
 
-    _TAGS = ["metamodeling", "sensitivity"]
-
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
-
-    _AVAILABLE_PARAMETERS = None
-
-    _DEFAULT_SPATIAL_DIMENSION = 6
-
-    _DESCRIPTION = (
+    _tags = ["metamodeling", "sensitivity"]
+    _default_spatial_dimension = 6
+    _description = (
         "Output transformerless (OTL) circuit model "
         "from Ben-Ari and Steinberg (2007)"
     )
+    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_parameters = None
+    _default_input = DEFAULT_INPUT_SELECTION
 
-    def __init__(
-        self,
-        *,
-        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-        name: Optional[str] = None,
-    ):
-        # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection, AVAILABLE_INPUT_SPECS
-        )
-        # Process the default name
-        if name is None:
-            name = OTLCircuit.__name__
-
-        super().__init__(prob_input=prob_input, name=name)
-
-    def evaluate(self, xx: np.ndarray) -> np.ndarray:
-        """Evaluate the OTL circuit test function on a set of input values.
-
-        Parameters
-        ----------
-        xx : np.ndarray
-            (At least) 6-dimensional input values given by N-by-6 arrays
-            where N is the number of input values.
-
-        Returns
-        -------
-        np.ndarray
-            The output of the OTL circuit test function,
-            i.e., the mid-point voltage in Volt.
-            The output is a one-dimensional array of length N.
-
-        Notes
-        -----
-        - The variant of this test function has 14 additional inputs,
-          but they are all taken to be inert and therefore should not affect
-          the output.
-        """
-        rr_b1 = xx[:, 0]  # Resistance b1
-        rr_b2 = xx[:, 1]  # Resistance b2
-        rr_f = xx[:, 2]  # Resistance f
-        rr_c1 = xx[:, 3]  # Resistance c1
-        rr_c2 = xx[:, 4]  # Resistance c2
-        beta = xx[:, 5]  # Current gain
-
-        # Compute the voltage across b1
-        vb1 = 12 * rr_b2 / (rr_b1 + rr_b2)
-
-        # Compute the mid-point voltage
-        denom = beta * (rr_c2 + 9) + rr_f
-        term_1 = ((vb1 + 0.74) * beta * (rr_c2 + 9)) / denom
-        term_2 = 11.35 * rr_f / denom
-        term_3 = 0.74 * rr_f * beta * (rr_c2 + 9) / (rr_c1 * denom)
-
-        vm = term_1 + term_2 + term_3
-
-        return vm
+    eval_ = staticmethod(evaluate)

@@ -12,10 +12,18 @@ kernelspec:
   name: python3
 ---
 
-(getting-started:creating-a-built-in)=
-# Creating a Built-in Test Function
+(getting-started:tutorial-built-in-functions)=
+# Tutorial: Create Built-in Test Functions
 
-_Built-in test functions_ are test functions that are delivered with UQTestFuns.
+UQTestFuns includes a wide range of test functions from the uncertainty
+quantification community; these functions are referred to
+as the _built-in test functions_.
+This tutorial provides you with an overview of the package;
+you'll learn about the built-in test functions, their common interfaces,
+as well as their important properties and methods.
+
+By the end of this tutorial, you'll be able to create any test function
+available in UQTestFuns and access its basic but important functionalities.
 
 UQTestFuns is designed to work with minimal dependency within the numerical
 Python ecosystem.
@@ -32,6 +40,8 @@ import uqtestfuns as uqtf
 To list all the test functions currently available:
 
 ```{code-cell} ipython3
+:tags: ["output_scroll"]
+
 uqtf.list_functions()
 ```
 
@@ -41,8 +51,8 @@ as well as a short description.
 
 ## A Callable instance
 
-Take, for instance, the {ref}`borehole <test-functions:borehole>` function,
-an eight-dimensional test function typically used
+Take, for instance, the {ref}`borehole <test-functions:borehole>` function
+{cite}`Harper1983`, an eight-dimensional test function typically used
 in the context of metamodeling and sensitivity analysis.
 To instantiate a borehole test function, call the constructor as follows:
 
@@ -81,7 +91,7 @@ my_testfun(xx)
 ```{note}
 Calling the function on a set of input values automatically
 verifies the correctness of the input (its dimensionality and bounds).
-Furthermore, the test function also accepts a vectorized input
+Moreover, the test function accepts a vectorized input
 (that is, an $N$-by-$M$ array where $N$ and $M$ are the number of points
 and dimensions, respectively)
 ```
@@ -134,6 +144,21 @@ plt.ylabel("Counts [-]")
 plt.gcf().set_dpi(150);
 ```
 
+```{note}
+An `ProbInput` instance has a method called `reset_rng()`;
+You can call this method to create a new underlying RNG
+perhaps with a seed number.
+In that case, the seed number is optional; if not specified,
+the system entropy is used to initialized
+the [NumPy default random generator](https://numpy.org/doc/stable/reference/random/generator.html#numpy.random.default_rng).
+
+In UQTestFuns, each instance of probabilistic input model carries
+its own pseudo-random number generator (RNG)
+to avoid using the global NumPy random RNG.
+See this [blog post](https://albertcthomas.github.io/good-practices-random-number-generators/)
+regarding some good practices on using NumPy RNG.
+```
+
 ## Transformation to the function domain
 
 Some UQ methods often produce sample points in a hypercube domain
@@ -153,8 +178,8 @@ For instance, suppose we have a sample of size $5$ in $[-1, 1]^8$
 for the borehole function:
 
 ```{code-cell} ipython3
-np.random.seed(42)
-xx_sample_dom_1 = -1 + 2 * np.random.rand(5, 8)
+rng_1 = np.random.default_rng(42)
+xx_sample_dom_1 = rng_1.uniform(low=-1, high=1, size=(5, 8))
 xx_sample_dom_1
 ```
 
@@ -172,15 +197,17 @@ It is possible to transform values defined in another uniform domain.
 For example, the sample values in $[0, 1]^8$ (a unit hypercube):
 
 ```{code-cell} ipython3
-np.random.seed(42)
-xx_sample_dom_2 = np.random.rand(5, 8)
+rng_2 = np.random.default_rng(42)
+xx_sample_dom_2 = rng_2.random((5, 8))
 xx_sample_dom_2
 ```
 
 can be transformed to the domain of the borehole function as follows:
 
 ```{code-cell} ipython3
-xx_sample_trans_2 = my_testfun.transform_sample(xx_sample_dom_2, min_value=0.0, max_value=1.0)
+xx_sample_trans_2 = my_testfun.transform_sample(
+    xx_sample_dom_2, min_value=0.0, max_value=1.0
+)
 xx_sample_trans_2
 ```
 
@@ -188,8 +215,8 @@ Note that for a given sample, the bounds of the hypercube domain must be
 the same in all dimensions.
 
 The two transformed values above should be the same since
-we reset the seed for the random number generator
-each time we call `np.random.rand()`.
+we use two instances of the default RNG with the same seed
+to generate the random sample.
 
 ```{code-cell} ipython3
 assert np.allclose(xx_sample_trans_1, xx_sample_trans_2)
@@ -209,7 +236,7 @@ In principle, these parameter values can be anything:
 numerical values, flags, selection using strings, etc.
 
 For instance, consider the {ref}`Ishigami <test-functions:ishigami>` function
-defined as follows:
+{cite}`Ishigami1991` defined as follows:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \sin{(x_1)} + a \sin^2{(x_2)} + b x_3^4 \sin{(x_1)}
@@ -270,7 +297,8 @@ Some test functions support a _variable dimension_, meaning that an instance
 of a test function can be constructed for any number (positive integer, please) 
 of spatial dimension.
 
-Consider, for instance, the {ref}`Sobol'-G <test-functions:sobol-g>` function,
+Consider, for instance, the {ref}`Sobol'-G <test-functions:sobol-g>` function
+{cite}`Saltelli1995`,
 a test function whose dimension can be varied
 and a popular choice in the context of sensitivity analysis.
 It is defined as follows:
@@ -283,11 +311,10 @@ of input variables,
 and $\boldsymbol{a} = \{ a_1, \ldots, a_M \}$ are parameters of the function.
 
 To create a six-dimensional Sobol'-G function,
-use the parameter `spatial_dimension`
-(or the first positional parameter) to specify the desired dimensionality:
+use the parameter `spatial_dimension` to specify the desired dimensionality:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolG(spatial_dimension=6)  # Alternatively, uqtf.SobolG(6)
+my_testfun = uqtf.SobolG(spatial_dimension=6)
 ```
 
 Verify that the function is indeed a six-dimension one:
@@ -302,8 +329,9 @@ and:
 print(my_testfun.prob_input)
 ```
 
-```{note}
-Only test functions that support variable dimensions can accept `spatial_dimension`
-argument. Such functions are indicated with `M` as its spatial dimension
-in the list produced by `uqtf.list_functions()`.
+## References
+
+```{bibliography}
+:style: unsrtalpha
+:filter: docname in docnames
 ```

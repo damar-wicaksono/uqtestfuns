@@ -9,7 +9,7 @@ Notes
 from tabulate import tabulate as tbl  # 'tabulate' is used as a parameter name
 from .utils import get_available_classes, SUPPORTED_TAGS
 from . import test_functions
-from typing import List, Optional, Tuple, Union, Dict
+from typing import List, Optional, Union
 
 from .core import UQTestFunABC
 
@@ -54,9 +54,7 @@ def list_functions(
     _verify_input_args(spatial_dimension, tag, tabulate)
 
     # --- Get all the available classes that implement the test functions
-    available_classes: List[Tuple[str, UQTestFunABC]] = get_available_classes(
-        test_functions
-    )
+    available_classes = get_available_classes(test_functions)
     available_classes_dict = dict(available_classes)
 
     # --- Filter according to the requested spatial dimension
@@ -94,13 +92,21 @@ def list_functions(
         return constructors
 
     # --- Create a tabulated view of the list
-    header_names = [
-        "No.",
-        "Constructor",
-        "Spatial Dimension",
-        "Application",
-        "Description",
-    ]
+    if tag is None:
+        header_names = [
+            "No.",
+            "Constructor",
+            "Dimension",
+            "Application",
+            "Description",
+        ]
+    else:
+        header_names = [
+            "No.",
+            "Constructor",
+            "Dimension",
+            "Description",
+        ]
 
     values = []
     for idx, available_class_name in enumerate(
@@ -108,30 +114,48 @@ def list_functions(
     ):
         available_class = available_classes_dict[available_class_name]
 
-        default_spatial_dimension = available_class.DEFAULT_SPATIAL_DIMENSION
-        if not default_spatial_dimension:
+        if not available_class.default_spatial_dimension:
             default_spatial_dimension = "M"
+        else:
+            default_spatial_dimension = (
+                available_class.default_spatial_dimension
+            )
 
-        tags = ", ".join(available_class.TAGS)
+        description = available_class.description
 
-        description = available_class.DESCRIPTION
-
-        value = [
-            idx + 1,
-            f"{available_class_name}()",
-            f"{default_spatial_dimension}",
-            tags,
-            f"{description}",
-        ]
+        if tag is None:
+            tags = ", ".join(available_class.tags)
+            value = [
+                idx + 1,
+                f"{available_class_name}()",
+                f"{default_spatial_dimension}",
+                tags,
+                f"{description}",
+            ]
+        else:
+            value = [
+                idx + 1,
+                f"{available_class_name}()",
+                f"{default_spatial_dimension}",
+                f"{description}",
+            ]
 
         values.append(value)
 
-    table = tbl(
-        values,
-        headers=header_names,
-        stralign="center",
-        colalign=("center", "center", "center", "center", "left"),
-    )
+    if tag is None:
+        table = tbl(
+            values,
+            headers=header_names,
+            stralign="center",
+            colalign=("center", "center", "center", "center", "left"),
+        )
+    else:
+        table = tbl(
+            values,
+            headers=header_names,
+            stralign="center",
+            colalign=("center", "center", "center", "left"),
+        )
 
     print(table)
 
@@ -212,7 +236,7 @@ def _verify_input_args(
 
 
 def _get_functions_from_dimension(
-    available_classes: Dict[str, UQTestFunABC],
+    available_classes: dict,
     spatial_dimension: Union[int, str],
 ) -> List[str]:
     """Get the function keys that satisfy the spatial dimension filter."""
@@ -227,7 +251,7 @@ def _get_functions_from_dimension(
         available_class_path,
     ) in available_classes.items():
         default_spatial_dimension = (
-            available_class_path.DEFAULT_SPATIAL_DIMENSION
+            available_class_path.default_spatial_dimension
         )
         if not default_spatial_dimension:
             default_spatial_dimension = "m"
@@ -238,9 +262,7 @@ def _get_functions_from_dimension(
     return values
 
 
-def _get_functions_from_tag(
-    available_classes: Dict[str, UQTestFunABC], tag: str
-) -> List[str]:
+def _get_functions_from_tag(available_classes: dict, tag: str) -> List[str]:
     """Get the function keys that satisfy the tag filter."""
     values = []
 
@@ -248,7 +270,7 @@ def _get_functions_from_tag(
         available_class_name,
         available_class_path,
     ) in available_classes.items():
-        tags = available_class_path.TAGS
+        tags = available_class_path.tags
 
         if tag in tags:
             values.append(available_class_name)

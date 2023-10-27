@@ -1,23 +1,27 @@
 """
-This module provides an abstract base class for defining a test function class.
+This module provides abstract base classes for defining a test function class.
 """
 import abc
 import numpy as np
 
-from typing import Optional, Any, Tuple, List
+from inspect import signature
+from typing import Any, Callable, Dict, List, Optional, Union
 
 from .prob_input.probabilistic_input import ProbInput
+from .prob_input.input_spec import ProbInputSpecFixDim, ProbInputSpecVarDim
 from .utils import create_canonical_uniform_input
 
-__all__ = ["UQTestFunABC"]
+__all__ = ["UQTestFunBareABC", "UQTestFunABC"]
 
 CLASS_HIDDEN_ATTRIBUTES = [
-    "_TAGS",
-    "_AVAILABLE_INPUTS",
-    "_AVAILABLE_PARAMETERS",
-    "_DEFAULT_SPATIAL_DIMENSION",
-    "_DESCRIPTION",
+    "_tags",
+    "_description",
+    "_available_inputs",
+    "_available_parameters",
+    "_default_spatial_dimension",
 ]
+
+DEFAULT_DIMENSION = 2
 
 
 class classproperty(property):
@@ -26,114 +30,52 @@ class classproperty(property):
     def __get__(self, owner_self, owner_cls):
         return self.fget(owner_cls)  # type: ignore
 
-    def __set__(self, owner_self, owner_cls):
+    def __set__(self, owner_self, owner_cls):  # pragma: no cover
         raise AttributeError("can't set attribute")
 
 
-class UQTestFunABC(abc.ABC):
-    """An abstract class for UQ test functions.
+class UQTestFunBareABC(abc.ABC):
+    """An abstract class for a bare UQ test functions.
 
-    Attributes
+    Parameters
     ----------
-    tags : List[str]
-        A List of tags to classify a test function given known field of
-        applications in the literature. This is an abstract class property.
-    available_inputs : Optional[Tuple[str, ...]]
-        A tuple of available probabilistic input model specification in the
-        literature. This is an abstract class property.
-    available_parameters : Optional[Tuple[str, ...]]
-        A tuple of available set of parameter values in the literature.
-        This is an abstract class property.
-    default_spatial_dimension : Optional[int]
-        The default spatial dimension of a UQ test function. If 'None' then
-        the function is a variable dimensional test function.
-    spatial_dimension : int
-        The number of spatial dimension (i.e., input variables) to the UQ test
-        function. This number is derived directly from ``prob_input``.
-    evaluate : Callable
-        Implementation of a UQ test function as a Callable.
-        Note that when calling an instance of the class on a set of input
-        values, the input values are first verified before evaluating them.
+    prob_input : ProbInput
+        The probabilistic input model of the UQ test function.
+    parameters : Any, optional
+        A set of parameters. By default, it is None.
+    name : str, optional
+        The name of the UQ test function. By default, it is None.
+
+    Notes
+    -----
+    - A bare UQ test function only includes the evaluation function,
+      probabilistic input model, parameters, and a (optional) name.
     """
 
     def __init__(
         self,
-        prob_input: Optional[ProbInput] = None,
+        prob_input: ProbInput,
         parameters: Optional[Any] = None,
         name: Optional[str] = None,
     ):
-        """Default constructor for the UQTestFunABC.
-
-        Parameters
-        ----------
-        prob_input : ProbInput
-            Multivariate probabilistic input model.
-        parameters : Any
-            Parameters to the test function. Once set, the parameters are held
-            constant during function evaluation. It may, however, be modified
-            (by passing a new value) once an instance has been created.
-        name : str, optional
-            Name of the instance.
-        """
-        if not (prob_input is None or isinstance(prob_input, ProbInput)):
-            raise TypeError(
-                f"Probabilistic input model must be either 'None' or "
-                f"of 'MultivariateInput' type! Got instead {type(prob_input)}."
-            )
-
-        self._prob_input = prob_input
+        self.prob_input = prob_input
         self._parameters = parameters
         self._name = name
 
-    @classmethod
-    def __init_subclass__(cls):
-        """Verify if concrete class has all the required hidden attributes."""
-        for class_hidden_attribute in CLASS_HIDDEN_ATTRIBUTES:
-            if not hasattr(cls, class_hidden_attribute):
-                raise NotImplementedError(
-                    f"Class {cls} lacks required {class_hidden_attribute!r} "
-                    f"class attribute."
-                )
-
-    @classproperty
-    def TAGS(cls) -> Optional[List[str]]:
-        """Tags to classify different UQ test functions."""
-        return cls._TAGS  # type: ignore
-
-    @classproperty
-    def AVAILABLE_INPUTS(cls) -> Optional[Tuple[str, ...]]:
-        """All the keys to the available probabilistic input specifications."""
-        return cls._AVAILABLE_INPUTS  # type: ignore
-
-    @classproperty
-    def AVAILABLE_PARAMETERS(cls) -> Optional[Tuple[str, ...]]:
-        """All the keys to the available set of parameter values."""
-        return cls._AVAILABLE_PARAMETERS  # type: ignore
-
-    @classproperty
-    def DEFAULT_SPATIAL_DIMENSION(cls) -> Optional[int]:
-        """To store the default dimension of a test function."""
-        return cls._DEFAULT_SPATIAL_DIMENSION  # type: ignore
-
-    @classproperty
-    def DESCRIPTION(cls) -> Optional[str]:
-        """Short description of the UQ test function."""
-        return cls._DESCRIPTION  # type: ignore
-
     @property
-    def prob_input(self) -> Optional[ProbInput]:
+    def prob_input(self) -> ProbInput:
         """The probabilistic input model of the UQ test function."""
         return self._prob_input
 
     @prob_input.setter
-    def prob_input(self, value: Optional[ProbInput]):
+    def prob_input(self, value: ProbInput):
         """The setter for probabilistic input model of the UQ test function."""
-        if value is None or isinstance(value, ProbInput):
+        if isinstance(value, ProbInput):
             self._prob_input = value
         else:
             raise TypeError(
-                f"Probabilistic input model must be either 'None' or "
-                f"of 'MultivariateInput' types! Got instead {type(value)}."
+                f"Probabilistic input model must be of "
+                f"a 'ProbInput' type! Got instead {type(value)}."
             )
 
     @property
@@ -147,17 +89,14 @@ class UQTestFunABC(abc.ABC):
         self._parameters = value
 
     @property
-    def spatial_dimension(self) -> int:
-        """The dimension (number of input variables) of the test function."""
-        if self._prob_input is not None:
-            return self._prob_input.spatial_dimension
-        else:
-            return self.DEFAULT_SPATIAL_DIMENSION
-
-    @property
     def name(self) -> Optional[str]:
         """The name of the UQ test function."""
         return self._name
+
+    @property
+    def spatial_dimension(self) -> int:
+        """The spatial dimension of the UQ test function."""
+        return self.prob_input.spatial_dimension
 
     def transform_sample(
         self,
@@ -183,11 +122,6 @@ class UQTestFunABC(abc.ABC):
             Transformed sampled values from the specified uniform domain to
             the domain of the function as defined the `input` property.
         """
-        if self.prob_input is None:
-            raise ValueError(
-                "There is not ProbInput attached to the function! "
-                "A sample can't be generated."
-            )
 
         # Verify the uniform bounds
         assert min_value < max_value, (
@@ -208,36 +142,262 @@ class UQTestFunABC(abc.ABC):
 
         return xx_trans
 
-    @abc.abstractmethod
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the concrete test function implementation on points."""
-        pass
+    def __str__(self):
+        out = (
+            f"Name              : {self.name}\n"
+            f"Spatial dimension : {self.spatial_dimension}"
+        )
 
-    def __call__(self, xx: np.ndarray):
+        return out
+
+    def __call__(self, xx):
         """Evaluation of the test function by calling the instance."""
-
         # Verify the shape of the input
         _verify_sample_shape(xx, self.spatial_dimension)
 
-        if self.prob_input is not None:
-            # If ProbInput is attached, verify the domain of the input
-            for dim_idx in range(self.spatial_dimension):
-                lb = self.prob_input.marginals[dim_idx].lower
-                ub = self.prob_input.marginals[dim_idx].upper
-                _verify_sample_domain(
-                    xx[:, dim_idx], min_value=lb, max_value=ub
-                )
+        # Verify the domain of the input
+        for dim_idx in range(self.spatial_dimension):
+            lb = self.prob_input.marginals[dim_idx].lower
+            ub = self.prob_input.marginals[dim_idx].upper
+            _verify_sample_domain(xx[:, dim_idx], min_value=lb, max_value=ub)
 
         return self.evaluate(xx)
+
+    @abc.abstractmethod
+    def evaluate(self, *args):
+        """Abstract method for the implementation of the UQ test function."""
+        pass
+
+
+class UQTestFunABC(UQTestFunBareABC):
+    """An abstract class for (published) UQ test functions.
+
+    Parameters
+    ----------
+    spatial_dimension : int, optional
+        The spatial dimension of the UQ test function.
+        This is used only when the function supports variable dimension;
+        otherwise, if specified, an exception is raised.
+        In the case of functions with variable dimension, the default dimension
+        is set to 2.
+        This is a keyword only parameter.
+    prob_input_selection : str, optional
+        The selection of probabilistic input model; this is used when there are
+        multiple input specifications in the literature.
+        This is a keyword only parameter.
+    parameters_selection : str, optional
+        The selection of parameters set; this is used when there are multiple
+        sets of parameters available in the literature.
+        This is a keyword only parameter.
+    name : str, optional
+        The name of the UQ test function.
+        If not given, `None` is used as name.
+        This is a keyword only parameter.
+
+    Notes
+    -----
+    - A published UQ test function includes a couple of additional metadata,
+      namely tags and description.
+
+    Raises
+    ------
+    KeyError
+        If selection is not in the list of available inputs and parameters.
+    TypeError
+        If spatial dimension is specified for a UQ test function with
+        a fixed dimension.
+    """
+
+    _default_input: Optional[str] = None
+    _default_parameters: Optional[str] = None
+
+    def __init__(
+        self,
+        *,
+        spatial_dimension: Optional[int] = None,
+        prob_input_selection: Optional[str] = None,
+        parameters_selection: Optional[str] = None,
+        name: Optional[str] = None,
+    ):
+        # --- Create a probabilistic input model
+        # Select the probabilistic input model
+        available_inputs = self.available_inputs
+        if not prob_input_selection:
+            prob_input_selection = self.default_input
+        if prob_input_selection not in available_inputs:
+            print(prob_input_selection)
+            raise KeyError(
+                "Input selection is not in the available specifications."
+            )
+        prob_input_spec = available_inputs[prob_input_selection]
+
+        # Determine the dimensionality of the test function
+        if isinstance(prob_input_spec, ProbInputSpecFixDim):
+            if spatial_dimension:
+                raise TypeError("Fixed test dimension!")
+        if not spatial_dimension:
+            spatial_dimension = DEFAULT_DIMENSION
+
+        # Create a ProbInput instance
+        if isinstance(prob_input_spec, ProbInputSpecVarDim):
+            prob_input = ProbInput.from_spec(
+                prob_input_spec,
+                spatial_dimension=spatial_dimension,
+            )
+        else:
+            prob_input = ProbInput.from_spec(prob_input_spec)
+
+        # --- Select the parameters set, when applicable
+        available_parameters = self.available_parameters
+        if available_parameters is not None:
+            if not parameters_selection:
+                parameters_selection = self.default_parameters
+            if parameters_selection not in available_parameters:
+                raise KeyError(
+                    "Parameters selection is not in the available sets."
+                )
+            parameters = available_parameters[parameters_selection]
+
+            # If the parameters set is a function of spatial dimension
+            if isinstance(prob_input_spec, ProbInputSpecVarDim):
+                if isinstance(parameters, Callable):  # type: ignore
+                    func_signature = signature(parameters).parameters
+                    if "spatial_dimension" in func_signature:
+                        parameters = parameters(
+                            spatial_dimension=spatial_dimension
+                        )
+
+        else:
+            parameters = None
+
+        # --- Process the default name
+        if name is None:
+            name = self.__class__.__name__
+
+        # --- Initialize the parent class
+        super().__init__(
+            prob_input=prob_input, parameters=parameters, name=name
+        )
+
+    @classmethod
+    def __init_subclass__(cls):
+        """Verify if concrete class has all the required hidden attributes.
+
+        Raises
+        ------
+        NotImplementedError
+            If required attributes are not implemented in the concrete class.
+        ValueError
+            If default input and parameters selections are not specified
+            when there are multiple of them.
+        KeyError
+            If the selections for the default input and parameters set are
+            not available.
+        """
+        for class_hidden_attribute in CLASS_HIDDEN_ATTRIBUTES:
+            # Some class attributes must be specified
+            if not hasattr(cls, class_hidden_attribute):
+                raise NotImplementedError(
+                    f"Class {cls} lacks required {class_hidden_attribute!r} "
+                    f"class attribute."
+                )
+
+        # Parse default input selection
+        if cls.default_input:
+            if cls.default_input not in cls.available_inputs:
+                raise KeyError("Input selection is not available!")
+        else:
+            if len(cls.available_inputs) > 1:
+                raise ValueError(
+                    "There are multiple available input specifications, "
+                    "the default input selection must be specified!"
+                )
+            else:
+                # If only one is available, use it without being specified
+                cls._default_input = list(cls.available_inputs.keys())[0]
+
+        # Parse default parameters set selection
+        if cls.available_parameters:
+            if cls.default_parameters:
+                if cls.default_parameters not in cls.available_parameters:
+                    raise KeyError("Parameters selection is not available!")
+
+            else:
+                if len(cls.available_parameters) > 1:
+                    raise ValueError(
+                        "There are multiple available parameters sets, "
+                        "the default input selection must be specified!"
+                    )
+                else:
+                    # If only one is available, use it without being specified
+                    cls._default_parameters = list(
+                        cls.available_parameters.keys()
+                    )[0]
+
+    @classproperty
+    def tags(cls) -> List[str]:
+        """Tags to classify different UQ test functions."""
+        return cls._tags  # type: ignore
+
+    @classproperty
+    def available_inputs(
+        cls,
+    ) -> Union[Dict[str, ProbInputSpecFixDim], Dict[str, ProbInputSpecVarDim]]:
+        """All the keys to the available probabilistic input specifications."""
+        return cls._available_inputs  # type: ignore
+
+    @classproperty
+    def default_input(cls) -> Optional[str]:
+        """The key to the default probabilistic input specification."""
+        return cls._default_input  # type: ignore
+
+    @classproperty
+    def available_parameters(cls) -> Optional[Dict[str, Any]]:
+        """All the keys to the available set of parameter values."""
+        return cls._available_parameters  # type: ignore
+
+    @classproperty
+    def default_parameters(cls) -> Optional[str]:
+        """The key to the default set of parameters."""
+        return cls._default_parameters  # type: ignore
+
+    @classproperty
+    def default_spatial_dimension(cls) -> Optional[int]:
+        """To store the default dimension of a test function."""
+        return cls._default_spatial_dimension  # type: ignore
+
+    @classproperty
+    def description(cls) -> Optional[str]:
+        """Short description of the UQ test function."""
+        return cls._description  # type: ignore
 
     def __str__(self):
         out = (
             f"Name              : {self.name}\n"
             f"Spatial dimension : {self.spatial_dimension}\n"
-            f"Description       : {self.DESCRIPTION}"
+            f"Description       : {self.description}"
         )
 
         return out
+
+    def evaluate(self, xx):
+        """Concrete implementation, actual function is delegated to eval_()."""
+        if self.parameters is None:
+            return self.__class__.eval_(xx)
+        else:
+            return self.__class__.eval_(xx, self.parameters)
+
+    @staticmethod
+    @abc.abstractmethod
+    def eval_(*args):  # pragma: no cover
+        """Static method for the concrete function implementation.
+
+        Notes
+        -----
+        - The function evaluation is implemented as a static method so the
+          function can be added without being bounded to the instance.
+        """
+        pass
 
 
 def _verify_sample_shape(xx: np.ndarray, num_cols: int):

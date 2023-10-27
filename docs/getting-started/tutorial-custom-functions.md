@@ -13,8 +13,31 @@ kernelspec:
   name: python3
 ---
 
-(getting-started:creating-a-custom)=
-# Creating a Custom Test Function
+(getting-started:tutorial-custom-functions)=
+# Tutorial: Create a Custom Test Function
+
+You may add an uncertainty quantification (UQ) test functions to UQTestFuns
+such that they share the same interface like
+the {ref}`built-in ones <getting-started:tutorial-built-in-functions>`.
+There are two ways to add a new test function to UQTestFuns:
+
+1. _Interactively_ within a given Python session;
+   if not saved, the test function will be gone after a new session.
+2. _Updating the package_ by implementing the function in a new module
+   within the UQTestFuns package; the test function will available after
+   importing the package.
+
+In this tutorial, you'll learn how to add a test function interactively.
+If you want to add a new test function as a Python module,
+please refer to the {ref}`relevant section <development:adding-test-function-implementation>`
+in the Developer's Guide.
+
+```{code-cell} ipython3
+import numpy as np
+import uqtestfuns as uqtf
+```
+
+## Uncertainty quantification test functions revisited
 
 In essence, an uncertainty quantification (UQ) test function
 contains the following components:
@@ -28,23 +51,10 @@ contains the following components:
   the test function specification; these parameters once set are kept during
   the function evaluation (for example, flag, numerical tolerance,
   and time-step size).
-  
-There are two ways to add a new test function to UQTestFuns:
 
-1. _Interactively_ within a given Python session;
-   if not saved, the test function will be gone after a new session.
-2. _Updating the package_ by implementing the function in a new module
-   within the UQTestFuns package; the test function will available after
-   importing the package.
-
-This section will give a walkthrough on how to add a function interactively;
-to add a new test function as a Python module,
-please refer to the relevant section in the Developer's Guide.
-
-```{code-cell} ipython3
-import numpy as np
-import uqtestfuns as uqtf
-```
+When defining a new generic UQ test function, it's a good idea to think about 
+the candidate test function in those three terms and be ready with their
+specifications.
 
 ## Branin function
 

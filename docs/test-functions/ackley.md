@@ -62,7 +62,7 @@ axs_2 = plt.subplot(132, projection='3d')
 axs_2.plot_surface(
     mesh_2d[0],
     mesh_2d[1],
-    yy_2d.reshape(1000,1000),
+    yy_2d.reshape(1000,1000).T,
     linewidth=0,
     cmap="plasma",
     antialiased=False,
@@ -76,7 +76,7 @@ axs_2.set_title("Surface plot of 2D Ackley", fontsize=14)
 # Contour
 axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
-    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000), cmap="plasma"
+    mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
 axs_3.set_xlabel("$x_1$", fontsize=14)
 axs_3.set_ylabel("$x_2$", fontsize=14)
@@ -104,21 +104,15 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
   
-By default, the spatial dimension is set to $2$.
+By default, the spatial dimension is set to $2$[^default_dimension].
 To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (or as the first argument).
+pass an integer to the parameter `spatial_dimension` (keyword only).
 For example, to create an instance of 10-dimensional Ackley function, type:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Ackley(spatial_dimension=10)
 ```
 
-Or alternatively, pass the dimension as the first argument:
-
-```{code-cell} ipython3
-my_testfun = uqtf.Ackley(10)
-```
-  
 In the subsequent section, this 10-dimensional Ackley function will be used
 for illustration.
 
@@ -177,11 +171,14 @@ plt.gcf().set_dpi(150);
 ### Optimum values
 
 The global optimum value of the Ackley function is
-$\mathcal{M}(\boldsymbol{x}^*) = 0$ at  $x_m^* = 0,\, m = 1, \ldots, M$.
+$\mathcal{M}(\boldsymbol{x}^*) = 0$ at $x_m^* = 0,\, m = 1, \ldots, M$.
 
 ## References
 
 ```{bibliography}
-:style: unsrt
+:style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^default_dimension]: This default dimension applies to all variable dimension
+test functions. It will be used if the `spatial_dimension` argument is not given.

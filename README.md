@@ -1,25 +1,26 @@
 # UQTestFuns
-[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.7701904-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.7701904)
+[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.10047512-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.10047512)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
-[![Python 3.8](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
+[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
+[![PyPI](https://img.shields.io/pypi/v/uqtestfuns?style=flat-square)](https://pypi.org/project/uqtestfuns/)
 
 |                                  Branches                                  | Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 |:--------------------------------------------------------------------------:|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`main`](https://github.com/damar-wicaksono/uqtestfuns/tree/main) (stable) | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=main&style=flat-square) [![codecov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns/main?logo=CodeCov&style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/gh/damar-wicaksono/uqtestfuns/tree/main) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=stable&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=stable) |
+| [`main`](https://github.com/damar-wicaksono/uqtestfuns/tree/main) (stable) | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=main&style=flat-square) [![codecov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns/main?logo=CodeCov&style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/gh/damar-wicaksono/uqtestfuns/tree/main) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=stable&style=flat-square)](https://uqtestfuns.readthedocs.io/en/stable/?badge=stable) |
 |  [`dev`](https://github.com/damar-wicaksono/uqtestfuns/tree/dev) (latest)  | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=dev&style=flat-square) [![codecov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns/dev?logo=CodeCov&style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/gh/damar-wicaksono/uqtestfuns/tree/dev) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=latest&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=latest)    |
 
 <!--One paragraph description-->
 UQTestFuns is an open-source Python3 library of test functions commonly used
-within the uncertainty quantification (UQ) community.
-The package aims to provide:
+within the applied uncertainty quantification (UQ) community.
+Specifically, the package provides:
 
-- a _lightweight implementation_ (with minimal dependencies) of
-  many test functions available in the UQ literature
-- a _single entry point_ (combining models and their probabilistic input
-  specification) to a wide range of test functions
-- an opportunity for an _open-source contribution_ where new test functions and
-  reference results are posted.
+- an implementation _with minimal dependencies_ (i.e., NumPy and SciPy) and
+  _a common interface_ of many test functions available in the UQ literature
+- a _single entry point_ collecting test functions _and_ their probabilistic
+  input specifications in a single Python package
+- an _opportunity for an open-source contribution_, supporting
+  the implementation of new test functions or posting reference results.
 
 In short, UQTestFuns is an homage
 to the [Virtual Library of Simulation Experiments (VLSE)](https://www.sfu.ca/~ssurjano/).
@@ -32,13 +33,17 @@ To list the available functions:
 ```python-repl
 >>> import uqtestfuns as uqtf
 >>> uqtf.list_functions()
- No.      Constructor       Spatial Dimension          Application          Description
------  ------------------  -------------------  --------------------------  ----------------------------------------------------------------------------
-  1         Ackley()                M           optimization, metamodeling  Ackley function from Ackley (1987)
-  2        Borehole()               8           metamodeling, sensitivity   Borehole function from Harper and Gupta (1983)
-  3    DampedOscillator()           8           metamodeling, sensitivity   Damped oscillator model from Igusa and Der Kiureghian (1985)
-  4         Flood()                 8           metamodeling, sensitivity   Flood model from Iooss and Lemaître (2015)
-  5        Ishigami()               3                  sensitivity          Ishigami function from Ishigami and Homma (1991)
+ No.            Constructor            Dimension                Application                Description
+-----  -----------------------------  -----------  --------------------------------------  ----------------------------------------------------------------------------
+  1              Ackley()                  M             optimization, metamodeling        Optimization test function from Ackley (1987)
+  2           Alemazkoor2D()               2                    metamodeling               Two-dimensional high-degree polynomial from Alemazkoor & Meidani (2018)
+  3             Borehole()                 8             metamodeling, sensitivity         Borehole function from Harper and Gupta (1983)
+  4           Bratley1992a()               M              integration, sensitivity         Integration test function #1 from Bratley et al. (1992)
+  5           Bratley1992b()               M              integration, sensitivity         Integration test function #2 from Bratley et al. (1992)
+  6           Bratley1992c()               M              integration, sensitivity         Integration test function #3 from Bratley et al. (1992)
+  7           Bratley1992d()               M              integration, sensitivity         Integration test function #4 from Bratley et al. (1992)
+  8         CantileverBeam2D()             2                    reliability                Cantilever beam reliability problem from Rajashekhar and Ellington (1993)
+  9         CircularPipeCrack()            2                    reliability                Circular pipe under bending moment from Verma et al. (2015)
 ...
 ```
 
@@ -153,6 +158,9 @@ by the Saxony State Parliament.
 UQTestFuns is currently maintained by:
 
 - Damar Wicaksono ([HZDR/CASUS](https://www.casus.science/))
+
+under the Mathematical Foundations of Complex System Science Group
+led by Michael Hecht ([HZDR/CASUS](https://www.casus.science/)) at CASUS.
 
 ## License
 

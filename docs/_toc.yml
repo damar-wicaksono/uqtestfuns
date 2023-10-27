@@ -7,40 +7,114 @@ parts:
   - caption: Getting Started
     chapters:
       - file: getting-started/obtaining-and-installing
-      - file: getting-started/creating-a-built-in
-      - file: getting-started/creating-a-custom
+      - file: getting-started/tutorials
+        sections:
+          - file: getting-started/tutorial-built-in-functions
+            title: Built-in Test Functions
+          - file: getting-started/tutorial-sensitivity
+            title: Sensitivity Analysis
+          - file: getting-started/tutorial-reliability
+            title: Reliability Analysis
+          - file: getting-started/tutorial-custom-functions
+            title: Custom Test Functions
       - file: getting-started/about-uq-test-functions
   - caption: Test Functions
     chapters:
       - file: fundamentals/metamodeling
         title: Metamodeling
-      - file: fundamentals/optimization
-        title: Optimization
       - file: fundamentals/sensitivity
         title: Sensitivity Analysis
+      - file: fundamentals/reliability
+        title: Reliability Analysis
+      - file: fundamentals/integration
+        title: Integration
+      - file: fundamentals/optimization
+        title: Optimization
       - file: test-functions/available
         title: All Available Functions
         sections:
           - file: test-functions/ackley
             title: Ackley
+          - file: test-functions/alemazkoor-2d
+            title: Alemazkoor & Meidani (2018) 2D
           - file: test-functions/borehole
             title: Borehole
+          - file: test-functions/bratley1992a
+            title: Bratley et al. (1992) A
+          - file: test-functions/bratley1992b
+            title: Bratley et al. (1992) B
+          - file: test-functions/bratley1992c
+            title: Bratley et al. (1992) C
+          - file: test-functions/bratley1992d
+            title: Bratley et al. (1992) D
+          - file: test-functions/cantilever-beam-2d
+            title: Cantilever Beam (2D)
+          - file: test-functions/circular-pipe-crack
+            title: Circular Pipe Crack
+          - file: test-functions/convex-fail-domain
+            title: Convex Failure Domain
+          - file: test-functions/damped-cosine
+            title: Damped Cosine
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
+          - file: test-functions/damped-oscillator-reliability
+            title: Damped Oscillator Reliability
           - file: test-functions/flood
             title: Flood
+          - file: test-functions/forrester
+            title: Forrester et al. (2008)
+          - file: test-functions/four-branch
+            title: Four-branch
+          - file: test-functions/franke-1
+            title: (1st) Franke
+          - file: test-functions/franke-2
+            title: (2nd) Franke
+          - file: test-functions/franke-3
+            title: (3rd) Franke
+          - file: test-functions/franke-4
+            title: (4th) Franke
+          - file: test-functions/franke-5
+            title: (5th) Franke
+          - file: test-functions/franke-6
+            title: (6th) Franke
+          - file: test-functions/gayton-hat
+            title: Gayton Hat
+          - file: test-functions/gramacy-1d-sine
+            title: Gramacy (2007) 1D Sine
+          - file: test-functions/hyper-sphere
+            title: Hyper-sphere Bound
           - file: test-functions/ishigami
             title: Ishigami
-          - file: test-functions/oakley-ohagan-1d
-            title: Oakley-O'Hagan 1D
+          - file: test-functions/mclain-s1
+            title: McLain S1
+          - file: test-functions/mclain-s2
+            title: McLain S2
+          - file: test-functions/mclain-s3
+            title: McLain S3
+          - file: test-functions/mclain-s4
+            title: McLain S4
+          - file: test-functions/mclain-s5
+            title: McLain S5
+          - file: test-functions/oakley-1d
+            title: Oakley & O'Hagan (2002) 1D
           - file: test-functions/otl-circuit
             title: OTL Circuit
           - file: test-functions/piston
             title: Piston Simulation
+          - file: test-functions/rs-circular-bar
+            title: RS - Circular Bar
+          - file: test-functions/rs-quadratic
+            title: RS - Quadratic
           - file: test-functions/sobol-g
             title: Sobol'-G
+          - file: test-functions/speed-reducer-shaft
+            title: Speed Reducer Shaft
           - file: test-functions/sulfur
             title: Sulfur
+          - file: test-functions/webster-2d
+            title: Webster et al. (1996) 2D
+          - file: test-functions/welch1992
+            title: Welch et al. (1992)
           - file: test-functions/wing-weight
             title: Wing Weight
   - caption: Probabilistic Input
@@ -88,6 +162,8 @@ parts:
         title: ProbInput
       - file: api/univdist
         title: UnivDist
+      - file: api/input-spec
+        title: ProbInputSpec
   - caption: Development
     chapters:
       - file: development/overview

@@ -2,14 +2,20 @@
 
 UQTestFuns is an open-source Python3 library of test functions commonly used
 within the applied uncertainty quantification (UQ) community.
-The package aims to provide:
+Specifically, the package provides:
 
-- a _lightweight implementation_ (with minimal dependencies)
-  of many test functions available in the UQ literature
-- a _single entry point_ (combining models and their probabilistic input 
-  specification) to a wide range of test functions
-- an _opportunity for an open-source contribution_ where new test functions and
-  reference results are posted.
+- an implementation _with minimal dependencies_ (i.e., NumPy and SciPy) and
+  _a common interface_ of many test functions available in the UQ literature
+- a _single entry point_ collecting test functions _and_ their probabilistic
+  input specifications in a single Python package
+- an _opportunity for an open-source contribution_, supporting
+  the implementation of new test functions or posting reference results.
+
+UQTestFuns aims to save the researchers' and developers' time from having to
+reimplement many of the commonly used test functions (and the corresponding
+probabilistic input specifications) from the UQ literature themselves.
+More background information regarding UQ test functions and UQTestFuns
+can be found {ref}`here <getting-started:about-uq-test-functions>`.
 
 ::::{grid}
 :gutter: 2
@@ -17,36 +23,29 @@ The package aims to provide:
 :::{grid-item-card} Getting Started
 :text-align: center
 New to, but ready to use, UQTestFuns?
-You can check out the guide on how to create a built-in test function
-or a custom one.
+You can check out the tutorials!
 Need some background info first?
 Check out the what & why of these test functions.
 +++
-```{button-ref} getting-started:creating-a-built-in
+```{button-ref} getting-started:tutorials
 :ref-type: myst
 :color: primary
 :outline:
-How to create a built-in test function
-```
-```{button-ref} getting-started:creating-a-custom
-:ref-type: myst
-:color: primary
-:outline:
-How to create a custom test function
+To the UQTestFuns Tutorials
 ```
 ```{button-ref} getting-started:about-uq-test-functions
 :ref-type: myst
 :color: primary
 :outline:
-The what & why of UQ test functions
+About UQ Test Functions
 ```
 :::
 
 :::{grid-item-card} User Guide
 :text-align: center
 
-Be sure to browse through all the available test functions in UQTestFuns;
-they are also crudely classified into their usage in typical UQ analyses.
+Browse through all the available test functions in UQTestFuns;
+they are crudely classified into their usage in typical UQ analyses.
 Need a reference on how to define a probabilistic input model,
 there's a dedicated section on that!
 +++

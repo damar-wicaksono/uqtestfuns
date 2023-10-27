@@ -5,8 +5,9 @@ The damped oscillator model is a seven-dimensional scalar-valued function
 that computes the relative displacement of a secondary spring
 under a white noise base acceleration.
 The model was first proposed in [1] and used in the context of reliability
-analysis in [2] and [3]. Note, however, that the reliability analysis
-variant differs from this base model.
+analysis in, for examples, [2], [3], [4], and [5].
+Note, however, that the reliability analysis variant differs
+from the base model.
 Used in the context of reliability analysis,
 the model also includes additional parameters related to a capacity factor and
 load such that the performance function can be computed.
@@ -21,28 +22,32 @@ References
    two‐degree‐of‐freedom equipment‐structure systems,”
    Journal of Engineering Mechanics, vol. 111, no. 1, pp. 1–19, 1985.
    DOI: 10.1061/(ASCE)0733-9399(1985)111:1(1)
-2. Armen Der Kiureghian and Mario De Stefano, “Efficient algorithm for
+2. Armen Der Kiureghian and Mario De Stefano, "An efficient algorithm for
+   second-order reliability analysis," Department of Civil and Environmental
+   Engineering, University of California, Berkeley, UCB/SEMM-90/20, 1990.
+3. Armen Der Kiureghian and Mario De Stefano, “Efficient algorithm for
    second‐order reliability analysis,” Journal of Engineering Mechanics,
    vol. 117, no. 12, pp. 2904–2923, 1991.
    DOI: 10.1061/(ASCE)0733-9399(1991)117:12(2904)
-3. Vincent Dubourg, “Adaptive surrogate models for reliability analysis
+4. J.-M. Bourinet, F. Deheeger, and M. Lemaire, “Assessing small failure
+   probabilities by combined subset simulation and Support Vector Machines,”
+   Structural Safety, vol. 33, no. 6, pp. 343–353, 2011.
+   DOI: 10.1016/j.strusafe.2011.06.001.
+5. Vincent Dubourg, “Adaptive surrogate models for reliability analysis
    and reliability-based design optimization,”
    Université Blaise Pascal - Clermont II, Clermont-Ferrand, France, 2011.
    URL: https://sites.google.com/site/vincentdubourg/phd-thesis
 """
 import numpy as np
 
-from typing import Optional
-
-from ..core.prob_input.univariate_distribution import UnivDist
+from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
 from .utils import lognorm2norm_mean, lognorm2norm_std
-from .available import create_prob_input_from_available
 
-__all__ = ["DampedOscillator"]
+__all__ = ["DampedOscillator", "DampedOscillatorReliability"]
 
 INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
-    UnivDist(
+    UnivDistSpec(
         name="Mp",
         distribution="lognormal",
         parameters=[
@@ -51,7 +56,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary mass",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="Ms",
         distribution="lognormal",
         parameters=[
@@ -60,7 +65,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary mass",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="Kp",
         distribution="lognormal",
         parameters=[
@@ -69,7 +74,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary spring stiffness",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="Ks",
         distribution="lognormal",
         parameters=[
@@ -78,7 +83,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary spring stiffness",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="Zeta_p",
         distribution="lognormal",
         parameters=[
@@ -87,7 +92,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Primary damping ratio",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="Zeta_s",
         distribution="lognormal",
         parameters=[
@@ -96,7 +101,7 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
         ],
         description="Secondary damping ratio",
     ),
-    UnivDist(
+    UnivDistSpec(
         name="S0",
         distribution="lognormal",
         parameters=[
@@ -107,74 +112,90 @@ INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
     ),
 ]
 
-AVAILABLE_INPUT_SPECS = {
-    "DerKiureghian1991": {
-        "name": "Damped-Oscillator-Der-Kiureghian-1991",
-        "description": (
+AVAILABLE_INPUT_SPECS_BASE = {
+    "DerKiureghian1991": ProbInputSpecFixDim(
+        name="DampedOscillator-DerKiureghian1991",
+        description=(
             "Probabilistic input model for the Damped Oscillator model "
             "from Der Kiureghian and De Stefano (1991)."
         ),
-        "marginals": INPUT_MARGINALS_DERKIUREGHIAN1991,
-        "copulas": None,
-    },
+        marginals=INPUT_MARGINALS_DERKIUREGHIAN1991,
+        copulas=None,
+    ),
 }
 
-DEFAULT_INPUT_SELECTION = "DerKiureghian1991"
+
+AVAILABLE_INPUT_SPECS_RELIABILITY = {
+    "DerKiureghian1990a": ProbInputSpecFixDim(
+        name="DampedOscillatorReliability-DerKiureghian1990a",
+        description=(
+            "Input model #1 for the damped oscillator reliability "
+            "from Der Kiureghian and De Stefano (1990)"
+        ),
+        marginals=INPUT_MARGINALS_DERKIUREGHIAN1991
+        + [
+            UnivDistSpec(
+                name="Fs",
+                distribution="lognormal",
+                parameters=[
+                    lognorm2norm_mean(15.0, 0.1 * 15.0),
+                    lognorm2norm_std(15.0, 0.1 * 15.0),
+                ],
+                description="Force capacity of the secondary spring",
+            ),
+        ],
+        copulas=None,
+    ),
+    "DerKiureghian1990b": ProbInputSpecFixDim(
+        name="DampedOscillatorReliability-DerKiureghian1990b",
+        description=(
+            "Input model #2 for the damped oscillator reliability "
+            "from Der Kiureghian and De Stefano (1990)"
+        ),
+        marginals=INPUT_MARGINALS_DERKIUREGHIAN1991
+        + [
+            UnivDistSpec(
+                name="Fs",
+                distribution="lognormal",
+                parameters=[
+                    lognorm2norm_mean(21.5, 0.1 * 21.5),
+                    lognorm2norm_std(21.5, 0.1 * 21.5),
+                ],
+                description="Force capacity of the secondary spring",
+            ),
+        ],
+        copulas=None,
+    ),
+    "DerKiureghian1990c": ProbInputSpecFixDim(
+        name="DampedOscillatorReliability-DerKiureghian1990c",
+        description=(
+            "Input model #3 for the damped oscillator reliability "
+            "from Der Kiureghian and De Stefano (1990)"
+        ),
+        marginals=INPUT_MARGINALS_DERKIUREGHIAN1991
+        + [
+            UnivDistSpec(
+                name="Fs",
+                distribution="lognormal",
+                parameters=[
+                    lognorm2norm_mean(27.5, 0.1 * 27.5),
+                    lognorm2norm_std(27.5, 0.1 * 27.5),
+                ],
+                description="Force capacity of the secondary spring",
+            ),
+        ],
+        copulas=None,
+    ),
+}
+
+# peak factor
+AVAILABLE_PARAMETERS_RELIABILITY = {
+    "DerKiureghian1990": 3,
+}
 
 
-class DampedOscillator(UQTestFunABC):
-    """A concrete implementation of the Damped oscillator test function."""
-
-    _TAGS = ["metamodeling", "sensitivity"]
-
-    _AVAILABLE_INPUTS = tuple(AVAILABLE_INPUT_SPECS.keys())
-
-    _AVAILABLE_PARAMETERS = None
-
-    _DEFAULT_SPATIAL_DIMENSION = 8
-
-    _DESCRIPTION = (
-        "Damped oscillator model from Igusa and Der Kiureghian (1985)"
-    )
-
-    def __init__(
-        self,
-        *,
-        prob_input_selection: Optional[str] = DEFAULT_INPUT_SELECTION,
-        name: Optional[str] = None,
-    ):
-        # --- Arguments processing
-        prob_input = create_prob_input_from_available(
-            prob_input_selection, AVAILABLE_INPUT_SPECS
-        )
-        # Process the default name
-        if name is None:
-            name = DampedOscillator.__name__
-
-        super().__init__(prob_input=prob_input, name=name)
-
-    def evaluate(self, xx: np.ndarray):
-        """Evaluate the damped oscillator model on a set of input values.
-
-        Parameters
-        ----------
-        xx : np.ndarray
-            A 7-dimensional input values given by an N-by-7 array
-            where N is the number of input values.
-
-        Returns
-        -------
-        np.ndarray
-            The output of the damped oscillator model test function, i.e.,
-            the relative displacement of the secondary spring.
-        """
-        yy = evaluate_mean_square_displacement(xx)
-
-        return np.sqrt(yy)
-
-
-def evaluate_mean_square_displacement(xx: np.ndarray):
-    """Evaluate the mean-square displacement of the damped oscillator model.
+def evaluate(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the rms displacement of the damped oscillator model.
 
     Parameters
     ----------
@@ -225,4 +246,63 @@ def evaluate_mean_square_displacement(xx: np.ndarray):
     # NOTE: This is squared displacement
     xx_s = first_term * second_term * third_term
 
-    return xx_s
+    return np.sqrt(xx_s)
+
+
+class DampedOscillator(UQTestFunABC):
+    """A concrete implementation of the Damped oscillator test function."""
+
+    _tags = ["metamodeling", "sensitivity"]
+    _description = (
+        "Damped oscillator model from Igusa and Der Kiureghian (1985)"
+    )
+    _available_inputs = AVAILABLE_INPUT_SPECS_BASE
+    _available_parameters = None
+    _default_spatial_dimension = 8
+
+    eval_ = staticmethod(evaluate)
+
+
+def evaluate_reliability(xx: np.ndarray, parameters: float):
+    """Evaluate the performance function of the system reliability.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        An 8-dimensional input values given by an N-by-7 array
+        where N is the number of input values.
+    parameters : float
+        The peak factor of the system.
+
+    Returns
+    -------
+    np.ndarray
+        The system's performance evaluation. If less than or equal to zero,
+        the system is in failed state.
+        The output is a 1-dimensional array of length N.
+    """
+    rms_disp = evaluate(xx[:, :-1])  # root-mean-square displacement
+    kk_s = xx[:, 3]  # Secondary spring stiffness
+    ff_s = xx[:, -1]  # Force capacity of the secondary spring
+
+    pf = parameters  # peak factor
+
+    yy = ff_s - pf * kk_s * rms_disp
+
+    return yy
+
+
+class DampedOscillatorReliability(UQTestFunABC):
+    """A concrete implementation of the Damped oscillator reliability func."""
+
+    _tags = ["reliability"]
+    _description = (
+        "Performance function from Der Kiureghian and De Stefano (1990)"
+    )
+    _available_inputs = AVAILABLE_INPUT_SPECS_RELIABILITY
+    _available_parameters = AVAILABLE_PARAMETERS_RELIABILITY
+    _default_spatial_dimension = 8
+    _default_input = "DerKiureghian1990a"
+    _default_parameters = "DerKiureghian1990"
+
+    eval_ = staticmethod(evaluate_reliability)
