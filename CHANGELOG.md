@@ -7,10 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2023-10-27
+
 ### Added
 
 - The two-dimensional polynomial function of high-degree for metamodeling
   exercises from Alemazkoor and Meidani (2008).
+- New tutorials (how the package may be used in a sensitivity analysis or
+  reliability analysis exercises) have been added to the documentation
+  following the review process in the submission of the package
+  to the Journal of Open Source Software (JOSS).
+
+### Changed
+
+- The documentation landing page now includes explicit statement regarding 
+  the purpose of the package.
+
+### Fixed
+
+- Several typos in the documentation have been fixed with an additional
+  minor improvements overall.
 
 ## [0.4.0] - 2023-07-07
 
@@ -169,6 +185,7 @@ First public release of UQTestFuns.
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
 [Unreleased]: https://github.com/damar-wicaksono/uqtestfuns/compare/main...dev
+[0.4.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.1.1...v0.2.0

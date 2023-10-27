@@ -39,7 +39,7 @@ SORM
 
 SS
     Subset simulation
-    
+
 SSRM
     Sequential surrogate reliability method {cite}`Li2018`
 
@@ -47,7 +47,7 @@ Support
     The support of the probability density function, that is, the subset of 
     the function domain whose elements are not mapped to zero;
     denoted by $\mathcal{D}_X$.
-    
+
 SVM
     Support Vector Machines
 ```

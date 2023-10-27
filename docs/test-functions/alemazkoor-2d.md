@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:alemazkoor-2d)=
-# Low-Dimensional High-Degree Function from Alemazkoor and Meidani (2008)
+# Two-dimensional Function from Alemazkoor and Meidani (2018)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,11 +21,11 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The low-dimensional high-degree test function
-(or `Alemazkoor2D` for short) is a two-dimensional polynomial function.
-It was introduced in {cite}`Alemazkoor2018` as a test function for
+The test function from {cite}`Alemazkoor2018` (or `Alemazkoor2D` for short)
+is a two-dimensional polynomial function.
+It was used as a test function for
 a metamodeling exercise (i.e., sparse polynomial chaos expansion).
-The function features a low-dimensional polynomial function (2D)
+The function features a low-dimensional polynomial function (two-dimensional)
 with a high degree (a total degree of $20$).
 
 The surface and contour plots of the `Alemazkoor2D` function are shown below.

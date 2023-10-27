@@ -22,7 +22,7 @@ regardless of their typical applications.
 |                                        Name                                         | Spatial Dimension |           Constructor           |
 |:-----------------------------------------------------------------------------------:|:-----------------:|:-------------------------------:|
 |                        {ref}`Ackley <test-functions:ackley>`                        |         M         |           `Ackley()`            |
-|          {ref}`Low-Dimensional High-Degree <test-functions:alemazkoor-2d>`          |         2         |        `Alemazkoor2D()`         |
+|        {ref}`Alemazkoor & Meidani (2018) 2D <test-functions:alemazkoor-2d>`         |         2         |        `Alemazkoor2D()`         |
 |                      {ref}`Borehole <test-functions:borehole>`                      |         8         |          `Borehole()`           |
 |            {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`             |         M         |        `Bratley1992a()`         |
 |            {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`             |         M         |        `Bratley1992b()`         |
@@ -52,7 +52,7 @@ regardless of their typical applications.
 |                     {ref}`McLain S3 <test-functions:mclain-s3>`                     |         2         |          `McLainS3()`           |
 |                     {ref}`McLain S4 <test-functions:mclain-s4>`                     |         2         |          `McLainS4()`           |
 |                     {ref}`McLain S5 <test-functions:mclain-s5>`                     |         2         |          `McLainS5()`           |
-|           {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`            |         1         |          `Oakley1D()`           |
+|            {ref}`Oakley & O'Hagan (2002) 1D <test-functions:oakley-1d>`             |         1         |          `Oakley1D()`           |
 |                   {ref}`OTL Circuit <test-functions:otl-circuit>`                   |      6 / 20       |         `OTLCircuit()`          |
 |                  {ref}`Piston Simulation <test-functions:piston>`                   |      7 / 20       |           `Piston()`            |
 |              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |         2         |        `RSCircularBar()`        |
