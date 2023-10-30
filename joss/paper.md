@@ -223,7 +223,7 @@ with another set of parameters (either uncertain or deterministic)
 to define the so-called _performance function_ or _limit-state function_
 of a system denoted by $g$.
 The task for a reliability analysis method is to estimate the failure
-probability of the system defined, folloiwng @Sudret2012, as:
+probability of the system defined, following @Sudret2012, as:
 \begin{equation}\label{eq:pf}
 P_f = \mathbb{P}[g(\mathbf{X}; \mathbf{p}) \leq 0] = \int_{\mathcal{D}_f = \{ \mathbf{x} | g(\mathbf{x}; \mathbf{p}) \leq 0 \}} f_{\mathbf{X}} (\mathbf{x}) \; d\mathbf{x},
 \end{equation}
