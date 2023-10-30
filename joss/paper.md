@@ -32,7 +32,7 @@ in the field of applied uncertainty quantification (UQ).
 During the development phase of a novel method or algorithm,
 researchers and developers often rely on test functions
 taken from the literature for validation purposes.
-Afterward, they employ these test functions as a common ground
+Afterward, they employ these test functions as a fair means
 to compare the performance of the novel method
 against that of the state-of-the-art methods
 in terms of accuracy and efficiency measures.
@@ -84,7 +84,7 @@ UQ test functions are widely used in the community for several reasons:
   for various types of analyses.
 - Although test functions are taken as black boxes, _their features are known_; 
   this knowledge enables a thorough diagnosis of a UQ method.
-- Test functions provide _a common ground_ for comparing the performance
+- Test functions provide a _fair means_ for comparing the performance
   of various UQ methods in solving the same class of problems. 
 
 Several efforts have been made to provide relevant UQ test functions
@@ -223,7 +223,7 @@ with another set of parameters (either uncertain or deterministic)
 to define the so-called _performance function_ or _limit-state function_
 of a system denoted by $g$.
 The task for a reliability analysis method is to estimate the failure
-probability of the system defined as [@Sudret2012]:
+probability of the system defined, folloiwng @Sudret2012, as:
 \begin{equation}\label{eq:pf}
 P_f = \mathbb{P}[g(\mathbf{X}; \mathbf{p}) \leq 0] = \int_{\mathcal{D}_f = \{ \mathbf{x} | g(\mathbf{x}; \mathbf{p}) \leq 0 \}} f_{\mathbf{X}} (\mathbf{x}) \; d\mathbf{x},
 \end{equation}
