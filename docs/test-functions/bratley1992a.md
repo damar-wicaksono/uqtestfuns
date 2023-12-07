@@ -154,7 +154,6 @@ random variables as shown in the table below.
 |  $\vdots$ | $\vdots$ | $\vdots$      | $\vdots$   |  $\vdots$   |
 |  M        | $x_M$    | uniform       | [0.0 1.0]  |     N/A     |
 
-
 ## Reference results
 
 This section provides several reference results of typical UQ analyses involving

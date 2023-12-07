@@ -21,7 +21,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The simple portfolio model is a three-dimensional scalar-valued test function.
+The simple portfolio model (or `Portfolio3D` for short ) is a three-dimensional
+scalar-valued test function.
 The function was introduced in {cite}`Saltelli2004` as an example for
 illustrating some elementary sensitivity measures.
 
@@ -43,7 +44,7 @@ print(my_testfun)
 
 The simple portfolio model computes the estimated risk (_return_) in &#8364;
 of an investment portfolio consisting of three hedged portfolios via 
-a linear relationship:
+a linear relationship[^location]:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = C_s P_s + C_t P_t + C_j P_j,
@@ -95,7 +96,7 @@ involving the test function.
 ### Sample histogram
 
 Shown below are the histograms of the output based on $100'000$ random points
-for the simple portfolio model with three different sets of parameters:
+for the simple portfolio model with three different sets of parameters.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -230,3 +231,5 @@ the squared of the hybrid local-global measures.
 :style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^location]: see Section 1.1, pp. 1-2 in {cite}`Saltelli2004`.

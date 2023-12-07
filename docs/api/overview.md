@@ -36,7 +36,7 @@ let's start from the top, the {ref}`built-in test functions <test-functions:avai
 To facilitate the creation of a custom UQ test function
 in runtime or within a running Python session, UQTestFuns also includes
 the concrete {ref}`api_reference_uqtestfun` class.
-You can see the usage {ref}`here <getting-started:creating-a-custom>`.
+You can see the usage {ref}`here <getting-started:tutorial-custom-functions>`.
 ```
 
 Additionally, there is currently one top-level convenient function used to
