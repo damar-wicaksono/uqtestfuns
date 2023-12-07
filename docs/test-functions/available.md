@@ -23,6 +23,7 @@ regardless of their typical applications.
 |:-----------------------------------------------------------------------------------:|:-----------------:|:-------------------------------:|
 |                        {ref}`Ackley <test-functions:ackley>`                        |         M         |           `Ackley()`            |
 |        {ref}`Alemazkoor & Meidani (2018) 2D <test-functions:alemazkoor-2d>`         |         2         |        `Alemazkoor2D()`         |
+|       {ref}`Alemazkoor & Meidani (2018) 20D <test-functions:alemazkoor-20d>`        |        20         |        `Alemazkoor20D()`        |
 |                      {ref}`Borehole <test-functions:borehole>`                      |         8         |          `Borehole()`           |
 |            {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`             |         M         |        `Bratley1992a()`         |
 |            {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`             |         M         |        `Bratley1992b()`         |
