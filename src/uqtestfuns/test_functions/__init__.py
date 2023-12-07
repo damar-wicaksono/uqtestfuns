@@ -22,6 +22,7 @@ from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
 from .piston import Piston
+from .portfolio_3d import Portfolio3D
 from .rs_circular_bar import RSCircularBar
 from .rs_quadratic import RSQuadratic
 from .sobol_g import SobolG
@@ -69,6 +70,7 @@ __all__ = [
     "McLainS4",
     "McLainS5",
     "Piston",
+    "Portfolio3D",
     "RSCircularBar",
     "RSQuadratic",
     "SobolG",

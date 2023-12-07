@@ -55,6 +55,7 @@ regardless of their typical applications.
 |            {ref}`Oakley & O'Hagan (2002) 1D <test-functions:oakley-1d>`             |         1         |          `Oakley1D()`           |
 |                   {ref}`OTL Circuit <test-functions:otl-circuit>`                   |      6 / 20       |         `OTLCircuit()`          |
 |                  {ref}`Piston Simulation <test-functions:piston>`                   |      7 / 20       |           `Piston()`            |
+|             {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`             |         3         |         `Portfolio3D()`         |
 |              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |         2         |        `RSCircularBar()`        |
 |                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |         2         |         `RSQuadratic()`         |
 |                      {ref}`Sobol'-G <test-functions:sobol-g>`                       |         M         |           `SobolG()`            |
