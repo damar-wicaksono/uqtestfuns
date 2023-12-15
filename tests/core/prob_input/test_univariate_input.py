@@ -26,6 +26,9 @@ def univariate_input(
         parameters = np.sort(np.random.rand(2))
     elif request.param == "beta":
         parameters = np.sort(np.random.rand(4))
+    elif distribution == "exponential":
+        # Single parameter, must be strictly positive
+        parameters = 1 + np.random.rand(1)
     elif distribution == "triangular":
         parameters = np.sort(1 + 2 * np.random.rand(2))
         # Append the mid point

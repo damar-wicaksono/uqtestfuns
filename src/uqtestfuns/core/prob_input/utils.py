@@ -7,6 +7,7 @@ from typing import Tuple
 
 from .univariate_distributions import (
     beta,
+    exponential,
     normal,
     gumbel,
     lognormal,
@@ -20,6 +21,7 @@ from ...global_settings import ARRAY_FLOAT
 
 SUPPORTED_MARGINALS = {
     beta.DISTRIBUTION_NAME: beta,
+    exponential.DISTRIBUTION_NAME: exponential,
     lognormal.DISTRIBUTION_NAME: lognormal,
     normal.DISTRIBUTION_NAME: normal,
     gumbel.DISTRIBUTION_NAME: gumbel,

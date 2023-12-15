@@ -136,6 +136,8 @@ parts:
         sections:
           - file: prob-input/univariate-distributions/beta
             title: Beta
+          - file: prob-input/univariate-distributions/exponential
+            title: Exponential
           - file: prob-input/univariate-distributions/gumbel
             title: Gumbel (max.)
           - file: prob-input/univariate-distributions/logitnormal

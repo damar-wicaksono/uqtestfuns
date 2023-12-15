@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The three-dimensional simple portfolio model from Saltelli et al. (2004).
 - The 20-dimensional polynomial test function from Alemazkoor
   and Meidani (2018).
+- The exponential distribution as a distribution of `UnivDist` instances.
 
 ## [0.4.1] - 2023-10-27
 
