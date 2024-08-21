@@ -1,6 +1,7 @@
 """
 Test module for UQTestFun class, a generic class for generic UQ test function.
 """
+
 import pytest
 
 from uqtestfuns import UQTestFun, ProbInput

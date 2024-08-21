@@ -17,6 +17,7 @@ and SciPy is as follows:
 - ``s`` = ``sigma``
 - ``scale`` = ``np.exp(mu)``
 """
+
 import numpy as np
 from scipy.stats import lognorm
 

@@ -16,6 +16,7 @@ References
    Physics, vol. 371, pp. 137-151, 2018.
    DOI: 10.1016/j.jcp.2018.05.025
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

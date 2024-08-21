@@ -1,6 +1,7 @@
 """
 Test module specifically for UnivDist instances with the exponential dist.
 """
+
 import pytest
 import numpy as np
 

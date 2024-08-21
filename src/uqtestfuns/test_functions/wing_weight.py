@@ -19,6 +19,7 @@ References
    Orlando, Florida, 2020. American Institute of Aeronautics and Astronautics.
    DOI: 10.2514/6.2020-1865.
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

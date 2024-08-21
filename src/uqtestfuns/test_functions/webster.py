@@ -13,6 +13,7 @@ References
    Joint Program Report Series 4, 1996.
    [Online]. Available: http://globalchange.mit.edu/publication/15670
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

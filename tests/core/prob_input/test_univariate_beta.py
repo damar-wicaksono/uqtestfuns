@@ -1,6 +1,7 @@
 """
 Test module for UnivariateInput instances with a Beta distribution.
 """
+
 import pytest
 import numpy as np
 

@@ -13,6 +13,7 @@ References
    and System Safety, vol. 111, pp. 232-240, 2013.
    DOI: 10.1016/j.ress.2012.10.008
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

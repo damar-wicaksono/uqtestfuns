@@ -32,6 +32,7 @@ References
    Communications, vol. 181, no. 2, pp. 259–270, 2010,
    DOI:10.1016/j.cpc.2009.09.018
 """
+
 import numpy as np
 
 from scipy.special import eval_chebyt

@@ -8,6 +8,7 @@ a ``UnivDist`` (for one-dimensional marginals) and ``ProbInput``
 The container type should be free of custom methods and derived from
 ``NamedTuple`` class to provide typing information.
 """
+
 from typing import Any, Callable, List, NamedTuple, Optional, Tuple, Union
 
 

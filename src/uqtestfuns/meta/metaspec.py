@@ -2,6 +2,7 @@
 This module contains the classes that implement specification
 for a meta and the resulting test function.
 """
+
 import numpy as np
 import itertools
 from dataclasses import dataclass, field, InitVar

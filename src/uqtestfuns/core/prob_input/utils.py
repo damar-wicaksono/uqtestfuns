@@ -1,6 +1,7 @@
 """
 Utility module for probabilistic input modeling.
 """
+
 from numpy.typing import ArrayLike
 from types import ModuleType
 from typing import Tuple

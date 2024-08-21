@@ -6,6 +6,7 @@ Notes
 - The tests defined in this module deals with
   the correctness of the evaluation.
 """
+
 import pytest
 
 from uqtestfuns import Gramacy1DSine

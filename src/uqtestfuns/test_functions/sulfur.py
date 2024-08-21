@@ -58,6 +58,7 @@ References
    Accessed: Jan. 25, 2023
    URL: http://www.physicalgeography.net/fundamentals/8o.html.
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

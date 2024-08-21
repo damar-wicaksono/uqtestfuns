@@ -79,6 +79,10 @@ parts:
             title: (5th) Franke
           - file: test-functions/franke-6
             title: (6th) Franke
+          - file: test-functions/friedman-6d
+            title: Friedman (6D)
+          - file: test-functions/friedman-10d
+            title: Friedman (10D)
           - file: test-functions/gayton-hat
             title: Gayton Hat
           - file: test-functions/gramacy-1d-sine

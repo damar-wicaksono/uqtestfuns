@@ -2,6 +2,7 @@
 Test module specifically for UnivariateInput instances with Gumbel (max.)
 distribution.
 """
+
 import pytest
 import numpy as np
 

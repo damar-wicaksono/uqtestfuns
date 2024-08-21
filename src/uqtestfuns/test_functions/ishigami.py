@@ -27,6 +27,7 @@ References
    vol. 94, no. 3, pp. 742–751, 2009.
    DOI:10.1016/j.ress.2008.07.008
 """
+
 import numpy as np
 
 from typing import Tuple

@@ -18,6 +18,7 @@ References
    experiments," Technometrics, vol. 34, no. 1, pp. 15-25, 1992.
    DOI: 10.2307/1269548
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

@@ -17,6 +17,7 @@ References
    models,” Journal of Statistical Software, vol. 19, no. 9, 2007.
    DOI: 10.18637/jss.v019.i09.
 """
+
 import numpy as np
 
 from numpy.random._generator import Generator

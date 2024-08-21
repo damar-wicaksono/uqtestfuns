@@ -1,6 +1,7 @@
 """
 Utility module used across package.
 """
+
 import os
 import inspect
 

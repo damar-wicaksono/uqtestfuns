@@ -1,6 +1,7 @@
 """
 This module provides abstract base classes for defining a test function class.
 """
+
 import abc
 import numpy as np
 
@@ -24,10 +25,10 @@ CLASS_HIDDEN_ATTRIBUTES = [
 DEFAULT_DIMENSION = 2
 
 
-class classproperty(property):
+class classproperty(property):  # type: ignore
     """Decorator w/ descriptor to get and set class-level attributes."""
 
-    def __get__(self, owner_self, owner_cls):
+    def __get__(self, owner_self, owner_cls):  # type: ignore
         return self.fget(owner_cls)  # type: ignore
 
     def __set__(self, owner_self, owner_cls):  # pragma: no cover

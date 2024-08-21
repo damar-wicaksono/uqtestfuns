@@ -32,6 +32,7 @@ and SciPy is as follows:
 where lb and ub are the desired lower and upper bounds of the truncated
 normal distribution, respectively.
 """
+
 import numpy as np
 
 from scipy.stats import truncnorm

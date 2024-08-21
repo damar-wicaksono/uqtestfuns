@@ -1,6 +1,7 @@
 """
 The test module for the high-level function 'list_functions()'
 """
+
 import pytest
 
 from conftest import assert_call

@@ -1,6 +1,7 @@
 """
 Test module specifically for UnivariateInput instances with lognormal dist.
 """
+
 import pytest
 import numpy as np
 

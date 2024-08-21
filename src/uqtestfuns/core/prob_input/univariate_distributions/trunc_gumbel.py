@@ -8,6 +8,7 @@ the mode, the scale, lower bound, and upper bound, respectively.
 The underlying implementation is based on the re-implementation of regular
 Gumbel (max.) distribution in UQTestFuns (which in turn, based on scipy.stats).
 """
+
 import numpy as np
 
 from scipy.stats import gumbel_r

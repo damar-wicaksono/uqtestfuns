@@ -55,6 +55,7 @@ References
    Accessed: Jan. 25, 2023
    URL: http://samo2007.chem.elte.hu/lectures/Crestaux.pdf
 """
+
 import numpy as np
 
 from typing import List

@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The six-dimensional and ten-dimensional Friedman functions from
+  Friedman et al. (1983) and Friedman (1991), respectively.
 - The three-dimensional simple portfolio model from Saltelli et al. (2004).
 - The 20-dimensional polynomial test function from Alemazkoor
   and Meidani (2018).

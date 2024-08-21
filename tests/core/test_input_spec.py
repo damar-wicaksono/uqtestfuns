@@ -1,6 +1,7 @@
 """
 Test module for the prob. input specification class.
 """
+
 from typing import List
 
 from uqtestfuns.core.prob_input.input_spec import (

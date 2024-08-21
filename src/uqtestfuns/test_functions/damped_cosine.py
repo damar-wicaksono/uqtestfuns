@@ -10,6 +10,7 @@ References
    p. 769-784, 2002.
    DOI: 10.1093/biomet/89.4.769
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

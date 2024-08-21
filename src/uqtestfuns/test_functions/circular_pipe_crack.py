@@ -20,6 +20,7 @@ References
    Structural Safety, vol. 73, pp. 42–53, 2018.
    DOI: 10.1016/j.strusafe.2018.02.005
 """
+
 import numpy as np
 
 from typing import Tuple

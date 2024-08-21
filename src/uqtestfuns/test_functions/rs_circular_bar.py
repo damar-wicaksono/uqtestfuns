@@ -11,6 +11,7 @@ References
    in Reliability Engineering. London: Springer London, 2016, pp. 257–292.
    DOI: 10.1007/978-1-4471-6269-8_8
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
