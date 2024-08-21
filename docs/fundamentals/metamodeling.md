@@ -33,6 +33,8 @@ in the comparison of metamodeling approaches.
 |             {ref}`(4th) Franke <test-functions:franke-4>`              |         2         |     `Franke4()`      |
 |             {ref}`(5th) Franke <test-functions:franke-5>`              |         2         |     `Franke5()`      |
 |             {ref}`(6th) Franke <test-functions:franke-6>`              |         2         |     `Franke6()`      |
+|           {ref}`Friedman (6D) <test-functions:friedman-6d>`            |         6         |    `Friedman6D()`    |
+|          {ref}`Friedman (10D) <test-functions:friedman-10d>`           |        10         |   `Friedman10D()`    |
 |     {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>`     |         1         |  `Gramacy1DSine()`   |
 |              {ref}`McLain S1 <test-functions:mclain-s1>`               |         2         |     `McLainS1()`     |
 |              {ref}`McLain S2 <test-functions:mclain-s2>`               |         2         |     `McLainS2()`     |

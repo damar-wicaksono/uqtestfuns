@@ -26,6 +26,7 @@ in the comparison of sensitivity analysis methods.
 | {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>` |         M         |   `Bratley1992d()`   |
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>`  |         7         | `DampedOscillator()` |
 |             {ref}`Flood <test-functions:flood>`              |         8         |      `Flood()`       |
+|      {ref}`Friedman (6D) <test-functions:friedman-6d>`       |         6         |    `Friedman6D()`    |
 |          {ref}`Ishigami <test-functions:ishigami>`           |         3         |     `Ishigami()`     |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`        |      6 / 20       |    `OTLCircuit()`    |
 |       {ref}`Piston Simulation <test-functions:piston>`       |      7 / 20       |      `Piston()`      |

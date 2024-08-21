@@ -13,6 +13,7 @@ from .flood import Flood
 from .forrester import Forrester2008
 from .four_branch import FourBranch
 from .franke import Franke1, Franke2, Franke3, Franke4, Franke5, Franke6
+from .friedman import Friedman6D, Friedman10D
 from .gayton_hat import GaytonHat
 from .gramacy2007 import Gramacy1DSine
 from .hyper_sphere import HyperSphere
@@ -59,6 +60,8 @@ __all__ = [
     "Franke4",
     "Franke5",
     "Franke6",
+    "Friedman6D",
+    "Friedman10D",
     "GaytonHat",
     "Gramacy1DSine",
     "HyperSphere",
