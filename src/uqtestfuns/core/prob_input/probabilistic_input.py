@@ -5,6 +5,7 @@ The ``ProbInput`` class represents a probabilistic input model.
 Each probabilistic input has a set of one-dimensional marginals each of which
 is defined by an instance of the ``UnivDist`` class.
 """
+
 from __future__ import annotations
 
 import numpy as np

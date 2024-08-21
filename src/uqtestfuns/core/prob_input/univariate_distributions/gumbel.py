@@ -10,6 +10,7 @@ In the SciPy convention, the parameter ``mu`` corresponds
 to the ``loc`` parameter, while the parameter ``beta``
 corresponds to the ``scale`` parameter.
 """
+
 import numpy as np
 
 from scipy.stats import gumbel_r

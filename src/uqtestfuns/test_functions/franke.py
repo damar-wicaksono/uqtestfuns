@@ -39,6 +39,7 @@ References
    Journal, vol. 17, no. 4, pp. 318-324, 1974.
    DOI: 10.1093/comjnl/17.4.318
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

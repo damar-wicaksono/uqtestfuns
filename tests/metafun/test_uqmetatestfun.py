@@ -1,6 +1,7 @@
 """
 Test module for instances of UQMetaTestFun (meta).
 """
+
 import numpy as np
 import pytest
 

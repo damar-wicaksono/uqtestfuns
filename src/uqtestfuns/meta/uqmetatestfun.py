@@ -13,6 +13,7 @@ References
    doi:
    `10.1016/j.ress.2020.107189 <https://doi.org/10.1016/j.ress.2020.107189>`_.
 """
+
 import math
 import numpy as np
 

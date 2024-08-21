@@ -8,6 +8,7 @@ The underlying implementation is based on the implementation from scipy.stats.
 In the SciPy convention, the rate parameter corresponds to the reciprocal
 of the ``scale`` parameter.
 """
+
 import numpy as np
 from scipy.stats import expon
 

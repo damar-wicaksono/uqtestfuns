@@ -6,6 +6,7 @@ Notes
 - The tests defined in this module deals with the correctness
   of the evaluation of this particular test function.
 """
+
 import numpy as np
 
 from uqtestfuns.test_functions import Piston

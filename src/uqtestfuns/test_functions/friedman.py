@@ -23,6 +23,7 @@ References
    Modelling & Software, vol. 149, p. 105310, 2022.
    DOI: 10.1016/j.envsoft.2022.105310
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

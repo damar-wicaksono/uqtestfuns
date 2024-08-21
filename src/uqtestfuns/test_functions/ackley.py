@@ -19,6 +19,7 @@ References
    vol. 1, no. 1, pp. 1–23, 1993.
    DOI: 10.1162/evco.1993.1.1.1.
 """
+
 import numpy as np
 
 from typing import List, Tuple

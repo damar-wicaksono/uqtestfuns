@@ -4,6 +4,7 @@ Module with an implementation of the ``UnivDist`` class.
 The ``UnivDist`` class represents a univariate random variable.
 Each random variable has a (parametric) probability distribution.
 """
+
 from __future__ import annotations
 
 import numpy as np

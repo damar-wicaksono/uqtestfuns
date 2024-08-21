@@ -1,6 +1,7 @@
 """
 Test module specifically for UnivariateInput instances with uniform dist.
 """
+
 import pytest
 import numpy as np
 

@@ -6,6 +6,7 @@ Notes
 - High-level functions typically contain many guardrails against invalidity
   of the input arguments.
 """
+
 from tabulate import tabulate as tbl  # 'tabulate' is used as a parameter name
 from .utils import get_available_classes, SUPPORTED_TAGS
 from . import test_functions

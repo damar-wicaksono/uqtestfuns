@@ -20,6 +20,7 @@ References
    Variables," Ph. D. dissertation, Ohio State University, Ohio, 2010.
    URL: http://rave.ohiolink.edu/etdc/view?acc_num=osu1275422248
 """
+
 import numpy as np
 
 from copy import copy

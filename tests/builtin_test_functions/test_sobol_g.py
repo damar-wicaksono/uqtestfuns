@@ -6,6 +6,7 @@ Notes
 - The tests defined in this module deals with
   the correctness of the evaluation.
 """
+
 import numpy as np
 import pytest
 
@@ -72,9 +73,7 @@ def test_compute_variance(spatial_dimension, params_selection):
 
     # Analytical variance
     params = my_fun.parameters
-    var_ref = (
-        np.prod((4 / 3 + 2 * params + params**2) / (1 + params) ** 2) - 1
-    )
+    var_ref = np.prod((4 / 3 + 2 * params + params**2) / (1 + params) ** 2) - 1
 
     # Assertion (no need to be very ambitious with the tolerance)
     assert np.allclose(var_mc, var_ref, rtol=1e-1)

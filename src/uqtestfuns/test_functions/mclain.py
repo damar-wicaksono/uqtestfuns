@@ -27,6 +27,7 @@ References
    Technical Report No. NPS53-79-003, 1979.
    URL: https://core.ac.uk/reader/36727660
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

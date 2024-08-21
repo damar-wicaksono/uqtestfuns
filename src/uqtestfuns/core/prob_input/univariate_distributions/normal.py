@@ -8,6 +8,7 @@ The underlying implementation is based on the implementation from scipy.stats.
 In the SciPy convention, the mean (mu) corresponds to the ``loc`` parameter,
 while the standard deviation (sigma) corresponds to the ``scale`` parameter.
 """
+
 import numpy as np
 from scipy.stats import norm
 

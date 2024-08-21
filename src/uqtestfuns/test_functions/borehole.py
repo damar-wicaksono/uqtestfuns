@@ -21,6 +21,7 @@ References
    prediction,” Technometrics, vol. 35, no. 3, pp. 243–255, 1993.
    DOI: 10.1080/00401706.1993.10485320
 """
+
 import numpy as np
 
 from ..core.uqtestfun_abc import UQTestFunABC

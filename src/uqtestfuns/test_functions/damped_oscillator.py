@@ -38,6 +38,7 @@ References
    Université Blaise Pascal - Clermont II, Clermont-Ferrand, France, 2011.
    URL: https://sites.google.com/site/vincentdubourg/phd-thesis
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim

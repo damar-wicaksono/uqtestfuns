@@ -1,6 +1,7 @@
 """
 This module provides abstract base classes for defining a test function class.
 """
+
 import abc
 import numpy as np
 

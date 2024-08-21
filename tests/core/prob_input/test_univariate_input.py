@@ -1,6 +1,7 @@
 """
 Test module for UnivariateInput instances.
 """
+
 import pytest
 import numpy as np
 

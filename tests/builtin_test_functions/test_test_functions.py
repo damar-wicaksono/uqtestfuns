@@ -8,6 +8,7 @@ Notes
   implementations not about the correctness of computation of a particular
   implementation.
 """
+
 import numpy as np
 import pytest
 import copy

@@ -1,6 +1,7 @@
 """
 Test module for UnivariateInput instances with a truncated Gumbel (max.) dist.
 """
+
 import pytest
 import numpy as np
 import scipy.integrate as integrate

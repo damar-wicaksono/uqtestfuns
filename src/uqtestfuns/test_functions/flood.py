@@ -30,6 +30,7 @@ References
    pp. 2001–2038.
    DOI: 10.1007/978-3-319-12385-1_64
 """
+
 import numpy as np
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
