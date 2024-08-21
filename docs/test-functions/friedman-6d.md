@@ -12,27 +12,29 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:friedman-10d)=
-# Ten-dimensional (10D) Friedman Function
+(test-functions:friedman-6d)=
+# Six-dimensional (6D) Friedman Function
 
-The 10D Friedman function (or `Friedman6D` function for short) is
-a ten-dimensional (including five dummy variables) scalar-valued function.
+The 6D Friedman function (or `Friedman6D` function for short) is
+a six-dimensional (including one dummy variable) scalar-valued function.
 The function features a combination of non-linearity and variable interaction.
 
-It was originally used in {cite}`Friedman1991` as a test function for testing
-a regression spline method.
+It was originally used in {cite}`Friedman1983` as a test function for testing
+a spline approximation method.
+In {cite}`Sun2022` and {cite}`Horiguchi2021` (albeit in a modified form)
+the function was employed as a test function in the context of
+sensitivity analysis.
 
 ```{note}
-The function was an extension of the six-dimensional version introduced
-in {cite}`Friedman1983` by adding four additional dummy variables
-(for a total of five);
-the function is also {ref}`available <test-functions:friedman6d>`
+The function was later extended to ten dimension by incorporating four
+additional dummy variables (for a total of five) in {cite}`Friedman1991`;
+the function is also {ref}`available <test-functions:friedman-10d>`
 in UQTestFuns.
 ```
 
 ```{code-cell} ipython3
 import numpy as np
-import matplotlib.pyplot as pltx
+import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
@@ -41,7 +43,7 @@ import uqtestfuns as uqtf
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Friedman10D()
+my_testfun = uqtf.Friedman6D()
 ```
 
 Check if it has been correctly instantiated:
@@ -55,14 +57,13 @@ print(my_testfun)
 The test function is analytically defined as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = 10 \sin{(\pi x_1 x_2)} + 20 (x_3 - 0.5)^2 + 10 x_4 + 5 x_5 + 0 x_6 + 0 x_7 + 0 x_8 + 0 x_9 + 0 x_{10},
+\mathcal{M}(\boldsymbol{x}) = 10 \sin{(\pi x_1 x_2)} + 20 (x_3 - 0.5)^2 + 10 x_4 + 5 x_5 + 0 x_6,
 $$
-where $x$ is defined below. Notice that the last five input variables are 
-inert.
+where $x$ is defined below. Notice that the sixth input variable is inert.
 
 ## Input
 
-Based on {cite}`Friedman1991`, the probabilistic input model
+Based on {cite}`Friedman1983`, the probabilistic input model
 for the function consists of two independent random variables as shown below.
 
 ```{code-cell} ipython3
