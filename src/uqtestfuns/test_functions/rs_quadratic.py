@@ -74,4 +74,4 @@ class RSQuadratic(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 2
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

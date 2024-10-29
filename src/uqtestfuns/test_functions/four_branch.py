@@ -121,4 +121,4 @@ class FourBranch(UQTestFunABC):
     _default_spatial_dimension = 2
     _default_parameters = "Schueremans2005"
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

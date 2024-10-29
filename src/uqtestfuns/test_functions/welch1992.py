@@ -104,4 +104,4 @@ class Welch1992(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 20
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

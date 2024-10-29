@@ -105,7 +105,7 @@ class Alemazkoor2D(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 2
 
-    eval_ = staticmethod(evaluate_2d)
+    evaluate = staticmethod(evaluate_2d)  # type: ignore
 
 
 def evaluate_20d(xx: np.ndarray) -> np.ndarray:
@@ -140,4 +140,4 @@ class Alemazkoor20D(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 20
 
-    eval_ = staticmethod(evaluate_20d)
+    evaluate = staticmethod(evaluate_20d)  # type: ignore

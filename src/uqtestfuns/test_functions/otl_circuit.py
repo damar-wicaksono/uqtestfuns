@@ -160,4 +160,4 @@ class OTLCircuit(UQTestFunABC):
     _available_parameters = None
     _default_input = DEFAULT_INPUT_SELECTION
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

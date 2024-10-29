@@ -163,4 +163,4 @@ class Borehole(UQTestFunABC):
     _default_input = DEFAULT_INPUT_SELECTION
     _default_spatial_dimension = 8
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

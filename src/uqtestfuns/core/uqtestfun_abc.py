@@ -162,12 +162,20 @@ class UQTestFunBareABC(abc.ABC):
             ub = self.prob_input.marginals[dim_idx].upper
             _verify_sample_domain(xx[:, dim_idx], min_value=lb, max_value=ub)
 
-        return self.evaluate(xx)
+        return self._eval(xx)
 
+    @staticmethod
     @abc.abstractmethod
-    def evaluate(self, *args):
+    def evaluate(xx: np.ndarray, *args) -> np.ndarray:
         """Abstract method for the implementation of the UQ test function."""
         pass
+
+    def _eval(self, xx) -> np.ndarray:
+        """Actual computation is delegated to evaluate()."""
+        if self.parameters is None:
+            return self.__class__.evaluate(xx)
+
+        return self.__class__.evaluate(xx, self.parameters)
 
 
 class UQTestFunABC(UQTestFunBareABC):
@@ -380,25 +388,6 @@ class UQTestFunABC(UQTestFunBareABC):
         )
 
         return out
-
-    def evaluate(self, xx):
-        """Concrete implementation, actual function is delegated to eval_()."""
-        if self.parameters is None:
-            return self.__class__.eval_(xx)
-        else:
-            return self.__class__.eval_(xx, self.parameters)
-
-    @staticmethod
-    @abc.abstractmethod
-    def eval_(*args):  # pragma: no cover
-        """Static method for the concrete function implementation.
-
-        Notes
-        -----
-        - The function evaluation is implemented as a static method so the
-          function can be added without being bounded to the instance.
-        """
-        pass
 
 
 def _verify_sample_shape(xx: np.ndarray, num_cols: int):

@@ -286,4 +286,4 @@ class SobolG(UQTestFunABC):
     _default_parameters = DEFAULT_PARAMETERS_SELECTION
     _default_spatial_dimension = None
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

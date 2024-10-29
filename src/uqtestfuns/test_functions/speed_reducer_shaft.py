@@ -116,4 +116,4 @@ class SpeedReducerShaft(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 5
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

@@ -143,4 +143,4 @@ class WingWeight(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 10
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

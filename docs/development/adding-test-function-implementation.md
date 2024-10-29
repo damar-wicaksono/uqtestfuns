@@ -249,7 +249,7 @@ Each built-in test function is an implementation of the abstract base class
 `UQTestFunABC`.
 A concrete implementation of this base class requires the following:
 
-- a static method named `eval_()`
+- a static method named `evaluate()`
 - several class-level properties, namely: `_tags`, `_description`, 
   `_available_inputs`, `_available_parameters`, `_default_spatial_dimension`,
   `_default_input`, and `_default_parameters`.
@@ -268,7 +268,7 @@ class Branin(UQTestFunFixDimABC):
     _default_input = "Dixon1978"       # Optional, if only one input is available
     _default_parameters = "Dixon1978"  # Optional, if only one set of parameters is available
 
-    eval_ = staticmethod(evaluate)  # assuming `evaluate()` has been defined
+    evaluate = staticmethod(evaluate)  # assuming `evaluate()` has been defined
 ```
 
 There is no need to define an `__init__()` method.

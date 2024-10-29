@@ -102,4 +102,4 @@ class Gramacy1DSine(UQTestFunABC):
     _default_spatial_dimension = 1
     _default_parameters = "noisy"
 
-    eval_ = staticmethod(evaluate_1dsine)
+    evaluate = staticmethod(evaluate_1dsine)  # type: ignore

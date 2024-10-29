@@ -104,7 +104,7 @@ class McLainS1(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s1)
+    evaluate = staticmethod(evaluate_mclain_s1)  # type: ignore
 
 
 def evaluate_mclain_s2(xx: np.ndarray) -> np.ndarray:
@@ -139,7 +139,7 @@ class McLainS2(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s2)
+    evaluate = staticmethod(evaluate_mclain_s2)  # type: ignore
 
 
 def evaluate_mclain_s3(xx: np.ndarray) -> np.ndarray:
@@ -174,7 +174,7 @@ class McLainS3(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s3)
+    evaluate = staticmethod(evaluate_mclain_s3)  # type: ignore
 
 
 def evaluate_mclain_s4(xx: np.ndarray) -> np.ndarray:
@@ -212,7 +212,7 @@ class McLainS4(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s4)
+    evaluate = staticmethod(evaluate_mclain_s4)  # type: ignore
 
 
 def evaluate_mclain_s5(xx: np.ndarray) -> np.ndarray:
@@ -247,4 +247,4 @@ class McLainS5(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s5)
+    evaluate = staticmethod(evaluate_mclain_s5)  # type: ignore
