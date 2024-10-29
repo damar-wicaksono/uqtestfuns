@@ -170,4 +170,4 @@ class Piston(UQTestFunABC):
     _default_spatial_dimension = 7
     _default_input = DEFAULT_INPUT_SELECTION
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

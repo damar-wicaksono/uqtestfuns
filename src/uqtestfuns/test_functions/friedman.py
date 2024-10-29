@@ -107,7 +107,7 @@ class Friedman6D(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 6
 
-    eval_ = staticmethod(evaluate_friedman)
+    evaluate = staticmethod(evaluate_friedman)  # type: ignore
 
 
 class Friedman10D(UQTestFunABC):
@@ -119,4 +119,4 @@ class Friedman10D(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 10
 
-    eval_ = staticmethod(evaluate_friedman)
+    evaluate = staticmethod(evaluate_friedman)  # type: ignore

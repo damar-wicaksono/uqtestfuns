@@ -94,7 +94,7 @@ COMMON_METADATA = dict(
 )
 
 
-def evaluate_bratley1992a(xx: np.ndarray):
+def evaluate_bratley1992a(xx: np.ndarray) -> np.ndarray:
     """Evaluate the test function on a set of input values.
 
     Parameters
@@ -134,10 +134,10 @@ class Bratley1992a(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = None
 
-    eval_ = staticmethod(evaluate_bratley1992a)
+    evaluate = staticmethod(evaluate_bratley1992a)  # type: ignore
 
 
-def evaluate_bratley1992b(xx: np.ndarray):
+def evaluate_bratley1992b(xx: np.ndarray) -> np.ndarray:
     """Evaluate the test function on a set of input values.
 
     Parameters
@@ -177,10 +177,10 @@ class Bratley1992b(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = None
 
-    eval_ = staticmethod(evaluate_bratley1992b)
+    evaluate = staticmethod(evaluate_bratley1992b)  # type: ignore
 
 
-def evaluate_bratley1992c(xx: np.ndarray):
+def evaluate_bratley1992c(xx: np.ndarray) -> np.ndarray:
     """Evaluate the test function #3 of Bratley et al. (1992).
 
     Parameters
@@ -222,10 +222,10 @@ class Bratley1992c(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = None
 
-    eval_ = staticmethod(evaluate_bratley1992c)
+    evaluate = staticmethod(evaluate_bratley1992c)  # type: ignore
 
 
-def evaluate_bratley1992d(xx: np.ndarray):
+def evaluate_bratley1992d(xx: np.ndarray) -> np.ndarray:
     """Evaluate the test function on a set of input values.
 
     Parameters
@@ -265,4 +265,4 @@ class Bratley1992d(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = None
 
-    eval_ = staticmethod(evaluate_bratley1992d)
+    evaluate = staticmethod(evaluate_bratley1992d)  # type: ignore

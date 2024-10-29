@@ -38,8 +38,10 @@ class UQTestFun(UQTestFunBareABC):
         self._evaluate = evaluate
         super().__init__(prob_input, parameters, name)
 
-    def evaluate(self, xx):
-        if self.parameters is not None:
-            return self._evaluate(xx, self.parameters)
+    def _eval(self, xx):
+        if self.parameters is None:
+            return self._evaluate(xx)
 
-        return self._evaluate(xx)
+        return self._evaluate(xx, self.parameters)
+
+    evaluate = None  # type: ignore

@@ -71,4 +71,4 @@ class Forrester2008(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 1
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

@@ -110,4 +110,4 @@ class Ackley(UQTestFunABC):
     _available_parameters = AVAILABLE_PARAMETERS
     _default_spatial_dimension = None  # Indicate that this is variable dim.
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

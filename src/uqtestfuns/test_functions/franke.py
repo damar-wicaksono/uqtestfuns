@@ -129,7 +129,7 @@ class Franke1(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_franke1)
+    evaluate = staticmethod(evaluate_franke1)  # type: ignore
 
 
 def evaluate_franke2(xx: np.ndarray):
@@ -165,7 +165,7 @@ class Franke2(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_franke2)
+    evaluate = staticmethod(evaluate_franke2)  # type: ignore
 
 
 def evaluate_franke3(xx: np.ndarray):
@@ -204,7 +204,7 @@ class Franke3(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_franke3)
+    evaluate = staticmethod(evaluate_franke3)  # type: ignore
 
 
 def evaluate_franke4(xx: np.ndarray):
@@ -243,7 +243,7 @@ class Franke4(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_franke4)
+    evaluate = staticmethod(evaluate_franke4)  # type: ignore
 
 
 def evaluate_franke5(xx: np.ndarray):
@@ -282,7 +282,7 @@ class Franke5(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_franke5)
+    evaluate = staticmethod(evaluate_franke5)  # type: ignore
 
 
 def evaluate_franke6(xx: np.ndarray):
@@ -322,4 +322,4 @@ class Franke6(UQTestFunABC):
     _available_parameters = COMMON_METADATA["_available_parameters"]
     _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_franke6)
+    evaluate = staticmethod(evaluate_franke6)  # type: ignore

@@ -261,7 +261,7 @@ class DampedOscillator(UQTestFunABC):
     _available_parameters = None
     _default_spatial_dimension = 8
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore
 
 
 def evaluate_reliability(xx: np.ndarray, parameters: float):
@@ -306,4 +306,4 @@ class DampedOscillatorReliability(UQTestFunABC):
     _default_input = "DerKiureghian1990a"
     _default_parameters = "DerKiureghian1990"
 
-    eval_ = staticmethod(evaluate_reliability)
+    evaluate = staticmethod(evaluate_reliability)  # type: ignore

@@ -116,4 +116,4 @@ class Ishigami(UQTestFunABC):
     _default_parameters = DEFAULT_PARAMETERS_SELECTION
     _default_spatial_dimension = 3
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore
