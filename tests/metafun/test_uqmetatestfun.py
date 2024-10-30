@@ -30,12 +30,12 @@ def _create_args_effects_dict(spatial_dimension):
     return effects_dict
 
 
-def _create_reference_evaluate(xx: np.ndarray, parameters: UQTestFunSpec):
+def _create_reference_evaluate(xx: np.ndarray, spec: UQTestFunSpec):
     """Evaluate a test function realization with alternative way."""
-    basis_funs = parameters.basis_functions
-    selected_basis = parameters.selected_basis
-    effects_tuples = parameters.effects_tuples
-    effects_coeffs = parameters.effects_coeffs
+    basis_funs = spec.basis_functions
+    selected_basis = spec.selected_basis
+    effects_tuples = spec.effects_tuples
+    effects_coeffs = spec.effects_coeffs
 
     yy = np.zeros(xx.shape[0])
 
@@ -179,7 +179,7 @@ def test_get_sample(spatial_dimension):
     assert isinstance(my_testfun, UQTestFun)
     assert my_testfun.spatial_dimension == spatial_dimension
     assert my_testfun.prob_input.spatial_dimension == spatial_dimension
-    assert isinstance(my_testfun.parameters, UQTestFunSpec)
+    assert isinstance(my_testfun.parameters["spec"], UQTestFunSpec)
     assert_call(my_testfun, my_testfun.prob_input.get_sample(100))
 
     # Get sample > 1
@@ -225,7 +225,7 @@ def test_evaluate_sample(spatial_dimension):
     xx = my_testfun.prob_input.get_sample(sample_size)
     yy = my_testfun(xx)
 
-    yy_ref = _create_reference_evaluate(xx, my_testfun.parameters)
+    yy_ref = _create_reference_evaluate(xx, **my_testfun.parameters.as_dict())
 
     # Assertion
     assert np.allclose(yy, yy_ref)

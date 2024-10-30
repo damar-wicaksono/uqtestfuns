@@ -22,7 +22,7 @@ References
 
 import numpy as np
 
-from typing import List, Tuple
+from typing import List
 
 from ..core.uqtestfun_abc import UQTestFunABC
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
@@ -68,10 +68,37 @@ AVAILABLE_INPUT_SPECS = {
     ),
 }
 
-AVAILABLE_PARAMETERS = {"Ackley1987": np.array([20, 0.2, 2 * np.pi])}
+AVAILABLE_PARAMETERS = {
+    "Ackley1987": {
+        "function_id": "Ackley",
+        "description": (
+            "Parameter set for the Ackley function from Ackley (1987)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "a",
+                "value": 20.0,
+                "type": float,
+                "description": "Height of the ridges surrounding the minimum",
+            },
+            {
+                "keyword": "b",
+                "value": 0.2,
+                "type": float,
+                "description": "Decay rate of the Euclidean distance",
+            },
+            {
+                "keyword": "c",
+                "value": 2 * np.pi,
+                "type": float,
+                "description": "Scaling constant for the cosine term",
+            },
+        ],
+    },
+}
 
 
-def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
+def evaluate(xx: np.ndarray, a: float, b: float, c: float) -> np.ndarray:
     """Evaluate the Ackley function on a set of input values.
 
     Parameters
@@ -79,8 +106,12 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
     xx : np.ndarray
         M-Dimensional input values given by an N-by-M array where
         N is the number of input values.
-    parameters : Tuple[float, float, float]
-        A tuple of length 3 for the parameters of the Ackley function.
+    a : float
+        Height of the ridges surrounding the minimum.
+    b : float
+        Decay rate of the Euclidean distance.
+    c : float
+        Scaling constant for the cosine term.
 
     Returns
     -------
@@ -90,7 +121,6 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
     """
 
     m = xx.shape[1]
-    a, b, c = parameters
 
     # Compute the Ackley function
     term_1 = -1 * a * np.exp(-1 * b * np.sqrt(np.sum(xx**2, axis=1) / m))

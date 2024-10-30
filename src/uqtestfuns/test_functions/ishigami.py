@@ -30,8 +30,6 @@ References
 
 import numpy as np
 
-from typing import Tuple
-
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
 
@@ -72,14 +70,50 @@ AVAILABLE_INPUT_SPECS = {
 }
 
 AVAILABLE_PARAMETERS = {
-    "Ishigami1991": (7, 0.05),  # from [1]
-    "Sobol1999": (7, 0.1),  # from [2]
+    "Ishigami1991": {
+        "function_id": "Ishigami",
+        "description": (
+            "Parameter set for the Ishigami function from Ishigami and Homma "
+            "(1991)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "a",
+                "value": 7.0,
+                "type": float,
+            },
+            {
+                "keyword": "b",
+                "value": 0.1,
+                "type": float,
+            },
+        ],
+    },
+    "Sobol1999": {
+        "function_id": "Ishigami",
+        "description": (
+            "Parameter set for the Ishigami function from Sobol' and Levitan "
+            "(1999)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "a",
+                "value": 7.0,
+                "type": float,
+            },
+            {
+                "keyword": "b",
+                "value": 0.05,
+                "type": float,
+            },
+        ],
+    },
 }
 
 DEFAULT_PARAMETERS_SELECTION = "Ishigami1991"
 
 
-def evaluate(xx: np.ndarray, parameters: Tuple[float, float]):
+def evaluate(xx: np.ndarray, a: float, b: float) -> np.ndarray:
     """Evaluate the Ishigami function on a set of input values.
 
     Parameters
@@ -87,8 +121,10 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float]):
     xx : np.ndarray
         3-Dimensional input values given by N-by-3 arrays where
         N is the number of input values.
-    parameters : Tuple[float, float]
-        Tuple of two values as the parameters of the function.
+    a : float
+        The first parameter of the Ishigami function.
+    b : float
+        The second parameter of the Ishigami function.
 
     Returns
     -------
@@ -98,8 +134,8 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float]):
     """
     # Compute the Ishigami function
     term_1 = np.sin(xx[:, 0])
-    term_2 = parameters[0] * np.sin(xx[:, 1]) ** 2
-    term_3 = parameters[1] * xx[:, 2] ** 4 * np.sin(xx[:, 0])
+    term_2 = a * np.sin(xx[:, 1]) ** 2
+    term_3 = b * xx[:, 2] ** 4 * np.sin(xx[:, 0])
 
     yy = term_1 + term_2 + term_3
 

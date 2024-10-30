@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The 20-dimensional polynomial test function from Alemazkoor
   and Meidani (2018).
 - The exponential distribution as a distribution of `UnivDist` instances.
+- New class `FunParams` to organize function parameters.
+
+### Changed
+
+- The parameter in the Gramacy 1D sine function is now removed. Noise can
+  be added on the fly if needed.
+- `evaluate()` abstract method is now must be implemented directly in the
+  concrete UQ test function; `eval_()` in the `UQTestFunABC` has been removed.
 
 ## [0.4.1] - 2023-10-27
 

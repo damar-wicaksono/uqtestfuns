@@ -187,6 +187,14 @@ in the literature is given in the table below.
 |    $3.5 \sqrt{2}$    |        `Katsuki1994`        |   {cite}`Katsuki1994`   |
 | $\frac{6}{\sqrt{2}}$ | `Schueremans2005` (default) | {cite}`Schueremans2005` |
 
+The default value is shown below.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+print(my_testfun.parameters)
+```
+
 ## Reference results
 
 This section provides several reference results of typical UQ analyses involving

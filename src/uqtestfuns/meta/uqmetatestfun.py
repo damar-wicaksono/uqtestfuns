@@ -21,6 +21,7 @@ from dataclasses import dataclass
 from numpy.typing import ArrayLike
 from typing import Optional, Union, List
 
+from uqtestfuns.core.parameters import FunParams
 from .metaspec import UQMetaFunSpec, UQTestFunSpec
 from .basis_functions import BASIS_BY_ID
 from ..core import UQTestFun, ProbInput, UnivDist
@@ -66,21 +67,19 @@ def default_coeffs_gen(sample_size: int) -> np.ndarray:
     return yy
 
 
-def _evaluate_test_function(
-    xx: np.ndarray, uqtestfun_spec: UQTestFunSpec
-) -> np.ndarray:
+def _evaluate_test_function(xx: np.ndarray, spec: UQTestFunSpec) -> np.ndarray:
     """Alternative way to evaluate metafunction realizations."""
 
-    basis_functions = uqtestfun_spec.basis_functions
-    selected_basis = uqtestfun_spec.selected_basis
+    basis_functions = spec.basis_functions
+    selected_basis = spec.selected_basis
 
     # Evaluate the selected basis functions on xx
-    basis_vals = np.zeros((xx.shape[0], uqtestfun_spec.spatial_dimension))
+    basis_vals = np.zeros((xx.shape[0], spec.spatial_dimension))
     for idx, basis_id in enumerate(selected_basis):
         basis_vals[:, idx] = basis_functions[basis_id](xx[:, idx])
 
-    effects_tuples = uqtestfun_spec.effects_tuples
-    effects_coeffs = uqtestfun_spec.effects_coeffs
+    effects_tuples = spec.effects_tuples
+    effects_coeffs = spec.effects_coeffs
 
     # Evaluate each effect term of the test function
     yy = np.zeros(xx.shape[0])
@@ -148,7 +147,15 @@ class UQMetaTestFun:
             # Create an instance of inputs
             prob_input = ProbInput(testfun_specs.inputs)
             # Assign the realized spec as a parameter
-            parameters = testfun_specs
+            parameters = FunParams(
+                declared_parameters=[
+                    {
+                        "keyword": "spec",
+                        "value": testfun_specs,
+                        "type": UQTestFunSpec,
+                    },
+                ],
+            )
 
             return UQTestFun(
                 evaluate=evaluate,
@@ -163,7 +170,15 @@ class UQMetaTestFun:
             assert isinstance(testfun_specs, list)
             prob_input = ProbInput(testfun_specs[i].inputs)
             # Assign the realized spec as a parameter
-            parameters = testfun_specs[i]
+            parameters = FunParams(
+                declared_parameters=[
+                    {
+                        "keyword": "spec",
+                        "value": testfun_specs[i],
+                        "type": UQTestFunSpec,
+                    },
+                ],
+            )
 
             sample.append(
                 UQTestFun(

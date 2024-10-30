@@ -20,9 +20,6 @@ References
 
 import numpy as np
 
-from numpy.random._generator import Generator
-from typing import Optional
-
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
 
@@ -47,17 +44,8 @@ AVAILABLE_INPUT_SPECS = {
     ),
 }
 
-AVAILABLE_PARAMETERS = {
-    "noisy": np.random.default_rng(),
-    "noiseless": None,
-}
 
-DEFAULT_PARAMETERS_SELECTION = "noisy"
-
-
-def evaluate_1dsine(
-    xx: np.ndarray, parameters: Optional[Generator] = None
-) -> np.ndarray:
+def evaluate_1dsine(xx: np.ndarray) -> np.ndarray:
     """Evaluate the 1D Gramacy (2007) Sine function on a set of input values.
 
     Parameters
@@ -84,11 +72,6 @@ def evaluate_1dsine(
     )
     yy[idx_2] = -1 + 0.1 * xx[idx_2, 0]
 
-    if parameters is not None:
-        yy_noise = parameters.normal(size=len(xx), scale=0.1)
-
-        return yy + yy_noise
-
     return yy
 
 
@@ -98,8 +81,7 @@ class Gramacy1DSine(UQTestFunABC):
     _tags = ["metamodeling"]
     _description = "One-dimensional sine function from Gramacy (2007)"
     _available_inputs = AVAILABLE_INPUT_SPECS
-    _available_parameters = AVAILABLE_PARAMETERS
+    _available_parameters = None
     _default_spatial_dimension = 1
-    _default_parameters = "noisy"
 
     evaluate = staticmethod(evaluate_1dsine)  # type: ignore

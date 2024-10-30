@@ -189,9 +189,22 @@ AVAILABLE_INPUT_SPECS_RELIABILITY = {
     ),
 }
 
-# peak factor
 AVAILABLE_PARAMETERS_RELIABILITY = {
-    "DerKiureghian1990": 3,
+    "DerKiureghian1990": {
+        "function_id": "DampedOscillatorReliability",
+        "description": (
+            "Parameter set for the damped oscillator reliability problem "
+            "from Der Kiureghian and De Stefano (1990)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "pf",
+                "value": 3.0,
+                "type": float,
+                "description": "Peak factor [-]",
+            },
+        ],
+    },
 }
 
 
@@ -264,7 +277,7 @@ class DampedOscillator(UQTestFunABC):
     evaluate = staticmethod(evaluate)  # type: ignore
 
 
-def evaluate_reliability(xx: np.ndarray, parameters: float):
+def evaluate_reliability(xx: np.ndarray, pf: float):
     """Evaluate the performance function of the system reliability.
 
     Parameters
@@ -272,7 +285,7 @@ def evaluate_reliability(xx: np.ndarray, parameters: float):
     xx : np.ndarray
         An 8-dimensional input values given by an N-by-7 array
         where N is the number of input values.
-    parameters : float
+    pf : float
         The peak factor of the system.
 
     Returns
@@ -285,8 +298,6 @@ def evaluate_reliability(xx: np.ndarray, parameters: float):
     rms_disp = evaluate(xx[:, :-1])  # root-mean-square displacement
     kk_s = xx[:, 3]  # Secondary spring stiffness
     ff_s = xx[:, -1]  # Force capacity of the secondary spring
-
-    pf = parameters  # peak factor
 
     yy = ff_s - pf * kk_s * rms_disp
 

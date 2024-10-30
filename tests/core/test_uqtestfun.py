@@ -4,7 +4,7 @@ Test module for UQTestFun class, a generic class for generic UQ test function.
 
 import pytest
 
-from uqtestfuns import UQTestFun, ProbInput
+from uqtestfuns import UQTestFun, ProbInput, FunParams
 from conftest import assert_call, create_random_marginals
 
 
@@ -16,7 +16,9 @@ def uqtestfun():
     def evaluate(x, p):
         return p * (x + 1)
 
-    parameters = 10
+    parameters = FunParams(
+        declared_parameters=[{"keyword": "p", "value": 10.0}]
+    )
 
     my_args = {
         "evaluate": evaluate,

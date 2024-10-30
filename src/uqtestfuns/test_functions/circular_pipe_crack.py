@@ -23,8 +23,6 @@ References
 
 import numpy as np
 
-from typing import Tuple
-
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
 
@@ -58,16 +56,41 @@ AVAILABLE_INPUT_SPECS = {
 }
 
 AVAILABLE_PARAMETERS = {
-    "Verma2016": (
-        3.377e-1,  # Radius of the pipe [m]
-        3.377e-2,  # Thickness of the pipe [m]
-        3.0,  # Applied bending moment [Nm]
-    ),
+    "Verman2016": {
+        "function_id": "CircularPipeCrack",
+        "description": (
+            "Parameter set for the circular pipe crack reliability problem "
+            "from Verma et al. (2016)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "pipe_radius",
+                "value": 3.377e-1,
+                "type": float,
+                "description": "Radius of the pipe [m]",
+            },
+            {
+                "keyword": "pipe_thickness",
+                "value": 3.377e-2,
+                "type": float,
+                "description": "Thickness of the pipe [m]",
+            },
+            {
+                "keyword": "bending_moment",
+                "value": 3.0,
+                "type": float,
+                "description": "Applied bending moment [Nm]",
+            },
+        ],
+    },
 }
 
 
 def evaluate(
-    xx: np.ndarray, parameters: Tuple[float, float, float]
+    xx: np.ndarray,
+    pipe_radius: float,
+    pipe_thickness: float,
+    bending_moment: float,
 ) -> np.ndarray:
     """Evaluate the circular pipe crack reliability on a set of input values.
 
@@ -76,10 +99,12 @@ def evaluate(
     xx : np.ndarray
         A two-dimensional input values given by N-by-2 arrays
         where N is the number of input values.
-    parameters : Tuple[float, float, float]
-        The parameters of the test function, namely (and in the following
-        order) the radius of the pipe, the thickness of the pipe,
-        and the applied bending moment.
+    pipe_radius : float
+        The radius of the pipe in [m].
+    pipe_thickness : float
+        The thickness of the pipe in [m].
+    bending_moment : float
+        The applied bending moment in [Nm].
 
     Returns
     -------
@@ -88,9 +113,6 @@ def evaluate(
         If negative, then the system is in failed state.
         The output is a one-dimensional array of length N.
     """
-    # Get parameters
-    pipe_radius, pipe_thickness, bending_moment = parameters
-
     # NOTE: Convert the flow stress from [MNm] to [Nm]
     yy = (
         4

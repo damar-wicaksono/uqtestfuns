@@ -46,11 +46,11 @@ The Ishigami function, a highly non-linear and non-monotonic function,
 is given as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \sin(x_1) + a \sin^2(x_2) + b \, x_3^4 \sin(x_1)
+\mathcal{M}(\boldsymbol{x}; \boldsymbol{p}) = \sin(x_1) + a \sin^2(x_2) + b \, x_3^4 \sin(x_1)
 $$
 where $\boldsymbol{x} = \{ x_1, x_2, x_3 \}$ is the three-dimensional vector of
-input variables further defined below, and $a$ and $b$ are parameters
-of the function.
+input variables further defined below, and $\boldsymbol{p} = \{ a, b \}$
+are the parameters of the function.
 
 ## Probabilistic input
 
@@ -68,16 +68,15 @@ The parameters of the Ishigami function are two real-valued numbers.
 Some of the available parameter values taken from the literature are shown in
 the table below.
 
-| No. |        Value         |         Keyword          |        Source        |
-|:---:|:--------------------:|:------------------------:|:--------------------:|
-|  1  | $a = 7$, $b = 0.1$   | `Ishigami1991` (default) | {cite}`Ishigami1991` |
-|  2  | $a = 7$, $b = 0.05$  |       `Sobol1999`        |  {cite}`Sobol1999`   |
+| No. |        Value        |         Keyword          |        Source        |
+|:---:|:-------------------:|:------------------------:|:--------------------:|
+|  1  | $a = 7$, $b = 0.1$  | `Ishigami1991` (default) | {cite}`Ishigami1991` |
+|  2  | $a = 7$, $b = 0.05$ |       `Sobol1999`        |  {cite}`Sobol1999`   |
 
-Alternatively, to create an instance of the Ishigami function with
-different parameter values, type:
+```{code-cell} ipython3
+:tags: [hide-input]
 
-```python
-my_testfun = uqtf.Ishigami(parameters_selection="Sobol1999")
+print(my_testfun.parameters)
 ```
 
 ````{note}

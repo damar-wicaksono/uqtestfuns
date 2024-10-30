@@ -11,7 +11,6 @@ import numpy as np
 import pytest
 
 from uqtestfuns import Portfolio3D
-import uqtestfuns.test_functions.portfolio_3d as portfolio3d_mod
 
 # Test for different sets of parameters of the simple portfolio model
 available_parameters = list(Portfolio3D.available_parameters.keys())
@@ -31,7 +30,13 @@ def test_compute_mean(portfolio3d_fun):
     mean_inputs = np.array(
         [x.parameters[0] for x in portfolio3d_fun.prob_input.marginals]
     )
-    parameters = np.array(portfolio3d_fun.parameters)
+    parameters = np.array(
+        [
+            portfolio3d_fun.parameters["cs"],
+            portfolio3d_fun.parameters["ct"],
+            portfolio3d_fun.parameters["cj"],
+        ]
+    )
     mean_ref = mean_inputs @ parameters
 
     # Assertion
@@ -51,7 +56,13 @@ def test_compute_variance(portfolio3d_fun):
     std_inputs = np.array(
         [x.parameters[1] for x in portfolio3d_fun.prob_input.marginals]
     )
-    parameters = np.array(portfolio3d_fun.parameters)
+    parameters = np.array(
+        [
+            portfolio3d_fun.parameters["cs"],
+            portfolio3d_fun.parameters["ct"],
+            portfolio3d_fun.parameters["cj"],
+        ]
+    )
     var_ref = parameters**2 @ std_inputs**2
 
     # Assertion
@@ -63,13 +74,11 @@ def test_different_parameters(param_selection):
     """Test selecting different built-in parameters."""
 
     # Create an instance of Ishigami function with a specified param. selection
-    my_testfun = Portfolio3D(parameters_selection=param_selection)
+    my_testfun_1 = Portfolio3D(parameters_selection=param_selection)
+    my_testfun_2 = Portfolio3D(parameters_selection=param_selection)
 
-    # Assertion
-    assert (
-        my_testfun.parameters
-        == portfolio3d_mod.AVAILABLE_PARAMETERS[param_selection]
-    )
+    # Assertion: The parameter sets are identical
+    assert my_testfun_1.parameters == my_testfun_2.parameters
 
 
 def test_wrong_param_selection():

@@ -31,8 +31,6 @@ a set of parameters that determines the importance of each input variable.
 Later on, it becomes a popular testing function for global sensitivity analysis
 methods; see, for instances, [5], [6], and [7].
 
-
-
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
@@ -134,7 +132,7 @@ using six dimensions.
 The Sobol'-G function is defined as follows[^location]:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^M \frac{\lvert 4 x_m - 2 \rvert + a_m}{1 + a_m}
+\mathcal{M}(\boldsymbol{x}; \boldsymbol{a}) = \prod_{m = 1}^M \frac{\lvert 4 x_m - 2 \rvert + a_m}{1 + a_m}
 $$
 where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$ is the $M$-dimensional vector
 of input variables further defined below,
@@ -173,6 +171,14 @@ as shown in the table below.
 ```{note}
 The parameter values used in {cite}`Marrel2008` and {cite}`Marrel2009`
 correspond to the parameter choice 3 in {cite}`Sobol1998`.
+```
+
+The default parameter is shown below.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+print(my_testfun.parameters)
 ```
 
 ````{note}

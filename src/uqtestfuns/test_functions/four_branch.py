@@ -66,12 +66,38 @@ AVAILABLE_INPUT_SPECS = {
 }
 
 AVAILABLE_PARAMETERS = {
-    "Katsuki1994": 3.5 * np.sqrt(2),
-    "Schueremans2005": 6.0 / np.sqrt(2),
+    "Katsuki1994": {
+        "function_id": "FourBranch",
+        "description": (
+            "Parameter set for the Four-branch function from Katsuki and "
+            "Frangopol (1994)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "p",
+                "value": 3.5 * np.sqrt(2),
+                "type": float,
+            },
+        ],
+    },
+    "Schueremans2005": {
+        "function_id": "FourBranch",
+        "description": (
+            "Parameter set for the Four-branch function from Schueremans "
+            "(2005)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "p",
+                "value": 6.0 / np.sqrt(2),
+                "type": float,
+            },
+        ],
+    },
 }
 
 
-def evaluate(xx: np.ndarray, parameters: float) -> np.ndarray:
+def evaluate(xx: np.ndarray, p: float) -> np.ndarray:
     """Evaluate the four-branch function on a set of input values.
 
     Parameters
@@ -79,7 +105,7 @@ def evaluate(xx: np.ndarray, parameters: float) -> np.ndarray:
     xx : np.ndarray
         A two-Dimensional input values given by an N-by-2 array
         where N is the number of input values.
-    parameters : float
+    p : float
         The parameter of the test function; a single float.
 
     Returns
@@ -88,7 +114,6 @@ def evaluate(xx: np.ndarray, parameters: float) -> np.ndarray:
         The output of the test function evaluated on the input values.
         The output is a 1-dimensional array of length N.
     """
-    p = parameters
 
     # Compute the performance function components
     yy_1 = (

@@ -138,37 +138,39 @@ For an implementation of a test function, create a top module-level function
 module):
 
 ```python
-def evaluate(xx: np.ndarray, parameters: Any) -> np.ndarray:
+def evaluate(xx: np.ndarray, a: float, b: float, c: float, r: float, s: float, t: float):
     """Evaluate the Branin function on a set of input values.
-
+    
     Parameters
     ----------
     xx : np.ndarray
         2-Dimensional input values given by an N-by-2 array where
         N is the number of input values.
-    parameters : Any
-        The parameters of the test function (six numbers)
-
+    a : float
+        Parameter 'a' of the Branin function.
+    b : float
+        Parameter 'b' of the Branin function.
+    c : float
+        Parameter 'c' of the Branin function.
+    r : float
+        Parameter 'r' of the Branin function.
+    s : float
+        Parameter 's' of the Branin function.
+    t : float
+        Parameter 't' of the Branin function.
+    
     Returns
     -------
     np.ndarray
         The output of the Branin function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
+        The output is a 1-dimensional array of length N.    
     """
-    params = parameters
     yy = (
-        params[0]
-        * (
-            xx[:, 1]
-            - params[1] * xx[:, 0] ** 2
-            + params[2] * xx[:, 0]
-            - params[3]
-        )
-        ** 2
-        + params[4] * (1 - params[5]) * np.cos(xx[:, 0])
-        + params[4]
+        a * (xx[:, 1] - b * xx[:, 0]**2 + c * xx[:, 0] - r)**2
+        + s * (1 - t) * np.cos(xx[:, 0]) 
+        + s
     )
-
+    
     return yy
 ```
 
@@ -231,14 +233,51 @@ Conventionally, we name this variable `AVAILABLE_PARAMETERS`:
 
 ```python
 AVAILABLE_PARAMETERS = {
-    "Dixon1978": np.array(
-        [1.0, 5.1 / (2 * np.pi) ** 2, 5 / np.pi, 6, 10, 1 / 8 / np.pi]
-    )
+    "Dixon1978": {
+      "function_id": "Branin",
+      "description": "Parameter set for the Branin function from Dixon (1978)",
+      "declared_parameters": [
+          {
+              "keyword": "a",
+              "value": 1.0,
+              "type": float,
+          },
+          {
+              "keyword": "b",
+              "value": 5.1 / (2 * np.pi) ** 2,
+              "type": float,
+          },
+          {
+              "keyword": "c",
+              "value": 5 / np.pi,
+              "type": float,
+          },
+          {
+              "keyword": "r",
+              "value": 6.0,
+              "type": float,
+          },
+          {
+              "keyword": "s",
+              "value": 10.0,
+              "type": float,
+          },
+          {
+              "keyword": "t",
+              "value": 1 / 8 / np.pi,
+              "type": float,
+          },
+      ],
+    },
 }
 ```
 
-The value of the parameters can be of any type, as long as it is consistent
-with how the parameters are going to be consumed by the `evaluate()` function.
+This is a nested dictionary, where each top key-value pair contains one set of 
+parameters from the literature.
+
+The value of the parameters in the set can be of any type, as long as it is
+consistent  with how the parameters are going to be consumed
+by the `evaluate()` function.
 
 As before, if there are multiple parameter sets available in the literature,
 additional key-value pair should be added here.
@@ -257,7 +296,7 @@ A concrete implementation of this base class requires the following:
 The full definition of the class for the Branin test function is shown below.
 
 ```python
-class Branin(UQTestFunFixDimABC):
+class Branin(UQTestFunABC):
     """A concrete implementation of the Branin test function."""
   
     _tags = ["optimization"]  # Application tags
