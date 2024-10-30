@@ -25,8 +25,8 @@ class UQTestFun(UQTestFunBareABC):
     parameters : Any, optional
         The parameters set of the UQ test function.
         If not specified, `None` is used.
-    name : str, optional
-        The name of the UQ test function.
+    function_id : str, optional
+        The ID of the UQ test function.
     """
 
     def __init__(
@@ -34,13 +34,13 @@ class UQTestFun(UQTestFunBareABC):
         evaluate: Callable,
         prob_input: ProbInput,
         parameters: Optional[FunParams] = None,
-        name: Optional[str] = None,
+        function_id: Optional[str] = None,
     ):
         if parameters is None:
             parameters = FunParams()
 
         self._evaluate = evaluate
-        super().__init__(prob_input, parameters, name)
+        super().__init__(prob_input, parameters, function_id)
 
     def _eval(self, xx):
         return self._evaluate(xx, **self.parameters.as_dict())

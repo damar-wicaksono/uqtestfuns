@@ -46,24 +46,24 @@ class UQTestFunBareABC(abc.ABC):
         The probabilistic input model of the UQ test function.
     parameters : Any, optional
         A set of parameters. By default, it is None.
-    name : str, optional
-        The name of the UQ test function. By default, it is None.
+    function_id : str, optional
+        The ID of the UQ test function. By default, it is None.
 
     Notes
     -----
     - A bare UQ test function only includes the evaluation function,
-      probabilistic input model, parameters, and a (optional) name.
+      probabilistic input model, parameters, and a (optional) ID.
     """
 
     def __init__(
         self,
         prob_input: ProbInput,
         parameters: FunParams,
-        name: Optional[str] = None,
+        function_id: Optional[str] = None,
     ):
         self.prob_input = prob_input
         self._parameters = parameters
-        self._name = name
+        self._function_id = function_id
 
     @property
     def prob_input(self) -> ProbInput:
@@ -96,9 +96,9 @@ class UQTestFunBareABC(abc.ABC):
         self._parameters = value
 
     @property
-    def name(self) -> Optional[str]:
-        """The name of the UQ test function."""
-        return self._name
+    def function_id(self) -> Optional[str]:
+        """The ID of the UQ test function."""
+        return self._function_id
 
     @property
     def spatial_dimension(self) -> int:
@@ -151,7 +151,7 @@ class UQTestFunBareABC(abc.ABC):
 
     def __str__(self):
         out = (
-            f"Name              : {self.name}\n"
+            f"Function ID       : {self.function_id}\n"
             f"Spatial dimension : {self.spatial_dimension}\n"
             f"Parameterized     : {bool(self.parameters)}"
         )
@@ -202,9 +202,9 @@ class UQTestFunABC(UQTestFunBareABC):
         The selection of parameters set; this is used when there are multiple
         sets of parameters available in the literature.
         This is a keyword only parameter.
-    name : str, optional
-        The name of the UQ test function.
-        If not given, `None` is used as name.
+    function_id : str, optional
+        The ID of the UQ test function.
+        If not given, `None` is used as the function ID.
         This is a keyword only parameter.
 
     Notes
@@ -230,7 +230,7 @@ class UQTestFunABC(UQTestFunBareABC):
         spatial_dimension: Optional[int] = None,
         prob_input_selection: Optional[str] = None,
         parameters_selection: Optional[str] = None,
-        name: Optional[str] = None,
+        function_id: Optional[str] = None,
     ):
         # --- Create a probabilistic input model
         # Select the probabilistic input model
@@ -275,13 +275,15 @@ class UQTestFunABC(UQTestFunBareABC):
                 spatial_dimension,
             )
 
-        # --- Process the default name
-        if name is None:
-            name = self.__class__.__name__
+        # --- Process the default ID
+        if function_id is None:
+            function_id = self.__class__.__name__
 
         # --- Initialize the parent class
         super().__init__(
-            prob_input=prob_input, parameters=parameters, name=name
+            prob_input=prob_input,
+            parameters=parameters,
+            function_id=function_id,
         )
 
     @classmethod
@@ -378,7 +380,7 @@ class UQTestFunABC(UQTestFunBareABC):
 
     def __str__(self):
         out = (
-            f"Name              : {self.name}\n"
+            f"Function ID       : {self.function_id}\n"
             f"Spatial dimension : {self.spatial_dimension}\n"
             f"Parameterized     : {bool(self.parameters)}\n"
             f"Description       : {self.description}"

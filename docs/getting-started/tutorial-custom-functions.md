@@ -224,7 +224,7 @@ my_testfun = uqtf.UQTestFun(
   evaluate=evaluate_branin,
   prob_input=my_input,
   parameters=my_params,
-  name="Branin function",
+  function_id="Branin",
 )
 ```
 
