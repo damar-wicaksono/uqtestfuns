@@ -98,6 +98,7 @@ def list_functions(
             "No.",
             "Constructor",
             "Dimension",
+            "Parameterized",
             "Application",
             "Description",
         ]
@@ -106,6 +107,7 @@ def list_functions(
             "No.",
             "Constructor",
             "Dimension",
+            "Parameterized",
             "Description",
         ]
 
@@ -123,6 +125,9 @@ def list_functions(
             )
 
         description = available_class.description
+        is_parameterized = (
+            True if available_class.available_parameters else False
+        )
 
         if tag is None:
             tags = ", ".join(available_class.tags)
@@ -130,6 +135,7 @@ def list_functions(
                 idx + 1,
                 f"{available_class_name}()",
                 f"{default_spatial_dimension}",
+                f"{is_parameterized}",
                 tags,
                 f"{description}",
             ]
@@ -138,6 +144,7 @@ def list_functions(
                 idx + 1,
                 f"{available_class_name}()",
                 f"{default_spatial_dimension}",
+                f"{is_parameterized}",
                 f"{description}",
             ]
 
@@ -148,14 +155,21 @@ def list_functions(
             values,
             headers=header_names,
             stralign="center",
-            colalign=("center", "center", "center", "center", "left"),
+            colalign=(
+                "center",
+                "center",
+                "center",
+                "center",
+                "center",
+                "left",
+            ),
         )
     else:
         table = tbl(
             values,
             headers=header_names,
             stralign="center",
-            colalign=("center", "center", "center", "left"),
+            colalign=("center", "center", "center", "center", "left"),
         )
 
     print(table)
@@ -228,6 +242,8 @@ def _verify_input_args(
         raise ValueError(
             f"Tag {tag!r} is not supported. Use one of {SUPPORTED_TAGS}!"
         )
+
+    # --- Parse 'parameterized'
 
     # --- Parse 'tabulate'
     if not isinstance(tabulate, (bool, type(None))):

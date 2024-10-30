@@ -152,7 +152,8 @@ class UQTestFunBareABC(abc.ABC):
     def __str__(self):
         out = (
             f"Name              : {self.name}\n"
-            f"Spatial dimension : {self.spatial_dimension}"
+            f"Spatial dimension : {self.spatial_dimension}\n"
+            f"Parameterized     : {bool(self.parameters)}"
         )
 
         return out
@@ -379,6 +380,7 @@ class UQTestFunABC(UQTestFunBareABC):
         out = (
             f"Name              : {self.name}\n"
             f"Spatial dimension : {self.spatial_dimension}\n"
+            f"Parameterized     : {bool(self.parameters)}\n"
             f"Description       : {self.description}"
         )
 

@@ -9,13 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Printing a test function instance now shows whether the function is 
+  parameterized or not.
+- The information related to the parameterization of a function is now
+  shown in the output of `list_functions()`
+- New class `FunParams` to organize function parameters.
 - The six-dimensional and ten-dimensional Friedman functions from
   Friedman et al. (1983) and Friedman (1991), respectively.
 - The three-dimensional simple portfolio model from Saltelli et al. (2004).
 - The 20-dimensional polynomial test function from Alemazkoor
   and Meidani (2018).
 - The exponential distribution as a distribution of `UnivDist` instances.
-- New class `FunParams` to organize function parameters.
 
 ### Changed
 
