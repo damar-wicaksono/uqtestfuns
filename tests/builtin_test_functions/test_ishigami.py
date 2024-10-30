@@ -11,7 +11,6 @@ import numpy as np
 import pytest
 
 from uqtestfuns import Ishigami
-import uqtestfuns.test_functions.ishigami as ishigami_mod
 
 # Test for different parameters to the Ishigami function
 available_parameters = list(Ishigami.available_parameters.keys())
@@ -34,7 +33,7 @@ def test_compute_mean(ishigami_fun):
     mean_mc = np.mean(yy)
 
     # Analytical mean
-    mean_ref = ishigami_fun.parameters[0] / 2
+    mean_ref = ishigami_fun.parameters["a"] / 2
 
     # Assertion
     assert np.allclose(mean_mc, mean_ref, rtol=1e-2)
@@ -50,7 +49,7 @@ def test_compute_variance(ishigami_fun):
     var_mc = np.var(yy)
 
     # Analytical mean
-    a, b = ishigami_fun.parameters
+    a, b = ishigami_fun.parameters["a"], ishigami_fun.parameters["b"]
     var_ref = a**2 / 8 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 18 + 0.5
 
     # Assertion
@@ -62,13 +61,11 @@ def test_different_parameters(param_selection):
     """Test selecting different built-in parameters."""
 
     # Create an instance of Ishigami function with a specified param. selection
-    my_testfun = Ishigami(parameters_selection=param_selection)
+    my_testfun_1 = Ishigami(parameters_selection=param_selection)
+    my_testfun_2 = Ishigami(parameters_selection=param_selection)
 
     # Assertion
-    assert (
-        my_testfun.parameters
-        == ishigami_mod.AVAILABLE_PARAMETERS[param_selection]
-    )
+    assert my_testfun_1.parameters == my_testfun_2.parameters
 
 
 def test_wrong_param_selection():

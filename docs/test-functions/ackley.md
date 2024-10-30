@@ -144,7 +144,13 @@ my_testfun.prob_input
 
 The Ackley function requires three additional parameters
 to complete the specification.
-The recommended (and the default) values are $a_1 = 20, a_2 = 0.2, a_3 = 2 \pi$.
+The default values are shown below.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+print(my_testfun.parameters)
+```
 
 ## Reference results
 

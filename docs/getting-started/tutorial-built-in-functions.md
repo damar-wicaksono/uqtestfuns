@@ -135,6 +135,8 @@ yy_sample = my_testfun(xx_sample)
 The histogram of the output values can be created as follows:
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 import matplotlib.pyplot as plt
 
 plt.hist(yy_sample, bins="auto", color="#8da0cb")
@@ -250,15 +252,17 @@ and stored in the `parameters` property:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Ishigami()
-my_testfun.parameters
+
+print(my_testfun.parameters)
 ```
 
-To assign different parameter values, override the property values of the instance.
+To assign different parameter values, override the property values
+of the instance by specifying the name in brackets just like a dictionary:
 For example:
 
 ```{code-cell} ipython3
-my_testfun.parameters = (7, 0.35)
-my_testfun.parameters
+my_testfun.parameters["a"] = 7.0
+my_testfun.parameters["b"] = 0.35
 ```
 
 Note that once set, the parameter values are kept constant
@@ -273,9 +277,11 @@ as illustrated in the figure below.
 :tags: [remove-input]
 
 xx_sample = my_testfun.prob_input.get_sample(10000)
-my_testfun.parameters = (7, 0.05)
+my_testfun.parameters["a"] = 7.0
+my_testfun.parameters["b"] = 0.05
 yy_param_1 = my_testfun(xx_sample)
-my_testfun.parameters = (7, 0.35)
+my_testfun.parameters["a"] = 7.0
+my_testfun.parameters["b"] = 0.35
 yy_param_2 = my_testfun(xx_sample)
 
 plt.hist(yy_param_2, bins="auto", color="#fc8d62", label="parameter 2")

@@ -8,6 +8,7 @@ from .core import UnivDist
 from .core import ProbInput
 from .core import UQTestFunBareABC, UQTestFunABC
 from .core import UQTestFun
+from .core import FunParams
 
 
 from . import test_functions
@@ -20,7 +21,7 @@ from .helpers import list_functions
 
 if sys.version_info >= (3, 8):
     from importlib import metadata
-else:
+else:  # pragma: no cover
     import importlib_metadata as metadata
 
 __version__ = metadata.version("uqtestfuns")
@@ -28,6 +29,7 @@ __version__ = metadata.version("uqtestfuns")
 __all__ = [
     "UnivDist",
     "ProbInput",
+    "FunParams",
     "UQTestFunABC",
     "UQTestFunBareABC",
     "UQTestFunABC",

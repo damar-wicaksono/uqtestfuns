@@ -28,8 +28,6 @@ References
 
 import numpy as np
 
-from typing import Tuple
-
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
 
@@ -61,14 +59,31 @@ AVAILABLE_INPUT_SPECS = {
 }
 
 AVAILABLE_PARAMETERS = {
-    "Rajashekhar1993": (
-        2.6e4,  # Modulus of elasticity [MPa]
-        6.0e3,  # Span of the beam [mm]
-    )
+    "Rajashekhar1993": {
+        "function_id": "CantileverBeam2D",
+        "description": (
+            "Parameter set for the 2D cantilever beam problem from "
+            "Rajashekhar and Ellingwood (1993)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "modulus",
+                "value": 2.6e4,
+                "type": float,
+                "description": "Modulus of elasticity 'E' [MPa]",
+            },
+            {
+                "keyword": "span",
+                "value": 6.0e3,
+                "type": float,
+                "description": "Span of the beam 'l' [mm]",
+            },
+        ],
+    },
 }
 
 
-def evaluate(xx: np.ndarray, parameters: Tuple[float, float]) -> np.ndarray:
+def evaluate(xx: np.ndarray, modulus: float, span: float) -> np.ndarray:
     """Evaluate the 2D cantilever beam function on a set of input values.
 
     Parameters
@@ -76,10 +91,10 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float]) -> np.ndarray:
     xx : np.ndarray
         A two-dimensional input values given by an N-by-2 array
         where N is the number of input values.
-
-    parameters : Tuple[float, float]
-        The parameters of the test function, namely the modulus of elasticity
-        and the span of the beam.
+    modulus : float
+        The modulus of elasticity in [MPa].
+    span : float
+        The span of the beam in [mm].
 
     Returns
     -------
@@ -88,18 +103,14 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float]) -> np.ndarray:
         system. If negative, the system is in failed state.
         The output is a one-dimensional array of length N.
     """
-    # Get parameters
-    mod_el = parameters[0]
-    beam_span = parameters[1]
-
-    mod_el *= 1e6  # from [MPa] to [Pa]
+    modulus *= 1e6  # from [MPa] to [Pa]
 
     # Get the input
     ww = xx[:, 0]  # Load per unit area [N/m^2] ([Pa])
     hh = xx[:, 1]  # Depth of the cross-section [mm]
 
     # Compute the performance function
-    yy = beam_span / 325 - 12 / 8 * beam_span**4 / mod_el * ww / hh**3
+    yy = span / 325 - 12 / 8 * span**4 / modulus * ww / hh**3
 
     return yy
 

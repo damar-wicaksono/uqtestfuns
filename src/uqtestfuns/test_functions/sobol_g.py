@@ -164,12 +164,12 @@ def _get_params_saltelli_1995_3(spatial_dimension: int) -> np.ndarray:
 
 
 def _get_params_sobol_1998_1(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol'-G according to choice 1 in [2].
+    """Construct a parameter array for Sobol'-G according to choice 1 in [3].
 
     Notes
     -----
     - Using this choice of parameters, the supremum of the Sobol-G function
-      grows exponentially as a function of dimension about 2^M [1].
+      grows exponentially as a function of dimension about 2^M.
     """
     yy = 0.01 * np.ones(spatial_dimension)
 
@@ -177,12 +177,12 @@ def _get_params_sobol_1998_1(spatial_dimension: int) -> np.ndarray:
 
 
 def _get_params_sobol_1998_2(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol'-G according to choice 2 in [2].
+    """Construct a parameter array for Sobol'-G according to choice 2 in [3].
 
     Notes
     -----
     - Using this choice of parameters, the supremum of the Sobol-G function
-      grows exponentially as a function of dimension about (1.5)^M [1];
+      grows exponentially as a function of dimension about (1.5)^M;
       it's a bit slower than choice 1.
     """
     yy = np.ones(spatial_dimension)
@@ -191,12 +191,12 @@ def _get_params_sobol_1998_2(spatial_dimension: int) -> np.ndarray:
 
 
 def _get_params_sobol_1998_3(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol'-G according to choice 3 in [2].
+    """Construct a parameter array for Sobol'-G according to choice 3 in [3].
 
     Notes
     -----
     - Using this choice of parameters, the supremum of the Sobol-G function
-      grows linearly as a function of dimension, i.e., 1 + (M/2) [1].
+      grows linearly as a function of dimension, i.e., 1 + (M/2).
     """
     yy = np.arange(1, spatial_dimension + 1)
 
@@ -204,12 +204,12 @@ def _get_params_sobol_1998_3(spatial_dimension: int) -> np.ndarray:
 
 
 def _get_params_sobol_1998_4(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol-G according to choice 4 in [2].
+    """Construct a parameter array for Sobol-G according to choice 4 in [3].
 
     Notes
     -----
     - Using this choice of parameters, the supremum of the Sobol-G function
-      is bounded at 1.0 [1].
+      is bounded at 1.0.
     """
     yy = np.arange(1, spatial_dimension + 1) ** 2
 
@@ -217,7 +217,7 @@ def _get_params_sobol_1998_4(spatial_dimension: int) -> np.ndarray:
 
 
 def _get_params_kucherenko_2011_2a(spatial_dimension: int) -> np.ndarray:
-    """Construct a param. array for Sobol'-G according to problem 2A in [5]."""
+    """Construct a param. array for Sobol'-G according to problem 2A in [7]."""
     yy = np.zeros(spatial_dimension)
     if spatial_dimension >= 2:
         yy[2:] = 6.52
@@ -226,7 +226,7 @@ def _get_params_kucherenko_2011_2a(spatial_dimension: int) -> np.ndarray:
 
 
 def _get_params_kucherenko_2011_3b(spatial_dimension: int) -> np.ndarray:
-    """Construct a parameter array for Sobol'-G according to problem 3B in [5].
+    """Construct a parameter array for Sobol'-G according to problem 3B in [7].
 
     Notes
     -----
@@ -239,21 +239,154 @@ def _get_params_kucherenko_2011_3b(spatial_dimension: int) -> np.ndarray:
 
 
 AVAILABLE_PARAMETERS = {
-    "Saltelli1995-1": _get_params_saltelli_1995_1,
-    "Saltelli1995-2": _get_params_saltelli_1995_2,
-    "Saltelli1995-3": _get_params_saltelli_1995_3,
-    "Sobol1998-1": _get_params_sobol_1998_1,
-    "Sobol1998-2": _get_params_sobol_1998_2,
-    "Sobol1998-3": _get_params_sobol_1998_3,
-    "Sobol1998-4": _get_params_sobol_1998_4,
-    "Kucherenko2011-2a": _get_params_kucherenko_2011_2a,
-    "Kucherenko2011-3b": _get_params_kucherenko_2011_3b,
+    "Saltelli1995-1": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Saltelli and Sobol' "
+            "(1995), example 1; all input variables are equally important"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_saltelli_1995_1,
+                "type": np.ndarray,
+                "description": "Parameter 'a'",
+            },
+        ],
+    },
+    "Saltelli1995-2": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Saltelli and Sobol' "
+            "(1995), example 2; the first two input variables are the most "
+            "important and the rest are non-influential"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_saltelli_1995_2,
+                "type": np.ndarray,
+                "description": "Parameter 'a'",
+            },
+        ],
+    },
+    "Saltelli1995-3": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Saltelli and Sobol' "
+            "(1995), example 3; the first input variable is the most "
+            "important and the importance of the remaining variables is "
+            "decreasing"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_saltelli_1995_3,
+                "type": np.ndarray,
+                "description": "Parameter 'a'",
+            },
+        ],
+    },
+    "Sobol1998-1": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Sobol' (1998)"
+            "(1995), choice 1; the supremum of the function grows "
+            "exponentially as a function of dimension about 2^M"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_sobol_1998_1,
+                "type": np.ndarray,
+                "description": "Parameter 'a'",
+            },
+        ],
+    },
+    "Sobol1998-2": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Sobol' (1998)"
+            "(1995), choice 2; the supremum of the function grows "
+            "exponentially as a function of dimension about (1.5)^M"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_sobol_1998_2,
+                "type": np.ndarray,
+                "description": "Parameter 'a'",
+            },
+        ],
+    },
+    "Sobol1998-3": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Sobol' (1998)"
+            "(1995), choice 3; the supremum of the function grows "
+            "linearly as a function of dimension, i.e., 1 + M / 2"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_sobol_1998_3,
+                "type": np.ndarray,
+                "description": "Parameter 'a'",
+            },
+        ],
+    },
+    "Sobol1998-4": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Sobol' (1998)"
+            "(1995), choice 4; the supremum of the function is bounded at 1.0"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_sobol_1998_4,
+                "type": np.ndarray,
+                "description": "Parameter 'a'",
+            },
+        ],
+    },
+    "Kucherenko2011-2a": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Kucherenko et al. "
+            "(2011), problem 2A"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_kucherenko_2011_2a,
+                "type": np.ndarray,
+                "description": "Parameter 'a'",
+            },
+        ],
+    },
+    "Kucherenko2011-3b": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Kucherenko et al. "
+            "(2011), problem 3B; the supremum of the function grows "
+            "exponentially as a function of dimension about (1.13)^M"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_kucherenko_2011_3b,
+                "type": np.ndarray,
+                "description": "Parameter 'a'",
+            },
+        ],
+    },
 }
 
 DEFAULT_PARAMETERS_SELECTION = "Saltelli1995-3"
 
 
-def evaluate(xx: np.ndarray, parameters: np.ndarray):
+def evaluate(xx: np.ndarray, aa: np.ndarray):
     """Evaluate the Sobol-G function on a set of input values.
 
     Parameters
@@ -261,8 +394,9 @@ def evaluate(xx: np.ndarray, parameters: np.ndarray):
     xx : np.ndarray
         M-Dimensional input values given by an N-by-M array where
         N is the number of input values.
-    parameters : np.ndarray
-        The parameters (i.e., coefficients) of the Sobol'-G function.
+    aa : np.ndarray
+        The vector of parameters (i.e., coefficients) of the Sobol'-G function;
+        the length of the vector is the same as the number of input dimensions.
 
     Returns
     -------
@@ -270,7 +404,6 @@ def evaluate(xx: np.ndarray, parameters: np.ndarray):
         The output of the Sobol-G function evaluated on the input values.
         The output is a 1-dimensional array of length N.
     """
-    aa = parameters
     yy = np.prod(((np.abs(4 * xx - 2) + aa) / (1 + aa)), axis=1)
 
     return yy

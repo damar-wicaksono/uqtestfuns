@@ -15,7 +15,6 @@ References
 
 import numpy as np
 
-from typing import Tuple
 
 from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
 from ..core.uqtestfun_abc import UQTestFunABC
@@ -57,15 +56,96 @@ AVAILABLE_INPUT_SPECS = {
 }
 
 AVAILABLE_PARAMETERS = {
-    "Saltelli2004a": (100.0, 500.0, 1000.0),  # from [1]
-    "Saltelli2004b": (300.0, 300.0, 300.0),  # from [1]
-    "Saltelli2004c": (500.0, 400.0, 100.0),  # from [1]
+    "Saltelli2004-1": {
+        "function_id": "Portfolio3D",
+        "description": (
+            "Parameter set for the simple 3D portfolio model from "
+            "Saltelli et al. (2004); the least volatile hedged portfolio is "
+            "the largest quantity"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "cs",
+                "value": 100.0,
+                "type": float,
+                "description": "Quantities of the portfolio 's'",
+            },
+            {
+                "keyword": "ct",
+                "value": 500.0,
+                "type": float,
+                "description": "Quantities of the portfolio 't'",
+            },
+            {
+                "keyword": "cj",
+                "value": 1000.0,
+                "type": float,
+                "description": "Quantities of the portfolio 'j'",
+            },
+        ],
+    },
+    "Saltelli2004-2": {
+        "function_id": "Portfolio3D",
+        "description": (
+            "Parameter set for the simple 3D portfolio model from "
+            "Saltelli et al. (2004); the same quantities are hold for each "
+            "hedged portfolio"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "cs",
+                "value": 300.0,
+                "type": float,
+                "description": "Quantities of the portfolio 's'",
+            },
+            {
+                "keyword": "ct",
+                "value": 300.0,
+                "type": float,
+                "description": "Quantities of the portfolio 't'",
+            },
+            {
+                "keyword": "cj",
+                "value": 300.0,
+                "type": float,
+                "description": "Quantities of the portfolio 'j'",
+            },
+        ],
+    },
+    "Saltelli2004-3": {
+        "function_id": "Portfolio3D",
+        "description": (
+            "Parameter set for the simple 3D portfolio model from "
+            "Saltelli et al. (2004); the most volatile hedged portfolio is"
+            "the largest quantity"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "cs",
+                "value": 500.0,
+                "type": float,
+                "description": "Quantities of the portfolio 's'",
+            },
+            {
+                "keyword": "ct",
+                "value": 400.0,
+                "type": float,
+                "description": "Quantities of the portfolio 't'",
+            },
+            {
+                "keyword": "cj",
+                "value": 100.0,
+                "type": float,
+                "description": "Quantities of the portfolio 'j'",
+            },
+        ],
+    },
 }
 
-DEFAULT_PARAMETERS_SELECTION = "Saltelli2004a"
+DEFAULT_PARAMETERS_SELECTION = "Saltelli2004-1"
 
 
-def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
+def evaluate(xx: np.ndarray, cs: float, ct: float, cj: float) -> np.ndarray:
     """Evaluate the simple portfolio model on a set of input values.
 
     Parameters
@@ -73,9 +153,12 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
     xx : np.ndarray
         Three-Dimensional input values given by an ``(N, 3)`` array where
         ``N`` is the number of input values.
-    parameters : Tuple[float, float, float]
-        Tuple of three values as the parameters of the function (i.e.,
-        the quantities per hedged portfolio).
+    cs : float
+        The quantities of the portfolio 's' (the most volatile).
+    ct : float
+        The quantities of the portfolio 't' (average volatility).
+    cj : float
+        The quantities of the portfolio 'j' (the least volatile).
 
     Returns
     -------
@@ -84,7 +167,7 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
         The output is a one-dimensional array of length ``N``.
     """
     # Read the parameters
-    p = np.array(parameters)
+    p = np.array([cs, ct, cj])
 
     # Compute the simple portfolio model
     yy = np.sum(p * xx, axis=1)

@@ -5,10 +5,12 @@ This module provides abstract base classes for defining a test function class.
 import abc
 import numpy as np
 
+from copy import deepcopy
 from inspect import signature
 from typing import Any, Callable, Dict, List, Optional, Union
 
 from .prob_input.probabilistic_input import ProbInput
+from .parameters import FunParams
 from .prob_input.input_spec import ProbInputSpecFixDim, ProbInputSpecVarDim
 from .utils import create_canonical_uniform_input
 
@@ -56,7 +58,7 @@ class UQTestFunBareABC(abc.ABC):
     def __init__(
         self,
         prob_input: ProbInput,
-        parameters: Optional[Any] = None,
+        parameters: FunParams,
         name: Optional[str] = None,
     ):
         self.prob_input = prob_input
@@ -80,13 +82,17 @@ class UQTestFunBareABC(abc.ABC):
             )
 
     @property
-    def parameters(self) -> Any:
+    def parameters(self) -> FunParams:
         """The parameters of the UQ test function."""
         return self._parameters
 
     @parameters.setter
-    def parameters(self, value: Any):
+    def parameters(self, value: FunParams):
         """The setter for the parameters of the test function."""
+        if not isinstance(value, FunParams):
+            raise TypeError(
+                f"Expected a 'FunParams' type! Got instead {type(value)}"
+            )
         self._parameters = value
 
     @property
@@ -166,16 +172,13 @@ class UQTestFunBareABC(abc.ABC):
 
     @staticmethod
     @abc.abstractmethod
-    def evaluate(xx: np.ndarray, *args) -> np.ndarray:
+    def evaluate(xx: np.ndarray, **kwargs) -> np.ndarray:
         """Abstract method for the implementation of the UQ test function."""
         pass
 
     def _eval(self, xx) -> np.ndarray:
         """Actual computation is delegated to evaluate()."""
-        if self.parameters is None:
-            return self.__class__.evaluate(xx)
-
-        return self.__class__.evaluate(xx, self.parameters)
+        return self.__class__.evaluate(xx, **self.parameters.as_dict())
 
 
 class UQTestFunABC(UQTestFunBareABC):
@@ -257,27 +260,19 @@ class UQTestFunABC(UQTestFunBareABC):
             prob_input = ProbInput.from_spec(prob_input_spec)
 
         # --- Select the parameters set, when applicable
-        available_parameters = self.available_parameters
-        if available_parameters is not None:
-            if not parameters_selection:
-                parameters_selection = self.default_parameters
-            if parameters_selection not in available_parameters:
-                raise KeyError(
-                    "Parameters selection is not in the available sets."
-                )
-            parameters = available_parameters[parameters_selection]
-
-            # If the parameters set is a function of spatial dimension
-            if isinstance(prob_input_spec, ProbInputSpecVarDim):
-                if isinstance(parameters, Callable):  # type: ignore
-                    func_signature = signature(parameters).parameters
-                    if "spatial_dimension" in func_signature:
-                        parameters = parameters(
-                            spatial_dimension=spatial_dimension
-                        )
-
+        if self.available_parameters is None:
+            parameters = FunParams()
         else:
-            parameters = None
+            if parameters_selection is None:
+                parameter_id = self.default_parameters
+            else:
+                parameter_id = parameters_selection
+            parameters = _create_parameters(
+                self.__class__.__name__,
+                parameter_id,
+                self.available_parameters,
+                spatial_dimension,
+            )
 
         # --- Process the default name
         if name is None:
@@ -437,3 +432,40 @@ def _verify_sample_domain(xx: np.ndarray, min_value: float, max_value: float):
             f"One or more values are outside the domain "
             f"[{min_value}, {max_value}]!"
         )
+
+
+def _create_parameters(
+    function_id: str,
+    parameter_id: str,
+    available_parameters: dict,
+    spatial_dimension: Optional[int] = None,
+) -> FunParams:
+    """Create the Parameter set of a UQ test function."""
+
+    # Verify if the selection is valid
+    if parameter_id not in available_parameters:
+        raise KeyError(
+            f"Parameter set {parameter_id} is not in the available sets."
+        )
+
+    # Must be deepcopied due to modification
+    param_dict = deepcopy(available_parameters[parameter_id])
+
+    # Verify if the function_id agrees
+    if function_id != param_dict["function_id"]:
+        raise ValueError()
+
+    # Prepare the dictionary as input
+    param_dict["parameter_id"] = parameter_id
+
+    # Deal with variable dimension parameter
+    declared_parameters = param_dict["declared_parameters"]
+    for declared_parameter in declared_parameters:
+        value = declared_parameter["value"]
+        if isinstance(value, Callable):  # type: ignore
+            func_signature = signature(value).parameters
+            if "spatial_dimension" in func_signature:
+                parameter_value = value(spatial_dimension=spatial_dimension)
+                declared_parameter["value"] = parameter_value
+
+    return FunParams(**param_dict)

@@ -106,7 +106,7 @@ def test_create_instance_with_parameters(builtin_testfun):
         my_fun_2.parameters = parameters
         assert my_fun_2.parameters is parameters
     else:
-        assert my_fun.parameters is None
+        assert len(my_fun.parameters) == 0
 
 
 def test_available_inputs(builtin_testfun):

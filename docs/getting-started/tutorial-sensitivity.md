@@ -400,7 +400,7 @@ for i, sample_size in enumerate(sample_sizes):
 Compute the analytical values for the given parameters:
 
 ```{code-cell} ipython3
-first_order_ref, total_effect_ref = compute_sobol_indices(*ishigami.parameters)
+first_order_ref, total_effect_ref = compute_sobol_indices(**ishigami.parameters.as_dict())
 ```
 
 The estimated indices as a function of sample size is plotted below;
