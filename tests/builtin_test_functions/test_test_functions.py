@@ -157,6 +157,7 @@ def test_str(builtin_testfun):
     str_ref = (
         f"Name              : {my_fun.name}\n"
         f"Spatial dimension : {my_fun.spatial_dimension}\n"
+        f"Parameterized     : {bool(my_fun.parameters)}\n"
         f"Description       : {my_fun.description}"
     )
 
