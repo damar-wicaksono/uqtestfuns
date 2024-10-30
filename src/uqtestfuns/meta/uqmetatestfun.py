@@ -161,7 +161,7 @@ class UQMetaTestFun:
                 evaluate=evaluate,
                 prob_input=prob_input,
                 parameters=parameters,
-                name=name,
+                function_id=name,
             )
 
         sample = []
@@ -185,7 +185,7 @@ class UQMetaTestFun:
                     evaluate=evaluate,
                     prob_input=prob_input,
                     parameters=parameters,
-                    name=name,
+                    function_id=name,
                 )
             )
 

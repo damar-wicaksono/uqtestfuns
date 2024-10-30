@@ -43,17 +43,17 @@ def test_create_instance_with_custom_name(builtin_testfun):
     testfun_class = builtin_testfun
 
     # Get the default name of the test function
-    name = testfun_class.__name__
+    function_id = testfun_class.__name__
 
     # Create a default instance
     my_fun = testfun_class()
 
     # Assertion
-    assert my_fun.name == name
+    assert my_fun.function_id == function_id
 
     # Use custom name to create a test function
-    my_fun = testfun_class(name=name)
-    assert my_fun.name == name
+    my_fun = testfun_class(function_id=function_id)
+    assert my_fun.function_id == function_id
 
 
 def test_create_instance_with_prob_input(builtin_testfun):
@@ -155,7 +155,7 @@ def test_str(builtin_testfun):
     my_fun = builtin_testfun()
 
     str_ref = (
-        f"Name              : {my_fun.name}\n"
+        f"Function ID       : {my_fun.function_id}\n"
         f"Spatial dimension : {my_fun.spatial_dimension}\n"
         f"Parameterized     : {bool(my_fun.parameters)}\n"
         f"Description       : {my_fun.description}"

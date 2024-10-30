@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The property `name` of UQ test function instances has been renamed to
+  `function_id` that implies uniqueness although it is not strictly enforced.
 - The parameter in the Gramacy 1D sine function is now removed. Noise can
   be added on the fly if needed.
 - `evaluate()` abstract method is now must be implemented directly in the
