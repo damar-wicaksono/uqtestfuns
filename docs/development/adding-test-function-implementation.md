@@ -290,7 +290,7 @@ A concrete implementation of this base class requires the following:
 
 - a static method named `evaluate()`
 - several class-level properties, namely: `_tags`, `_description`, 
-  `_available_inputs`, `_available_parameters`, `_default_spatial_dimension`,
+  `_available_inputs`, `_available_parameters`, `_default_input_dimension`,
   `_default_input`, and `_default_parameters`.
 
 The full definition of the class for the Branin test function is shown below.
@@ -303,7 +303,7 @@ class Branin(UQTestFunABC):
     _description = "Branin function from Dixon and Szegö (1978)"  # Short description
     _available_inputs = AVAILABLE_INPUT_SPECS    # As defined above 
     _available_parameters = AVAILABLE_PARAMETERS # As defined above
-    _default_spatial_dimension = 2  # Spatial dimension of the function
+    _default_input_dimension = 2  # input dimension of the function
     _default_input = "Dixon1978"       # Optional, if only one input is available
     _default_parameters = "Dixon1978"  # Optional, if only one set of parameters is available
 
@@ -346,11 +346,13 @@ built-in functions from a Python terminal.
 ```python
 >>> import uqtestfuns as uqtf
 >>> uqtf.list_functions()
- No.      Constructor       Spatial Dimension          Application          Description
------  ------------------  -------------------  --------------------------  ----------------------------------------------------------------------------
-  1         Ackley()                M           optimization, metamodeling  Ackley function from Ackley (1987)
-  2        Borehole()               8           metamodeling, sensitivity   Borehole function from Harper and Gupta (1983)
-  3         Branin()                2                  optimization         Branin function from Dixon and Szegö (1978)
+ No.            Constructor            Input Dim.    Parameterized                Application                Description
+-----  -----------------------------  ------------  ---------------  --------------------------------------  ----------------------------------------------------------------------------
+  1              Ackley()                  M             True              optimization, metamodeling        Optimization test function from Ackley (1987)
+  2           Alemazkoor20D()              20            False                    metamodeling               High-dimensional low-degree polynomial from Alemazkoor & Meidani (2018)
+  3           Alemazkoor2D()               2             False                    metamodeling               Low-dimensional high-degree polynomial from Alemazkoor & Meidani (2018)
+  4             Borehole()                 8             False             metamodeling, sensitivity         Borehole function from Harper and Gupta (1983)
+  5              Branin()                  2             True                    optimization                Branin function from Dixon and Szegö (1978)
 ...
 ```
 

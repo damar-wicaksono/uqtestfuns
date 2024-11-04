@@ -145,6 +145,6 @@ class Flood(UQTestFunABC):
     _description = "Flood model from Iooss and Lemaître (2015)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 8
+    _default_input_dimension = 8
 
     evaluate = staticmethod(evaluate)  # type: ignore

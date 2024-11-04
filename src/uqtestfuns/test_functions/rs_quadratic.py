@@ -72,6 +72,6 @@ class RSQuadratic(UQTestFunABC):
     _description = "RS problem w/ one quadratic term from Waarts (2000)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 2
+    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore

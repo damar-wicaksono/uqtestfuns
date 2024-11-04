@@ -9,6 +9,7 @@ is defined by an instance of the ``UnivDist`` class.
 from __future__ import annotations
 
 import numpy as np
+import textwrap
 
 from dataclasses import dataclass, field
 from numpy.random._generator import Generator
@@ -42,7 +43,7 @@ class ProbInput:
 
     Attributes
     ----------
-    spatial_dimension : int
+    input_dimension : int
         Number of constituents (random) input variables.
     _rng : Generator
         The default pseudo-random number generator of NumPy.
@@ -50,7 +51,7 @@ class ProbInput:
         a random sample from the distribution).
     """
 
-    spatial_dimension: int = field(init=False)
+    input_dimension: int = field(init=False)
     marginals: Union[List[UnivDist], Tuple[UnivDist, ...]]
     copulas: Any = None
     name: Optional[str] = None
@@ -59,14 +60,14 @@ class ProbInput:
     _rng: Optional[Generator] = field(init=False, default=None, repr=False)
 
     def __post_init__(self):
-        self.spatial_dimension = len(self.marginals)
+        self.input_dimension = len(self.marginals)
         # Protect marginals by making it immutable
         self.marginals = tuple(self.marginals)
 
     def transform_sample(self, xx: np.ndarray, other: ProbInput):
         """Transform a sample from the distribution to another."""
         # Make sure the dimensionality is consistent
-        if self.spatial_dimension != other.spatial_dimension:
+        if self.input_dimension != other.input_dimension:
             raise ValueError(
                 "The dimensionality of the two inputs are not consistent!"
             )
@@ -98,13 +99,13 @@ class ProbInput:
         np.ndarray
             The generated sample in an :math:`N`-by-:math:`M` array
             where :math:`N` and :math:`M` are the sample size
-            and the number of spatial dimensions, respectively.
+            and the number of input dimensions, respectively.
         """
         if self._rng is None:  # pragma: no cover
             # Create a pseudo-random number generator (lazy evaluation)
             self._rng = np.random.default_rng(self.rng_seed)
 
-        xx = self._rng.random((sample_size, self.spatial_dimension))
+        xx = self._rng.random((sample_size, self.input_dimension))
         if not self.copulas:
             # Transform the sample in [0, 1] to the domain of the distribution
             for idx_dim, marginal in enumerate(self.marginals):
@@ -152,31 +153,20 @@ class ProbInput:
         return yy
 
     def __str__(self):
-        table = f"Name         : {self.name}\n"
-        table += f"Spatial Dim. : {self.spatial_dimension}\n"
-        table += f"Description  : {self.description}\n"
-        table += "Marginals    :\n\n"
+        table = f"Name            : {self.name}\n"
+        table += f"Input Dimension : {self.input_dimension}\n"
 
-        # Get the header names
-        header_names = [name.capitalize() for name in FIELD_NAMES]
-        header_names.insert(0, "No.")
-
-        # Get the values for each field as a list
-        list_values = _get_values_as_list(self.marginals, FIELD_NAMES)
-
-        table += tabulate(list_values, headers=header_names, stralign="center")
-
-        table += f"\n\nCopulas      : {self.copulas}"
-
-        return table
-
-    def _repr_html_(self):
-        table = f"<p><b>Name</b>:&nbsp;{self.name}\n</p>"
-        table += (
-            f"<p><b>Spatial Dimension</b>:&nbsp;{self.spatial_dimension}\n</p>"
-        )
-        table += f"<p><b>Description</b>:&nbsp;{self.description}\n</p>"
-        table += "<p><b>Marginals:</b>\n</p>"
+        # Parse the description column
+        if self.description is None or self.description == "":
+            description = "-"
+        else:
+            desc = textwrap.wrap(self.description, width=57)
+            # Pad new lines
+            if len(desc) > 1:
+                desc[1:] = ["                  " + line for line in desc[1:]]
+            description = "\n".join(desc)
+        table += f"Description     : {description}\n"
+        table += "Marginals       :\n\n"
 
         # Get the header names
         header_names = [name.capitalize() for name in FIELD_NAMES]
@@ -189,11 +179,10 @@ class ProbInput:
             list_values,
             headers=header_names,
             stralign="center",
-            tablefmt="html",
+            disable_numparse=True,
         )
 
-        table += "\n"
-        table += f"<p><b>Copulas</b>:&nbsp;{self.copulas}</p>"
+        table += f"\n\nCopulas         : {self.copulas}"
 
         return table
 
@@ -202,16 +191,16 @@ class ProbInput:
         cls,
         prob_input_spec: Union[ProbInputSpecFixDim, ProbInputSpecVarDim],
         *,
-        spatial_dimension: Optional[int] = None,
+        input_dimension: Optional[int] = None,
         rng_seed: Optional[int] = None,
     ):
         """Create an instance from a ProbInputSpec instance."""
 
         if isinstance(prob_input_spec, ProbInputSpecVarDim):
-            if spatial_dimension is None:
-                raise ValueError("Spatial dimension must be specified!")
+            if input_dimension is None:
+                raise ValueError("Input dimension must be specified!")
             marginals_gen = prob_input_spec.marginals_generator
-            marginals_spec = marginals_gen(spatial_dimension)
+            marginals_spec = marginals_gen(input_dimension)
         else:
             marginals_spec = prob_input_spec.marginals
 
@@ -253,7 +242,10 @@ def _get_values_as_list(
     for i, marginal in enumerate(univ_inputs):
         values = [i + 1]
         for field_name in field_names:
-            values.append(getattr(marginal, field_name))
+            attr_value = getattr(marginal, field_name)
+            if attr_value is None:
+                attr_value = "-"
+            values.append(attr_value)
         list_values.append(values)
 
     return list_values

@@ -82,6 +82,6 @@ class Gramacy1DSine(UQTestFunABC):
     _description = "One-dimensional sine function from Gramacy (2007)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 1
+    _default_input_dimension = 1
 
     evaluate = staticmethod(evaluate_1dsine)  # type: ignore

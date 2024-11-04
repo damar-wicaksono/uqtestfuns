@@ -30,13 +30,13 @@ from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
 __all__ = ["Ackley"]
 
 
-def _ackley_input(spatial_dimension: int) -> List[UnivDistSpec]:
+def _ackley_input(input_dimension: int) -> List[UnivDistSpec]:
     """Create a list of marginals for the M-dimensional Ackley function.
 
     Parameters
     ----------
-    spatial_dimension : int
-        The requested spatial dimension of the probabilistic input model.
+    input_dimension : int
+        The requested input dimension of the probabilistic input model.
 
     Returns
     -------
@@ -44,13 +44,13 @@ def _ackley_input(spatial_dimension: int) -> List[UnivDistSpec]:
         A list of marginals for the multivariate input following Ref. [1]
     """
     marginals = []
-    for i in range(spatial_dimension):
+    for i in range(input_dimension):
         marginals.append(
             UnivDistSpec(
                 name=f"X{i + 1}",
                 distribution="uniform",
                 parameters=[-32.768, 32.768],
-                description="None",
+                description=None,
             )
         )
 
@@ -138,6 +138,6 @@ class Ackley(UQTestFunABC):
     _description = "Optimization test function from Ackley (1987)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_spatial_dimension = None  # Indicate that this is variable dim.
+    _default_input_dimension = None  # Indicate that this is variable dim.
 
     evaluate = staticmethod(evaluate)  # type: ignore

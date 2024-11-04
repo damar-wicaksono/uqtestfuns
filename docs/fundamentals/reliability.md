@@ -17,18 +17,18 @@ kernelspec:
 The table below listed the available test functions typically used
 in the comparison of reliability analysis methods.
 
-|                                        Name                                         | Spatial Dimension |           Constructor           |
-|:-----------------------------------------------------------------------------------:|:-----------------:|:-------------------------------:|
-|           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |         2         |       `CantileverBeam2D `       |
-|           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |         2         |      `CircularPipeCrack()`      |
-|          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |         2         |      `ConvexFailDomain()`       |
-| {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |         8         | `DampedOscillatorReliability()` |
-|                   {ref}`Four-branch <test-functions:four-branch>`                   |         2         |         `FourBranch()`          |
-|                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |         2         |          `GaytonHat()`          |
-|               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |         2         |         `HyperSphere()`         |
-|              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |         2         |        `RSCircularBar()`        |
-|                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |         2         |         `RSQuadratic()`         |
-|           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |         5         |      `SpeedReducerShaft()`      |
+|                                        Name                                         | Input Dimension |           Constructor           |
+|:-----------------------------------------------------------------------------------:|:---------------:|:-------------------------------:|
+|           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |        2        |       `CantileverBeam2D `       |
+|           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |        2        |      `CircularPipeCrack()`      |
+|          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |        2        |      `ConvexFailDomain()`       |
+| {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |        8        | `DampedOscillatorReliability()` |
+|                   {ref}`Four-branch <test-functions:four-branch>`                   |        2        |         `FourBranch()`          |
+|                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |        2        |          `GaytonHat()`          |
+|               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |        2        |         `HyperSphere()`         |
+|              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |        2        |        `RSCircularBar()`        |
+|                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |        2        |         `RSQuadratic()`         |
+|           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |        5        |      `SpeedReducerShaft()`      |
 
 In a Python terminal, you can list all the available functions relevant
 for metamodeling applications using ``list_functions()`` and filter the results

@@ -46,13 +46,13 @@ from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
 __all__ = ["Bratley1992a", "Bratley1992b", "Bratley1992c", "Bratley1992d"]
 
 
-def _bratley_input(spatial_dimension: int) -> List[UnivDistSpec]:
+def _bratley_input(input_dimension: int) -> List[UnivDistSpec]:
     """Create a list of marginals for the M-dimensional Bratley test functions.
 
     Parameters
     ----------
-    spatial_dimension : int
-        The requested spatial dimension of the probabilistic input model.
+    input_dimension : int
+        The requested input dimension of the probabilistic input model.
 
     Returns
     -------
@@ -60,7 +60,7 @@ def _bratley_input(spatial_dimension: int) -> List[UnivDistSpec]:
         A list of marginals for the multivariate input following Ref. [1]
     """
     marginals = []
-    for i in range(spatial_dimension):
+    for i in range(input_dimension):
         marginals.append(
             UnivDistSpec(
                 name=f"X{i + 1}",
@@ -89,7 +89,7 @@ COMMON_METADATA = dict(
     _tags=["integration", "sensitivity"],
     _available_inputs=AVAILABLE_INPUT_SPECS,
     _available_parameters=None,
-    _default_spatial_dimension=None,
+    _default_input_dimension=None,
     _description="from Bratley et al. (1992)",
 )
 
@@ -132,7 +132,7 @@ class Bratley1992a(UQTestFunABC):
     )
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = None
+    _default_input_dimension = None
 
     evaluate = staticmethod(evaluate_bratley1992a)  # type: ignore
 
@@ -175,7 +175,7 @@ class Bratley1992b(UQTestFunABC):
     )
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = None
+    _default_input_dimension = None
 
     evaluate = staticmethod(evaluate_bratley1992b)  # type: ignore
 
@@ -220,7 +220,7 @@ class Bratley1992c(UQTestFunABC):
     )
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = None
+    _default_input_dimension = None
 
     evaluate = staticmethod(evaluate_bratley1992c)  # type: ignore
 
@@ -263,6 +263,6 @@ class Bratley1992d(UQTestFunABC):
     )
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = None
+    _default_input_dimension = None
 
     evaluate = staticmethod(evaluate_bratley1992d)  # type: ignore

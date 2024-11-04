@@ -135,6 +135,6 @@ class CircularPipeCrack(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_spatial_dimension = 2
+    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore

@@ -47,8 +47,8 @@ def test_create_instance(uqtestfun):
     # The original evaluate function is stored in a hidden attribute
     assert uqtestfun_instance._evaluate == uqtestfun_dict["evaluate"]
     assert (
-        uqtestfun_instance.spatial_dimension
-        == uqtestfun_dict["prob_input"].spatial_dimension
+        uqtestfun_instance.input_dimension
+        == uqtestfun_dict["prob_input"].input_dimension
     )
     assert uqtestfun_instance.parameters == uqtestfun_dict["parameters"]
 
@@ -68,9 +68,9 @@ def test_str(uqtestfun):
     uqtestfun_instance, _ = uqtestfun
 
     str_ref = (
-        f"Function ID       : {uqtestfun_instance.function_id}\n"
-        f"Spatial dimension : {uqtestfun_instance.spatial_dimension}\n"
-        f"Parameterized     : {bool(uqtestfun_instance.parameters)}"
+        f"Function ID     : {uqtestfun_instance.function_id}\n"
+        f"Input Dimension : {uqtestfun_instance.input_dimension}\n"
+        f"Parameterized   : {bool(uqtestfun_instance.parameters)}"
     )
 
     assert uqtestfun_instance.__str__() == str_ref

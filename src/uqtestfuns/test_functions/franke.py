@@ -79,7 +79,7 @@ COMMON_METADATA = dict(
     _tags=["metamodeling"],
     _available_inputs=AVAILABLE_INPUT_SPECS,
     _available_parameters=None,
-    _default_spatial_dimension=2,
+    _default_input_dimension=2,
     _description="from Franke (1979)",
 )
 
@@ -127,7 +127,7 @@ class Franke1(UQTestFunABC):
     _description = f"(1st) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke1)  # type: ignore
 
@@ -163,7 +163,7 @@ class Franke2(UQTestFunABC):
     _description = f"(2nd) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke2)  # type: ignore
 
@@ -202,7 +202,7 @@ class Franke3(UQTestFunABC):
     _description = f"(3rd) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke3)  # type: ignore
 
@@ -241,7 +241,7 @@ class Franke4(UQTestFunABC):
     _description = f"(4th) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke4)  # type: ignore
 
@@ -280,7 +280,7 @@ class Franke5(UQTestFunABC):
     _description = f"(5th) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke5)  # type: ignore
 
@@ -320,6 +320,6 @@ class Franke6(UQTestFunABC):
     _description = f"(6th) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke6)  # type: ignore

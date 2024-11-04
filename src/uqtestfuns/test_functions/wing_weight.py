@@ -141,6 +141,6 @@ class WingWeight(UQTestFunABC):
     _description = "Wing weight model from Forrester et al. (2008)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 10
+    _default_input_dimension = 10
 
     evaluate = staticmethod(evaluate)  # type: ignore

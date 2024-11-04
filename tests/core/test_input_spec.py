@@ -82,7 +82,7 @@ def test_probinputspec_vardim():
     assert my_probinputspec.marginals_generator == marginals_gen
 
 
-def _create_marginals(spatial_dimension: int) -> List[UnivDistSpec]:
+def _create_marginals(input_dimension: int) -> List[UnivDistSpec]:
     """Create a list of test marginals."""
     return [
         UnivDistSpec(
@@ -91,5 +91,5 @@ def _create_marginals(spatial_dimension: int) -> List[UnivDistSpec]:
             parameters=[0.0, 1.0],
             description="None",
         )
-        for i in range(spatial_dimension)
+        for i in range(input_dimension)
     ]

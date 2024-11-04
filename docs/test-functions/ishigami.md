@@ -59,7 +59,9 @@ function consists of three independent uniform random variables with the ranges
 shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Parameters

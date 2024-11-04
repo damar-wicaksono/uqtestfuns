@@ -74,7 +74,7 @@ def _evaluate_test_function(xx: np.ndarray, spec: UQTestFunSpec) -> np.ndarray:
     selected_basis = spec.selected_basis
 
     # Evaluate the selected basis functions on xx
-    basis_vals = np.zeros((xx.shape[0], spec.spatial_dimension))
+    basis_vals = np.zeros((xx.shape[0], spec.input_dimension))
     for idx, basis_id in enumerate(selected_basis):
         basis_vals[:, idx] = basis_functions[basis_id](xx[:, idx])
 
@@ -194,14 +194,14 @@ class UQMetaTestFun:
     @classmethod
     def from_default(
         cls,
-        spatial_dimension: ArrayLike,
+        input_dimension: ArrayLike,
         input_id: Optional[int] = None,
     ):
         """Create a metafunction with parameters according to Becker (2019).
 
         Parameters
         ----------
-        spatial_dimension : Union[int, Sized]
+        input_dimension : Union[int, Sized]
             Number of dimensions of the test functions generated
             by the meta. If a set of values are given, a single value
             will be selected at random.
@@ -211,15 +211,15 @@ class UQMetaTestFun:
         UQMetaTestFun
             An instance of metafunction with the default parameters.
         """
-        # Select a single spatial dimension randomly
-        if not isinstance(spatial_dimension, int):
-            spatial_dimension = np.asarray(spatial_dimension)
-            spatial_dimension = int(np.random.choice(spatial_dimension))
+        # Select a single input dimension randomly
+        if not isinstance(input_dimension, int):
+            input_dimension = np.asarray(input_dimension)
+            input_dimension = int(np.random.choice(input_dimension))
 
         effects_dict = {
             1: None,  # Take all
-            2: math.floor(0.5 * spatial_dimension),
-            3: math.floor(0.2 * spatial_dimension),
+            2: math.floor(0.5 * input_dimension),
+            3: math.floor(0.2 * input_dimension),
         }
 
         if input_id is None:
@@ -242,7 +242,7 @@ class UQMetaTestFun:
             input_marginals = [input_marginals[input_id]]
 
         metafun_spec = UQMetaFunSpec(
-            spatial_dimension=spatial_dimension,
+            input_dimension=input_dimension,
             basis_functions=BASIS_BY_ID,
             effects_dict=effects_dict,
             input_marginals=input_marginals,

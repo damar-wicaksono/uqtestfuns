@@ -151,7 +151,7 @@ class OTLCircuit(UQTestFunABC):
     """A concrete implementation of the OTL circuit test function."""
 
     _tags = ["metamodeling", "sensitivity"]
-    _default_spatial_dimension = 6
+    _default_input_dimension = 6
     _description = (
         "Output transformerless (OTL) circuit model "
         "from Ben-Ari and Steinberg (2007)"

@@ -66,12 +66,12 @@ from ..core.uqtestfun_abc import UQTestFunABC
 __all__ = ["SobolG"]
 
 
-def _create_sobol_input(spatial_dimension: int) -> List[UnivDistSpec]:
+def _create_sobol_input(input_dimension: int) -> List[UnivDistSpec]:
     """Construct an input instance for a given dimension according to [1].
 
     Parameters
     ----------
-    spatial_dimension : int
+    input_dimension : int
         The number of marginals to be created.
 
     Returns
@@ -81,7 +81,7 @@ def _create_sobol_input(spatial_dimension: int) -> List[UnivDistSpec]:
         the MultivariateInput.
     """
     marginals = []
-    for i in range(spatial_dimension):
+    for i in range(input_dimension):
         marginals.append(
             UnivDistSpec(
                 name=f"X{i + 1}",
@@ -109,7 +109,7 @@ AVAILABLE_INPUT_SPECS = {
 DEFAULT_INPUT_SELECTION = "Saltelli1995"
 
 
-def _get_params_saltelli_1995_1(spatial_dimension: int) -> np.ndarray:
+def _get_params_saltelli_1995_1(input_dimension: int) -> np.ndarray:
     """Construct a parameter array for Sobol'-G according to example 1 in [4].
 
     Notes
@@ -118,12 +118,12 @@ def _get_params_saltelli_1995_1(spatial_dimension: int) -> np.ndarray:
       in [1] (without parameters).
     - With the selected parameters, all input variables are equally important.
     """
-    yy = np.zeros(spatial_dimension)
+    yy = np.zeros(input_dimension)
 
     return yy
 
 
-def _get_params_saltelli_1995_2(spatial_dimension: int) -> np.ndarray:
+def _get_params_saltelli_1995_2(input_dimension: int) -> np.ndarray:
     """Construct a parameter array for Sobol'-G according to example 2 in [4].
 
     Notes
@@ -133,21 +133,21 @@ def _get_params_saltelli_1995_2(spatial_dimension: int) -> np.ndarray:
     - Originally, the dimension is limited to 8-dimensions; if more dimensions
       are used then the remaining dimension is also non-influential.
     """
-    yy = np.zeros(spatial_dimension)
+    yy = np.zeros(input_dimension)
 
-    if spatial_dimension > 1:
+    if input_dimension > 1:
         yy[1] = 0
 
-    if spatial_dimension > 2:
+    if input_dimension > 2:
         yy[2] = 3
 
-    if spatial_dimension > 3:
+    if input_dimension > 3:
         yy[3:] = 9
 
     return yy
 
 
-def _get_params_saltelli_1995_3(spatial_dimension: int) -> np.ndarray:
+def _get_params_saltelli_1995_3(input_dimension: int) -> np.ndarray:
     """Construct a parameter array for Sobol'-G according to example 3 in [4].
 
     Notes
@@ -158,12 +158,12 @@ def _get_params_saltelli_1995_3(spatial_dimension: int) -> np.ndarray:
       are used then the remaining dimension is also non-influential.
     - The parameter set is also used in [8].
     """
-    yy = (np.arange(1, spatial_dimension + 1) - 1) / 2.0
+    yy = (np.arange(1, input_dimension + 1) - 1) / 2.0
 
     return yy
 
 
-def _get_params_sobol_1998_1(spatial_dimension: int) -> np.ndarray:
+def _get_params_sobol_1998_1(input_dimension: int) -> np.ndarray:
     """Construct a parameter array for Sobol'-G according to choice 1 in [3].
 
     Notes
@@ -171,12 +171,12 @@ def _get_params_sobol_1998_1(spatial_dimension: int) -> np.ndarray:
     - Using this choice of parameters, the supremum of the Sobol-G function
       grows exponentially as a function of dimension about 2^M.
     """
-    yy = 0.01 * np.ones(spatial_dimension)
+    yy = 0.01 * np.ones(input_dimension)
 
     return yy
 
 
-def _get_params_sobol_1998_2(spatial_dimension: int) -> np.ndarray:
+def _get_params_sobol_1998_2(input_dimension: int) -> np.ndarray:
     """Construct a parameter array for Sobol'-G according to choice 2 in [3].
 
     Notes
@@ -185,12 +185,12 @@ def _get_params_sobol_1998_2(spatial_dimension: int) -> np.ndarray:
       grows exponentially as a function of dimension about (1.5)^M;
       it's a bit slower than choice 1.
     """
-    yy = np.ones(spatial_dimension)
+    yy = np.ones(input_dimension)
 
     return yy
 
 
-def _get_params_sobol_1998_3(spatial_dimension: int) -> np.ndarray:
+def _get_params_sobol_1998_3(input_dimension: int) -> np.ndarray:
     """Construct a parameter array for Sobol'-G according to choice 3 in [3].
 
     Notes
@@ -198,12 +198,12 @@ def _get_params_sobol_1998_3(spatial_dimension: int) -> np.ndarray:
     - Using this choice of parameters, the supremum of the Sobol-G function
       grows linearly as a function of dimension, i.e., 1 + (M/2).
     """
-    yy = np.arange(1, spatial_dimension + 1)
+    yy = np.arange(1, input_dimension + 1)
 
     return yy
 
 
-def _get_params_sobol_1998_4(spatial_dimension: int) -> np.ndarray:
+def _get_params_sobol_1998_4(input_dimension: int) -> np.ndarray:
     """Construct a parameter array for Sobol-G according to choice 4 in [3].
 
     Notes
@@ -211,21 +211,21 @@ def _get_params_sobol_1998_4(spatial_dimension: int) -> np.ndarray:
     - Using this choice of parameters, the supremum of the Sobol-G function
       is bounded at 1.0.
     """
-    yy = np.arange(1, spatial_dimension + 1) ** 2
+    yy = np.arange(1, input_dimension + 1) ** 2
 
     return yy
 
 
-def _get_params_kucherenko_2011_2a(spatial_dimension: int) -> np.ndarray:
+def _get_params_kucherenko_2011_2a(input_dimension: int) -> np.ndarray:
     """Construct a param. array for Sobol'-G according to problem 2A in [7]."""
-    yy = np.zeros(spatial_dimension)
-    if spatial_dimension >= 2:
+    yy = np.zeros(input_dimension)
+    if input_dimension >= 2:
         yy[2:] = 6.52
 
     return yy
 
 
-def _get_params_kucherenko_2011_3b(spatial_dimension: int) -> np.ndarray:
+def _get_params_kucherenko_2011_3b(input_dimension: int) -> np.ndarray:
     """Construct a parameter array for Sobol'-G according to problem 3B in [7].
 
     Notes
@@ -233,7 +233,7 @@ def _get_params_kucherenko_2011_3b(spatial_dimension: int) -> np.ndarray:
     - Using this choice of parameters, the supremum of the Sobol-G function
       grows exponentially as a function of dimension about (1.13)^M.
     """
-    yy = 6.52 * np.ones(spatial_dimension)
+    yy = 6.52 * np.ones(input_dimension)
 
     return yy
 
@@ -417,6 +417,6 @@ class SobolG(UQTestFunABC):
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_parameters = DEFAULT_PARAMETERS_SELECTION
-    _default_spatial_dimension = None
+    _default_input_dimension = None
 
     evaluate = staticmethod(evaluate)  # type: ignore

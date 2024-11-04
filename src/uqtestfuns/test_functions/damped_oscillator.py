@@ -272,7 +272,7 @@ class DampedOscillator(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUT_SPECS_BASE
     _available_parameters = None
-    _default_spatial_dimension = 8
+    _default_input_dimension = 8
 
     evaluate = staticmethod(evaluate)  # type: ignore
 
@@ -313,7 +313,7 @@ class DampedOscillatorReliability(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUT_SPECS_RELIABILITY
     _available_parameters = AVAILABLE_PARAMETERS_RELIABILITY
-    _default_spatial_dimension = 8
+    _default_input_dimension = 8
     _default_input = "DerKiureghian1990a"
     _default_parameters = "DerKiureghian1990"
 

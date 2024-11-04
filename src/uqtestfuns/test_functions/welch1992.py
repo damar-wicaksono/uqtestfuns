@@ -102,6 +102,6 @@ class Welch1992(UQTestFunABC):
     _description = "20-Dimensional function from Welch et al. (1992)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 20
+    _default_input_dimension = 20
 
     evaluate = staticmethod(evaluate)  # type: ignore
