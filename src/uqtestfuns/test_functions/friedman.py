@@ -44,7 +44,7 @@ AVAILABLE_INPUT_SPECS_6D = {
                 name=f"x_{i + 1}",
                 distribution="uniform",
                 parameters=[0, 1],
-                description="None",
+                description=None,
             )
             for i in range(6)
         ],
@@ -65,7 +65,7 @@ AVAILABLE_INPUT_SPECS_10D = {
                 name=f"x_{i + 1}",
                 distribution="uniform",
                 parameters=[0, 1],
-                description="None",
+                description=None,
             )
             for i in range(10)
         ],

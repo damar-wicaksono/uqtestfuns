@@ -303,14 +303,11 @@ class UQMetaFunSpec:
     def __post_init__(self, effects_dict):
         if self.input_dimension < 1:
             raise ValueError(
-                f"input dimension must be > 0! "
-                f"Got {self.input_dimension}"
+                f"input dimension must be > 0! Got {self.input_dimension}"
             )
         self._effects_tuples = None
         # Clean up the effects dictionary
-        self.effects = _preprocess_effects(
-            effects_dict, self.input_dimension
-        )
+        self.effects = _preprocess_effects(effects_dict, self.input_dimension)
 
     def get_sample(
         self, sample_size: int = 1

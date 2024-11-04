@@ -37,7 +37,7 @@ AVAILABLE_INPUT_SPECS = {
                 name="x",
                 distribution="uniform",
                 parameters=[0.0, 20.0],
-                description="None",
+                description=None,
             )
         ],
         copulas=None,

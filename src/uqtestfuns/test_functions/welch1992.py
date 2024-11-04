@@ -32,7 +32,7 @@ INPUT_MARGINALS_WELCH1992 = [
         name=f"x{i}",
         distribution="uniform",
         parameters=[-0.5, 0.5],
-        description="None",
+        description=None,
     )
     for i in range(1, 20 + 1)
 ]

@@ -40,13 +40,13 @@ INPUT_MARGINALS_MCLAIN1974 = [  # From Ref. [1]
         name="X1",
         distribution="uniform",
         parameters=[1.0, 10.0],
-        description="None",
+        description=None,
     ),
     UnivDistSpec(
         name="X2",
         distribution="uniform",
         parameters=[1.0, 10.0],
-        description="None",
+        description=None,
     ),
 ]
 

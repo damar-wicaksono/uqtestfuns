@@ -1,7 +1,6 @@
 import pytest
 import numpy as np
-from tabulate import tabulate
-from typing import List, Any
+from typing import List
 
 from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 from uqtestfuns.core.prob_input.univariate_distribution import UnivDist

@@ -94,8 +94,7 @@ def test_create_instance(uqmetafunspec):
 
     # Assertions
     assert (
-        my_metafun.metafun_spec.input_dimension
-        == my_args["input_dimension"]
+        my_metafun.metafun_spec.input_dimension == my_args["input_dimension"]
     )
     assert (
         my_metafun.metafun_spec.basis_functions == my_args["basis_functions"]

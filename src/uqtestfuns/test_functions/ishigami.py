@@ -41,19 +41,19 @@ INPUT_MARGINALS_ISHIGAMI1991 = [
         name="X1",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
-        description="None",
+        description=None,
     ),
     UnivDistSpec(
         name="X2",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
-        description="None",
+        description=None,
     ),
     UnivDistSpec(
         name="X3",
         distribution="uniform",
         parameters=[-np.pi, np.pi],
-        description="None",
+        description=None,
     ),
 ]
 

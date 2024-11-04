@@ -87,7 +87,7 @@ def _create_sobol_input(input_dimension: int) -> List[UnivDistSpec]:
                 name=f"X{i + 1}",
                 distribution="uniform",
                 parameters=[0.0, 1.0],
-                description="None",
+                description=None,
             )
         )
 

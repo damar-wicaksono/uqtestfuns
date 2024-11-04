@@ -52,13 +52,13 @@ INPUT_MARGINALS_FRANKE1979 = [  # From Ref. [1]
         name="X1",
         distribution="uniform",
         parameters=[0.0, 1.0],
-        description="None",
+        description=None,
     ),
     UnivDistSpec(
         name="X2",
         distribution="uniform",
         parameters=[0.0, 1.0],
-        description="None",
+        description=None,
     ),
 ]
 

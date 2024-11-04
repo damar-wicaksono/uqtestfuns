@@ -120,9 +120,7 @@ def list_functions(
         if not available_class.default_input_dimension:
             default_input_dimension = "M"
         else:
-            default_input_dimension = (
-                available_class.default_input_dimension
-            )
+            default_input_dimension = available_class.default_input_dimension
 
         description = available_class.description
         is_parameterized = (
@@ -267,9 +265,7 @@ def _get_functions_from_dimension(
         available_class_name,
         available_class_path,
     ) in available_classes.items():
-        default_input_dimension = (
-            available_class_path.default_input_dimension
-        )
+        default_input_dimension = available_class_path.default_input_dimension
         if not default_input_dimension:
             default_input_dimension = "m"
 
