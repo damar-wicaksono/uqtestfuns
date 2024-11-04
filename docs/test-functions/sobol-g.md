@@ -16,20 +16,16 @@ kernelspec:
 # Sobol'-G Function
 
 The Sobol'-G function is an $M$-dimensional scalar-valued function.
-It was introduced in {cite}`Radovic1996` for testing numerical integration
-algorithms (e.g., quasi-Monte-Carlo; see for instance {cite}`Sobol1998`.
-Later on, it becomes a popular testing function for global sensitivity analysis
-methods; see, for instances, {cite}`Marrel2008, Marrel2009, Kucherenko2011`.
+It was introduced in {cite}`Bratley1992` for testing numerical integration
+algorithms (e.g., quasi-Monte-Carlo; see, for instance,
+{cite}`Radovic1996, Sobol1998`).
 
-
-The Sobol'-G function is an M-dimensional scalar-valued function.
-It was introduced in [1] for testing numerical integration algorithms
-(e.g., quasi-Monte-Carlo; see also for instance [2] and [3]).
-The current form (and name) was from [4] and used in the context of global
-sensitivity analysis. There, the function was generalized by introducing
-a set of parameters that determines the importance of each input variable.
+The current form (and name) was from {cite}`Saltelli1995` and used in
+the context of global sensitivity analysis.
+There, the function was generalized by introducing a set of parameters
+that determines the importance of each input variable.
 Later on, it becomes a popular testing function for global sensitivity analysis
-methods; see, for instances, [5], [6], and [7].
+methods; see, for instance, {cite}`Marrel2008, Marrel2009, Kucherenko2011`.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -46,12 +42,12 @@ below.
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # --- Create 1D data from Sobol'-G
-my_sobolg_1d = uqtf.SobolG(spatial_dimension=1)
+my_sobolg_1d = uqtf.SobolG(input_dimension=1)
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
 yy_1d = my_sobolg_1d(xx_1d)
 
 # --- Create 2D data from Sobol'-G
-my_sobolg_2d = uqtf.SobolG(spatial_dimension=2)
+my_sobolg_2d = uqtf.SobolG(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_sobolg_2d(xx_2d)
@@ -114,14 +110,14 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the spatial dimension is set to $2$[^default_dimension].
-To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (keyword only).
+By default, the input dimension is set to $2$[^default_dimension].
+To create an instance with another value of input dimension,
+pass an integer to the parameter `input_dimension` (keyword only).
 For example, to create an instance of the Sobol'-G function in six dimensions,
 type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolG(spatial_dimension=6)
+my_testfun = uqtf.SobolG(input_dimension=6)
 ```
 
 In the subsequent section, the function will be illustrated
@@ -145,7 +141,9 @@ function consists of $M$ independent uniform random variables with the ranges
 shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Parameters
@@ -259,7 +257,7 @@ mean_estimates_errors = np.std(mean_estimates, axis=1)
 var_estimates_errors = np.std(var_estimates, axis=1)
 
 # --- Compute analytical mean and variance
-params = my_testfun.parameters
+params = my_testfun.parameters["aa"]
 mean_analytical = 1.0
 var_analytical = np.prod((4 / 3 + 2 * params + params**2) / (1 + params)**2) - 1
 
@@ -395,4 +393,4 @@ tabulate(
 because the input is uniform in a unit hypercube.
 
 [^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `spatial_dimension` argument is not given.
+test functions. It will be used if the `input_dimension` argument is not given.

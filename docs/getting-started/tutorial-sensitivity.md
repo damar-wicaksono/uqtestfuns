@@ -260,7 +260,7 @@ def estimate_sobol_indices(my_func, prob_input, num_sample):
     yy = my_func(xx)
     var_yy = np.var(yy)
 
-    num_dim = prob_input.spatial_dimension
+    num_dim = prob_input.input_dimension
 
     # --- Compute first-order Sobol' indices
     first_order = np.zeros(num_dim)
@@ -388,8 +388,8 @@ several Monte-Carlo sample sizes are used:
 
 ```{code-cell} ipython3
 sample_sizes = np.arange(0, 3500, 500)[1:]
-first_order_indices = np.zeros((len(sample_sizes), ishigami.spatial_dimension))
-total_effect_indices = np.zeros((len(sample_sizes), ishigami.spatial_dimension))
+first_order_indices = np.zeros((len(sample_sizes), ishigami.input_dimension))
+total_effect_indices = np.zeros((len(sample_sizes), ishigami.input_dimension))
 
 for i, sample_size in enumerate(sample_sizes):
   first_order_indices[i, :], total_effect_indices[i, :] = estimate_sobol_indices(

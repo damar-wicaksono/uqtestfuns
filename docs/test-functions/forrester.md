@@ -88,7 +88,9 @@ In UQTestFuns, this search domain can be represented as probabilistic input
 using the uniform distribution with a marginal shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Reference results

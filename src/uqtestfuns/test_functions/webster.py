@@ -34,13 +34,13 @@ AVAILABLE_INPUT_SPECS = {
                 name="A",
                 distribution="uniform",
                 parameters=[1.0, 10.0],
-                description="None",
+                description=None,
             ),
             UnivDistSpec(
                 name="B",
                 distribution="normal",
                 parameters=[2.0, 1.0],
-                description="None",
+                description=None,
             ),
         ],
         copulas=None,
@@ -75,6 +75,6 @@ class Webster2D(UQTestFunABC):
     _description = "2D polynomial function from Webster et al. (1996)."
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 2
+    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore

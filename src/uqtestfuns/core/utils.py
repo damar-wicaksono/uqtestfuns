@@ -7,13 +7,13 @@ from .prob_input.probabilistic_input import ProbInput
 
 
 def create_canonical_uniform_input(
-    spatial_dimension: int, min_value: float, max_value: float
+    input_dimension: int, min_value: float, max_value: float
 ) -> ProbInput:
     """Create a MultivariateInput in a canonical domain of [-1, 1]^M.
 
     Parameters
     ----------
-    spatial_dimension : int
+    input_dimension : int
         The requested number of dimension.
     min_value : float, optional
         The minimum value of the domain.
@@ -29,7 +29,7 @@ def create_canonical_uniform_input(
 
     marginals = []
 
-    for i in range(spatial_dimension):
+    for i in range(input_dimension):
         marginals.append(
             UnivDist(
                 name=f"X{i+1}",

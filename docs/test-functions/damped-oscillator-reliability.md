@@ -83,7 +83,9 @@ for the damped oscillator reliability consists of eight independent random
 variables with marginal distributions shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 In the literature, the force capacity of the secondary spring (i.e., $F_s$)

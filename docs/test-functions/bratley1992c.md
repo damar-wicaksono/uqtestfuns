@@ -52,12 +52,12 @@ are shown below.
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # --- Create 1D data
-my_bratley1992c_1d = uqtf.Bratley1992c(spatial_dimension=1)
+my_bratley1992c_1d = uqtf.Bratley1992c(input_dimension=1)
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
 yy_1d = my_bratley1992c_1d(xx_1d)
 
 # --- Create 2D data
-my_bratley1992c_2d = uqtf.Bratley1992c(spatial_dimension=2)
+my_bratley1992c_2d = uqtf.Bratley1992c(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_bratley1992c_2d(xx_2d)
@@ -120,14 +120,14 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the spatial dimension is set to $2$[^default_dimension].
-To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (keyword only).
+By default, the input dimension is set to $2$[^default_dimension].
+To create an instance with another value of input dimension,
+pass an integer to the parameter `input_dimension` (keyword only).
 For example, to create an instance of 10-dimensional `Bratley1992c` function,
 type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Bratley1992c(spatial_dimension=10)
+my_testfun = uqtf.Bratley1992c(input_dimension=10)
 ```
 
 ## Description
@@ -189,4 +189,4 @@ the above integral value over the domain is the same as the expected value.
 in {cite}`Bratley1992`.
 
 [^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `spatial_dimension` argument is not given.
+test functions. It will be used if the `input_dimension` argument is not given.

@@ -18,7 +18,7 @@ __all__ = ["list_functions"]
 
 
 def list_functions(
-    spatial_dimension: Optional[Union[str, int]] = None,
+    input_dimension: Optional[Union[str, int]] = None,
     tag: Optional[str] = None,
     tabulate: bool = True,
 ) -> Optional[List[UQTestFunABC]]:
@@ -26,8 +26,8 @@ def list_functions(
 
     Parameters
     ----------
-    spatial_dimension : Optional[Union[str, int]]
-        Filter based on the number of spatial dimension.
+    input_dimension : Optional[Union[str, int]]
+        Filter based on the number of input dimension.
         For variable dimension (i.e., M-dimensional test functions),
         use the string "M".
     tag : Optional[str]
@@ -47,21 +47,21 @@ def list_functions(
 
     Notes
     -----
-    - When both ``spatial_dimension`` and ``tag`` are specified the results are
+    - When both ``input_dimension`` and ``tag`` are specified the results are
       intersected. Entries that satisfy both are returned.
     """
 
     # --- Parse input arguments
-    _verify_input_args(spatial_dimension, tag, tabulate)
+    _verify_input_args(input_dimension, tag, tabulate)
 
     # --- Get all the available classes that implement the test functions
     available_classes = get_available_classes(test_functions)
     available_classes_dict = dict(available_classes)
 
-    # --- Filter according to the requested spatial dimension
-    if spatial_dimension:
+    # --- Filter according to the requested input dimension
+    if input_dimension:
         available_classes_from_dimension = _get_functions_from_dimension(
-            available_classes_dict, spatial_dimension
+            available_classes_dict, input_dimension
         )
     else:
         available_classes_from_dimension = list(available_classes_dict.keys())
@@ -97,7 +97,7 @@ def list_functions(
         header_names = [
             "No.",
             "Constructor",
-            "Dimension",
+            "Input Dim.",
             "Parameterized",
             "Application",
             "Description",
@@ -106,7 +106,7 @@ def list_functions(
         header_names = [
             "No.",
             "Constructor",
-            "Dimension",
+            "Input Dim.",
             "Parameterized",
             "Description",
         ]
@@ -117,12 +117,10 @@ def list_functions(
     ):
         available_class = available_classes_dict[available_class_name]
 
-        if not available_class.default_spatial_dimension:
-            default_spatial_dimension = "M"
+        if not available_class.default_input_dimension:
+            default_input_dimension = "M"
         else:
-            default_spatial_dimension = (
-                available_class.default_spatial_dimension
-            )
+            default_input_dimension = available_class.default_input_dimension
 
         description = available_class.description
         is_parameterized = (
@@ -134,7 +132,7 @@ def list_functions(
             value = [
                 idx + 1,
                 f"{available_class_name}()",
-                f"{default_spatial_dimension}",
+                f"{default_input_dimension}",
                 f"{is_parameterized}",
                 tags,
                 f"{description}",
@@ -143,7 +141,7 @@ def list_functions(
             value = [
                 idx + 1,
                 f"{available_class_name}()",
-                f"{default_spatial_dimension}",
+                f"{default_input_dimension}",
                 f"{is_parameterized}",
                 f"{description}",
             ]
@@ -178,7 +176,7 @@ def list_functions(
 
 
 def _verify_input_args(
-    spatial_dimension: Optional[Union[str, int]] = None,
+    input_dimension: Optional[Union[str, int]] = None,
     tag: Optional[str] = None,
     tabulate: bool = True,
 ) -> None:
@@ -186,8 +184,8 @@ def _verify_input_args(
 
     Parameters
     ----------
-    spatial_dimension : Optional[Union[str, int]]
-        The number of spatial dimension to filter the list.
+    input_dimension : Optional[Union[str, int]]
+        The number of input dimension to filter the list.
         For variable dimension (i.e., M-dimensional test functions),
         use the string "M".
     tag : Optional[str]
@@ -206,31 +204,31 @@ def _verify_input_args(
     Raises
     ------
     ValueError
-        If ``spatial_dimension`` is not a positive integer or the string "M".
+        If ``input_dimension`` is not a positive integer or the string "M".
         If ``tag`` is not one of the supported tags.
     TypeError
-        If ``spatial_dimension`` is not either an integer, string, or NoneType.
+        If ``input_dimension`` is not either an integer, string, or NoneType.
         If ``tag`` is not a string.
         If ``tabulate`` is not a bool.
     """
-    # --- Parse 'spatial_dimension'
-    if not isinstance(spatial_dimension, (int, str, type(None))):
+    # --- Parse 'input_dimension'
+    if not isinstance(input_dimension, (int, str, type(None))):
         raise TypeError(
-            f"Invalid type for spatial dimension! "
+            f"Invalid type for input dimension! "
             f"Expected either an integer or a string. "
-            f"Got instead {type(spatial_dimension)}."
+            f"Got instead {type(input_dimension)}."
         )
-    if spatial_dimension is not None and isinstance(spatial_dimension, str):
-        if spatial_dimension.lower() != "m":
+    if input_dimension is not None and isinstance(input_dimension, str):
+        if input_dimension.lower() != "m":
             raise ValueError(
-                f"Invalid value ({spatial_dimension}) for spatial dimension! "
+                f"Invalid value ({input_dimension}) for input dimension! "
                 f"Either a positive integer or 'M' to indicate "
                 f"a variable-dimension test function."
             )
-    if spatial_dimension is not None and isinstance(spatial_dimension, int):
-        if spatial_dimension <= 0:
+    if input_dimension is not None and isinstance(input_dimension, int):
+        if input_dimension <= 0:
             raise ValueError(
-                f"Invalid value ({spatial_dimension}) for spatial dimension! "
+                f"Invalid value ({input_dimension}) for input dimension! "
                 f"Either a positive integer or 'M' to indicate "
                 f"a variable-dimension test function."
             )
@@ -254,26 +252,24 @@ def _verify_input_args(
 
 def _get_functions_from_dimension(
     available_classes: dict,
-    spatial_dimension: Union[int, str],
+    input_dimension: Union[int, str],
 ) -> List[str]:
-    """Get the function keys that satisfy the spatial dimension filter."""
+    """Get the function keys that satisfy the input dimension filter."""
     values = []
 
     # --- Make sure to check against a lower-case string
-    if isinstance(spatial_dimension, str):
-        spatial_dimension = spatial_dimension.lower()
+    if isinstance(input_dimension, str):
+        input_dimension = input_dimension.lower()
 
     for (
         available_class_name,
         available_class_path,
     ) in available_classes.items():
-        default_spatial_dimension = (
-            available_class_path.default_spatial_dimension
-        )
-        if not default_spatial_dimension:
-            default_spatial_dimension = "m"
+        default_input_dimension = available_class_path.default_input_dimension
+        if not default_input_dimension:
+            default_input_dimension = "m"
 
-        if default_spatial_dimension == spatial_dimension:
+        if default_input_dimension == input_dimension:
             values.append(available_class_name)
 
     return values

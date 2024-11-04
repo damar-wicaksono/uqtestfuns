@@ -33,13 +33,13 @@ AVAILABLE_INPUT_SPECS = {
                 name="X1",
                 distribution="normal",
                 parameters=[0.5, 0.2],
-                description="None",
+                description=None,
             ),
             UnivDistSpec(
                 name="X2",
                 distribution="normal",
                 parameters=[0.5, 0.2],
-                description="None",
+                description=None,
             ),
         ],
         copulas=None,
@@ -76,6 +76,6 @@ class HyperSphere(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 2
+    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore

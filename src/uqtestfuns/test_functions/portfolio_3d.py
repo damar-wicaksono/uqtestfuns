@@ -183,6 +183,6 @@ class Portfolio3D(UQTestFunABC):
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_parameters = DEFAULT_PARAMETERS_SELECTION
-    _default_spatial_dimension = 3
+    _default_input_dimension = 3
 
     evaluate = staticmethod(evaluate)  # type: ignore

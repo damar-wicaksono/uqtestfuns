@@ -44,7 +44,7 @@ AVAILABLE_INPUT_SPECS_6D = {
                 name=f"x_{i + 1}",
                 distribution="uniform",
                 parameters=[0, 1],
-                description="None",
+                description=None,
             )
             for i in range(6)
         ],
@@ -65,7 +65,7 @@ AVAILABLE_INPUT_SPECS_10D = {
                 name=f"x_{i + 1}",
                 distribution="uniform",
                 parameters=[0, 1],
-                description="None",
+                description=None,
             )
             for i in range(10)
         ],
@@ -105,7 +105,7 @@ class Friedman6D(UQTestFunABC):
     _description = "Six-dimensional function from Friedman et al. (1983)"
     _available_inputs = AVAILABLE_INPUT_SPECS_6D
     _available_parameters = None
-    _default_spatial_dimension = 6
+    _default_input_dimension = 6
 
     evaluate = staticmethod(evaluate_friedman)  # type: ignore
 
@@ -117,6 +117,6 @@ class Friedman10D(UQTestFunABC):
     _description = "Ten-dimensional function from Friedman (1991)"
     _available_inputs = AVAILABLE_INPUT_SPECS_10D
     _available_parameters = None
-    _default_spatial_dimension = 10
+    _default_input_dimension = 10
 
     evaluate = staticmethod(evaluate_friedman)  # type: ignore

@@ -77,7 +77,9 @@ specification, all parameters of the log-normal marginals are given in terms
 of geometric mean and geometric standard deviation.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ```{note}

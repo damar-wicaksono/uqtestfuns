@@ -30,7 +30,7 @@ AVAILABLE_INPUT_SPECS = {
                 name="x",
                 distribution="uniform",
                 parameters=[0.0, 1.0],
-                description="None",
+                description=None,
             )
         ],
         copulas=None,
@@ -66,6 +66,6 @@ class DampedCosine(UQTestFunABC):
     _description = "One-dimensional damped cosine from Santner et al. (2018)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 1
+    _default_input_dimension = 1
 
     evaluate = staticmethod(evaluate)  # type: ignore

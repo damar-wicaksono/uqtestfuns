@@ -111,7 +111,9 @@ Based on {cite}`Alemazkoor2018`, the probabilistic input model
 for the function consists of two independent random variables as shown below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Reference results

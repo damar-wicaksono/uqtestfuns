@@ -165,7 +165,9 @@ the test function consists of two independent standard normal random variables
 (see the table below).
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Parameters

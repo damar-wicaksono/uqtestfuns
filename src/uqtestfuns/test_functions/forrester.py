@@ -33,7 +33,7 @@ AVAILABLE_INPUT_SPECS = {
                 name="x",
                 distribution="uniform",
                 parameters=[0, 1],
-                description="None",
+                description=None,
             )
         ],
         copulas=None,
@@ -69,6 +69,6 @@ class Forrester2008(UQTestFunABC):
     _description = "One-dimensional function from Forrester et al. (2008)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 1
+    _default_input_dimension = 1
 
     evaluate = staticmethod(evaluate)  # type: ignore

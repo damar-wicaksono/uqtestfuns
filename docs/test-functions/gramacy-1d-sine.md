@@ -88,7 +88,9 @@ Based on {cite}`Gramacy2007`, the domain of the function is $[0, 20]$.
 This input can be modeled with a single uniform random variable shown below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## References

@@ -111,7 +111,7 @@ An instance of ``UnivDist`` exposes the following properties:
 |       `name`        |                  the assigned name of the probabilistic input model (may be `None`)                  |
 |    `description`    |          the assigned description of the probabilistic input model (may be `None`)                   |
 |    `marginals`      |                       One-dimensional marginal distribution of the input model                       | 
-| `spatial_dimension` |                             the number of dimensions of the input model                              |
+| `input_dimension` |                             the number of dimensions of the input model                              |
 |      `copulas`      | specified copulas that model dependency structure between random variables (currently not supported) |
 
 and methods:
@@ -197,7 +197,7 @@ plt.gcf().set_dpi(150)
 
 Using the `transform_sample()` method we can transform a sample generated
 from one probabilistic input model to another 
-with the same number of spatial dimensions.
+with the same number of input dimensions.
 
 Let's suppose we define a three-dimensional probabilistic input model
 consisting of three independent standard uniform distributions.

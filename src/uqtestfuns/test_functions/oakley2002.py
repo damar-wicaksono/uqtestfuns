@@ -34,7 +34,7 @@ AVAILABLE_INPUT_SPECS = {
                 name="x",
                 distribution="normal",
                 parameters=[0.0, 4.0],
-                description="None",
+                description=None,
             )
         ],
         copulas=None,
@@ -70,6 +70,6 @@ class Oakley1D(UQTestFunABC):
     _description = "One-dimensional function from Oakley and O'Hagan (2002)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 1
+    _default_input_dimension = 1
 
     evaluate = staticmethod(evaluate)  # type: ignore

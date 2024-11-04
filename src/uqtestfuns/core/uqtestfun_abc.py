@@ -21,7 +21,7 @@ CLASS_HIDDEN_ATTRIBUTES = [
     "_description",
     "_available_inputs",
     "_available_parameters",
-    "_default_spatial_dimension",
+    "_default_input_dimension",
 ]
 
 DEFAULT_DIMENSION = 2
@@ -101,9 +101,9 @@ class UQTestFunBareABC(abc.ABC):
         return self._function_id
 
     @property
-    def spatial_dimension(self) -> int:
-        """The spatial dimension of the UQ test function."""
-        return self.prob_input.spatial_dimension
+    def input_dimension(self) -> int:
+        """The input dimension of the UQ test function."""
+        return self.prob_input.input_dimension
 
     def transform_sample(
         self,
@@ -136,12 +136,12 @@ class UQTestFunBareABC(abc.ABC):
             f"smaller than max. value ({max_value})!"
         )
         # Verify the sampled input
-        _verify_sample_shape(xx, self.spatial_dimension)
+        _verify_sample_shape(xx, self.input_dimension)
         _verify_sample_domain(xx, min_value=min_value, max_value=max_value)
 
         # Create an input in the canonical uniform domain
         uniform_input = create_canonical_uniform_input(
-            self.spatial_dimension, min_value, max_value
+            self.input_dimension, min_value, max_value
         )
 
         # Transform the sampled value to the function domain
@@ -151,9 +151,9 @@ class UQTestFunBareABC(abc.ABC):
 
     def __str__(self):
         out = (
-            f"Function ID       : {self.function_id}\n"
-            f"Spatial dimension : {self.spatial_dimension}\n"
-            f"Parameterized     : {bool(self.parameters)}"
+            f"Function ID     : {self.function_id}\n"
+            f"Input Dimension : {self.input_dimension}\n"
+            f"Parameterized   : {bool(self.parameters)}"
         )
 
         return out
@@ -161,10 +161,10 @@ class UQTestFunBareABC(abc.ABC):
     def __call__(self, xx):
         """Evaluation of the test function by calling the instance."""
         # Verify the shape of the input
-        _verify_sample_shape(xx, self.spatial_dimension)
+        _verify_sample_shape(xx, self.input_dimension)
 
         # Verify the domain of the input
-        for dim_idx in range(self.spatial_dimension):
+        for dim_idx in range(self.input_dimension):
             lb = self.prob_input.marginals[dim_idx].lower
             ub = self.prob_input.marginals[dim_idx].upper
             _verify_sample_domain(xx[:, dim_idx], min_value=lb, max_value=ub)
@@ -187,8 +187,8 @@ class UQTestFunABC(UQTestFunBareABC):
 
     Parameters
     ----------
-    spatial_dimension : int, optional
-        The spatial dimension of the UQ test function.
+    input_dimension : int, optional
+        The input dimension of the UQ test function.
         This is used only when the function supports variable dimension;
         otherwise, if specified, an exception is raised.
         In the case of functions with variable dimension, the default dimension
@@ -217,7 +217,7 @@ class UQTestFunABC(UQTestFunBareABC):
     KeyError
         If selection is not in the list of available inputs and parameters.
     TypeError
-        If spatial dimension is specified for a UQ test function with
+        If input dimension is specified for a UQ test function with
         a fixed dimension.
     """
 
@@ -227,7 +227,7 @@ class UQTestFunABC(UQTestFunBareABC):
     def __init__(
         self,
         *,
-        spatial_dimension: Optional[int] = None,
+        input_dimension: Optional[int] = None,
         prob_input_selection: Optional[str] = None,
         parameters_selection: Optional[str] = None,
         function_id: Optional[str] = None,
@@ -246,16 +246,16 @@ class UQTestFunABC(UQTestFunBareABC):
 
         # Determine the dimensionality of the test function
         if isinstance(prob_input_spec, ProbInputSpecFixDim):
-            if spatial_dimension:
+            if input_dimension:
                 raise TypeError("Fixed test dimension!")
-        if not spatial_dimension:
-            spatial_dimension = DEFAULT_DIMENSION
+        if not input_dimension:
+            input_dimension = DEFAULT_DIMENSION
 
         # Create a ProbInput instance
         if isinstance(prob_input_spec, ProbInputSpecVarDim):
             prob_input = ProbInput.from_spec(
                 prob_input_spec,
-                spatial_dimension=spatial_dimension,
+                input_dimension=input_dimension,
             )
         else:
             prob_input = ProbInput.from_spec(prob_input_spec)
@@ -272,7 +272,7 @@ class UQTestFunABC(UQTestFunBareABC):
                 self.__class__.__name__,
                 parameter_id,
                 self.available_parameters,
-                spatial_dimension,
+                input_dimension,
             )
 
         # --- Process the default ID
@@ -369,9 +369,9 @@ class UQTestFunABC(UQTestFunBareABC):
         return cls._default_parameters  # type: ignore
 
     @classproperty
-    def default_spatial_dimension(cls) -> Optional[int]:
+    def default_input_dimension(cls) -> Optional[int]:
         """To store the default dimension of a test function."""
-        return cls._default_spatial_dimension  # type: ignore
+        return cls._default_input_dimension  # type: ignore
 
     @classproperty
     def description(cls) -> Optional[str]:
@@ -380,10 +380,10 @@ class UQTestFunABC(UQTestFunBareABC):
 
     def __str__(self):
         out = (
-            f"Function ID       : {self.function_id}\n"
-            f"Spatial dimension : {self.spatial_dimension}\n"
-            f"Parameterized     : {bool(self.parameters)}\n"
-            f"Description       : {self.description}"
+            f"Function ID     : {self.function_id}\n"
+            f"Input Dimension : {self.input_dimension}\n"
+            f"Parameterized   : {bool(self.parameters)}\n"
+            f"Description     : {self.description}"
         )
 
         return out
@@ -396,7 +396,7 @@ def _verify_sample_shape(xx: np.ndarray, num_cols: int):
     ----------
     xx : np.ndarray
         Array of sampled input values with a shape of N-by-M, where N is
-        the number of realizations and M is the spatial dimension.
+        the number of realizations and M is the input dimension.
     num_cols : int
         The expected number of columns in the input.
 
@@ -420,7 +420,7 @@ def _verify_sample_domain(xx: np.ndarray, min_value: float, max_value: float):
     ----------
     xx : np.ndarray
         Array of sampled input values with a shape of N-by-M, where N is
-        the number of realizations and M is the spatial dimension.
+        the number of realizations and M is the input dimension.
     min_value : float
         The minimum value of the domain.
     max_value : float
@@ -442,7 +442,7 @@ def _create_parameters(
     function_id: str,
     parameter_id: str,
     available_parameters: dict,
-    spatial_dimension: Optional[int] = None,
+    input_dimension: Optional[int] = None,
 ) -> FunParams:
     """Create the Parameter set of a UQ test function."""
 
@@ -468,8 +468,8 @@ def _create_parameters(
         value = declared_parameter["value"]
         if isinstance(value, Callable):  # type: ignore
             func_signature = signature(value).parameters
-            if "spatial_dimension" in func_signature:
-                parameter_value = value(spatial_dimension=spatial_dimension)
+            if "input_dimension" in func_signature:
+                parameter_value = value(input_dimension=input_dimension)
                 declared_parameter["value"] = parameter_value
 
     return FunParams(**param_dict)

@@ -40,13 +40,13 @@ INPUT_MARGINALS_MCLAIN1974 = [  # From Ref. [1]
         name="X1",
         distribution="uniform",
         parameters=[1.0, 10.0],
-        description="None",
+        description=None,
     ),
     UnivDistSpec(
         name="X2",
         distribution="uniform",
         parameters=[1.0, 10.0],
-        description="None",
+        description=None,
     ),
 ]
 
@@ -66,7 +66,7 @@ COMMON_METADATA = dict(
     _tags=["metamodeling"],
     _available_inputs=AVAILABLE_INPUT_SPECS,
     _available_parameters=None,
-    _default_spatial_dimension=2,
+    _default_input_dimension=2,
     _description="from McLain (1974)",
 )
 
@@ -102,7 +102,7 @@ class McLainS1(UQTestFunABC):
     _description = f"McLain S1 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_mclain_s1)  # type: ignore
 
@@ -137,7 +137,7 @@ class McLainS2(UQTestFunABC):
     _description = f"McLain S2 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_mclain_s2)  # type: ignore
 
@@ -172,7 +172,7 @@ class McLainS3(UQTestFunABC):
     _description = f"McLain S3 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_mclain_s3)  # type: ignore
 
@@ -210,7 +210,7 @@ class McLainS4(UQTestFunABC):
     _description = f"McLain S4 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_mclain_s4)  # type: ignore
 
@@ -245,6 +245,6 @@ class McLainS5(UQTestFunABC):
     _description = f"McLain S5 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
+    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_mclain_s5)  # type: ignore

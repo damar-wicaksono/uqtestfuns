@@ -167,7 +167,7 @@ class Piston(UQTestFunABC):
     _description = "Piston simulation model from Ben-Ari and Steinberg (2007)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 7
+    _default_input_dimension = 7
     _default_input = DEFAULT_INPUT_SELECTION
 
     evaluate = staticmethod(evaluate)  # type: ignore

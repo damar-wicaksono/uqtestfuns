@@ -46,7 +46,7 @@ uqtf.list_functions()
 ```
 
 This function produces a list of test functions,
-their respective constructor, spatial dimension, typical applications,
+their respective constructor, input dimension, typical applications,
 as well as a short description.
 
 ## A Callable instance
@@ -164,7 +164,7 @@ regarding some good practices on using NumPy RNG.
 ## Transformation to the function domain
 
 Some UQ methods often produce sample points in a hypercube domain
-(for example, $[0, 1]^M$ or $[-1, 1]^M$ where $M$ is the number of spatial dimension)
+(for example, $[0, 1]^M$ or $[-1, 1]^M$ where $M$ is the number of input dimension)
 at which the function should be evaluated.
 This hypercube domain may differ from the test function's domain.
 Before the test function can be evaluated,
@@ -296,12 +296,12 @@ plt.gcf().set_dpi(150);
 ## Test functions with variable dimension
 
 ```{margin}
-Spatial dimension must be a positive integer.
+input dimension must be a positive integer.
 ```
 
 Some test functions support a _variable dimension_, meaning that an instance
 of a test function can be constructed for any number (positive integer, please) 
-of spatial dimension.
+of input dimension.
 
 Consider, for instance, the {ref}`Sobol'-G <test-functions:sobol-g>` function
 {cite}`Saltelli1995`,
@@ -317,10 +317,10 @@ of input variables,
 and $\boldsymbol{a} = \{ a_1, \ldots, a_M \}$ are parameters of the function.
 
 To create a six-dimensional Sobol'-G function,
-use the parameter `spatial_dimension` to specify the desired dimensionality:
+use the parameter `input_dimension` to specify the desired dimensionality:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolG(spatial_dimension=6)
+my_testfun = uqtf.SobolG(input_dimension=6)
 ```
 
 Verify that the function is indeed a six-dimension one:

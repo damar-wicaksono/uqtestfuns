@@ -98,6 +98,6 @@ class RSCircularBar(UQTestFunABC):
     _description = "RS problem as a circular bar from Verma et al. (2016)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_spatial_dimension = 2
+    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore

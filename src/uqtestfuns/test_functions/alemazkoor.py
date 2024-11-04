@@ -36,13 +36,13 @@ AVAILABLE_INPUT_SPECS_2D = {
                 name="X1",
                 distribution="uniform",
                 parameters=[-1, 1],
-                description="None",
+                description=None,
             ),
             UnivDistSpec(
                 name="X2",
                 distribution="uniform",
                 parameters=[-1, 1],
-                description="None",
+                description=None,
             ),
         ],
         copulas=None,
@@ -103,7 +103,7 @@ class Alemazkoor2D(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUT_SPECS_2D
     _available_parameters = None
-    _default_spatial_dimension = 2
+    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate_2d)  # type: ignore
 
@@ -138,6 +138,6 @@ class Alemazkoor20D(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUT_SPECS_20D
     _available_parameters = None
-    _default_spatial_dimension = 20
+    _default_input_dimension = 20
 
     evaluate = staticmethod(evaluate_20d)  # type: ignore

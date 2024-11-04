@@ -19,25 +19,25 @@ def uqtestfunspec():
 
     # TODO: This is not a very good test because inputs should have been failed
 
-    spatial_dimension = random.randint(1, 25)
+    input_dimension = random.randint(1, 25)
 
     basis_functions = {0: lambda x: x, 1: lambda x: x**2}
     num_basis = len(basis_functions)
 
-    selected_basis = tuple(np.random.randint(0, num_basis, spatial_dimension))
+    selected_basis = tuple(np.random.randint(0, num_basis, input_dimension))
 
     effects_tuples = {}
     effects_coeffs = {}
-    for i in range(1, spatial_dimension + 1):
+    for i in range(1, input_dimension + 1):
         effects_tuples[i] = tuple(
-            itertools.combinations(np.arange(spatial_dimension), i)
+            itertools.combinations(np.arange(input_dimension), i)
         )
         effects_coeffs[i] = np.random.rand(len(effects_tuples[i]))
 
     inputs = [{"name": "X1", "distribution": "uniform", "parameters": [0, 1]}]
 
     my_args = {
-        "spatial_dimension": spatial_dimension,
+        "input_dimension": input_dimension,
         "basis_functions": basis_functions,
         "selected_basis": selected_basis,
         "effects_tuples": effects_tuples,
@@ -46,7 +46,7 @@ def uqtestfunspec():
     }
 
     uqtestfunspec_instance = UQTestFunSpec(
-        spatial_dimension=spatial_dimension,
+        input_dimension=input_dimension,
         basis_functions=basis_functions,
         selected_basis=selected_basis,
         effects_tuples=effects_tuples,
@@ -64,8 +64,8 @@ def test_create_instance(uqtestfunspec):
 
     # Assertions
     assert (
-        uqtestfunspec_instance.spatial_dimension
-        == uqtestfunspec_dict["spatial_dimension"]
+        uqtestfunspec_instance.input_dimension
+        == uqtestfunspec_dict["input_dimension"]
     )
     assert (
         uqtestfunspec_instance.basis_functions
@@ -91,7 +91,7 @@ def test_create_instance_uqmetafunspec():
     """Test creating an instance of UQMetaFunSpec."""
 
     # Create an instance
-    spatial_dimension = 3
+    input_dimension = 3
 
     basis_functions = {0: lambda x: x, 1: lambda x: x**2}
 
@@ -104,15 +104,15 @@ def test_create_instance_uqmetafunspec():
     }
 
     effects_ref = {
-        1: int(comb(spatial_dimension, 1)),
+        1: int(comb(input_dimension, 1)),
         2: 1,
     }
 
-    input_marginals = create_random_marginals(spatial_dimension)
+    input_marginals = create_random_marginals(input_dimension)
     coeffs_generator = np.random.rand
 
     metafun_spec = UQMetaFunSpec(
-        spatial_dimension,
+        input_dimension,
         basis_functions,
         effects_dict,
         input_marginals,
@@ -120,52 +120,52 @@ def test_create_instance_uqmetafunspec():
     )
 
     # Assertions
-    assert metafun_spec.spatial_dimension == spatial_dimension
+    assert metafun_spec.input_dimension == input_dimension
     assert metafun_spec.basis_functions == basis_functions
     assert metafun_spec.effects == effects_ref
     assert metafun_spec.coeffs_generator == coeffs_generator
 
 
-def _create_args_effects_dict(spatial_dimension):
+def _create_args_effects_dict(input_dimension):
     """Create a dictionary of effects-length specification."""
     effects_dict = dict()
 
-    for i in range(1, spatial_dimension + 1):
-        max_num = int(comb(spatial_dimension, i))
+    for i in range(1, input_dimension + 1):
+        max_num = int(comb(input_dimension, i))
         effects_dict[i] = np.random.randint(1, max_num + 1)
 
     return effects_dict
 
 
-def _create_effects_tuples_coeffs(spatial_dimension, coeffs_generator):
+def _create_effects_tuples_coeffs(input_dimension, coeffs_generator):
     """Create a dictionary of effect tuples and coefficients specifications."""
     effects_tuples = {}
     effects_coeffs = {}
-    for i in range(1, spatial_dimension + 1):
+    for i in range(1, input_dimension + 1):
         effects_tuples[i] = tuple(
-            itertools.combinations(np.arange(spatial_dimension), i)
+            itertools.combinations(np.arange(input_dimension), i)
         )
         effects_coeffs[i] = coeffs_generator(len(effects_tuples[i]))
 
     return effects_tuples, effects_coeffs
 
 
-@pytest.mark.parametrize("spatial_dimension", [1, 2, 10])
-def test_get_sample_uqmetafunspec(spatial_dimension):
+@pytest.mark.parametrize("input_dimension", [1, 2, 10])
+def test_get_sample_uqmetafunspec(input_dimension):
     """Test getting a sample of function specifications realizations."""
 
     # Create an instance
-    spatial_dimension = 1
+    input_dimension = 1
 
     basis_functions = {0: lambda x: x}
 
-    effects_dict = _create_args_effects_dict(spatial_dimension)
+    effects_dict = _create_args_effects_dict(input_dimension)
 
-    inputs = create_random_marginals(spatial_dimension)
+    inputs = create_random_marginals(input_dimension)
     coeffs_generator = np.random.rand
 
     metafun_spec = UQMetaFunSpec(
-        spatial_dimension,
+        input_dimension,
         basis_functions,
         effects_dict,
         inputs,
@@ -184,12 +184,12 @@ def test_get_sample_uqmetafunspec(spatial_dimension):
 
     selected_basis = testfun_spec.selected_basis
     effects_tuples, effects_coeffs = _create_effects_tuples_coeffs(
-        spatial_dimension, coeffs_generator
+        input_dimension, coeffs_generator
     )
 
     # Comparison with test function specification created separately
     testfun_spec_ref = UQTestFunSpec(
-        spatial_dimension,
+        input_dimension,
         basis_functions,
         selected_basis,
         effects_tuples,
@@ -198,7 +198,7 @@ def test_get_sample_uqmetafunspec(spatial_dimension):
     )
 
     # Assertions
-    assert testfun_spec.spatial_dimension == testfun_spec_ref.spatial_dimension
+    assert testfun_spec.input_dimension == testfun_spec_ref.input_dimension
     # TODO: Introduce input equality
     # assert testfun_spec.inputs == testfun_spec_ref.inputs
     assert testfun_spec.selected_basis == testfun_spec_ref.selected_basis

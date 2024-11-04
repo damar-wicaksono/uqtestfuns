@@ -201,6 +201,6 @@ class Sulfur(UQTestFunABC):
     _description = "Sulfur model from Charlson et al. (1992)"
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 9
+    _default_input_dimension = 9
 
     evaluate = staticmethod(evaluate)  # type: ignore

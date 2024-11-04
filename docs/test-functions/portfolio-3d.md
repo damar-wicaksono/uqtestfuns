@@ -62,7 +62,9 @@ portfolio model consists of three independent normal random variables with the
 distribution parameters shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Parameters

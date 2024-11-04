@@ -64,7 +64,9 @@ for the speed reducer shaft reliability problem consists of five independent
 random variables with marginal distributions shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 Note that the variables $F$, $D$, and $L$ must be first converted to their

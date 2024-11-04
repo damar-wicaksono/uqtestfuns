@@ -34,13 +34,13 @@ AVAILABLE_INPUT_SPECS = {
                 name="U1",
                 distribution="normal",
                 parameters=[0, 1],
-                description="None",
+                description=None,
             ),
             UnivDistSpec(
                 name="U2",
                 distribution="normal",
                 parameters=[0, 1],
-                description="None",
+                description=None,
             ),
         ],
         copulas=None,
@@ -77,6 +77,6 @@ class GaytonHat(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUT_SPECS
     _available_parameters = None
-    _default_spatial_dimension = 2
+    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore
