@@ -24,7 +24,7 @@ from typing import Optional, Union, List
 from uqtestfuns.core.parameters import FunParams
 from .metaspec import UQMetaFunSpec, UQTestFunSpec
 from .basis_functions import BASIS_BY_ID
-from ..core import UQTestFun, ProbInput, UnivDist
+from ..core import UQTestFun, ProbInput, Marginal
 
 
 __all__ = ["UQMetaTestFun", "default_coeffs_gen"]
@@ -226,16 +226,16 @@ class UQMetaTestFun:
             input_id = np.random.randint(0, 8)
 
         input_marginals = [
-            UnivDist(distribution="uniform", parameters=[0, 1]),
-            UnivDist(
+            Marginal(distribution="uniform", parameters=[0, 1]),
+            Marginal(
                 distribution="trunc-normal",
                 parameters=[0.5, 0.15, 0.0, 1.0],
             ),
-            UnivDist(distribution="beta", parameters=[8.0, 2.0, 0.0, 1.0]),
-            UnivDist(distribution="beta", parameters=[2.0, 8.0, 0.0, 1.0]),
-            UnivDist(distribution="beta", parameters=[2.0, 0.8, 0.0, 1.0]),
-            UnivDist(distribution="beta", parameters=[0.8, 2.0, 0.0, 1.0]),
-            UnivDist(distribution="logitnormal", parameters=[0.0, 3.16]),
+            Marginal(distribution="beta", parameters=[8.0, 2.0, 0.0, 1.0]),
+            Marginal(distribution="beta", parameters=[2.0, 8.0, 0.0, 1.0]),
+            Marginal(distribution="beta", parameters=[2.0, 0.8, 0.0, 1.0]),
+            Marginal(distribution="beta", parameters=[0.8, 2.0, 0.0, 1.0]),
+            Marginal(distribution="logitnormal", parameters=[0.0, 3.16]),
         ]
 
         if input_id < 7:

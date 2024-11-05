@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 ```
 
-(prob-input:univariate-distributions:gumbel)=
+(prob-input:marginal-distributions:gumbel)=
 # Gumbel (max.) Distribution
 
 The Gumbel (max.) distribution is a two-parameter continuous probability distribution.
@@ -54,7 +54,7 @@ colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
 univ_dists = []
 for parameter in parameters:
-    univ_dists.append(uqtf.UnivDist(distribution="gumbel", parameters=parameter))
+    univ_dists.append(uqtf.Marginal(distribution="gumbel", parameters=parameter))
     
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 

@@ -228,7 +228,7 @@ The relation implies that the main-effect Sobol' sensitivity indices are
 the squared of the hybrid local-global measures.
 
 ```{table} Main-effect Sobol' sensitivity indices of the simple portfolio model
-:name: portfolio-3d-hybrid-measure
+:name: portfolio-3d-sobol-indices
 
 |    Parameter     |   $P_s$   |  $P_t$   |   $P_j$   |
 |:----------------:|:---------:|:--------:|:---------:|

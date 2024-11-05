@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The class `UnivDist` has been renamed to `Marginal`. The name more clearly
+  refers to one-dimensional marginal distributions (of a univariate random
+  variable), which form a `ProbInput`.
 - The property `spatial_dimension` of `ProbInput` and `UQTestFunBareABC` is
   renamed to `input_dimension` for clarity (as opposed to `output_dimension`).
 - The property `name` of UQ test function instances has been renamed to

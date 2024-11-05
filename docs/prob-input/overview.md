@@ -28,7 +28,7 @@ to handle the representation of a wide range of distributions
 for practical applications.
 Density functions and dependency structures are only made available
 when a specific UQ test function requires them.
-The list of supported univariate distributions can be found {ref}`here <prob-input:available-univariate-distributions>`.
+The list of supported univariate distributions can be found {ref}`here <prob-input:available-marginal-distributions>`.
 
 This section of the documentation explains in more detail how to specify
 a probabilistic input in UQTestFuns.
@@ -37,7 +37,7 @@ each of which is represented as a univariate random variable with a prescribed
 distribution:
 
 - To learn more about how to create a univariate random variable,
-  check out the {ref}`Creating a Univariate Random Variable <prob-input:univariate-random-variable>`
+  check out the {ref}`Creating a One-Dimensional Marginal Distribution <prob-input:marginal-distribution>`
   page.
 - To learn more about how to model one or more input variables probabilistically,
   check out the {ref}`Creating a Probabilistic Input Model <prob-input:probabilistic-input-model>`

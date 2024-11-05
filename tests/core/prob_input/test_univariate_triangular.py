@@ -5,7 +5,7 @@ Test module specifically for UnivariateInput instances with triangular dist.
 import pytest
 import numpy as np
 
-from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
+from uqtestfuns.core.prob_input.marginal import Marginal
 from conftest import create_random_alphanumeric
 
 DISTRIBUTION_NAME = "triangular"
@@ -18,7 +18,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.sort(np.random.rand(10))
 
     with pytest.raises(ValueError):
-        UnivDist(
+        Marginal(
             name=name, distribution=DISTRIBUTION_NAME, parameters=parameters
         )
 
@@ -30,7 +30,7 @@ def test_failed_parameter_verification() -> None:
     parameters = [5, 1, 3]
 
     with pytest.raises(ValueError):
-        UnivDist(
+        Marginal(
             name=name, distribution=DISTRIBUTION_NAME, parameters=parameters
         )
 
@@ -38,7 +38,7 @@ def test_failed_parameter_verification() -> None:
     parameters = [3, 4, 10]
 
     with pytest.raises(ValueError):
-        UnivDist(
+        Marginal(
             name=name, distribution=DISTRIBUTION_NAME, parameters=parameters
         )
 
@@ -50,7 +50,7 @@ def test_estimate_mode() -> None:
     parameters[[2, 1]] = parameters[[1, 2]]
 
     # Create an instance
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         distribution=DISTRIBUTION_NAME, parameters=parameters
     )
 

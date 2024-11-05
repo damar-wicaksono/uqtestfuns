@@ -8,7 +8,7 @@ import scipy.integrate as integrate
 
 from scipy.stats import gumbel_r
 
-from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
+from uqtestfuns.core.prob_input.marginal import Marginal
 from uqtestfuns.global_settings import ARRAY_FLOAT
 from conftest import create_random_alphanumeric
 
@@ -66,7 +66,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.sort(np.random.rand(5))
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=distribution, parameters=parameters)
+        Marginal(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_failed_parameter_verification() -> None:
@@ -77,13 +77,13 @@ def test_failed_parameter_verification() -> None:
     parameters = [7.71, -5.0, 0, 10]
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=distribution, parameters=parameters)
+        Marginal(name=name, distribution=distribution, parameters=parameters)
 
     # The lower bound is larger than the upper bound!
     parameters = [2.71, 0.5, 5, 0]
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=distribution, parameters=parameters)
+        Marginal(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_estimate_mode() -> None:
@@ -95,7 +95,7 @@ def test_estimate_mode() -> None:
     parameters = np.insert(parameters, 1, np.random.rand(1))
 
     # Create an instance
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         distribution=DISTRIBUTION_NAME, parameters=parameters
     )
 
@@ -123,7 +123,7 @@ def test_estimate_median() -> None:
     parameters = np.insert(parameters, 1, np.random.rand(1))
 
     # Create an instance
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         distribution=DISTRIBUTION_NAME, parameters=parameters
     )
 
@@ -157,12 +157,12 @@ def test_untruncated() -> None:
     distribution = DISTRIBUTION_NAME
     parameters = [10, 2, -np.inf, np.inf]
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         distribution=distribution, parameters=parameters
     )
 
     # Create a reference Gumbel distribution
-    my_univariate_input_ref = UnivDist(
+    my_univariate_input_ref = Marginal(
         distribution="gumbel", parameters=parameters[:2]
     )
 

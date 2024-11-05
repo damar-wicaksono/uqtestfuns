@@ -21,14 +21,13 @@ let's start from the top, the {ref}`built-in test functions <test-functions:avai
   represents the input of an uncertainty quantification (UQ) test function.
 - An instance of the ``ProbInput`` class consists mainly of the one-dimensional
   marginals and a copula specification (not yet supported). Each one-dimensional
-  marginal comes from a univariate random variable which in turn
-  is represented by the {ref}`UnivDist <api_reference_univariate_distribution>`
-  class. 
-- An instance of class ``UnivDist`` has a (parametric) probability distribution.
-  Although different instances may have different probability distributions,
-  they are all instances of the same class.
-- As lightweight containers to specify the specifications of a ``ProbInput`` and
-  a ``UnivDist``, {ref}`three custom <api_reference_input_spec>` ``NamedTuple``
+  marginal comes is represented
+  by the {ref}`Marginal <api_reference_marginal_distribution>` class. 
+- An instance of the ``Marginal`` class has a (parametric) probability
+  distribution. Although different instances may have different
+  probability distributions, they are all instances of the same class.
+- As lightweight containers to specify the specifications of a ``ProbInput``
+  and a ``Marginal``, {ref}`three custom <api_reference_input_spec>` ``NamedTuple``
   are defined, namely {ref}`api_reference_input_spec_univdist`, 
   {ref}`api_reference_input_spec_fixdim`, and {ref}`api_reference_input_spec_vardim`.
 

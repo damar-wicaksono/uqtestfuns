@@ -3,7 +3,7 @@ import numpy as np
 from typing import List
 
 from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
-from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
+from uqtestfuns.core.prob_input.marginal import Marginal
 from uqtestfuns.core.prob_input.input_spec import (
     UnivDistSpec,
     ProbInputSpecFixDim,
@@ -208,7 +208,7 @@ def test_reset_rng(input_dimension):
 @pytest.mark.parametrize("input_dimension", [1, 2, 10, 100])
 def test_create_from_spec(input_dimension):
     """Test creating an instance from specification NamedTuple"""
-    marginals: List[UnivDist] = create_random_marginals(input_dimension)
+    marginals: List[Marginal] = create_random_marginals(input_dimension)
 
     # Create a ProbInputSpecFixDim
     name = "Test Name"

@@ -54,34 +54,35 @@ The first step of creating the probabilistic input model is to define
 all one-dimensional marginals according to the specification above.
 One-dimensional marginals are the distributions
 of the component univariate random variables.
-In UQTestFuns, a univariate random variable is represented by ``UnivDist`` class
-(please refer to {ref}`prob-input:univariate-random-variable` for more detail).
+In UQTestFuns, the distribution of a univariate random variable is
+represented by ``Marginal`` class
+(please refer to {ref}`prob-input:marginal-distribution` for more detail).
 Because three marginals belong to a single probabilistic input model,
 we need to collect all the marginals inside a list (or a tuple) as follows:
 
 ```{code-cell} ipython3
 my_marginals = [
-  uqtf.UnivDist(
+  uqtf.Marginal(
       distribution="gumbel", parameters=[3, 4], name="X1", description="1st input"
   ),
-  uqtf.UnivDist(
+  uqtf.Marginal(
       distribution="normal", parameters=[1, 0.2], name="X2", description="2nd input"
   ),
-  uqtf.UnivDist(
+  uqtf.Marginal(
       distribution="beta", parameters=[5, 2, 0.25, 1.0], name="X3", description="3rd input"
   ),
 ]
 ```
 
 Note that in the snippet above,
-the parameters `name` and `description` of `UnivDist()` are optional.
+the parameters `name` and `description` of `Marginal()` are optional.
 
 ## A ``ProbInput`` instance
 
 A probabilistic input model in UQTestFuns is represented by the ``ProbInput`` class.
 To create an instance of the class, you need to pass the following arguments:
 
-- `marginals`: a list or tuple of one-dimensional marginals each represented by an instance of ``UnivDist``.
+- `marginals`: a list or tuple of one-dimensional marginals each represented by an instance of ``Marginal``.
 - `name`: the name of the probabilistic input model (optional)
 - `description`: a short text describing the input model (optional)
 
@@ -104,7 +105,7 @@ You can print the instance to the terminal to verify it:
 print(my_probinput)
 ```
 
-An instance of ``UnivDist`` exposes the following properties:
+An instance of ``Marginal`` exposes the following properties:
 
 |      Property       |                                             Description                                              |
 |:-------------------:|:----------------------------------------------------------------------------------------------------:|
@@ -204,9 +205,9 @@ consisting of three independent standard uniform distributions.
 
 ```{code-cell} ipython3
 my_marginals_2 = [
-  uqtf.UnivDist(distribution="uniform", parameters=[0, 1], name="X1", description="1st input"),
-  uqtf.UnivDist(distribution="uniform", parameters=[0, 1], name="X2", description="2nd input"),
-  uqtf.UnivDist(distribution="uniform", parameters=[0, 1], name="X3", description="3rd input"),
+  uqtf.Marginal(distribution="uniform", parameters=[0, 1], name="X1", description="1st input"),
+  uqtf.Marginal(distribution="uniform", parameters=[0, 1], name="X2", description="2nd input"),
+  uqtf.Marginal(distribution="uniform", parameters=[0, 1], name="X3", description="3rd input"),
 ]
 my_probinput_2 = uqtf.ProbInput(
   marginals=my_marginals_2,

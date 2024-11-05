@@ -12,12 +12,12 @@ kernelspec:
   name: python3
 ---
 
-(prob-input:univariate-distributions:lognormal)=
+(prob-input:marginal-distributions:lognormal)=
 # Log-Normal Distribution
 
 The log-normal distribution is a two-parameter continuous probability distribution.
 A log-normal random variable is a variable whose (natural) logarithm is 
-a {ref}`normally distributed <prob-input:univariate-distributions:normal>`
+a {ref}`normally distributed <prob-input:marginal-distributions:normal>`
 random variable.
 The table below summarizes some important aspects of the distribution.
 
@@ -60,7 +60,7 @@ colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 univ_dists = []
 for parameter in parameters:
     univ_dists.append(
-        uqtf.UnivDist(distribution="lognormal", parameters=parameter)
+        uqtf.Marginal(distribution="lognormal", parameters=parameter)
     )
 
 fig, axs = plt.subplots(2, 2, figsize=(10,10))

@@ -3,7 +3,7 @@ Module with an implementation of ``ProbInput`` class.
 
 The ``ProbInput`` class represents a probabilistic input model.
 Each probabilistic input has a set of one-dimensional marginals each of which
-is defined by an instance of the ``UnivDist`` class.
+is defined by an instance of the ``Marginal`` class.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from numpy.random._generator import Generator
 from tabulate import tabulate
 from typing import Any, List, Optional, Union, Tuple
 
-from .univariate_distribution import UnivDist, FIELD_NAMES
+from .marginal import Marginal, FIELD_NAMES
 from .input_spec import ProbInputSpecFixDim, ProbInputSpecVarDim
 
 __all__ = ["ProbInput"]
@@ -28,7 +28,7 @@ class ProbInput:
 
     Parameters
     ----------
-    marginals : Union[List[UnivDist], Tuple[UnivDist, ...]]
+    marginals : Union[List[Marginal], Tuple[Marginal, ...]]
         A list of one-dimensional marginals (univariate random variables).
     copulas : Any
         Copulas between univariate inputs that define dependence structure
@@ -52,7 +52,7 @@ class ProbInput:
     """
 
     input_dimension: int = field(init=False)
-    marginals: Union[List[UnivDist], Tuple[UnivDist, ...]]
+    marginals: Union[List[Marginal], Tuple[Marginal, ...]]
     copulas: Any = None
     name: Optional[str] = None
     description: Optional[str] = None
@@ -204,9 +204,9 @@ class ProbInput:
         else:
             marginals_spec = prob_input_spec.marginals
 
-        # Create a list of UnivDist instances representing univariate marginals
+        # Create a list of Marginal instances representing univariate marginals
         marginals = [
-            UnivDist.from_spec(marginal) for marginal in marginals_spec
+            Marginal.from_spec(marginal) for marginal in marginals_spec
         ]
 
         return cls(
@@ -219,7 +219,7 @@ class ProbInput:
 
 
 def _get_values_as_list(
-    univ_inputs: Union[List[UnivDist], Tuple[UnivDist, ...]],
+    univ_inputs: Union[List[Marginal], Tuple[Marginal, ...]],
     field_names: List[str],
 ) -> list:
     """Get the values from each field from a list of UnivariateInput
