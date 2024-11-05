@@ -20,22 +20,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 ```
 
-(prob-input:univariate-distributions:exponential)=
-# Exponential Distribution
+(prob-input:marginal-distributions:uniform)=
+# Uniform Distribution
 
-The exponential distribution is a single-parameter continuous probability
-distribution.
-
+The uniform distribution is a two-parameter continuous probability distribution.
 The table below summarizes some important aspects of the distribution.
 
-|                      |                                                             |
-|---------------------:|-------------------------------------------------------------|
-|         **Notation** | $X \sim \mathcal{E}(\lambda)$                               |
-|       **Parameters** | $\lambda \in \mathbb{R}_{>0}$ (rate parameter)              |
-|  **{term}`Support`** | $\mathcal{D}_X = [0.0, \infty)$                             |
-|      **{term}`PDF`** | $f_X (x; \lambda) = \lambda e^{-\lambda x}$                 |
-|      **{term}`CDF`** | $F_X (x; \lambda) = 1 - e^{-\lambda x}$                     |
-|     **{term}`ICDF`** | $F^{-1}_X (x; \lambda) = - \frac{1}{\lambda} \ln{(1 - x)}$  |
+|                      |                                                                                                          |
+|---------------------:|----------------------------------------------------------------------------------------------------------|
+|         **Notation** | $X \sim \mathcal{U}(a, b)$                                                                               |
+|       **Parameters** | $a \in (-\infty, b)$ (lower bound)                                                                       |
+|                      | $b \in (a, \infty)$ (upper bound)                                                                        |
+|  **{term}`Support`** | $\mathcal{D}_X = [a, b] \subset \mathbb{R}$                                                              |
+|      **{term}`PDF`** | $f_X (x; a, b) = \begin{cases} \frac{1}{b - a} & x \in [a, b] \\ 0 & x \notin [a, b] \end{cases}$        |
+|      **{term}`CDF`** | $F_X (x; a, b) = \begin{cases} 0 & x < a \\ \frac{x - a}{b - a} & x \in [a, b] \\ 1 & x > b \end{cases}$ |
+|     **{term}`ICDF`** | $F^{-1}_X (x; a, b) = a + (b - a) \, x$                                                                  |
+
 
 The plots of probability density functions (PDFs),
 sample histogram (of $5'000$ points),
@@ -50,23 +50,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 
-parameters = [[2.0], [1.5], [1.0], [0.5]]
+parameters = [[0, 1], [-1, 1.0], [-5, -2], [1, 5]]
 colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
 univ_dists = []
 for parameter in parameters:
-    univ_dists.append(uqtf.UnivDist(distribution="exponential", parameters=parameter))
+    univ_dists.append(uqtf.Marginal(distribution="uniform", parameters=parameter))
 
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 
 # --- PDF
-xx = np.linspace(0, 5, 1000)
+xx = np.linspace(-6, 6, 1000)
 for i, univ_dist in enumerate(univ_dists):
     axs[0, 0].plot(
         xx,
         univ_dist.pdf(xx),
         color=colors[i],
-        label=f"$\\lambda = {univ_dist.parameters[0]}$",
+        label=f"$a = {univ_dist.parameters[0]}, b={univ_dist.parameters[1]}$",
         linewidth=2,
     )
 axs[0, 0].legend();
@@ -84,11 +84,11 @@ for col, univ_dist in zip(reversed(colors), reversed(univ_dists)):
         alpha=0.75
     )
 axs[0, 1].grid();
-axs[0, 1].set_xlim([0, 5]);
+axs[0, 1].set_xlim([-6, 6]);
 axs[0, 1].set_title("Sample histogram");
 
 # --- CDF
-xx = np.linspace(0, 5, 1000)
+xx = np.linspace(-6, 6, 1000)
 for i, univ_dist in enumerate(univ_dists):
     axs[1, 0].plot(
         xx,
@@ -109,7 +109,7 @@ for i, univ_dist in enumerate(univ_dists):
         linewidth=2
     )
 axs[1, 1].grid();
-axs[1, 1].set_ylim([0, 6]);
+axs[1, 1].set_ylim([-6, 6]);
 axs[1, 1].set_title("Inverse CDF");
 
 plt.gcf().set_dpi(150)

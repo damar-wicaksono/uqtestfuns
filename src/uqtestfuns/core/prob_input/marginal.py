@@ -1,7 +1,8 @@
 """
-Module with an implementation of the ``UnivDist`` class.
+Module with an implementation of the ``Marginal`` class.
 
-The ``UnivDist`` class represents a univariate random variable.
+The ``Marginal`` class represents a one-dimensional marginal random variable
+(i.e., univariate random variable).
 Each random variable has a (parametric) probability distribution.
 """
 
@@ -25,20 +26,20 @@ from .utils import (
 from .input_spec import UnivDistSpec
 from ...global_settings import ARRAY_FLOAT
 
-__all__ = ["UnivDist"]
+__all__ = ["Marginal"]
 
 # Ordered field names for printing purpose
 FIELD_NAMES = ["name", "distribution", "parameters", "description"]
 
 
 @dataclass(frozen=True)
-class UnivDist:
-    """A class for univariate random variables.
+class Marginal:
+    """A class for one-dimensional marginal random variables.
 
     Parameters
     ----------
     distribution : str
-        The type of the probability distribution
+        The type of the probability distribution.
     parameters : ArrayLike
         The parameters of the chosen probability distribution
     name : str, optional
@@ -94,11 +95,11 @@ class UnivDist:
     def transform_sample(
         self,
         xx: Union[float, np.ndarray],
-        other: UnivDist,
+        other: Marginal,
     ) -> np.ndarray:
         """Transform a sample from a given distribution to another."""
-        if not isinstance(other, UnivDist):
-            raise TypeError("Other instance must be of UnivariateType!")
+        if not isinstance(other, Marginal):
+            raise TypeError("Other instance must be of Marginal type!")
 
         xx_trans = self.cdf(xx)
 

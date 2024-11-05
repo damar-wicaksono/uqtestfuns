@@ -7,7 +7,7 @@ import pytest
 
 from scipy.special import comb
 
-from uqtestfuns import UQMetaTestFun, UQTestFun, UQMetaFunSpec, UnivDist
+from uqtestfuns import UQMetaTestFun, UQTestFun, UQMetaFunSpec, Marginal
 from uqtestfuns.meta.metaspec import UQTestFunSpec
 from uqtestfuns.meta.basis_functions import BASIS_BY_ID
 from conftest import create_random_marginals, assert_call
@@ -199,7 +199,7 @@ def test_evaluate_sample(input_dimension):
     effects_dict = _create_args_effects_dict(input_dimension)
 
     input_marginals = [
-        UnivDist(distribution="uniform", parameters=[0, 1]),
+        Marginal(distribution="uniform", parameters=[0, 1]),
     ]
 
     coeffs_generator = np.random.rand

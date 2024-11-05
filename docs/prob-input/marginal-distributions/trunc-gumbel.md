@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 ```
 
-(prob-input:univariate-distributions:trunc-gumbel)=
+(prob-input:marginal-distributions:trunc-gumbel)=
 # Truncated Gumbel (max.) Distribution
 
 The truncated Gumbel (max.) distribution is a four-parameter continuous
@@ -42,7 +42,7 @@ The table below summarizes some important aspects of the distribution.
 In the table above, $f_{\mathrm{Gumbel}}$, $F_{\mathrm{Gumbel}}$,
 and $F^{-1}_{\mathrm{Gumbel}}$ are the probability density,
 the cumulative, and the inverse cumulative distribution functions
-of {ref}`the (untruncated) Gumbel (max.) distribution <prob-input:univariate-distributions:gumbel>`,
+of {ref}`the (untruncated) Gumbel (max.) distribution <prob-input:marginal-distributions:gumbel>`,
 respectively.
 
 The plots of probability density functions (PDFs),
@@ -63,7 +63,7 @@ colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
 univ_dists = []
 for parameter in parameters:
-    univ_dists.append(uqtf.UnivDist(distribution="trunc-gumbel", parameters=parameter))
+    univ_dists.append(uqtf.Marginal(distribution="trunc-gumbel", parameters=parameter))
 
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 

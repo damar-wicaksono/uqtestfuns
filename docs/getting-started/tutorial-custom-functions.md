@@ -146,8 +146,8 @@ class  and an instance of it can be defined as follows:
 ```{code-cell} ipython3
 # Define a list of marginals
 marginals = [
-    uqtf.UnivDist(distribution="uniform", parameters=[-5, 10], name="x1"),
-    uqtf.UnivDist(distribution="uniform", parameters=[0, 15], name="x2"),
+    uqtf.Marginal(distribution="uniform", parameters=[-5, 10], name="x1"),
+    uqtf.Marginal(distribution="uniform", parameters=[0, 15], name="x2"),
 ]
 # Create a probabilistic input
 my_input = uqtf.ProbInput(marginals=marginals, name="Branin-Input")

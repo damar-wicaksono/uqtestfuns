@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-(prob-input:univariate-distributions:beta)=
+(prob-input:marginal-distributions:beta)=
 # Beta Distribution
 
 The Beta distribution is a four-parameter continuous probability distribution.
@@ -83,7 +83,7 @@ colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
 univ_dists = []
 for parameter in parameters:
-    univ_dists.append(uqtf.UnivDist(distribution="beta", parameters=parameter))
+    univ_dists.append(uqtf.Marginal(distribution="beta", parameters=parameter))
 
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 

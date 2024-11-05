@@ -2,7 +2,7 @@
 Utility module for all the UQ test functions.
 """
 
-from .prob_input.univariate_distribution import UnivDist
+from .prob_input.marginal import Marginal
 from .prob_input.probabilistic_input import ProbInput
 
 
@@ -31,7 +31,7 @@ def create_canonical_uniform_input(
 
     for i in range(input_dimension):
         marginals.append(
-            UnivDist(
+            Marginal(
                 name=f"X{i+1}",
                 distribution="uniform",
                 parameters=[min_value, max_value],

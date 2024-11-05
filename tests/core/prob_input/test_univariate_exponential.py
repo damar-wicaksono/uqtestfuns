@@ -1,11 +1,11 @@
 """
-Test module specifically for UnivDist instances with the exponential dist.
+Test module specifically for Marginal instances with the exponential dist.
 """
 
 import pytest
 import numpy as np
 
-from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
+from uqtestfuns.core.prob_input.marginal import Marginal
 from conftest import create_random_alphanumeric
 
 DISTRIBUTION = "exponential"
@@ -19,7 +19,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.random.rand(num_params)
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=DISTRIBUTION, parameters=parameters)
+        Marginal(name=name, distribution=DISTRIBUTION, parameters=parameters)
 
 
 def test_failed_parameter_verification() -> None:
@@ -28,16 +28,16 @@ def test_failed_parameter_verification() -> None:
     parameters = [-5]
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=DISTRIBUTION, parameters=parameters)
+        Marginal(name=name, distribution=DISTRIBUTION, parameters=parameters)
 
 
 def test_get_pdf_values() -> None:
-    """Test the PDF values from an instance of UnivDist."""
+    """Test the PDF values from an instance of Marginal."""
 
     name = create_random_alphanumeric(5)
     parameters = np.sort(np.random.rand(1))
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         name=name, distribution=DISTRIBUTION, parameters=parameters
     )
 
@@ -56,11 +56,11 @@ def test_get_pdf_values() -> None:
 
 
 def test_mean() -> None:
-    """Test the mean values from an instance of UnivDist."""
+    """Test the mean values from an instance of Marginal."""
     name = create_random_alphanumeric(5)
     parameters = np.sort(np.random.rand(1))
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         name=name, distribution=DISTRIBUTION, parameters=parameters
     )
 
@@ -74,11 +74,11 @@ def test_mean() -> None:
 
 
 def test_variance() -> None:
-    """Test the variance values from an instance of UnivDist."""
+    """Test the variance values from an instance of Marginal."""
     name = create_random_alphanumeric(5)
     parameters = np.sort(np.random.rand(1))
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         name=name, distribution=DISTRIBUTION, parameters=parameters
     )
 
@@ -92,11 +92,11 @@ def test_variance() -> None:
 
 
 def test_median() -> None:
-    """Test the median values from an instance of UnivDist."""
+    """Test the median values from an instance of Marginal."""
     name = create_random_alphanumeric(5)
     parameters = np.sort(np.random.rand(1))
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         name=name, distribution=DISTRIBUTION, parameters=parameters
     )
 

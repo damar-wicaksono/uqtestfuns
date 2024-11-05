@@ -4,7 +4,7 @@ This is the package init for UQTestFuns.
 
 import sys
 
-from .core import UnivDist
+from .core import Marginal
 from .core import ProbInput
 from .core import UQTestFunBareABC, UQTestFunABC
 from .core import UQTestFun
@@ -27,7 +27,7 @@ else:  # pragma: no cover
 __version__ = metadata.version("uqtestfuns")
 
 __all__ = [
-    "UnivDist",
+    "Marginal",
     "ProbInput",
     "FunParams",
     "UQTestFunABC",

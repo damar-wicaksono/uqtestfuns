@@ -45,7 +45,8 @@ be sure to check out the guides on:
 - {ref}`adding a new test function implementation <development:adding-test-function-implementation>`
 - {ref}`adding a new test function documentation <development:adding-test-function-docs>`
 - {ref}`making a pull request <development:making-a-pull-request>`
-- In case the univariate distribution types are not yet available: {ref}`adding a new univariate distribution <development:adding-univ-dist>`
+- In case the univariate distribution types are not yet available:
+  {ref}`adding a new univariate distribution <development:adding-marginal-distribution>`
 
 ## Updating the documentation
 

@@ -124,7 +124,7 @@ Here are some explanations:
   (the one-dimensional marginal specification) and `ProbInputSpecFixDim`
   (the probabilistic input model). These are lightweight _containers_
   (meaning no custom methods) of all the information required to construct,
-  later on, `UnivDist` and `ProbInput` instances, respectively.
+  later on, `Marginal` and `ProbInput` instances, respectively.
 
 ```{note}
 There is also the corresponding `ProbInputSpecVarDim` to store the information
@@ -221,7 +221,7 @@ The keyword is, by convention, the citation key of the particular reference as l
 
 Also notice that in the code above, we store the specifications of the marginals
 in a list of {ref}`api_reference_input_spec_univdist`.
-Each element of this list is used to create an instance of `UnivDist`.
+Each element of this list is used to create an instance of `Marginal`.
 
 With that, we have completed the input specification of the Branin function.
 

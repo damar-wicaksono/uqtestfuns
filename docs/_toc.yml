@@ -136,27 +136,27 @@ parts:
       - file: prob-input/probabilistic-input
         title: Probabilistic Input Model
       - file: prob-input/available
-        title: Univariate Distributions
+        title: One-Dimensional Marginal Distributions
         sections:
-          - file: prob-input/univariate-distributions/beta
+          - file: prob-input/marginal-distributions/beta
             title: Beta
-          - file: prob-input/univariate-distributions/exponential
+          - file: prob-input/marginal-distributions/exponential
             title: Exponential
-          - file: prob-input/univariate-distributions/gumbel
+          - file: prob-input/marginal-distributions/gumbel
             title: Gumbel (max.)
-          - file: prob-input/univariate-distributions/logitnormal
+          - file: prob-input/marginal-distributions/logitnormal
             title: Logit-Normal
-          - file: prob-input/univariate-distributions/lognormal
+          - file: prob-input/marginal-distributions/lognormal
             title: Log-Normal
-          - file: prob-input/univariate-distributions/normal
+          - file: prob-input/marginal-distributions/normal
             title: Normal (Gaussian)
-          - file: prob-input/univariate-distributions/triangular
+          - file: prob-input/marginal-distributions/triangular
             title: Triangular
-          - file: prob-input/univariate-distributions/trunc-gumbel
+          - file: prob-input/marginal-distributions/trunc-gumbel
             title: Truncated Gumbel (max.)
-          - file: prob-input/univariate-distributions/trunc-normal
+          - file: prob-input/marginal-distributions/trunc-normal
             title: Truncated Normal (Gaussian)
-          - file: prob-input/univariate-distributions/uniform
+          - file: prob-input/marginal-distributions/uniform
             title: Uniform
   - caption: API Reference
     chapters:
@@ -170,8 +170,8 @@ parts:
         title: UQTestFun
       - file: api/probinput
         title: ProbInput
-      - file: api/univdist
-        title: UnivDist
+      - file: api/marginal
+        title: Marginal
       - file: api/input-spec
         title: ProbInputSpec
       - file: api/funparams
@@ -188,8 +188,8 @@ parts:
         title: Test Function Docs
       - file: development/making-a-pull-request
         title: Making a Pull Request
-      - file: development/adding-univariate-distribution
-        title: Univariate Distribution
+      - file: development/adding-marginal-distribution
+        title: Adding a Marginal Distribution
       - file: development/about
         title: About UQTestFuns
       - file: development/code-of-conduct

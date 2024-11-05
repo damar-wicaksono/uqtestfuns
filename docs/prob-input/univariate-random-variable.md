@@ -12,15 +12,15 @@ kernelspec:
   name: python3
 ---
 
-(prob-input:univariate-random-variable)=
-# Creating a Univariate Random Variable
+(prob-input:marginal-distribution)=
+# Creating a One-Dimensional Marginal Distribution
 
 A probabilistic input to a UQ test function consists of input variables
 each of which is a (univariate) random variable.
 Therefore, the starting point of defining a (possibly multivariate)
 probabilistic input is defining the distribution
 for each of the constituent random variables.
-This page explains how such a random variable can be created in UQTestFuns.
+This page explains how such a marginal distribution can be created in UQTestFuns.
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
@@ -28,8 +28,8 @@ import numpy as np
 import uqtestfuns as uqtf
 ```
 
-Suppose we would like to define a univariate random variable $X$
-whose distribution is triangular:
+Suppose we would like to define one-dimensional triangular marginal distribution
+for random variable $X$:
 
 $$
 X \sim \mathcal{T}_r(a, b, c)
@@ -40,12 +40,12 @@ These parameters correspond to the lower bound, the upper bound,
 and the mid-point of the distribution. 
 For this particular example, we set these values to $3.0$, $5.0$, and $4.0$.
 
-## A ``UnivDist`` instance
+## A ``Marginal`` instance
 
-A univariate random variable is represented in UQTestFuns by the ``UnivDist`` class.
+A univariate random variable is represented in UQTestFuns by the ``Marginal`` class.
 To create an instance of the class, you need to pass the following arguments:
 
-- `distribution`: the chosen univariate distribution (one from this {ref}`list <prob-input:available-univariate-distributions>`)
+- `distribution`: the chosen univariate distribution (one from this {ref}`list <prob-input:available-marginal-distributions>`)
 - `parameters`: the parameters of the distribution (note that the number of required parameters differs from distribution to another)
 - `name`: the name of the random variable (optional)
 - `description`: a short text describing the random variable (optional) 
@@ -53,7 +53,7 @@ To create an instance of the class, you need to pass the following arguments:
 To create an instance, type:
 
 ```{code-cell} ipython3
-my_rand_var = uqtf.UnivDist(
+my_rand_var = uqtf.Marginal(
     distribution="triangular",
     parameters=[3.0, 5.0, 4.0],
     name="X",
@@ -66,22 +66,22 @@ The variable `my_rand_var` now stores an instance
 of a univariate random variable distributed as triangular
 with the specified parameters.
 
-An instance of ``UnivDist`` exposes the following properties:
+An instance of ``Marginal`` exposes the following properties:
 
-|    Property    |                                               Description                                                |
-|:--------------:|:--------------------------------------------------------------------------------------------------------:|
-|     `name`     |                         the assigned name of the random variable (may be `None`)                         |
-| `description`  |                     the assigned description of the random variable (may be `None`)                      |
-| `distribution` | the distribution (one of {ref}`available distributions <prob-input:available-univariate-distributions>`) |
-|  `parameters`  |                                    the parameters of the distribution                                    |
-|    `lower`     |                                   the lower bound of the distribution                                    |
-|    `upper`     |                                   the upper bound of the distribution                                    |
+|    Property    |                                              Description                                               |
+|:--------------:|:------------------------------------------------------------------------------------------------------:|
+|     `name`     |                        the assigned name of the random variable (may be `None`)                        |
+| `description`  |                    the assigned description of the random variable (may be `None`)                     |
+| `distribution` | the distribution (one of {ref}`available distributions <prob-input:available-marginal-distributions>`) |
+|  `parameters`  |                                   the parameters of the distribution                                   |
+|    `lower`     |                                  the lower bound of the distribution                                   |
+|    `upper`     |                                  the upper bound of the distribution                                   |
 
 and methods:
 
 |            Method             |                                     Description                                      |
 |:-----------------------------:|:------------------------------------------------------------------------------------:|
-|           `cdf(xx)`           |       compute the cumulative distribution function on a set of values `xx`           |
+|           `cdf(xx)`           |         compute the cumulative distribution function on a set of values `xx`         |
 |           `pdf(xx)`           |           compute the probability density function on a set of values `xx`           |
 |          `icdf(xx)`           |     compute the inverse cumulative distribution function on a set of values `xx`     |
 |   `get_sample(sample_size)`   |               get a sample of size `sample_size` from the distribution               |
@@ -195,7 +195,7 @@ Let's suppose, complementary to the random variable $X$ we define
 another random variable as follows:
 
 ```{code-cell} ipython3
-my_rand_var_2 = uqtf.UnivDist(distribution="normal", parameters=[0, 1], name="Y")
+my_rand_var_2 = uqtf.Marginal(distribution="normal", parameters=[0, 1], name="Y")
 ```
 
 In other words, the variable $Y$ is a standard normal random variable.
@@ -239,7 +239,7 @@ Its support is, strictly speaking, $\mathcal{D}_X = (-\infty, \infty)$.
 This is an example of distributions that are supported on the whole real line;
 it is neither bounded from below nor from above.
 
-The properties of a ``UnivDist`` instance include among other things,
+The properties of a ``Marginal`` instance include among other things,
 `lower` (lower bound) and `upper` (upper bound).
 For the triangular distribution defined above, the lower and upper bounds are indeed:
 
