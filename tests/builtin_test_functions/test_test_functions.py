@@ -155,10 +155,11 @@ def test_str(builtin_testfun):
     my_fun = builtin_testfun()
 
     str_ref = (
-        f"Function ID     : {my_fun.function_id}\n"
-        f"Input Dimension : {my_fun.input_dimension}\n"
-        f"Parameterized   : {bool(my_fun.parameters)}\n"
-        f"Description     : {my_fun.description}"
+        f"Function ID      : {my_fun.function_id}\n"
+        f"Input Dimension  : {my_fun.input_dimension}\n"
+        f"Output Dimension : {my_fun.output_dimension}\n"
+        f"Parameterized    : {bool(my_fun.parameters)}\n"
+        f"Description      : {my_fun.description}"
     )
 
     assert my_fun.__str__() == str_ref

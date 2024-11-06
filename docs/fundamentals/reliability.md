@@ -39,7 +39,7 @@ using the ``tag`` parameter:
 
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tag="reliability")
+uqtf.list_functions(tag="reliability", tablefmt="html")
 ```
 
 ## About reliability analysis

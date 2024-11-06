@@ -58,5 +58,5 @@ using the ``tag`` parameter:
 
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tag="metamodeling")
+uqtf.list_functions(tag="metamodeling", tablefmt="html")
 ```

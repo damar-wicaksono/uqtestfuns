@@ -68,9 +68,10 @@ def test_str(uqtestfun):
     uqtestfun_instance, _ = uqtestfun
 
     str_ref = (
-        f"Function ID     : {uqtestfun_instance.function_id}\n"
-        f"Input Dimension : {uqtestfun_instance.input_dimension}\n"
-        f"Parameterized   : {bool(uqtestfun_instance.parameters)}"
+        f"Function ID      : {uqtestfun_instance.function_id}\n"
+        f"Input Dimension  : {uqtestfun_instance.input_dimension}\n"
+        f"Output Dimension : {uqtestfun_instance.output_dimension}\n"
+        f"Parameterized    : {bool(uqtestfun_instance.parameters)}"
     )
 
     assert uqtestfun_instance.__str__() == str_ref

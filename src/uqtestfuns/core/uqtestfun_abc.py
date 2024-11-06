@@ -64,6 +64,7 @@ class UQTestFunBareABC(abc.ABC):
         self.prob_input = prob_input
         self._parameters = parameters
         self._function_id = function_id
+        self._output_dimension: Optional[int] = None
 
     @property
     def prob_input(self) -> ProbInput:
@@ -104,6 +105,21 @@ class UQTestFunBareABC(abc.ABC):
     def input_dimension(self) -> int:
         """The input dimension of the UQ test function."""
         return self.prob_input.input_dimension
+
+    @property
+    def output_dimension(self) -> int:
+        if self._output_dimension is None:
+            xx = self.prob_input.get_sample()
+            yy = self(xx)
+            if yy.ndim == 1:
+                self._output_dimension = 1
+            elif yy.ndim == 2:
+                self._output_dimension = yy.shape[1]
+            else:
+                self._output_dimension = yy.shape[1:]
+            return self._output_dimension
+
+        return self._output_dimension
 
     def transform_sample(
         self,
@@ -151,9 +167,10 @@ class UQTestFunBareABC(abc.ABC):
 
     def __str__(self):
         out = (
-            f"Function ID     : {self.function_id}\n"
-            f"Input Dimension : {self.input_dimension}\n"
-            f"Parameterized   : {bool(self.parameters)}"
+            f"Function ID      : {self.function_id}\n"
+            f"Input Dimension  : {self.input_dimension}\n"
+            f"Output Dimension : {self.output_dimension}\n"
+            f"Parameterized    : {bool(self.parameters)}"
         )
 
         return out
@@ -380,10 +397,11 @@ class UQTestFunABC(UQTestFunBareABC):
 
     def __str__(self):
         out = (
-            f"Function ID     : {self.function_id}\n"
-            f"Input Dimension : {self.input_dimension}\n"
-            f"Parameterized   : {bool(self.parameters)}\n"
-            f"Description     : {self.description}"
+            f"Function ID      : {self.function_id}\n"
+            f"Input Dimension  : {self.input_dimension}\n"
+            f"Output Dimension : {self.output_dimension}\n"
+            f"Parameterized    : {bool(self.parameters)}\n"
+            f"Description      : {self.description}"
         )
 
         return out

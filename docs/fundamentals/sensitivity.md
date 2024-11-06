@@ -45,5 +45,5 @@ using the ``tag`` parameter:
 
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tag="sensitivity")
+uqtf.list_functions(tag="sensitivity", tablefmt="html")
 ```
