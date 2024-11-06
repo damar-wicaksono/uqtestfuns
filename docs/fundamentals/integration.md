@@ -35,5 +35,5 @@ using the ``tag`` parameter:
 
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tag="integration")
+uqtf.list_functions(tag="integration", tablefmt="html")
 ```

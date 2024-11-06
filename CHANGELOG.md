@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `output_dimension` is now property of `UQTestFunBareABC` and inherited to
+  all concrete classes of UQ test functions.
 - Printing a test function instance now shows whether the function is 
   parameterized or not.
 - The information related to the parameterization of a function is now
@@ -23,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `list_functions()` is now printed in grid format and include information
+  regarding the output dimension and the parameterization. Furthermore,
+  filtering can be done based on the input dimension, output dimension,
+  tag, and parameterization.
 - The class `UnivDist` has been renamed to `Marginal`. The name more clearly
   refers to one-dimensional marginal distributions (of a univariate random
   variable), which form a `ProbInput`.

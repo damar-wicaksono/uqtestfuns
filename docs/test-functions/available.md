@@ -69,12 +69,13 @@ regardless of their typical applications.
 |                   {ref}`Wing Weight <test-functions:wing-weight>`                   |       10        |         `WingWeight()`          |
 
 In a Python terminal, you can list all the available functions
-along with the corresponding constructor using ``list_functions()``:
+along with the corresponding constructor using ``list_functions()``
+(shown below in the HTML format):
 
 ```{code-cell} ipython3
 :tags: ["output_scroll"]
 
 import uqtestfuns as uqtf
 
-uqtf.list_functions()
+uqtf.list_functions(tablefmt="html")
 ```
