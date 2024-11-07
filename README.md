@@ -70,7 +70,8 @@ The probabilistic input specification of this test function is built-in:
 
 ```python-repl
 >>> print(my_testfun.prob_input)
-Name            : Borehole-Harper-1983
+Function ID     : Borehole
+Input ID        : Harper1983
 Input Dimension : 8
 Description     : Probabilistic input model of the Borehole model from
                   Harper and Gupta (1983).
