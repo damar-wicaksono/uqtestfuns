@@ -28,37 +28,39 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["CantileverBeam2D"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Rajashekhar1993": ProbInputSpecFixDim(
-        name="Cantilever2D-Rajashekhar1993",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Rajashekhar1993": {
+        "function_id": "Cantilever2D",
+        "description": (
             "Input model for the cantilever beam problem "
             "from Rajashekhar and Ellingwood (1993)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="W",
-                distribution="normal",
-                parameters=[1000.0, 200.0],
-                description="Load per unit area [N/m^2]",
-            ),
-            UnivDistSpec(
-                name="H",
-                distribution="normal",
-                parameters=[250.0, 37.5],
-                description="Depth of the cross-section [mm]",
-            ),
+        "marginals": [
+            {
+                "name": "W",
+                "distribution": "normal",
+                "parameters": [1000.0, 200.0],
+                "description": "Load per unit area [N/m^2]",
+            },
+            {
+                "name": "H",
+                "distribution": "normal",
+                "parameters": [250.0, 37.5],
+                "description": "Depth of the cross-section [mm]",
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
-AVAILABLE_PARAMETERS = {
+
+AVAILABLE_PARAMETERS: FunParamSpecs = {
     "Rajashekhar1993": {
         "function_id": "CantileverBeam2D",
         "description": (
@@ -123,7 +125,7 @@ class CantileverBeam2D(UQTestFunABC):
         "Cantilever beam reliability problem "
         "from Rajashekhar and Ellington (1993)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_input_dimension = 2
 

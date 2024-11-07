@@ -23,39 +23,39 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 
 __all__ = ["CircularPipeCrack"]
 
 
-AVAILABLE_INPUT_SPECS = {
-    "Verma2015": ProbInputSpecFixDim(
-        name="CircularPipeCrack-Verma2015",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Verma2015": {
+        "function_id": "CircularPipeCrack",
+        "description": (
             "Input model for the circular pipe crack problem "
             "from Verma et al. (2015)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="sigma_f",
-                distribution="normal",
-                parameters=[301.079, 14.78],
-                description="flow stress [MNm]",
-            ),
-            UnivDistSpec(
-                name="theta",
-                distribution="normal",
-                parameters=[0.503, 0.049],
-                description="half crack angle [-]",
-            ),
+        "marginals": [
+            {
+                "name": "sigma_f",
+                "distribution": "normal",
+                "parameters": [301.079, 14.78],
+                "description": "flow stress [MNm]",
+            },
+            {
+                "name": "theta",
+                "distribution": "normal",
+                "parameters": [0.503, 0.049],
+                "description": "half crack angle [-]",
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
-AVAILABLE_PARAMETERS = {
+AVAILABLE_PARAMETERS: FunParamSpecs = {
     "Verman2016": {
         "function_id": "CircularPipeCrack",
         "description": (
@@ -133,7 +133,7 @@ class CircularPipeCrack(UQTestFunABC):
     _description = (
         "Circular pipe under bending moment from Verma et al. (2015)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_input_dimension = 2
 

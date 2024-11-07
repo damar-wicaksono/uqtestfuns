@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `function_id` and `input_id` are now property of `ProbInput`.
 - `output_dimension` is now property of `UQTestFunBareABC` and inherited to
   all concrete classes of UQ test functions.
 - Printing a test function instance now shows whether the function is 

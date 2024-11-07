@@ -36,58 +36,37 @@ References
 import numpy as np
 
 from scipy.special import eval_chebyt
-from typing import List
 
 from .sobol_g import evaluate as evaluate_sobol_g
 
-from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["Bratley1992a", "Bratley1992b", "Bratley1992c", "Bratley1992d"]
 
 
-def _bratley_input(input_dimension: int) -> List[UnivDistSpec]:
-    """Create a list of marginals for the M-dimensional Bratley test functions.
-
-    Parameters
-    ----------
-    input_dimension : int
-        The requested input dimension of the probabilistic input model.
-
-    Returns
-    -------
-    List[UnivDistSpec]
-        A list of marginals for the multivariate input following Ref. [1]
-    """
-    marginals = []
-    for i in range(input_dimension):
-        marginals.append(
-            UnivDistSpec(
-                name=f"X{i + 1}",
-                distribution="uniform",
-                parameters=[0.0, 1.0],
-                description=None,
-            )
-        )
-
-    return marginals
-
-
-AVAILABLE_INPUT_SPECS = {
-    "Bratley1992": ProbInputSpecVarDim(
-        name="Bratley1992",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Bratley1992": {
+        "function_id": "Bratley1992",
+        "description": (
             "Integration domain of the functions from Bratley et al. (1992)"
         ),
-        marginals_generator=_bratley_input,
-        copulas=None,
-    ),
+        "marginals": [
+            {
+                "name": "X",
+                "distribution": "uniform",
+                "parameters": [0.0, 1.0],
+                "description": None,
+            },
+        ],
+        "copulas": None,
+    },
 }
 
 # Common metadata used in each class definition of Bratley test functions
 COMMON_METADATA = dict(
     _tags=["integration", "sensitivity"],
-    _available_inputs=AVAILABLE_INPUT_SPECS,
+    _available_inputs=AVAILABLE_INPUTS,
     _available_parameters=None,
     _default_input_dimension=None,
     _description="from Bratley et al. (1992)",

@@ -11,18 +11,15 @@ from __future__ import annotations
 import numpy as np
 import textwrap
 
-from dataclasses import dataclass, field
 from numpy.random._generator import Generator
 from tabulate import tabulate
-from typing import Any, List, Optional, Union, Tuple
+from typing import Any, List, Optional, Sequence
 
 from .marginal import Marginal, FIELD_NAMES
-from .input_spec import ProbInputSpecFixDim, ProbInputSpecVarDim
 
 __all__ = ["ProbInput"]
 
 
-@dataclass
 class ProbInput:
     """A class for multivariate input variables.
 
@@ -33,36 +30,62 @@ class ProbInput:
     copulas : Any
         Copulas between univariate inputs that define dependence structure
         (currently not used).
-    name : str, optional
-        The name of the probabilistic input model.
-    description : str, optional
+    input_id: str, optional
+        The ID of the probabilistic input. If not specified, the value is None.
+    function_id: str, optional
+        The ID of the function associated with the input. If not specified,
+        the value is None.
+    description: str, optional
         The short description regarding the input model.
     rng_seed : int, optional.
         The seed used to initialize the pseudo-random number generator.
         If not specified, the value is taken from the system entropy.
-
-    Attributes
-    ----------
-    input_dimension : int
-        Number of constituents (random) input variables.
-    _rng : Generator
-        The default pseudo-random number generator of NumPy.
-        The generator is only created if or when needed (e.g., generating
-        a random sample from the distribution).
     """
 
-    input_dimension: int = field(init=False)
-    marginals: Union[List[Marginal], Tuple[Marginal, ...]]
-    copulas: Any = None
-    name: Optional[str] = None
-    description: Optional[str] = None
-    rng_seed: Optional[int] = field(default=None, repr=False)
-    _rng: Optional[Generator] = field(init=False, default=None, repr=False)
+    def __init__(
+        self,
+        marginals: Sequence[Marginal],
+        copulas: Any = None,
+        input_id: Optional[str] = None,
+        function_id: Optional[str] = None,
+        description: Optional[str] = None,
+        rng_seed: Optional[int] = None,
+    ):
+        # Read-only properties
+        self._marginals = marginals
+        self._copulas = copulas
+        # Attributes
+        self.input_id = input_id
+        self.function_id = function_id
+        self.description = description
+        # Other properties
+        self._rng_seed = rng_seed
+        self._rng: Optional[Generator] = None
 
-    def __post_init__(self):
-        self.input_dimension = len(self.marginals)
-        # Protect marginals by making it immutable
-        self.marginals = tuple(self.marginals)
+    @property
+    def input_dimension(self) -> int:
+        """Return the number of constituents (random) input variables."""
+        return len(self._marginals)
+
+    @property
+    def marginals(self) -> Sequence[Marginal]:
+        """Return the sequence of Marginals that define the input variables."""
+        return self._marginals
+
+    @property
+    def copulas(self) -> Any:
+        """Return the underlying Copulas of the probabilistic input."""
+        return self._copulas
+
+    @property
+    def rng_seed(self) -> Optional[int]:
+        """Return the seed for RNG."""
+        return self._rng_seed
+
+    @rng_seed.setter
+    def rng_seed(self, value: Optional[int]):
+        """Set/reset the seed for RNG."""
+        self.reset_rng(self._rng_seed)
 
     def transform_sample(self, xx: np.ndarray, other: ProbInput):
         """Transform a sample from the distribution to another."""
@@ -115,19 +138,6 @@ class ProbInput:
 
         return xx
 
-    def reset_rng(self, rng_seed: Optional[int]) -> None:
-        """Reset the random number generator.
-
-        Parameters
-        ----------
-        rng_seed : int, optional.
-            The seed used to initialize the pseudo-random number generator.
-            If not specified, the value is taken from the system entropy.
-        """
-        rng = np.random.default_rng(rng_seed)
-        object.__setattr__(self, "_rng", rng)
-        object.__setattr__(self, "rng_seed", rng_seed)
-
     def pdf(self, xx: np.ndarray) -> np.ndarray:
         """Get the PDF value of the distribution on a set of values.
 
@@ -152,8 +162,31 @@ class ProbInput:
 
         return yy
 
+    def reset_rng(self, rng_seed: Optional[int]) -> None:
+        """Reset the random number generator.
+
+        Parameters
+        ----------
+        rng_seed : int, optional.
+            The seed used to initialize the pseudo-random number generator.
+            If not specified, the value is taken from the system entropy.
+        """
+        rng = np.random.default_rng(rng_seed)
+        self._rng = rng
+        self._rng_seed = rng_seed
+
     def __str__(self):
-        table = f"Name            : {self.name}\n"
+        """Return human-readable string representation of the instance."""
+        if self.input_id is None or self.input_id == "":
+            input_id = "-"
+        else:
+            input_id = self.input_id
+        if self.function_id is None or self.function_id == "":
+            function_id = "-"
+        else:
+            function_id = self.function_id
+        table = f"Function ID     : {function_id}\n"
+        table += f"Input ID        : {input_id}\n"
         table += f"Input Dimension : {self.input_dimension}\n"
 
         # Parse the description column
@@ -186,40 +219,25 @@ class ProbInput:
 
         return table
 
-    @classmethod
-    def from_spec(
-        cls,
-        prob_input_spec: Union[ProbInputSpecFixDim, ProbInputSpecVarDim],
-        *,
-        input_dimension: Optional[int] = None,
-        rng_seed: Optional[int] = None,
-    ):
-        """Create an instance from a ProbInputSpec instance."""
+    def __repr__(self):
+        """Return the unambiguous string representation of the instance."""
+        class_name = self.__class__.__name__
+        # Get the value of the constructor arguments
+        attrs = {
+            "marginals": self.marginals,
+            "copulas": self.copulas,
+            "input_id": self.input_id,
+            "function_id": self.function_id,
+            "description": self.description,
+            "rng_seed": self.rng_seed,
+        }
+        attrs_str = ", ".join(f"{k}={v!r}" for k, v in attrs.items())
 
-        if isinstance(prob_input_spec, ProbInputSpecVarDim):
-            if input_dimension is None:
-                raise ValueError("Input dimension must be specified!")
-            marginals_gen = prob_input_spec.marginals_generator
-            marginals_spec = marginals_gen(input_dimension)
-        else:
-            marginals_spec = prob_input_spec.marginals
-
-        # Create a list of Marginal instances representing univariate marginals
-        marginals = [
-            Marginal.from_spec(marginal) for marginal in marginals_spec
-        ]
-
-        return cls(
-            marginals=marginals,
-            copulas=prob_input_spec.copulas,
-            name=prob_input_spec.name,
-            description=prob_input_spec.description,
-            rng_seed=rng_seed,
-        )
+        return f"{class_name}({attrs_str})"
 
 
 def _get_values_as_list(
-    univ_inputs: Union[List[Marginal], Tuple[Marginal, ...]],
+    univ_inputs: Sequence[Marginal],
     field_names: List[str],
 ) -> list:
     """Get the values from each field from a list of UnivariateInput

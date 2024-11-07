@@ -16,28 +16,29 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["Forrester2008"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Forrester2008": ProbInputSpecFixDim(
-        name="Forrester2008",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Forrester2008": {
+        "function_id": "Forrester2008",
+        "description": (
             "Input specification for the 1D test function "
             "from Forrester et al. (2008)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="x",
-                distribution="uniform",
-                parameters=[0, 1],
-                description=None,
-            )
+        "marginals": [
+            {
+                "name": "x",
+                "distribution": "uniform",
+                "parameters": [0, 1],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -67,7 +68,7 @@ class Forrester2008(UQTestFunABC):
 
     _tags = ["optimization", "metamodeling"]
     _description = "One-dimensional function from Forrester et al. (2008)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
     _default_input_dimension = 1
 

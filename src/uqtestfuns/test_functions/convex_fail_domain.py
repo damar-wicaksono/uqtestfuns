@@ -17,34 +17,35 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["ConvexFailDomain"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Borri1997": ProbInputSpecFixDim(
-        name="ConvexFailDomain-Borri1997",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Borri1997": {
+        "function_id": "ConvexFailDomain",
+        "description": (
             "Input model for the convex failure domain problem "
             "from Borri and Speranzini (1997)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="X1",
-                distribution="normal",
-                parameters=[0, 1],
-                description=None,
-            ),
-            UnivDistSpec(
-                name="X2",
-                distribution="normal",
-                parameters=[0, 1],
-                description=None,
-            ),
+        "marginals": [
+            {
+                "name": "X1",
+                "distribution": "normal",
+                "parameters": [0, 1],
+                "description": None,
+            },
+            {
+                "name": "X2",
+                "distribution": "normal",
+                "parameters": [0, 1],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -82,7 +83,7 @@ class ConvexFailDomain(UQTestFunABC):
     _description = (
         "Convex failure domain problem from Borri and Speranzini (1997)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
     _default_input_dimension = 2
 

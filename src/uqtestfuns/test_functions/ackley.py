@@ -22,53 +22,32 @@ References
 
 import numpy as np
 
-from typing import List
-
-from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
 
 __all__ = ["Ackley"]
 
 
-def _ackley_input(input_dimension: int) -> List[UnivDistSpec]:
-    """Create a list of marginals for the M-dimensional Ackley function.
-
-    Parameters
-    ----------
-    input_dimension : int
-        The requested input dimension of the probabilistic input model.
-
-    Returns
-    -------
-    List[UnivDistSpec]
-        A list of marginals for the multivariate input following Ref. [1]
-    """
-    marginals = []
-    for i in range(input_dimension):
-        marginals.append(
-            UnivDistSpec(
-                name=f"X{i + 1}",
-                distribution="uniform",
-                parameters=[-32.768, 32.768],
-                description=None,
-            )
-        )
-
-    return marginals
-
-
-AVAILABLE_INPUT_SPECS = {
-    "Ackley1987": ProbInputSpecVarDim(
-        name="Ackley1987",
-        description=(
-            "Search domain for the Ackley function from Ackley (1987)."
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Ackley1987": {
+        "function_id": "Ackley1987",
+        "description": (
+            "Search domain for the Ackley function from Ackley (1987)"
         ),
-        marginals_generator=_ackley_input,
-        copulas=None,
-    ),
+        "marginals": [
+            {
+                "name": "X",
+                "distribution": "uniform",
+                "parameters": [-32.768, 32.768],
+                "description": None,
+            },
+        ],
+        "copulas": None,
+    }
 }
 
-AVAILABLE_PARAMETERS = {
+
+AVAILABLE_PARAMETERS: FunParamSpecs = {
     "Ackley1987": {
         "function_id": "Ackley",
         "description": (
@@ -136,7 +115,7 @@ class Ackley(UQTestFunABC):
 
     _tags = ["optimization", "metamodeling"]
     _description = "Optimization test function from Ackley (1987)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_input_dimension = None  # Indicate that this is variable dim.
 

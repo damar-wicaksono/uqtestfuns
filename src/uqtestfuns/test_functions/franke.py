@@ -42,42 +42,42 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["Franke1", "Franke2", "Franke3", "Franke4", "Franke5", "Franke6"]
 
-INPUT_MARGINALS_FRANKE1979 = [  # From Ref. [1]
-    UnivDistSpec(
-        name="X1",
-        distribution="uniform",
-        parameters=[0.0, 1.0],
-        description=None,
-    ),
-    UnivDistSpec(
-        name="X2",
-        distribution="uniform",
-        parameters=[0.0, 1.0],
-        description=None,
-    ),
-]
 
-AVAILABLE_INPUT_SPECS = {
-    "Franke1979": ProbInputSpecFixDim(
-        name="Franke1979",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Franke1979": {
+        "function_id": "Franke",
+        "description": (
             "Input specification for the test functions from Franke (1979)."
         ),
-        marginals=INPUT_MARGINALS_FRANKE1979,
-        copulas=None,
-    ),
+        "marginals": [
+            {
+                "name": "X1",
+                "distribution": "uniform",
+                "parameters": [0.0, 1.0],
+                "description": None,
+            },
+            {
+                "name": "X2",
+                "distribution": "uniform",
+                "parameters": [0.0, 1.0],
+                "description": None,
+            },
+        ],
+        "copulas": None,
+    },
 }
+
 
 DEFAULT_INPUT_SELECTION = "Franke1979"
 
 COMMON_METADATA = dict(
     _tags=["metamodeling"],
-    _available_inputs=AVAILABLE_INPUT_SPECS,
+    _available_inputs=AVAILABLE_INPUTS,
     _available_parameters=None,
     _default_input_dimension=2,
     _description="from Franke (1979)",

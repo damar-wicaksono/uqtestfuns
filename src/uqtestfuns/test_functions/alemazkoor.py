@@ -19,54 +19,55 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["Alemazkoor2D", "Alemazkoor20D"]
 
-AVAILABLE_INPUT_SPECS_2D = {
-    "Alemazkoor2018": ProbInputSpecFixDim(
-        name="2D-Alemazkoor2018",
-        description=(
+
+AVAILABLE_INPUTS_2D: ProbInputSpecs = {
+    "Alemazkoor2018": {
+        "function_id": "Alemazkoor2D",
+        "description": (
             "Input specification for the 2D test function "
             "from Alemazkoor & Meidani (2018)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="X1",
-                distribution="uniform",
-                parameters=[-1, 1],
-                description=None,
-            ),
-            UnivDistSpec(
-                name="X2",
-                distribution="uniform",
-                parameters=[-1, 1],
-                description=None,
-            ),
+        "marginals": [
+            {
+                "name": "X1",
+                "distribution": "uniform",
+                "parameters": [-1.0, 1.0],
+                "description": None,
+            },
+            {
+                "name": "X2",
+                "distribution": "uniform",
+                "parameters": [-1.0, 1.0],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
-AVAILABLE_INPUT_SPECS_20D = {
-    "Alemazkoor2018": ProbInputSpecFixDim(
-        name="20D-Alemazkoor2018",
-        description=(
+AVAILABLE_INPUTS_20D: ProbInputSpecs = {
+    "Alemazkoor2018": {
+        "function_id": "Alemazkoor20D",
+        "description": (
             "Input specification for the 20D test function "
             "from Alemazkoor & Meidani (2018)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name=f"X{i + 1}",
-                distribution="uniform",
-                parameters=[-1, 1],
-                description="None",
-            )
+        "marginals": [
+            {
+                "name": f"X{i + 1}",
+                "distribution": "uniform",
+                "parameters": [-1, 1],
+                "description": None,
+            }
             for i in range(20)
         ],
-        copulas=None,
-    )
+        "copulas": None,
+    },
 }
 
 
@@ -101,7 +102,7 @@ class Alemazkoor2D(UQTestFunABC):
         "Low-dimensional high-degree polynomial from Alemazkoor "
         "& Meidani (2018)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS_2D
+    _available_inputs = AVAILABLE_INPUTS_2D
     _available_parameters = None
     _default_input_dimension = 2
 
@@ -136,7 +137,7 @@ class Alemazkoor20D(UQTestFunABC):
         "High-dimensional low-degree polynomial from Alemazkoor "
         "& Meidani (2018)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS_20D
+    _available_inputs = AVAILABLE_INPUTS_20D
     _available_parameters = None
     _default_input_dimension = 20
 

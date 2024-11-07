@@ -16,35 +16,35 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["Webster2D"]
 
 
-AVAILABLE_INPUT_SPECS = {
-    "Webster1996": ProbInputSpecFixDim(
-        name="Webster1996",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Webster1996": {
+        "function_id": "Webster2D",
+        "description": (
             "Input specification for the 2D function "
             "from Webster et al. (1996)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="A",
-                distribution="uniform",
-                parameters=[1.0, 10.0],
-                description=None,
-            ),
-            UnivDistSpec(
-                name="B",
-                distribution="normal",
-                parameters=[2.0, 1.0],
-                description=None,
-            ),
+        "marginals": [
+            {
+                "name": "A",
+                "distribution": "uniform",
+                "parameters": [1.0, 10.0],
+                "description": None,
+            },
+            {
+                "name": "B",
+                "distribution": "normal",
+                "parameters": [2.0, 1.0],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -73,7 +73,7 @@ class Webster2D(UQTestFunABC):
 
     _tags = ["metamodeling"]
     _description = "2D polynomial function from Webster et al. (1996)."
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
     _default_input_dimension = 2
 
