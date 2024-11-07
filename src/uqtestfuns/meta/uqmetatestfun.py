@@ -153,6 +153,7 @@ class UQMetaTestFun:
                         "keyword": "spec",
                         "value": testfun_specs,
                         "type": UQTestFunSpec,
+                        "description": None,
                     },
                 ],
             )
@@ -176,6 +177,7 @@ class UQMetaTestFun:
                         "keyword": "spec",
                         "value": testfun_specs[i],
                         "type": UQTestFunSpec,
+                        "description": None,
                     },
                 ],
             )

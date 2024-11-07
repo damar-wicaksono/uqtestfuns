@@ -26,10 +26,6 @@ let's start from the top, the {ref}`built-in test functions <test-functions:avai
 - An instance of the ``Marginal`` class has a (parametric) probability
   distribution. Although different instances may have different
   probability distributions, they are all instances of the same class.
-- As lightweight containers to specify the specifications of a ``ProbInput``
-  and a ``Marginal``, {ref}`three custom <api_reference_input_spec>` ``NamedTuple``
-  are defined, namely {ref}`api_reference_input_spec_univdist`, 
-  {ref}`api_reference_input_spec_fixdim`, and {ref}`api_reference_input_spec_vardim`.
 
 ```{note}
 To facilitate the creation of a custom UQ test function

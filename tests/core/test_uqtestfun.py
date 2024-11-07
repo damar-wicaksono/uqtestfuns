@@ -17,7 +17,14 @@ def uqtestfun():
         return p * (x + 1)
 
     parameters = FunParams(
-        declared_parameters=[{"keyword": "p", "value": 10.0}]
+        declared_parameters=[
+            {
+                "keyword": "p",
+                "value": 10.0,
+                "type": None,
+                "description": None,
+            }
+        ]
     )
 
     my_args = {

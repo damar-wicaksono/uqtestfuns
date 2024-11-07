@@ -14,36 +14,38 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+
 
 __all__ = ["RSCircularBar"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Verma2016": ProbInputSpecFixDim(
-        name="RSCircularBar-Verma2016",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Verma2016": {
+        "function_id": "RSCircularBar",
+        "description": (
             "Input model for the circular bar RS from Verma et al. (2016)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="Y",
-                distribution="normal",
-                parameters=[250.0, 25.0],
-                description="Material mean yield strength [MPa]",
-            ),
-            UnivDistSpec(
-                name="F",
-                distribution="normal",
-                parameters=[70.0, 7.0],
-                description="Force mean value [kN]",
-            ),
+        "marginals": [
+            {
+                "name": "Y",
+                "distribution": "normal",
+                "parameters": [250.0, 25.0],
+                "description": "Material mean yield strength [MPa]",
+            },
+            {
+                "name": "F",
+                "distribution": "normal",
+                "parameters": [70.0, 7.0],
+                "description": "Force mean value [kN]",
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
-AVAILABLE_PARAMETERS = {
+AVAILABLE_PARAMETERS: FunParamSpecs = {
     "Verma2016": {
         "function_id": "RSCircularBar",
         "description": (
@@ -96,7 +98,7 @@ class RSCircularBar(UQTestFunABC):
 
     _tags = ["reliability"]
     _description = "RS problem as a circular bar from Verma et al. (2016)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_input_dimension = 2
 

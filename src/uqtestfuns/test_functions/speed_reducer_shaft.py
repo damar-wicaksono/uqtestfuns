@@ -23,54 +23,54 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 from .utils import gumbel_max_mu, gumbel_max_beta
 
 __all__ = ["SpeedReducerShaft"]
 
 
-AVAILABLE_INPUT_SPECS = {
-    "Du2004": ProbInputSpecFixDim(
-        name="SpeedReducerShaft-Du2004",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Du2004": {
+        "function_id": "SpeedReducerShaft",
+        "description": (
             "Input model for the speed reducer shaft problem "
             "from Du and Sudjianto (2004)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="D",
-                distribution="normal",
-                parameters=[39, 0.1],
-                description="Shaft diameter [mm]",
-            ),
-            UnivDistSpec(
-                name="L",
-                distribution="normal",
-                parameters=[400, 0.1],
-                description="Shaft span [mm]",
-            ),
-            UnivDistSpec(
-                name="F",
-                distribution="gumbel",
-                parameters=[gumbel_max_mu(1500, 350), gumbel_max_beta(350)],
-                description="External force [N]",
-            ),
-            UnivDistSpec(
-                name="T",
-                distribution="normal",
-                parameters=[250, 35],
-                description="Torque [Nm]",
-            ),
-            UnivDistSpec(
-                name="S",
-                distribution="uniform",
-                parameters=[70, 80],
-                description="Strength [MPa]",
-            ),
+        "marginals": [
+            {
+                "name": "D",
+                "distribution": "normal",
+                "parameters": [39, 0.1],
+                "description": "Shaft diameter [mm]",
+            },
+            {
+                "name": "L",
+                "distribution": "normal",
+                "parameters": [400, 0.1],
+                "description": "Shaft span [mm]",
+            },
+            {
+                "name": "F",
+                "distribution": "gumbel",
+                "parameters": [gumbel_max_mu(1500, 350), gumbel_max_beta(350)],
+                "description": "External force [N]",
+            },
+            {
+                "name": "T",
+                "distribution": "normal",
+                "parameters": [250, 35],
+                "description": "Torque [Nm]",
+            },
+            {
+                "name": "S",
+                "distribution": "uniform",
+                "parameters": [70, 80],
+                "description": "Strength [MPa]",
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -112,7 +112,7 @@ class SpeedReducerShaft(UQTestFunABC):
         "Reliability of a shaft in a speed reducer "
         "from Du and Sudjianto (2004)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
     _default_input_dimension = 5
 

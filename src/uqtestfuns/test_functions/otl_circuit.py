@@ -23,82 +23,83 @@ References
 
 import numpy as np
 
-from copy import copy
+from copy import deepcopy
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["OTLCircuit"]
 
-INPUT_MARGINALS_BENARI2007 = [
-    UnivDistSpec(
-        name="Rb1",
-        distribution="uniform",
-        parameters=[50.0, 150.0],
-        description="Resistance b1 [kOhm]",
-    ),
-    UnivDistSpec(
-        name="Rb2",
-        distribution="uniform",
-        parameters=[25.0, 70.0],
-        description="Resistance b2 [kOhm]",
-    ),
-    UnivDistSpec(
-        name="Rf",
-        distribution="uniform",
-        parameters=[0.5, 3.0],
-        description="Resistance f [kOhm]",
-    ),
-    UnivDistSpec(
-        name="Rc1",
-        distribution="uniform",
-        parameters=[1.2, 2.5],
-        description="Resistance c1 [kOhm]",
-    ),
-    UnivDistSpec(
-        name="Rc2",
-        distribution="uniform",
-        parameters=[0.25, 1.20],
-        description="Resistance c2 [kOhm]",
-    ),
-    UnivDistSpec(
-        name="beta",
-        distribution="uniform",
-        parameters=[50.0, 300.0],
-        description="Current gain [A]",
-    ),
+
+MARGINALS_BENARI2007: MarginalSpecs = [
+    {
+        "name": "Rb1",
+        "distribution": "uniform",
+        "parameters": [50.0, 150.0],
+        "description": "Resistance b1 [kOhm]",
+    },
+    {
+        "name": "Rb2",
+        "distribution": "uniform",
+        "parameters": [25.0, 70.0],
+        "description": "Resistance b2 [kOhm]",
+    },
+    {
+        "name": "Rf",
+        "distribution": "uniform",
+        "parameters": [0.5, 3.0],
+        "description": "Resistance f [kOhm]",
+    },
+    {
+        "name": "Rc1",
+        "distribution": "uniform",
+        "parameters": [1.2, 2.5],
+        "description": "Resistance c1 [kOhm]",
+    },
+    {
+        "name": "Rc2",
+        "distribution": "uniform",
+        "parameters": [0.25, 1.20],
+        "description": "Resistance c2 [kOhm]",
+    },
+    {
+        "name": "beta",
+        "distribution": "uniform",
+        "parameters": [50.0, 300.0],
+        "description": "Current gain [A]",
+    },
 ]
 
-INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
+MARGINALS_MOON2010 = [deepcopy(_) for _ in MARGINALS_BENARI2007]
 for i in range(14):
-    INPUT_MARGINALS_MOON2010.append(
-        UnivDistSpec(
-            name=f"Inert {i+1}",
-            distribution="uniform",
-            parameters=[100.0, 200.0],
-            description="Inert input [-]",
-        )
+    MARGINALS_MOON2010.append(
+        {
+            "name": f"Inert {i+1}",
+            "distribution": "uniform",
+            "parameters": [100.0, 200.0],
+            "description": "Inert input [-]",
+        },
     )
 
-AVAILABLE_INPUT_SPECS = {
-    "BenAri2007": ProbInputSpecFixDim(
-        name="OTLCircuit-BenAri2007",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "BenAri2007": {
+        "function_id": "OTLCircuit",
+        "description": (
             "Probabilistic input model for the OTL Circuit function "
             "from Ben-Ari and Steinberg (2007)."
         ),
-        marginals=INPUT_MARGINALS_BENARI2007,
-        copulas=None,
-    ),
-    "Moon2010": ProbInputSpecFixDim(
-        name="OTLCircuit-Moon2010",
-        description=(
+        "marginals": MARGINALS_BENARI2007,
+        "copulas": None,
+    },
+    "Moon2010": {
+        "function_id": "OTLCircuit",
+        "description": (
             "Probabilistic input model for the OTL Circuit function "
             "from Moon (2010)."
         ),
-        marginals=INPUT_MARGINALS_MOON2010,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_MOON2010,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "BenAri2007"
@@ -156,7 +157,7 @@ class OTLCircuit(UQTestFunABC):
         "Output transformerless (OTL) circuit model "
         "from Ben-Ari and Steinberg (2007)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
     _default_input = DEFAULT_INPUT_SELECTION
 

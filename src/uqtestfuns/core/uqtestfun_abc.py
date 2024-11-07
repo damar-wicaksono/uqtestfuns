@@ -7,11 +7,17 @@ import numpy as np
 
 from copy import deepcopy
 from inspect import signature
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Callable, cast, List, Optional
 
+from .prob_input.marginal import Marginal
 from .prob_input.probabilistic_input import ProbInput
 from .parameters import FunParams
-from .prob_input.input_spec import ProbInputSpecFixDim, ProbInputSpecVarDim
+from .custom_typing import (
+    ProbInputSpecs,
+    ProbInputArgs,
+    FunParamSpecs,
+    FunParamsArgs,
+)
 from .utils import create_canonical_uniform_input
 
 __all__ = ["UQTestFunBareABC", "UQTestFunABC"]
@@ -254,28 +260,30 @@ class UQTestFunABC(UQTestFunBareABC):
         available_inputs = self.available_inputs
         if not prob_input_selection:
             prob_input_selection = self.default_input
+            prob_input_selection = cast(str, prob_input_selection)
         if prob_input_selection not in available_inputs:
             print(prob_input_selection)
             raise KeyError(
                 "Input selection is not in the available specifications."
             )
-        prob_input_spec = available_inputs[prob_input_selection]
 
-        # Determine the dimensionality of the test function
-        if isinstance(prob_input_spec, ProbInputSpecFixDim):
-            if input_dimension:
-                raise TypeError("Fixed test dimension!")
-        if not input_dimension:
-            input_dimension = DEFAULT_DIMENSION
-
-        # Create a ProbInput instance
-        if isinstance(prob_input_spec, ProbInputSpecVarDim):
-            prob_input = ProbInput.from_spec(
-                prob_input_spec,
-                input_dimension=input_dimension,
+        if self.default_input_dimension is None:
+            if not input_dimension:
+                input_dimension = DEFAULT_DIMENSION
+            prob_input_data = _parse_input_vardim(
+                input_dimension,
+                prob_input_selection,
+                available_inputs,
             )
         else:
-            prob_input = ProbInput.from_spec(prob_input_spec)
+            if input_dimension:
+                raise TypeError("Fixed test dimension!")
+            prob_input_data = _parse_input_fixdim(
+                prob_input_selection,
+                available_inputs,
+            )
+
+        prob_input = ProbInput(**prob_input_data)
 
         # --- Select the parameters set, when applicable
         if self.available_parameters is None:
@@ -364,19 +372,17 @@ class UQTestFunABC(UQTestFunBareABC):
         return cls._tags  # type: ignore
 
     @classproperty
-    def available_inputs(
-        cls,
-    ) -> Union[Dict[str, ProbInputSpecFixDim], Dict[str, ProbInputSpecVarDim]]:
+    def available_inputs(cls) -> ProbInputSpecs:
         """All the keys to the available probabilistic input specifications."""
         return cls._available_inputs  # type: ignore
 
     @classproperty
     def default_input(cls) -> Optional[str]:
         """The key to the default probabilistic input specification."""
-        return cls._default_input  # type: ignore
+        return cls._default_input
 
     @classproperty
-    def available_parameters(cls) -> Optional[Dict[str, Any]]:
+    def available_parameters(cls) -> Optional[FunParamSpecs]:
         """All the keys to the available set of parameter values."""
         return cls._available_parameters  # type: ignore
 
@@ -456,10 +462,55 @@ def _verify_sample_domain(xx: np.ndarray, min_value: float, max_value: float):
         )
 
 
+def _parse_input_vardim(
+    input_dimension: int,
+    input_id: str,
+    available_inputs: ProbInputSpecs,
+) -> ProbInputArgs:
+    """Get the selected input."""
+    # Get the input
+    raw_data = available_inputs[input_id].copy()
+
+    # Process the marginals
+    marginals = []
+    for i in range(input_dimension):
+        marginal = raw_data["marginals"][0].copy()
+        marginal["name"] = f"{marginal['name']}{i}"
+        marginals.append(Marginal(**marginal))
+
+    # Recast the type to satisfy type checker
+    input_data = cast(ProbInputArgs, raw_data)
+    input_data["input_id"] = input_id
+    input_data["marginals"] = marginals
+
+    return input_data
+
+
+def _parse_input_fixdim(
+    input_id: str,
+    available_inputs: ProbInputSpecs,
+) -> ProbInputArgs:
+    """Get the selected input."""
+    # Get the input
+    raw_data = available_inputs[input_id].copy()
+
+    # Process the marginals
+    marginals = []
+    for marginal in raw_data["marginals"]:
+        marginals.append(Marginal(**marginal))
+
+    # Recast the type to satisfy type checker
+    input_data = cast(ProbInputArgs, raw_data)
+    input_data["input_id"] = input_id
+    input_data["marginals"] = marginals
+
+    return input_data
+
+
 def _create_parameters(
     function_id: str,
     parameter_id: str,
-    available_parameters: dict,
+    available_parameters: FunParamSpecs,
     input_dimension: Optional[int] = None,
 ) -> FunParams:
     """Create the Parameter set of a UQ test function."""
@@ -478,6 +529,7 @@ def _create_parameters(
         raise ValueError()
 
     # Prepare the dictionary as input
+    param_dict = cast(FunParamsArgs, param_dict)  # Recasting for type checker
     param_dict["parameter_id"] = parameter_id
 
     # Deal with variable dimension parameter

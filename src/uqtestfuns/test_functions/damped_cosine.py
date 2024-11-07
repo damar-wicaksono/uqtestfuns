@@ -13,28 +13,29 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["DampedCosine"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Santner2018": ProbInputSpecFixDim(
-        name="Santner2018",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Santner2018": {
+        "function_id": "DampedCosine",
+        "description": (
             "Input model for the one-dimensional damped cosine "
             "from Santner et al. (2018)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="x",
-                distribution="uniform",
-                parameters=[0.0, 1.0],
-                description=None,
-            )
+        "marginals": [
+            {
+                "name": "x",
+                "distribution": "uniform",
+                "parameters": [0.0, 1.0],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    }
 }
 
 
@@ -64,7 +65,7 @@ class DampedCosine(UQTestFunABC):
 
     _tags = ["metamodeling"]
     _description = "One-dimensional damped cosine from Santner et al. (2018)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
     _default_input_dimension = 1
 

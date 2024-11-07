@@ -58,52 +58,29 @@ References
 
 import numpy as np
 
-from typing import List
-
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["SobolG"]
 
 
-def _create_sobol_input(input_dimension: int) -> List[UnivDistSpec]:
-    """Construct an input instance for a given dimension according to [1].
-
-    Parameters
-    ----------
-    input_dimension : int
-        The number of marginals to be created.
-
-    Returns
-    -------
-    List[UnivDistSpec]
-        A list of M marginals as UnivariateInput instances to construct
-        the MultivariateInput.
-    """
-    marginals = []
-    for i in range(input_dimension):
-        marginals.append(
-            UnivDistSpec(
-                name=f"X{i + 1}",
-                distribution="uniform",
-                parameters=[0.0, 1.0],
-                description=None,
-            )
-        )
-
-    return marginals
-
-
-AVAILABLE_INPUT_SPECS = {
-    "Saltelli1995": ProbInputSpecVarDim(
-        name="Sobol-G-Saltelli1995",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Saltelli1995": {
+        "function_id": "Sobol-G",
+        "description": (
             "Probabilistic input model for the Sobol'-G function "
             "from Saltelli and Sobol' (1995)"
         ),
-        marginals_generator=_create_sobol_input,
-        copulas=None,
-    ),
+        "marginals": [
+            {
+                "name": "X",
+                "distribution": "uniform",
+                "parameters": [0.0, 1.0],
+                "description": None,
+            },
+        ],
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "Saltelli1995"
@@ -238,7 +215,7 @@ def _get_params_kucherenko_2011_3b(input_dimension: int) -> np.ndarray:
     return yy
 
 
-AVAILABLE_PARAMETERS = {
+AVAILABLE_PARAMETERS: FunParamSpecs = {
     "Saltelli1995-1": {
         "function_id": "SobolG",
         "description": (
@@ -414,7 +391,7 @@ class SobolG(UQTestFunABC):
 
     _tags = ["sensitivity", "integration"]
     _description = "Sobol'-G function from Saltelli and Sobol' (1995)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_parameters = DEFAULT_PARAMETERS_SELECTION
     _default_input_dimension = None

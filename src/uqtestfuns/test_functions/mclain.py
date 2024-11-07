@@ -30,41 +30,40 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["McLainS1", "McLainS2", "McLainS3", "McLainS4", "McLainS5"]
 
-INPUT_MARGINALS_MCLAIN1974 = [  # From Ref. [1]
-    UnivDistSpec(
-        name="X1",
-        distribution="uniform",
-        parameters=[1.0, 10.0],
-        description=None,
-    ),
-    UnivDistSpec(
-        name="X2",
-        distribution="uniform",
-        parameters=[1.0, 10.0],
-        description=None,
-    ),
-]
 
-AVAILABLE_INPUT_SPECS = {
-    "McLain1974": ProbInputSpecFixDim(
-        name="McLain-1974",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "McLain1974": {
+        "function_id": "McLain",
+        "description": (
             "Input specification for the McLain's test functions "
             "from McLain (1974)."
         ),
-        marginals=INPUT_MARGINALS_MCLAIN1974,
-        copulas=None,
-    ),
+        "marginals": [  # From Ref. [1]
+            {
+                "name": "X1",
+                "distribution": "uniform",
+                "parameters": [1.0, 10.0],
+                "description": None,
+            },
+            {
+                "name": "X2",
+                "distribution": "uniform",
+                "parameters": [1.0, 10.0],
+                "description": None,
+            },
+        ],
+        "copulas": None,
+    },
 }
 
 COMMON_METADATA = dict(
     _tags=["metamodeling"],
-    _available_inputs=AVAILABLE_INPUT_SPECS,
+    _available_inputs=AVAILABLE_INPUTS,
     _available_parameters=None,
     _default_input_dimension=2,
     _description="from McLain (1974)",

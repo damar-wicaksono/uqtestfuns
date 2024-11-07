@@ -30,46 +30,50 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import (
+    MarginalSpecs,
+    ProbInputSpecs,
+    FunParamSpecs,
+)
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["Ishigami"]
 
 
-INPUT_MARGINALS_ISHIGAMI1991 = [
-    UnivDistSpec(
-        name="X1",
-        distribution="uniform",
-        parameters=[-np.pi, np.pi],
-        description=None,
-    ),
-    UnivDistSpec(
-        name="X2",
-        distribution="uniform",
-        parameters=[-np.pi, np.pi],
-        description=None,
-    ),
-    UnivDistSpec(
-        name="X3",
-        distribution="uniform",
-        parameters=[-np.pi, np.pi],
-        description=None,
-    ),
+MARGINALS_ISHIGAMI1991: MarginalSpecs = [
+    {
+        "name": "X1",
+        "distribution": "uniform",
+        "parameters": [-np.pi, np.pi],
+        "description": None,
+    },
+    {
+        "name": "X2",
+        "distribution": "uniform",
+        "parameters": [-np.pi, np.pi],
+        "description": None,
+    },
+    {
+        "name": "X3",
+        "distribution": "uniform",
+        "parameters": [-np.pi, np.pi],
+        "description": None,
+    },
 ]
 
-AVAILABLE_INPUT_SPECS = {
-    "Ishigami1991": ProbInputSpecFixDim(
-        name="Ishigami1991",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Ishigami1991": {
+        "function_id": "Ishigami",
+        "description": (
             "Probabilistic input model for the Ishigami function "
             "from Ishigami and Homma (1991)."
         ),
-        marginals=INPUT_MARGINALS_ISHIGAMI1991,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_ISHIGAMI1991,
+        "copulas": None,
+    },
 }
 
-AVAILABLE_PARAMETERS = {
+AVAILABLE_PARAMETERS: FunParamSpecs = {
     "Ishigami1991": {
         "function_id": "Ishigami",
         "description": (
@@ -81,11 +85,13 @@ AVAILABLE_PARAMETERS = {
                 "keyword": "a",
                 "value": 7.0,
                 "type": float,
+                "description": None,
             },
             {
                 "keyword": "b",
                 "value": 0.1,
                 "type": float,
+                "description": None,
             },
         ],
     },
@@ -100,11 +106,13 @@ AVAILABLE_PARAMETERS = {
                 "keyword": "a",
                 "value": 7.0,
                 "type": float,
+                "description": None,
             },
             {
                 "keyword": "b",
                 "value": 0.05,
                 "type": float,
+                "description": None,
             },
         ],
     },
@@ -147,7 +155,7 @@ class Ishigami(UQTestFunABC):
 
     _tags = ["sensitivity"]
     _description = "Ishigami function from Ishigami and Homma (1991)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_parameters = DEFAULT_PARAMETERS_SELECTION
     _default_input_dimension = 3

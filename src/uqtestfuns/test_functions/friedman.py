@@ -26,51 +26,51 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["Friedman6D", "Friedman10D"]
 
 
-AVAILABLE_INPUT_SPECS_6D = {
-    "Friedman1983": ProbInputSpecFixDim(
-        name="Friedman1983",
-        description=(
+AVAILABLE_INPUTS_6D: ProbInputSpecs = {
+    "Friedman1983": {
+        "function_id": "Friedman6D",
+        "description": (
             "Input specification for the 6D test function "
             "from Friedman et al. (1983)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name=f"x_{i + 1}",
-                distribution="uniform",
-                parameters=[0, 1],
-                description=None,
-            )
+        "marginals": [
+            {
+                "name": f"x_{i + 1}",
+                "distribution": "uniform",
+                "parameters": [0, 1],
+                "description": None,
+            }
             for i in range(6)
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
-AVAILABLE_INPUT_SPECS_10D = {
-    "Friedman1983": ProbInputSpecFixDim(
-        name="Friedman1991",
-        description=(
+AVAILABLE_INPUTS_10D: ProbInputSpecs = {
+    "Friedman1983": {
+        "function_id": "Friedman10D",
+        "description": (
             "Input specification for the 6D test function "
             "from Friedman (1991)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name=f"x_{i + 1}",
-                distribution="uniform",
-                parameters=[0, 1],
-                description=None,
-            )
+        "marginals": [
+            {
+                "name": f"x_{i + 1}",
+                "distribution": "uniform",
+                "parameters": [0, 1],
+                "description": None,
+            }
             for i in range(10)
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -103,7 +103,7 @@ class Friedman6D(UQTestFunABC):
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Six-dimensional function from Friedman et al. (1983)"
-    _available_inputs = AVAILABLE_INPUT_SPECS_6D
+    _available_inputs = AVAILABLE_INPUTS_6D
     _available_parameters = None
     _default_input_dimension = 6
 
@@ -115,7 +115,7 @@ class Friedman10D(UQTestFunABC):
 
     _tags = ["metamodeling"]
     _description = "Ten-dimensional function from Friedman (1991)"
-    _available_inputs = AVAILABLE_INPUT_SPECS_10D
+    _available_inputs = AVAILABLE_INPUTS_10D
     _available_parameters = None
     _default_input_dimension = 10
 

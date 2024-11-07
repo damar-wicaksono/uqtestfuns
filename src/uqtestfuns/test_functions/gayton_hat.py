@@ -16,35 +16,35 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["GaytonHat"]
 
 
-AVAILABLE_INPUT_SPECS = {
-    "Echard2013": ProbInputSpecFixDim(
-        name="Echard2013",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Echard2013": {
+        "function_id": "GaytonHat",
+        "description": (
             "Input model for the Gayton Hat function "
             "from Echard et al. (2013)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="U1",
-                distribution="normal",
-                parameters=[0, 1],
-                description=None,
-            ),
-            UnivDistSpec(
-                name="U2",
-                distribution="normal",
-                parameters=[0, 1],
-                description=None,
-            ),
+        "marginals": [
+            {
+                "name": "U1",
+                "distribution": "normal",
+                "parameters": [0, 1],
+                "description": None,
+            },
+            {
+                "name": "U2",
+                "distribution": "normal",
+                "parameters": [0, 1],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -75,7 +75,7 @@ class GaytonHat(UQTestFunABC):
     _description = (
         "Two-Dimensional Gayton Hat function from Echard et al. (2013)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
     _default_input_dimension = 2
 

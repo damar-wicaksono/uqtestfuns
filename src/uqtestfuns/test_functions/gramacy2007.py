@@ -20,28 +20,29 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["Gramacy1DSine"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Gramacy2007": ProbInputSpecFixDim(
-        name="Gramacy2007",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Gramacy2007": {
+        "function_id": "Gramacy1DSine",
+        "description": (
             "Input model for the one-dimensional function "
             "from Gramacy (2007)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="x",
-                distribution="uniform",
-                parameters=[0.0, 20.0],
-                description=None,
-            )
+        "marginals": [
+            {
+                "name": "x",
+                "distribution": "uniform",
+                "parameters": [0.0, 20.0],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -80,7 +81,7 @@ class Gramacy1DSine(UQTestFunABC):
 
     _tags = ["metamodeling"]
     _description = "One-dimensional sine function from Gramacy (2007)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
     _default_input_dimension = 1
 

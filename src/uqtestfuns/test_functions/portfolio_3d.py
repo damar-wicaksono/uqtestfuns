@@ -15,47 +15,51 @@ References
 
 import numpy as np
 
+from uqtestfuns.core.custom_typing import (
+    MarginalSpecs,
+    ProbInputSpecs,
+    FunParamSpecs,
+)
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["Portfolio3D"]
 
 
-INPUT_MARGINALS_SALTELLI2004 = [
-    UnivDistSpec(
-        name="Ps",
-        distribution="normal",
-        parameters=[0.0, 4.0],
-        description="Hedged portfolio 's' [\N{euro sign}]",
-    ),
-    UnivDistSpec(
-        name="Pt",
-        distribution="normal",
-        parameters=[0.0, 2.0],
-        description="Hedged portfolio 't' [\N{euro sign}]",
-    ),
-    UnivDistSpec(
-        name="Pj",
-        distribution="normal",
-        parameters=[0.0, 1.0],
-        description="Hedged portfolio 'j' [\N{euro sign}]",
-    ),
+MARGINALS_SALTELLI2004: MarginalSpecs = [
+    {
+        "name": "Ps",
+        "distribution": "normal",
+        "parameters": [0.0, 4.0],
+        "description": "Hedged portfolio 's' [\N{euro sign}]",
+    },
+    {
+        "name": "Pt",
+        "distribution": "normal",
+        "parameters": [0.0, 2.0],
+        "description": "Hedged portfolio 't' [\N{euro sign}]",
+    },
+    {
+        "name": "Pj",
+        "distribution": "normal",
+        "parameters": [0.0, 1.0],
+        "description": "Hedged portfolio 'j' [\N{euro sign}]",
+    },
 ]
 
-AVAILABLE_INPUT_SPECS = {
-    "Saltelli2004": ProbInputSpecFixDim(
-        name="Portfolio3D-Saltelli2004",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Saltelli2004": {
+        "function_id": "Portfolio3D",
+        "description": (
             "Probabilistic input model for the simple portfolio model "
             "from Saltelli et al. (2004)."
         ),
-        marginals=INPUT_MARGINALS_SALTELLI2004,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_SALTELLI2004,
+        "copulas": None,
+    },
 }
 
-AVAILABLE_PARAMETERS = {
+AVAILABLE_PARAMETERS: FunParamSpecs = {
     "Saltelli2004-1": {
         "function_id": "Portfolio3D",
         "description": (
@@ -180,7 +184,7 @@ class Portfolio3D(UQTestFunABC):
 
     _tags = ["sensitivity"]
     _description = "Simple portfolio model from Saltelli et al. (2004)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_parameters = DEFAULT_PARAMETERS_SELECTION
     _default_input_dimension = 3

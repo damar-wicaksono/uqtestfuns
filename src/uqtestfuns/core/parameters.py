@@ -14,6 +14,7 @@ __all__ = ["FunParams"]
 
 import numpy as np
 
+from uqtestfuns.core.custom_typing import DeclaredParameters
 
 FIELD_NAMES = ["Keyword", "Value", "Type", "Description"]
 
@@ -44,7 +45,7 @@ class FunParams:
         function_id: str = "",
         parameter_id: str = "",
         description: str = "",
-        declared_parameters: Optional[List[dict]] = None,
+        declared_parameters: Optional[DeclaredParameters] = None,
     ):
         self._declared_parameters: dict = {}
         self._dict: dict = {}
@@ -166,7 +167,7 @@ class FunParams:
         keyword: str,
         value: Any,
         type: Optional[type] = None,
-        description: str = "",
+        description: Optional[str] = "",
     ) -> None:
         """Add a parameter to the parameter set.
 

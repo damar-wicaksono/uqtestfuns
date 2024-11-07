@@ -34,38 +34,39 @@ References
 
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
 
 __all__ = ["FourBranch"]
 
 
-AVAILABLE_INPUT_SPECS = {
-    "Katsuki1994": ProbInputSpecFixDim(
-        name="FourBranch-Katsuki1994",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Katsuki1994": {
+        "function_id": "FourBranch",
+        "description": (
             "Input model for the four-branch function "
             "from Katsuki and Frangopol (1994)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="X1",
-                distribution="normal",
-                parameters=[0, 1],
-                description=None,
-            ),
-            UnivDistSpec(
-                name="X2",
-                distribution="normal",
-                parameters=[0, 1],
-                description=None,
-            ),
+        "marginals": [
+            {
+                "name": "X1",
+                "distribution": "normal",
+                "parameters": [0, 1],
+                "description": None,
+            },
+            {
+                "name": "X2",
+                "distribution": "normal",
+                "parameters": [0, 1],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
-AVAILABLE_PARAMETERS = {
+
+AVAILABLE_PARAMETERS: FunParamSpecs = {
     "Katsuki1994": {
         "function_id": "FourBranch",
         "description": (
@@ -77,6 +78,7 @@ AVAILABLE_PARAMETERS = {
                 "keyword": "p",
                 "value": 3.5 * np.sqrt(2),
                 "type": float,
+                "description": None,
             },
         ],
     },
@@ -91,6 +93,7 @@ AVAILABLE_PARAMETERS = {
                 "keyword": "p",
                 "value": 6.0 / np.sqrt(2),
                 "type": float,
+                "description": None,
             },
         ],
     },
@@ -141,7 +144,7 @@ class FourBranch(UQTestFunABC):
     _description = (
         "Series system reliability from Katsuki and Frangopol (1994)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
     _default_input_dimension = 2
     _default_parameters = "Schueremans2005"

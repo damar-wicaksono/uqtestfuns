@@ -1,14 +1,7 @@
 import pytest
 import numpy as np
-from typing import List
 
 from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
-from uqtestfuns.core.prob_input.marginal import Marginal
-from uqtestfuns.core.prob_input.input_spec import (
-    UnivDistSpec,
-    ProbInputSpecFixDim,
-    ProbInputSpecVarDim,
-)
 from conftest import create_random_marginals
 
 
@@ -63,8 +56,7 @@ def test_generate_dependent_sample():
     """Test dependent sample generation (not yet supported; raise error)."""
     marginals = create_random_marginals(5)
 
-    my_multivariate_input = ProbInput(marginals)
-    my_multivariate_input.copulas = "a"
+    my_multivariate_input = ProbInput(marginals, "a")
 
     with pytest.raises(ValueError):
         my_multivariate_input.get_sample(1000)
@@ -90,8 +82,7 @@ def test_get_dependent_pdf_values():
     """Test dependent PDF value computation (not yet supported)."""
     marginals = create_random_marginals(5)
 
-    my_multivariate_input = ProbInput(marginals)
-    my_multivariate_input.copulas = "b"
+    my_multivariate_input = ProbInput(marginals, "b")
 
     with pytest.raises(ValueError):
         my_multivariate_input.pdf(np.random.rand(2, 5))
@@ -138,7 +129,7 @@ def test_failed_transform_sample():
 def test_transform_dependent_sample():
     """Test dependent transformation (not yet supported; raise an error)."""
     marginals_1 = create_random_marginals(5)
-    my_multivariate_input_1 = ProbInput(marginals_1)
+    my_multivariate_input_1 = ProbInput(marginals_1, "a")
 
     marginals_2 = create_random_marginals(5)
     my_multivariate_input_2 = ProbInput(marginals_2)
@@ -146,7 +137,6 @@ def test_transform_dependent_sample():
     xx = np.random.rand(2, 5)
 
     with pytest.raises(ValueError):
-        my_multivariate_input_1.copulas = "a"
         my_multivariate_input_1.transform_sample(xx, my_multivariate_input_2)
 
 
@@ -205,78 +195,6 @@ def test_reset_rng(input_dimension):
     assert np.allclose(xx_1, xx_2)
 
 
-@pytest.mark.parametrize("input_dimension", [1, 2, 10, 100])
-def test_create_from_spec(input_dimension):
-    """Test creating an instance from specification NamedTuple"""
-    marginals: List[Marginal] = create_random_marginals(input_dimension)
-
-    # Create a ProbInputSpecFixDim
-    name = "Test Name"
-    description = "Test description"
-    copulas = None
-    prob_spec = ProbInputSpecFixDim(
-        name=name,
-        description=description,
-        marginals=[
-            UnivDistSpec(
-                name=marginal.name,
-                description=marginal.description,
-                distribution=marginal.distribution,
-                parameters=marginal.parameters,  # type: ignore
-            )
-            for marginal in marginals
-        ],
-        copulas=copulas,
-    )
-
-    # Create from spec
-    my_input = ProbInput.from_spec(prob_spec)
-
-    # Assertions
-    assert my_input.name == name
-    assert my_input.description == description
-    assert my_input.copulas == copulas
-
-    # Create a ProbInputSpecVarDim
-    def _test_vardim(input_dimension):
-        marginals_spec = [
-            UnivDistSpec(
-                name=f"x{i+1}",
-                description="None",
-                distribution="uniform",
-                parameters=[0, 1],
-            )
-            for i in range(input_dimension)
-        ]
-
-        return marginals_spec
-
-    name = "Test Name"
-    description = "Test description"
-    copulas = None
-    prob_spec_vardim = ProbInputSpecVarDim(
-        name=name,
-        description=description,
-        marginals_generator=_test_vardim,
-        copulas=copulas,
-    )
-
-    # Create from spec
-    my_input = ProbInput.from_spec(
-        prob_spec_vardim, input_dimension=input_dimension
-    )
-
-    # Assertions
-    assert my_input.name == name
-    assert my_input.description == description
-    assert my_input.copulas == copulas
-    assert my_input.input_dimension == input_dimension
-
-    with pytest.raises(ValueError):
-        ProbInput.from_spec(prob_spec_vardim)
-
-
-#
 # def test_get_cdf_values():
 #     """Test the CDF values from an instance of UnivariateInput."""
 #     name = create_random_alphanumeric(10)
