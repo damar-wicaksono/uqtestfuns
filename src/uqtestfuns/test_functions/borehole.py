@@ -104,7 +104,7 @@ AVAILABLE_INPUTS: ProbInputSpecs = {
         "function_id": "Borehole",
         "description": (
             "Probabilistic input model of the Borehole model "
-            "from Harper and Gupta (1983)."
+            "from Harper and Gupta (1983)"
         ),
         "marginals": MARGINALS_HARPER1983,
         "copulas": None,
@@ -113,7 +113,7 @@ AVAILABLE_INPUTS: ProbInputSpecs = {
         "function_id": "Borehole",
         "description": (
             "Probabilistic input model of the Borehole model "
-            "from Morris et al. (1993)."
+            "from Morris et al. (1993)"
         ),
         "marginals": MARGINALS_MORRIS1993,
         "copulas": None,

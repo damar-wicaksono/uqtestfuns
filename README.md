@@ -74,7 +74,7 @@ Function ID     : Borehole
 Input ID        : Harper1983
 Input Dimension : 8
 Description     : Probabilistic input model of the Borehole model from
-                  Harper and Gupta (1983).
+                  Harper and Gupta (1983)
 Marginals       :
 
  No.    Name    Distribution        Parameters                          Description
