@@ -17,7 +17,7 @@ References
    vol. 19, pp. 327-338, 2007.
    DOI: 10.1080/08982110701580930
 2. H. Moon, "Design and Analysis of Computer Experiments for Screening Input
-   Variables," Ph. D. dissertation, Ohio State University, Ohio, 2010.
+   Variables," Ph.D. dissertation, Ohio State University, Ohio, 2010.
    URL: http://rave.ohiolink.edu/etdc/view?acc_num=osu1275422248
 """
 
