@@ -46,7 +46,7 @@ in the comparison of metamodeling approaches.
 |            {ref}`Piston Simulation <test-functions:piston>`            |     7 / 20      |      `Piston()`      |
 |      {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`       |        2        |    `Webster2D()`     |
 |                 {ref}`Sulfur <test-functions:sulfur>`                  |        9        |      `Sulfur()`      |
-|              {ref}`Welch1992 <test-functions:welch1992>`               |       20        |    `Welch1992()`     |
+|         {ref}`Welch et al. (1992) <test-functions:welch1992>`          |       20        |    `Welch1992()`     |
 |            {ref}`Wing Weight <test-functions:wing-weight>`             |       10        |    `WingWeight()`    |
 
 In a Python terminal, you can list all the available functions relevant

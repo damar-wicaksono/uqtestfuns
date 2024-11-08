@@ -84,10 +84,10 @@ print(my_testfun.parameters)
 ````{note}
 To use another set of parameters, create a default test function
 and pass one of the available keywords
-(as indicated in the table above) to the `parameters_selection` parameter.
+(as indicated in the table above) to the `parameters_id` parameter.
 For example:
 ```python
-my_testfun = uqtf.Ishigami(parameters_selection="Sobol1999")
+my_testfun = uqtf.Ishigami(parameters_id="Sobol1999")
 ```
 ````
 

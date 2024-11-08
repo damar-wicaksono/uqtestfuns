@@ -87,10 +87,10 @@ these input variables, being inert, do not affect the output of the function.
 To create an instance of the piston simulation test function
 with the probabilistic input specified in {cite}`Moon2010`,
 pass the corresponding keyword (`"Moon2010"`)
-to the parameter (`prob_input_selection`):
+to the parameter `input_id`):
 
 ```python
-my_testfun = uqtf.Piston(prob_input_selection="Moon2010")
+my_testfun = uqtf.Piston(input_id="Moon2010")
 ```
 ````
 
