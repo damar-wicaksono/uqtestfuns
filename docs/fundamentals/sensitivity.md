@@ -28,6 +28,7 @@ in the comparison of sensitivity analysis methods.
 |             {ref}`Flood <test-functions:flood>`              |        8        |      `Flood()`       |
 |      {ref}`Friedman (6D) <test-functions:friedman-6d>`       |        6        |    `Friedman6D()`    |
 |          {ref}`Ishigami <test-functions:ishigami>`           |        3        |     `Ishigami()`     |
+|        {ref}`Moon (2010) 3D <test-functions:moon3d>`         |        3        |      `Moon3D()`      |
 |       {ref}`OTL Circuit <test-functions:otl-circuit>`        |     6 / 20      |    `OTLCircuit()`    |
 |       {ref}`Piston Simulation <test-functions:piston>`       |     7 / 20      |      `Piston()`      |
 | {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`  |        3        |   `Portfolio3D()`    |
