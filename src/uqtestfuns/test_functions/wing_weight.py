@@ -23,7 +23,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 from .utils import deg2rad
 
 __all__ = ["WingWeight"]
@@ -135,13 +135,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class WingWeight(UQTestFunABC):
+class WingWeight(UQTestFunFixDimABC):
     """A concrete implementation of the wing weight test function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Wing weight model from Forrester et al. (2008)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 10
 
     evaluate = staticmethod(evaluate)  # type: ignore

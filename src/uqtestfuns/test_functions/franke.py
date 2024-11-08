@@ -43,7 +43,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Franke1", "Franke2", "Franke3", "Franke4", "Franke5", "Franke6"]
 
@@ -79,7 +79,6 @@ COMMON_METADATA = dict(
     _tags=["metamodeling"],
     _available_inputs=AVAILABLE_INPUTS,
     _available_parameters=None,
-    _default_input_dimension=2,
     _description="from Franke (1979)",
 )
 
@@ -117,7 +116,7 @@ def evaluate_franke1(xx: np.ndarray):
     return yy
 
 
-class Franke1(UQTestFunABC):
+class Franke1(UQTestFunFixDimABC):
     """A concrete implementation of the (1st) Franke function.
 
     The function features two Gaussian peaks and a Gaussian dip.
@@ -127,7 +126,6 @@ class Franke1(UQTestFunABC):
     _description = f"(1st) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke1)  # type: ignore
 
@@ -153,7 +151,7 @@ def evaluate_franke2(xx: np.ndarray):
     return yy
 
 
-class Franke2(UQTestFunABC):
+class Franke2(UQTestFunFixDimABC):
     """A concrete implementation of the (2nd) Franke function.
 
     The function features two plateaus joined by a steep hill.
@@ -163,7 +161,6 @@ class Franke2(UQTestFunABC):
     _description = f"(2nd) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke2)  # type: ignore
 
@@ -192,7 +189,7 @@ def evaluate_franke3(xx: np.ndarray):
     return yy
 
 
-class Franke3(UQTestFunABC):
+class Franke3(UQTestFunFixDimABC):
     """A concrete implementation of the (3rd) Franke function.
 
     The function features a saddle shaped surface.
@@ -202,7 +199,6 @@ class Franke3(UQTestFunABC):
     _description = f"(3rd) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke3)  # type: ignore
 
@@ -231,7 +227,7 @@ def evaluate_franke4(xx: np.ndarray):
     return yy
 
 
-class Franke4(UQTestFunABC):
+class Franke4(UQTestFunFixDimABC):
     """A concrete implementation of the (4th) Franke function.
 
     The function features a gentle Gaussian hill.
@@ -241,7 +237,6 @@ class Franke4(UQTestFunABC):
     _description = f"(4th) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke4)  # type: ignore
 
@@ -270,7 +265,7 @@ def evaluate_franke5(xx: np.ndarray):
     return yy
 
 
-class Franke5(UQTestFunABC):
+class Franke5(UQTestFunFixDimABC):
     """A concrete implementation of the (5th) Franke function.
 
     The function features a steep Gaussian hill.
@@ -280,7 +275,6 @@ class Franke5(UQTestFunABC):
     _description = f"(5th) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke5)  # type: ignore
 
@@ -310,7 +304,7 @@ def evaluate_franke6(xx: np.ndarray):
     return yy
 
 
-class Franke6(UQTestFunABC):
+class Franke6(UQTestFunFixDimABC):
     """A concrete implementation of the (6th) Franke function.
 
     The function features a part of a sphere.
@@ -320,6 +314,5 @@ class Franke6(UQTestFunABC):
     _description = f"(6th) Franke function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_input_dimension = COMMON_METADATA["_default_input_dimension"]
 
     evaluate = staticmethod(evaluate_franke6)  # type: ignore

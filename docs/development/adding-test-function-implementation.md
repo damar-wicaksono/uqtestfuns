@@ -110,7 +110,7 @@ Here are the few things we usually use:
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Branin"]
 ```
@@ -118,13 +118,19 @@ __all__ = ["Branin"]
 Here are some explanations:
 
 - NumPy is usually a must, especially for implementing the evaluation function.
-- All built-in test functions are concrete implementations of the abstract base
-  class `UQTestFunABC`.
+- Because Branin test function is a test function with a fixed number of (input)
+  dimensions, the class will be derived from the abstract base class
+  {ref}`UQTestFunFixDimABC <api_reference_uqtestfun_fix_dim_abc>`.
 - To assist specifying the data for probabilistic input model the custom type
   `ProbInputSpecs` can be used; these are supposed to help you specifying
   all the required data via the typechecker.
 - Similarly, the custom type `FunParamSpecs` is used for specifying the
   function parameters.
+
+```{notes}
+In case the function is of variable dimension, use the abstract base class
+{ref}`UQTestFunVarDimABC <api_reference_uqtestfun_var_dim_abc>` instead.
+```
 
 ### Implementing a concrete evaluation function
 
@@ -285,8 +291,8 @@ A concrete implementation of this base class requires the following:
 
 - a static method named `evaluate()`
 - several class-level properties, namely: `_tags`, `_description`, 
-  `_available_inputs`, `_available_parameters`, `_default_input_dimension`,
-  `_default_input`, and `_default_parameters`.
+  `_available_inputs`, `_available_parameters`, `_default_input_id`,
+  and `_default_parameters_id`.
 
 The full definition of the class for the Branin test function is shown below.
 
@@ -298,9 +304,8 @@ class Branin(UQTestFunABC):
     _description = "Branin function from Dixon and Szegö (1978)"  # Short description
     _available_inputs = AVAILABLE_INPUTS          # As defined above 
     _available_parameters = AVAILABLE_PARAMETERS  # As defined above
-    _default_input_dimension = 2                  # input dimension of the function
-    _default_input = "Dixon1978"       # Optional, if only one input is available
-    _default_parameters = "Dixon1978"  # Optional, if only one set of parameters is available
+    _default_input_id = "Dixon1978"       # Optional, if only one input is available
+    _default_parameters_id = "Dixon1978"  # Optional, if only one set of parameters is available
 
     evaluate = staticmethod(evaluate)  # assuming `evaluate()` has been defined
 ```

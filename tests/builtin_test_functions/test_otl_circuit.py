@@ -14,8 +14,8 @@ from uqtestfuns.test_functions import OTLCircuit
 
 def test_inert_inputs():
     """Test whether the inputs from 'Moon' specification are indeed inert."""
-    otl_ben_ari = OTLCircuit(prob_input_selection="BenAri2007")
-    otl_moon = OTLCircuit(prob_input_selection="Moon2010")
+    otl_ben_ari = OTLCircuit(input_id="BenAri2007")
+    otl_moon = OTLCircuit(input_id="Moon2010")
 
     # Assertions: ProbInput is assigned
     assert otl_ben_ari.prob_input is not None

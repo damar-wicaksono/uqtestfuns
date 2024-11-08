@@ -35,7 +35,7 @@ from uqtestfuns.core.custom_typing import (
     ProbInputSpecs,
     FunParamSpecs,
 )
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Ishigami"]
 
@@ -150,14 +150,13 @@ def evaluate(xx: np.ndarray, a: float, b: float) -> np.ndarray:
     return yy
 
 
-class Ishigami(UQTestFunABC):
+class Ishigami(UQTestFunFixDimABC):
     """An implementation of the Ishigami test function."""
 
     _tags = ["sensitivity"]
     _description = "Ishigami function from Ishigami and Homma (1991)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_parameters = DEFAULT_PARAMETERS_SELECTION
-    _default_input_dimension = 3
+    _default_parameters_id = DEFAULT_PARAMETERS_SELECTION
 
     evaluate = staticmethod(evaluate)  # type: ignore

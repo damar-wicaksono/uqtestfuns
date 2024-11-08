@@ -17,7 +17,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Forrester2008"]
 
@@ -63,13 +63,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Forrester2008(UQTestFunABC):
+class Forrester2008(UQTestFunFixDimABC):
     """An implementation of the 1D function of Forrester et al. (2008)."""
 
     _tags = ["optimization", "metamodeling"]
     _description = "One-dimensional function from Forrester et al. (2008)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 1
 
     evaluate = staticmethod(evaluate)  # type: ignore

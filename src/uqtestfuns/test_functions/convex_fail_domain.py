@@ -18,7 +18,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["ConvexFailDomain"]
 
@@ -76,7 +76,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class ConvexFailDomain(UQTestFunABC):
+class ConvexFailDomain(UQTestFunFixDimABC):
     """Concrete implementation of the Convex failure domain reliability."""
 
     _tags = ["reliability"]
@@ -85,6 +85,5 @@ class ConvexFailDomain(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore

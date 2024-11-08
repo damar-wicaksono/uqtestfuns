@@ -62,7 +62,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Sulfur"]
 
@@ -197,13 +197,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return dd_f
 
 
-class Sulfur(UQTestFunABC):
+class Sulfur(UQTestFunFixDimABC):
     """A concrete implementation of the Sulfur model test function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Sulfur model from Charlson et al. (1992)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 9
 
     evaluate = staticmethod(evaluate)  # type: ignore

@@ -27,7 +27,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Friedman6D", "Friedman10D"]
 
@@ -98,25 +98,23 @@ def evaluate_friedman(xx: np.ndarray) -> np.ndarray:
     return yy_1 + yy_2 + yy_3 + yy_4
 
 
-class Friedman6D(UQTestFunABC):
+class Friedman6D(UQTestFunFixDimABC):
     """A concrete implementation of the 6D Friedman et al. (1983) function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Six-dimensional function from Friedman et al. (1983)"
     _available_inputs = AVAILABLE_INPUTS_6D
     _available_parameters = None
-    _default_input_dimension = 6
 
     evaluate = staticmethod(evaluate_friedman)  # type: ignore
 
 
-class Friedman10D(UQTestFunABC):
+class Friedman10D(UQTestFunFixDimABC):
     """A concrete implementation of the 10D Friedman (1991) function."""
 
     _tags = ["metamodeling"]
     _description = "Ten-dimensional function from Friedman (1991)"
     _available_inputs = AVAILABLE_INPUTS_10D
     _available_parameters = None
-    _default_input_dimension = 10
 
     evaluate = staticmethod(evaluate_friedman)  # type: ignore

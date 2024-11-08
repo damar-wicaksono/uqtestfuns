@@ -150,7 +150,7 @@ marginals = [
     uqtf.Marginal(distribution="uniform", parameters=[0, 15], name="x2"),
 ]
 # Create a probabilistic input
-my_input = uqtf.ProbInput(marginals=marginals, name="Branin-Input")
+my_input = uqtf.ProbInput(marginals=marginals, function_id="Branin", input_id="custom")
 ```
 
 To verify if the instance has been created successfully,

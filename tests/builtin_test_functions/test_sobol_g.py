@@ -18,7 +18,7 @@ available_parameters = list(SobolG.available_parameters.keys())
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
     with pytest.raises(KeyError):
-        SobolG(parameters_selection="marelli1")
+        SobolG(parameters_id="marelli1")
 
 
 # ATTENTION: some parameters choice (e.g., "sobol-1")
@@ -31,7 +31,7 @@ def test_compute_mean(input_dimension, params_selection):
     # Create an instance of Sobol-G test function
     my_fun = SobolG(
         input_dimension=input_dimension,
-        parameters_selection=params_selection,
+        parameters_id=params_selection,
     )
 
     # Assert that ProbInput is correctly attached
@@ -59,7 +59,7 @@ def test_compute_variance(input_dimension, params_selection):
     # Create an instance of the Sobol-G test function
     my_fun = SobolG(
         input_dimension=input_dimension,
-        parameters_selection=params_selection,
+        parameters_id=params_selection,
     )
 
     # Assert that ProbInput is correctly attached

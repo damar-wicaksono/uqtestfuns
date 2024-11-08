@@ -356,15 +356,14 @@ def _parse_modules_data(package):
         instance: UQTestFunABC = class_path()
 
         # Get the dimension
-        default_input_dimension = class_path.default_input_dimension
-        if default_input_dimension is None:
-            default_input_dimension = "M"
+        if instance.variable_dimension:
+            input_dimension = "M"
         else:
-            default_input_dimension = instance.input_dimension
+            input_dimension = instance.input_dimension
 
         data[available_class] = {
             "constructor": available_class + "()",
-            "input_dim": default_input_dimension,
+            "input_dim": input_dimension,
             "output_dim": instance.output_dimension,
             "parameterized": True if instance.parameters else False,
             "tags": ", ".join(instance.tags),

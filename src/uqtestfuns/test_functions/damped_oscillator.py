@@ -46,7 +46,7 @@ from uqtestfuns.core.custom_typing import (
     FunParamSpecs,
     MarginalSpecs,
 )
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 from .utils import lognorm2norm_mean, lognorm2norm_std
 
 __all__ = ["DampedOscillator", "DampedOscillatorReliability"]
@@ -269,7 +269,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return np.sqrt(xx_s)
 
 
-class DampedOscillator(UQTestFunABC):
+class DampedOscillator(UQTestFunFixDimABC):
     """A concrete implementation of the Damped oscillator test function."""
 
     _tags = ["metamodeling", "sensitivity"]
@@ -278,7 +278,6 @@ class DampedOscillator(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUTS_BASE
     _available_parameters = None
-    _default_input_dimension = 8
 
     evaluate = staticmethod(evaluate)  # type: ignore
 
@@ -310,7 +309,7 @@ def evaluate_reliability(xx: np.ndarray, pf: float):
     return yy
 
 
-class DampedOscillatorReliability(UQTestFunABC):
+class DampedOscillatorReliability(UQTestFunFixDimABC):
     """A concrete implementation of the Damped oscillator reliability func."""
 
     _tags = ["reliability"]
@@ -319,8 +318,7 @@ class DampedOscillatorReliability(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUTS_RELIABILITY
     _available_parameters = AVAILABLE_PARAMETERS_RELIABILITY
-    _default_input_dimension = 8
-    _default_input = "DerKiureghian1990a"
-    _default_parameters = "DerKiureghian1990"
+    _default_input_id = "DerKiureghian1990a"
+    _default_parameters_id = "DerKiureghian1990"
 
     evaluate = staticmethod(evaluate_reliability)  # type: ignore

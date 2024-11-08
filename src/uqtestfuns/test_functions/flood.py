@@ -34,7 +34,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Flood"]
 
@@ -139,13 +139,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return ss
 
 
-class Flood(UQTestFunABC):
+class Flood(UQTestFunFixDimABC):
     """Concrete implementation of the Flood model test function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Flood model from Iooss and Lemaître (2015)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 8
 
     evaluate = staticmethod(evaluate)  # type: ignore

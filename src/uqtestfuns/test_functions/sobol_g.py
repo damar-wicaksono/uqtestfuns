@@ -59,14 +59,14 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
 
 __all__ = ["SobolG"]
 
 
 AVAILABLE_INPUTS: ProbInputSpecs = {
     "Saltelli1995": {
-        "function_id": "Sobol-G",
+        "function_id": "SobolG",
         "description": (
             "Probabilistic input model for the Sobol'-G function "
             "from Saltelli and Sobol' (1995)"
@@ -386,14 +386,13 @@ def evaluate(xx: np.ndarray, aa: np.ndarray):
     return yy
 
 
-class SobolG(UQTestFunABC):
+class SobolG(UQTestFunVarDimABC):
     """An implementation of the M-dimensional Sobol'-G test function."""
 
     _tags = ["sensitivity", "integration"]
     _description = "Sobol'-G function from Saltelli and Sobol' (1995)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_parameters = DEFAULT_PARAMETERS_SELECTION
-    _default_input_dimension = None
+    _default_parameters_id = DEFAULT_PARAMETERS_SELECTION
 
     evaluate = staticmethod(evaluate)  # type: ignore

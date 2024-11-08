@@ -18,7 +18,7 @@ available_parameters = list(Ishigami.available_parameters.keys())
 
 @pytest.fixture(params=available_parameters)
 def ishigami_fun(request):
-    ishigami = Ishigami(parameters_selection=request.param)
+    ishigami = Ishigami(parameters_id=request.param)
 
     return ishigami
 
@@ -61,8 +61,8 @@ def test_different_parameters(param_selection):
     """Test selecting different built-in parameters."""
 
     # Create an instance of Ishigami function with a specified param. selection
-    my_testfun_1 = Ishigami(parameters_selection=param_selection)
-    my_testfun_2 = Ishigami(parameters_selection=param_selection)
+    my_testfun_1 = Ishigami(parameters_id=param_selection)
+    my_testfun_2 = Ishigami(parameters_id=param_selection)
 
     # Assertion
     assert my_testfun_1.parameters == my_testfun_2.parameters
@@ -71,4 +71,4 @@ def test_different_parameters(param_selection):
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
     with pytest.raises(KeyError):
-        Ishigami(parameters_selection="marelli1")
+        Ishigami(parameters_id="marelli1")
