@@ -250,6 +250,9 @@ class UQTestFunABC(UQTestFunBareABC, ABC):
         a fixed dimension.
     """
 
+    _default_input_id: Optional[str] = None
+    _default_parameters_id: Optional[str] = None
+
     @classproperty
     def tags(cls) -> List[str]:
         """Tags to classify different UQ test functions."""
@@ -394,9 +397,6 @@ class UQTestFunFixDimABC(UQTestFunABC, ABC):
         a fixed dimension.
     """
 
-    _default_input_id: Optional[str] = None
-    _default_parameters_id: Optional[str] = None
-
     def __init__(
         self,
         *,
@@ -523,9 +523,6 @@ class UQTestFunVarDimABC(UQTestFunABC, ABC):
         If input dimension is specified for a UQ test function with
         a fixed dimension.
     """
-
-    _default_input_id: Optional[str] = None
-    _default_parameters_id: Optional[str] = None
 
     def __init__(
         self,

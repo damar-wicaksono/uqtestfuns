@@ -359,7 +359,7 @@ def _parse_modules_data(package):
         if instance.variable_dimension:
             input_dimension = "M"
         else:
-            input_dimension = instance.input_dimension
+            input_dimension = str(instance.input_dimension)
 
         data[available_class] = {
             "constructor": available_class + "()",
