@@ -3,11 +3,13 @@ This module provides abstract base classes for defining a test function class.
 """
 
 import abc
+from abc import ABC
+
 import numpy as np
 
 from copy import deepcopy
 from inspect import signature
-from typing import Callable, cast, List, Optional
+from typing import Callable, cast, List, Optional, Type
 
 from .prob_input.marginal import Marginal
 from .prob_input.probabilistic_input import ProbInput
@@ -20,14 +22,18 @@ from .custom_typing import (
 )
 from .utils import create_canonical_uniform_input
 
-__all__ = ["UQTestFunBareABC", "UQTestFunABC"]
+__all__ = [
+    "UQTestFunBareABC",
+    "UQTestFunABC",
+    "UQTestFunFixDimABC",
+    "UQTestFunVarDimABC",
+]
 
 CLASS_HIDDEN_ATTRIBUTES = [
     "_tags",
     "_description",
     "_available_inputs",
     "_available_parameters",
-    "_default_input_dimension",
 ]
 
 DEFAULT_DIMENSION = 2
@@ -205,7 +211,7 @@ class UQTestFunBareABC(abc.ABC):
         return self.__class__.evaluate(xx, **self.parameters.as_dict())
 
 
-class UQTestFunABC(UQTestFunBareABC):
+class UQTestFunABC(UQTestFunBareABC, ABC):
     """An abstract class for (published) UQ test functions.
 
     Parameters
@@ -217,11 +223,11 @@ class UQTestFunABC(UQTestFunBareABC):
         In the case of functions with variable dimension, the default dimension
         is set to 2.
         This is a keyword only parameter.
-    prob_input_selection : str, optional
+    input_id : str, optional
         The selection of probabilistic input model; this is used when there are
         multiple input specifications in the literature.
         This is a keyword only parameter.
-    parameters_selection : str, optional
+    parameters_id : str, optional
         The selection of parameters set; this is used when there are multiple
         sets of parameters available in the literature.
         This is a keyword only parameter.
@@ -244,127 +250,8 @@ class UQTestFunABC(UQTestFunBareABC):
         a fixed dimension.
     """
 
-    _default_input: Optional[str] = None
-    _default_parameters: Optional[str] = None
-
-    def __init__(
-        self,
-        *,
-        input_dimension: Optional[int] = None,
-        prob_input_selection: Optional[str] = None,
-        parameters_selection: Optional[str] = None,
-        function_id: Optional[str] = None,
-    ):
-        # --- Create a probabilistic input model
-        # Select the probabilistic input model
-        available_inputs = self.available_inputs
-        if not prob_input_selection:
-            prob_input_selection = self.default_input
-            prob_input_selection = cast(str, prob_input_selection)
-        if prob_input_selection not in available_inputs:
-            print(prob_input_selection)
-            raise KeyError(
-                "Input selection is not in the available specifications."
-            )
-
-        if self.default_input_dimension is None:
-            if not input_dimension:
-                input_dimension = DEFAULT_DIMENSION
-            prob_input_data = _parse_input_vardim(
-                input_dimension,
-                prob_input_selection,
-                available_inputs,
-            )
-        else:
-            if input_dimension:
-                raise TypeError("Fixed test dimension!")
-            prob_input_data = _parse_input_fixdim(
-                prob_input_selection,
-                available_inputs,
-            )
-
-        prob_input = ProbInput(**prob_input_data)
-
-        # --- Select the parameters set, when applicable
-        if self.available_parameters is None:
-            parameters = FunParams()
-        else:
-            if parameters_selection is None:
-                parameter_id = self.default_parameters
-            else:
-                parameter_id = parameters_selection
-            parameters = _create_parameters(
-                self.__class__.__name__,
-                parameter_id,
-                self.available_parameters,
-                input_dimension,
-            )
-
-        # --- Process the default ID
-        if function_id is None:
-            function_id = self.__class__.__name__
-
-        # --- Initialize the parent class
-        super().__init__(
-            prob_input=prob_input,
-            parameters=parameters,
-            function_id=function_id,
-        )
-
-    @classmethod
-    def __init_subclass__(cls):
-        """Verify if concrete class has all the required hidden attributes.
-
-        Raises
-        ------
-        NotImplementedError
-            If required attributes are not implemented in the concrete class.
-        ValueError
-            If default input and parameters selections are not specified
-            when there are multiple of them.
-        KeyError
-            If the selections for the default input and parameters set are
-            not available.
-        """
-        for class_hidden_attribute in CLASS_HIDDEN_ATTRIBUTES:
-            # Some class attributes must be specified
-            if not hasattr(cls, class_hidden_attribute):
-                raise NotImplementedError(
-                    f"Class {cls} lacks required {class_hidden_attribute!r} "
-                    f"class attribute."
-                )
-
-        # Parse default input selection
-        if cls.default_input:
-            if cls.default_input not in cls.available_inputs:
-                raise KeyError("Input selection is not available!")
-        else:
-            if len(cls.available_inputs) > 1:
-                raise ValueError(
-                    "There are multiple available input specifications, "
-                    "the default input selection must be specified!"
-                )
-            else:
-                # If only one is available, use it without being specified
-                cls._default_input = list(cls.available_inputs.keys())[0]
-
-        # Parse default parameters set selection
-        if cls.available_parameters:
-            if cls.default_parameters:
-                if cls.default_parameters not in cls.available_parameters:
-                    raise KeyError("Parameters selection is not available!")
-
-            else:
-                if len(cls.available_parameters) > 1:
-                    raise ValueError(
-                        "There are multiple available parameters sets, "
-                        "the default input selection must be specified!"
-                    )
-                else:
-                    # If only one is available, use it without being specified
-                    cls._default_parameters = list(
-                        cls.available_parameters.keys()
-                    )[0]
+    _default_input_id: Optional[str] = None
+    _default_parameters_id: Optional[str] = None
 
     @classproperty
     def tags(cls) -> List[str]:
@@ -377,9 +264,9 @@ class UQTestFunABC(UQTestFunBareABC):
         return cls._available_inputs  # type: ignore
 
     @classproperty
-    def default_input(cls) -> Optional[str]:
+    def default_input_id(cls) -> Optional[str]:
         """The key to the default probabilistic input specification."""
-        return cls._default_input
+        return cls._default_input_id  # type: ignore
 
     @classproperty
     def available_parameters(cls) -> Optional[FunParamSpecs]:
@@ -387,30 +274,420 @@ class UQTestFunABC(UQTestFunBareABC):
         return cls._available_parameters  # type: ignore
 
     @classproperty
-    def default_parameters(cls) -> Optional[str]:
+    def default_parameters_id(cls) -> Optional[str]:
         """The key to the default set of parameters."""
-        return cls._default_parameters  # type: ignore
-
-    @classproperty
-    def default_input_dimension(cls) -> Optional[int]:
-        """To store the default dimension of a test function."""
-        return cls._default_input_dimension  # type: ignore
+        return cls._default_parameters_id  # type: ignore
 
     @classproperty
     def description(cls) -> Optional[str]:
         """Short description of the UQ test function."""
         return cls._description  # type: ignore
 
+    @property
+    @abc.abstractmethod
+    def variable_dimension(self):
+        pass
+
     def __str__(self):
+        if self.variable_dimension:
+            input_dimension = f"{self.input_dimension} (variable)"
+        else:
+            input_dimension = f"{self.input_dimension} (fixed)"
         out = (
             f"Function ID      : {self.function_id}\n"
-            f"Input Dimension  : {self.input_dimension}\n"
+            f"Input Dimension  : {input_dimension}\n"
             f"Output Dimension : {self.output_dimension}\n"
             f"Parameterized    : {bool(self.parameters)}\n"
-            f"Description      : {self.description}"
+            f"Description      : {self.description}\n"
+            f"Applications     : {self.tags}"
         )
 
         return out
+
+    def _verify_input_id(self, input_id: Optional[str]) -> str:
+        """Verify the 'input_id' argument.
+
+        Parameters
+        ----------
+        input_id : Optional[str]
+            The ID of the probabilistic input specification.
+
+        Returns
+        -------
+        str
+            The verified ID of the probabilistic input specification.
+        """
+        # --- Verify the input
+        if input_id is None:
+            input_id = self.default_input_id
+            input_id = cast(str, input_id)
+
+        available_inputs = self.available_inputs
+        if input_id not in available_inputs:
+            raise KeyError(
+                f"Input ID {input_id} is not in the available "
+                f"specifications {list(available_inputs.keys())}"
+            )
+
+        return input_id
+
+    def _verify_parameters_id(self, parameters_id: Optional[str]) -> str:
+        """Verify the 'parameters_id' argument.
+
+        Parameters
+        ----------
+        parameters_id : Optional[str]
+            The ID of the function parameters specification.
+
+        Returns
+        -------
+        str
+            The verified ID of the function parameters specification.
+        """
+        available_parameters = self.available_parameters
+
+        if self.available_parameters is None and parameters_id is not None:
+            raise ValueError("No parameters are available")
+
+        if self.available_parameters is None:
+            return ""
+
+        if parameters_id is None:
+            parameters_id = self.default_parameters_id
+            parameters_id = cast(str, parameters_id)
+
+        if parameters_id not in available_parameters:
+            raise KeyError(
+                f"Input ID {parameters_id} is not in the available "
+                f"specifications {list(available_parameters.keys())}"
+            )
+
+        return parameters_id
+
+
+class UQTestFunFixDimABC(UQTestFunABC, ABC):
+    """An abstract class for (published) fixed-dimension UQ test functions.
+
+    Parameters
+    ----------
+    input_id : str, optional
+        The selection of probabilistic input model; this is used when there are
+        multiple input specifications in the literature.
+        This is a keyword only parameter.
+    parameters_id : str, optional
+        The selection of parameters set; this is used when there are multiple
+        sets of parameters available in the literature.
+        This is a keyword only parameter.
+    function_id : str, optional
+        The ID of the UQ test function.
+        If not given, `None` is used as the function ID.
+        This is a keyword only parameter.
+
+    Notes
+    -----
+    - A published UQ test function includes a couple of additional metadata,
+      namely tags and description.
+
+    Raises
+    ------
+    KeyError
+        If selection is not in the list of available inputs and parameters.
+    TypeError
+        If input dimension is specified for a UQ test function with
+        a fixed dimension.
+    """
+
+    def __init__(
+        self,
+        *,
+        input_id: Optional[str] = None,
+        parameters_id: Optional[str] = None,
+        function_id: Optional[str] = None,
+    ):
+        # --- Create a probabilistic input model
+        input_id = self._verify_input_id(input_id)
+        prob_input = self._create_prob_input(input_id)
+
+        # --- Create a set of function parameters
+        parameters_id = self._verify_parameters_id(parameters_id)
+        fun_params = self._create_fun_params(parameters_id)
+
+        # --- Process the default ID
+        if function_id is None:
+            function_id = self.__class__.__name__
+
+        # --- Initialize the parent class
+        super().__init__(
+            prob_input=prob_input,
+            parameters=fun_params,
+            function_id=function_id,
+        )
+
+    def __init_subclass__(cls, **kwargs):
+        """Verify if concrete class has all the required hidden attributes."""
+        _init_subclass(cls)
+
+    @property
+    def variable_dimension(self) -> bool:
+        """Return ``False`` due to fixed dimension function."""
+        return False
+
+    def _create_prob_input(self, input_id: str) -> ProbInput:
+        """Create an instance of probabilistic input.
+
+        Parameters
+        ----------
+        input_id : str
+            The ID of the available probabilistic input models.
+
+        Returns
+        -------
+        ProbInput
+            The probabilistic input model based on the selected ID.
+        """
+        # Get the input (copy to avoid mutation)
+        raw_data = deepcopy(self.available_inputs[input_id])
+
+        # Process the marginals
+        marginals = []
+        for marginal in raw_data["marginals"]:
+            marginals.append(Marginal(**marginal))
+
+        # Recast the type to satisfy type checker
+        input_data = cast(ProbInputArgs, raw_data)
+        input_data["input_id"] = input_id
+        input_data["marginals"] = marginals
+
+        return ProbInput(**input_data)
+
+    def _create_fun_params(self, parameters_id: Optional[str]) -> FunParams:
+        """Create an instance of function parameters.
+
+        Parameters
+        ----------
+        parameters_id : str
+            The ID of the available function parameters.
+
+        Returns
+        -------
+        FunParams
+            The set of function parameters based on the selected ID.
+        """
+        if self.available_parameters is None:
+            return FunParams()
+
+        # Must be deep-copied due to modification
+        param_data = deepcopy(self.available_parameters[parameters_id])
+
+        # Prepare the dictionary as input
+        param_data = cast(FunParamsArgs, param_data)  # for type checker
+        param_data["parameter_id"] = parameters_id
+
+        return FunParams(**param_data)
+
+
+class UQTestFunVarDimABC(UQTestFunABC, ABC):
+    """An abstract class for (published) variable-dimension UQ test functions.
+
+    Parameters
+    ----------
+    input_dimension : int, optional
+        The input dimension of the UQ test function.
+        This is used only when the function supports variable dimension;
+        otherwise, if specified, an exception is raised.
+        In the case of functions with variable dimension, the default dimension
+        is set to 2.
+    input_id : str, optional
+        The selection of probabilistic input model; this is used when there are
+        multiple input specifications in the literature.
+        This is a keyword only parameter.
+    parameters_id : str, optional
+        The selection of parameters set; this is used when there are multiple
+        sets of parameters available in the literature.
+        This is a keyword only parameter.
+    function_id : str, optional
+        The ID of the UQ test function.
+        If not given, `None` is used as the function ID.
+        This is a keyword only parameter.
+
+    Notes
+    -----
+    - A published UQ test function includes a couple of additional metadata,
+      namely tags and description.
+
+    Raises
+    ------
+    KeyError
+        If selection is not in the list of available inputs and parameters.
+    TypeError
+        If input dimension is specified for a UQ test function with
+        a fixed dimension.
+    """
+
+    def __init__(
+        self,
+        input_dimension: int = DEFAULT_DIMENSION,
+        *,
+        input_id: Optional[str] = None,
+        parameters_id: Optional[str] = None,
+        function_id: Optional[str] = None,
+    ):
+        # --- Create a probabilistic input model
+        input_id = self._verify_input_id(input_id)
+        prob_input = self._create_prob_input(input_id, input_dimension)
+
+        # --- Select the parameters set, when applicable
+        parameters_id = self._verify_parameters_id(parameters_id)
+        fun_params = self._create_fun_params(parameters_id, input_dimension)
+
+        # --- Process the default ID
+        if function_id is None:
+            function_id = self.__class__.__name__
+
+        # --- Initialize the parent class
+        super().__init__(
+            prob_input=prob_input,
+            parameters=fun_params,
+            function_id=function_id,
+        )
+
+    def __init_subclass__(cls, **kwargs):
+        """Verify if concrete class has all the required hidden attributes."""
+        _init_subclass(cls)
+
+    @property
+    def variable_dimension(self) -> bool:
+        return True
+
+    def _create_prob_input(self, input_id: str, input_dim: int) -> ProbInput:
+        """Create an instance of probabilistic input model.
+
+        Parameters
+        ----------
+        input_id : str
+            The ID of the available probabilistic input models.
+        input_dim : int
+            The input dimension of the UQ test function.
+
+        Returns
+        -------
+        ProbInput
+            The probabilistic input model based on the selected ID.
+        """
+
+        # Get the input
+        raw_data = deepcopy(self.available_inputs[input_id])
+
+        # Process the marginals
+        marginals = []
+        for i in range(input_dim):
+            marginal = raw_data["marginals"][0].copy()
+            marginal["name"] = f"{marginal['name']}{i}"
+            marginals.append(Marginal(**marginal))
+
+        # Recast the type to satisfy type checker
+        input_data = cast(ProbInputArgs, raw_data)
+        input_data["input_id"] = input_id
+        input_data["marginals"] = marginals
+
+        return ProbInput(**input_data)
+
+    def _create_fun_params(
+        self,
+        parameters_id: Optional[str],
+        input_dim: int,
+    ) -> FunParams:
+        """Create an instance of function parameters.
+
+        Parameters
+        ----------
+        parameters_id : str
+            The ID of the available function parameters.
+        input_dim : int
+            The input dimension of the UQ test function.
+
+        Returns
+        -------
+        FunParams
+            The set of function parameters based on the selected ID.
+        """
+
+        if self.available_parameters is None:
+            return FunParams()
+
+        # Must be deep-copied due to modification
+        param_data = deepcopy(self.available_parameters[parameters_id])
+
+        # Prepare the dictionary as input
+        param_data = cast(FunParamsArgs, param_data)  # for type checker
+        param_data["parameter_id"] = parameters_id
+
+        # Deal with variable dimension parameter
+        declared_parameters = param_data["declared_parameters"]
+        for declared_parameter in declared_parameters:
+            value = declared_parameter["value"]
+            if isinstance(value, Callable):  # type: ignore
+                func_signature = signature(value).parameters
+                if "input_dimension" in func_signature:
+                    parameter_value = value(input_dimension=input_dim)
+                    declared_parameter["value"] = parameter_value
+
+        return FunParams(**param_data)
+
+
+def _init_subclass(cls: Type[UQTestFunABC]):
+    """Verify if concrete class has all the required hidden attributes.
+
+    Raises
+    ------
+    NotImplementedError
+        If required attributes are not implemented in the concrete class.
+    ValueError
+        If default input and parameters selections are not specified
+        when there are multiple of them.
+    KeyError
+        If the selections for the default input and parameters set are
+        not available.
+    """
+    for class_hidden_attribute in CLASS_HIDDEN_ATTRIBUTES:
+        # Some class attributes must be specified
+        if not hasattr(cls, class_hidden_attribute):
+            raise NotImplementedError(
+                f"Class {cls} lacks required {class_hidden_attribute!r} "
+                f"class attribute."
+            )
+
+    # Parse default input selection
+    if cls.default_input_id:
+        if cls.default_input_id not in cls.available_inputs:
+            raise KeyError("Input selection is not available!")
+    else:
+        if len(cls.available_inputs) > 1:
+            raise ValueError(
+                "There are multiple available input specifications, "
+                "the default input selection must be specified!"
+            )
+        else:
+            # If only one is available, use it without being specified
+            cls._default_input_id = list(cls.available_inputs.keys())[0]
+
+    # Parse default parameters set selection
+    if cls.available_parameters:
+        if cls.default_parameters_id:
+            if cls.default_parameters_id not in cls.available_parameters:
+                raise KeyError("Parameters selection is not available!")
+
+        else:
+            if len(cls.available_parameters) > 1:
+                raise ValueError(
+                    "There are multiple available parameters sets, "
+                    "the default input selection must be specified!"
+                )
+            else:
+                # If only one is available, use it without being specified
+                cls._default_parameters_id = list(
+                    cls.available_parameters.keys()
+                )[0]
 
 
 def _verify_sample_shape(xx: np.ndarray, num_cols: int):
@@ -460,86 +737,3 @@ def _verify_sample_domain(xx: np.ndarray, min_value: float, max_value: float):
             f"One or more values are outside the domain "
             f"[{min_value}, {max_value}]!"
         )
-
-
-def _parse_input_vardim(
-    input_dimension: int,
-    input_id: str,
-    available_inputs: ProbInputSpecs,
-) -> ProbInputArgs:
-    """Get the selected input."""
-    # Get the input
-    raw_data = available_inputs[input_id].copy()
-
-    # Process the marginals
-    marginals = []
-    for i in range(input_dimension):
-        marginal = raw_data["marginals"][0].copy()
-        marginal["name"] = f"{marginal['name']}{i}"
-        marginals.append(Marginal(**marginal))
-
-    # Recast the type to satisfy type checker
-    input_data = cast(ProbInputArgs, raw_data)
-    input_data["input_id"] = input_id
-    input_data["marginals"] = marginals
-
-    return input_data
-
-
-def _parse_input_fixdim(
-    input_id: str,
-    available_inputs: ProbInputSpecs,
-) -> ProbInputArgs:
-    """Get the selected input."""
-    # Get the input
-    raw_data = available_inputs[input_id].copy()
-
-    # Process the marginals
-    marginals = []
-    for marginal in raw_data["marginals"]:
-        marginals.append(Marginal(**marginal))
-
-    # Recast the type to satisfy type checker
-    input_data = cast(ProbInputArgs, raw_data)
-    input_data["input_id"] = input_id
-    input_data["marginals"] = marginals
-
-    return input_data
-
-
-def _create_parameters(
-    function_id: str,
-    parameter_id: str,
-    available_parameters: FunParamSpecs,
-    input_dimension: Optional[int] = None,
-) -> FunParams:
-    """Create the Parameter set of a UQ test function."""
-
-    # Verify if the selection is valid
-    if parameter_id not in available_parameters:
-        raise KeyError(
-            f"Parameter set {parameter_id} is not in the available sets."
-        )
-
-    # Must be deepcopied due to modification
-    param_dict = deepcopy(available_parameters[parameter_id])
-
-    # Verify if the function_id agrees
-    if function_id != param_dict["function_id"]:
-        raise ValueError()
-
-    # Prepare the dictionary as input
-    param_dict = cast(FunParamsArgs, param_dict)  # Recasting for type checker
-    param_dict["parameter_id"] = parameter_id
-
-    # Deal with variable dimension parameter
-    declared_parameters = param_dict["declared_parameters"]
-    for declared_parameter in declared_parameters:
-        value = declared_parameter["value"]
-        if isinstance(value, Callable):  # type: ignore
-            func_signature = signature(value).parameters
-            if "input_dimension" in func_signature:
-                parameter_value = value(input_dimension=input_dimension)
-                declared_parameter["value"] = parameter_value
-
-    return FunParams(**param_dict)

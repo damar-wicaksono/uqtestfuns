@@ -18,7 +18,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Oakley1D"]
 
@@ -64,13 +64,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Oakley1D(UQTestFunABC):
+class Oakley1D(UQTestFunFixDimABC):
     """An implementation of the 1D function from Oakley & O'Hagan (2002)."""
 
     _tags = ["metamodeling"]
     _description = "One-dimensional function from Oakley and O'Hagan (2002)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 1
 
     evaluate = staticmethod(evaluate)  # type: ignore

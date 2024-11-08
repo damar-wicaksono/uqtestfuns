@@ -17,7 +17,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["GaytonHat"]
 
@@ -68,7 +68,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class GaytonHat(UQTestFunABC):
+class GaytonHat(UQTestFunFixDimABC):
     """A concrete implementation of the Gayton Hat test function."""
 
     _tags = ["reliability"]

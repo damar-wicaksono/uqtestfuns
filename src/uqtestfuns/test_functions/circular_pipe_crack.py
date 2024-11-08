@@ -24,7 +24,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 
 __all__ = ["CircularPipeCrack"]
@@ -126,7 +126,7 @@ def evaluate(
     return yy
 
 
-class CircularPipeCrack(UQTestFunABC):
+class CircularPipeCrack(UQTestFunFixDimABC):
     """A concrete implementation of the circular pipe crack problem."""
 
     _tags = ["reliability"]
@@ -135,6 +135,5 @@ class CircularPipeCrack(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore

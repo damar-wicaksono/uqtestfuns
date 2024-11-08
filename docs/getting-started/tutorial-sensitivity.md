@@ -316,13 +316,13 @@ The input variables of the function are probabilistically defined according
 to the table below.
 
 ```{code-cell} ipython3
-ishigami.prob_input
+print(ishigami.prob_input)
 ```
 
 Finally, the default values for the parameters $a$ and $b$ are:
 
 ```{code-cell} ipython3
-ishigami.parameters
+print(ishigami.parameters)
 ```
 
 For reproducibility of this tutorial, set the seed number for the pseudo-random

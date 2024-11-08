@@ -15,7 +15,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["RSQuadratic"]
 
@@ -66,7 +66,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class RSQuadratic(UQTestFunABC):
+class RSQuadratic(UQTestFunFixDimABC):
     """Concrete implementation of the quadratic RS reliability problem."""
 
     _tags = ["reliability"]

@@ -18,7 +18,7 @@ available_parameters = list(Portfolio3D.available_parameters.keys())
 
 @pytest.fixture(params=available_parameters)
 def portfolio3d_fun(request):
-    portfolio3d = Portfolio3D(parameters_selection=request.param)
+    portfolio3d = Portfolio3D(parameters_id=request.param)
 
     return portfolio3d
 
@@ -74,8 +74,8 @@ def test_different_parameters(param_selection):
     """Test selecting different built-in parameters."""
 
     # Create an instance of Ishigami function with a specified param. selection
-    my_testfun_1 = Portfolio3D(parameters_selection=param_selection)
-    my_testfun_2 = Portfolio3D(parameters_selection=param_selection)
+    my_testfun_1 = Portfolio3D(parameters_id=param_selection)
+    my_testfun_2 = Portfolio3D(parameters_id=param_selection)
 
     # Assertion: The parameter sets are identical
     assert my_testfun_1.parameters == my_testfun_2.parameters
@@ -84,4 +84,4 @@ def test_different_parameters(param_selection):
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
     with pytest.raises(KeyError):
-        Portfolio3D(parameters_selection="marelli1")
+        Portfolio3D(parameters_id="marelli1")

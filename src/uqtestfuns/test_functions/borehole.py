@@ -25,7 +25,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Borehole"]
 
@@ -154,14 +154,13 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Borehole(UQTestFunABC):
+class Borehole(UQTestFunFixDimABC):
     """A concrete implementation of the Borehole function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Borehole function from Harper and Gupta (1983)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input = DEFAULT_INPUT_SELECTION
-    _default_input_dimension = 8
+    _default_input_id = DEFAULT_INPUT_SELECTION
 
     evaluate = staticmethod(evaluate)  # type: ignore

@@ -22,3 +22,21 @@ Abstract Base Classes
 
 .. autoclass:: uqtestfuns.core.uqtestfun_abc.UQTestFunABC
    :members:
+
+
+.. _api_reference_uqtestfun_fix_dim_abc:
+
+``UQTestFunFixDimABC`` Abstract Base Class
+------------------------------------
+
+.. autoclass:: uqtestfuns.core.uqtestfun_abc.UQTestFunVarDimABC
+   :members:
+
+
+.. _api_reference_uqtestfun_var_dim_abc:
+
+``UQTestFunVarDimABC`` Abstract Base Class
+------------------------------------
+
+.. autoclass:: uqtestfuns.core.uqtestfun_abc.UQTestFunFixDimABC
+   :members:

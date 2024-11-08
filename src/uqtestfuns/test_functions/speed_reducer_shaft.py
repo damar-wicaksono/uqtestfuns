@@ -24,7 +24,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 from .utils import gumbel_max_mu, gumbel_max_beta
 
 __all__ = ["SpeedReducerShaft"]
@@ -104,7 +104,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class SpeedReducerShaft(UQTestFunABC):
+class SpeedReducerShaft(UQTestFunFixDimABC):
     """A concrete implementation of the speed reducer shaft function."""
 
     _tags = ["reliability"]
@@ -114,6 +114,5 @@ class SpeedReducerShaft(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 5
 
     evaluate = staticmethod(evaluate)  # type: ignore

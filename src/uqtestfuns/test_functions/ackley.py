@@ -22,7 +22,7 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
 from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
 
 __all__ = ["Ackley"]
@@ -30,7 +30,7 @@ __all__ = ["Ackley"]
 
 AVAILABLE_INPUTS: ProbInputSpecs = {
     "Ackley1987": {
-        "function_id": "Ackley1987",
+        "function_id": "Ackley",
         "description": (
             "Search domain for the Ackley function from Ackley (1987)"
         ),
@@ -110,13 +110,12 @@ def evaluate(xx: np.ndarray, a: float, b: float, c: float) -> np.ndarray:
     return yy
 
 
-class Ackley(UQTestFunABC):
+class Ackley(UQTestFunVarDimABC):
     """A concrete implementation of the M-dimensional Ackley test function."""
 
     _tags = ["optimization", "metamodeling"]
     _description = "Optimization test function from Ackley (1987)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_input_dimension = None  # Indicate that this is variable dim.
 
     evaluate = staticmethod(evaluate)  # type: ignore

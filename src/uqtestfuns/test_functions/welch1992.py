@@ -22,7 +22,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Welch1992"]
 
@@ -96,13 +96,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Welch1992(UQTestFunABC):
+class Welch1992(UQTestFunFixDimABC):
     """A concrete implementation of the Welch et al. (1992) test function."""
 
     _tags = ["metamodeling", "sensitivity", "integration"]
     _description = "20-Dimensional function from Welch et al. (1992)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 20
 
     evaluate = staticmethod(evaluate)  # type: ignore

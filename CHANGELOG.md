@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Two new abstract base classes are added, namely `UQTestFunFixDimABC` and
+  `UQTestFunVarDimABC` to deal with the construction of UQ test functions of
+  fixed and variable dimensions, respectively. Both abstract classes are derived
+  from `UQTestFunABC` such that the interfaces remain consistent. 
 - `function_id` and `input_id` are now property of `ProbInput`.
 - `output_dimension` is now property of `UQTestFunBareABC` and inherited to
   all concrete classes of UQ test functions.
@@ -26,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Application tags are now displayed when an instance of test function is
+  printed on the terminal.
 - `list_functions()` is now printed in grid format and include information
   regarding the output dimension and the parameterization. Furthermore,
   filtering can be done based on the input dimension, output dimension,

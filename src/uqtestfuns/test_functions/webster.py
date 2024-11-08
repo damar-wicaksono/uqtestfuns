@@ -17,7 +17,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Webster2D"]
 
@@ -68,13 +68,12 @@ def evaluate(xx: np.ndarray):
     return yy
 
 
-class Webster2D(UQTestFunABC):
+class Webster2D(UQTestFunFixDimABC):
     """A concrete implementation of the function from Webster et al. (1996)."""
 
     _tags = ["metamodeling"]
     _description = "2D polynomial function from Webster et al. (1996)."
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore

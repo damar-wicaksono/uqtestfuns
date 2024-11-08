@@ -35,7 +35,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["FourBranch"]
 
@@ -137,7 +137,7 @@ def evaluate(xx: np.ndarray, p: float) -> np.ndarray:
     return np.min(yy, axis=0)
 
 
-class FourBranch(UQTestFunABC):
+class FourBranch(UQTestFunFixDimABC):
     """A concrete implementation of the four-branch test function."""
 
     _tags = ["reliability"]
@@ -146,7 +146,6 @@ class FourBranch(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_input_dimension = 2
-    _default_parameters = "Schueremans2005"
+    _default_parameters_id = "Schueremans2005"
 
     evaluate = staticmethod(evaluate)  # type: ignore

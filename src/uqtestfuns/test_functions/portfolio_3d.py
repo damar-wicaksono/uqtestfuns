@@ -20,7 +20,7 @@ from uqtestfuns.core.custom_typing import (
     ProbInputSpecs,
     FunParamSpecs,
 )
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 
 __all__ = ["Portfolio3D"]
@@ -179,14 +179,13 @@ def evaluate(xx: np.ndarray, cs: float, ct: float, cj: float) -> np.ndarray:
     return yy
 
 
-class Portfolio3D(UQTestFunABC):
+class Portfolio3D(UQTestFunFixDimABC):
     """An implementation of the simple portfolio model test function."""
 
     _tags = ["sensitivity"]
     _description = "Simple portfolio model from Saltelli et al. (2004)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_parameters = DEFAULT_PARAMETERS_SELECTION
-    _default_input_dimension = 3
+    _default_parameters_id = DEFAULT_PARAMETERS_SELECTION
 
     evaluate = staticmethod(evaluate)  # type: ignore

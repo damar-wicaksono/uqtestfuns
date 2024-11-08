@@ -21,7 +21,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Gramacy1DSine"]
 
@@ -76,13 +76,12 @@ def evaluate_1dsine(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Gramacy1DSine(UQTestFunABC):
+class Gramacy1DSine(UQTestFunFixDimABC):
     """A concrete implementation of the 1D Gramacy (2007) Sine function."""
 
     _tags = ["metamodeling"]
     _description = "One-dimensional sine function from Gramacy (2007)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 1
 
     evaluate = staticmethod(evaluate_1dsine)  # type: ignore

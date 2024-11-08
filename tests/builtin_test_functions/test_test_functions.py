@@ -117,7 +117,7 @@ def test_available_inputs(builtin_testfun):
     available_inputs = testfun_class.available_inputs
 
     for available_input in available_inputs:
-        assert_call(testfun_class, prob_input_selection=available_input)
+        assert_call(testfun_class, input_id=available_input)
 
 
 def test_available_parameters(builtin_testfun):
@@ -129,9 +129,7 @@ def test_available_parameters(builtin_testfun):
 
     if available_parameters is not None:
         for available_parameter in available_parameters:
-            assert_call(
-                testfun_class, parameters_selection=available_parameter
-            )
+            assert_call(testfun_class, parameters_id=available_parameter)
 
 
 def test_call_instance(builtin_testfun):
@@ -154,12 +152,17 @@ def test_str(builtin_testfun):
     # Create an instance
     my_fun = builtin_testfun()
 
+    if my_fun.variable_dimension:
+        input_dim = f"{my_fun.input_dimension} (variable)"
+    else:
+        input_dim = f"{my_fun.input_dimension} (fixed)"
     str_ref = (
         f"Function ID      : {my_fun.function_id}\n"
-        f"Input Dimension  : {my_fun.input_dimension}\n"
+        f"Input Dimension  : {input_dim}\n"
         f"Output Dimension : {my_fun.output_dimension}\n"
         f"Parameterized    : {bool(my_fun.parameters)}\n"
-        f"Description      : {my_fun.description}"
+        f"Description      : {my_fun.description}\n"
+        f"Applications     : {my_fun.tags}"
     )
 
     assert my_fun.__str__() == str_ref
@@ -271,4 +274,4 @@ def test_evaluate_invalid_input_dim(builtin_testfun):
 def test_evaluate_invalid_input_selection(builtin_testfun):
     """Test if an exception is raised if invalid input selection is given."""
     with pytest.raises(KeyError):
-        builtin_testfun(prob_input_selection=100)
+        builtin_testfun(input_id=100)

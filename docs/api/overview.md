@@ -8,9 +8,13 @@ To make sense of how the objects in UQTestFuns are organized,
 let's start from the top, the {ref}`built-in test functions <test-functions:available>`:
 
 - Each of the built-in UQ test functions is a concrete implementation of the
-  abstract base class {ref}`UQTestFunABC <api_reference_uqtestfun_abc>`.
-  The base class, in turns, is derived 
-  from {ref}`UQTestFunABC <api_reference_uqtestfun_bare_abc>`).
+  abstract base classes: {ref}`UQTestFunFixDimABC <api_reference_uqtestfun_fix_dim_abc>`
+  (for UQ test functions with fixed dimension) or
+  {ref}`UQTestFunVarDimABC <api_reference_uqtestfun_var_dim_abc>`
+  (for UQ test functions with variable dimension).
+- Both of those abstract classes are derived from {ref}`UQTestFunABC <api_reference_uqtestfun_abc>`.
+  This base class, in turn, is derived 
+  from {ref}`UQTestFunBareABC <api_reference_uqtestfun_bare_abc>`).
   Therefore, all the instances share the same underlying interfaces.
   In particular, all instances share, among other things, the ``evaluate()`` 
   method, the ``prob_input`` property, and the ``parameters`` property [^essence].

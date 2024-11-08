@@ -60,10 +60,11 @@ and sensitivity analysis purposes; to create an instance of this test function:
 >>> my_testfun = uqtf.Borehole()
 >>> print(my_testfun)
 Function ID      : Borehole
-Input Dimension  : 8
+Input Dimension  : 8 (fixed)
 Output Dimension : 1
 Parameterized    : False
 Description      : Borehole function from Harper and Gupta (1983)
+Applications     : ['metamodeling', 'sensitivity']
 ```
 
 The probabilistic input specification of this test function is built-in:

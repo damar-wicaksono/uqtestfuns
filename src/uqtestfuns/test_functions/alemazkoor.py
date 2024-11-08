@@ -20,7 +20,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Alemazkoor2D", "Alemazkoor20D"]
 
@@ -94,7 +94,7 @@ def evaluate_2d(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Alemazkoor2D(UQTestFunABC):
+class Alemazkoor2D(UQTestFunFixDimABC):
     """An implementation of the 2D function of Alemazkoor & Meidani (2018)."""
 
     _tags = ["metamodeling"]
@@ -129,7 +129,7 @@ def evaluate_20d(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Alemazkoor20D(UQTestFunABC):
+class Alemazkoor20D(UQTestFunFixDimABC):
     """An implementation of the 20D function of Alemazkoor & Meidani (2018)."""
 
     _tags = ["metamodeling"]

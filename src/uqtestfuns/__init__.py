@@ -6,7 +6,12 @@ import sys
 
 from .core import Marginal
 from .core import ProbInput
-from .core import UQTestFunBareABC, UQTestFunABC
+from .core import (
+    UQTestFunBareABC,
+    UQTestFunABC,
+    UQTestFunFixDimABC,
+    UQTestFunVarDimABC,
+)
 from .core import UQTestFun
 from .core import FunParams
 
@@ -30,9 +35,10 @@ __all__ = [
     "Marginal",
     "ProbInput",
     "FunParams",
-    "UQTestFunABC",
     "UQTestFunBareABC",
     "UQTestFunABC",
+    "UQTestFunFixDimABC",
+    "UQTestFunVarDimABC",
     "UQTestFun",
     "test_functions",
     "UQMetaFunSpec",

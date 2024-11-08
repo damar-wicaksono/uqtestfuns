@@ -26,7 +26,7 @@ import numpy as np
 from copy import deepcopy
 
 from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Piston"]
 
@@ -161,14 +161,13 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return cc
 
 
-class Piston(UQTestFunABC):
+class Piston(UQTestFunFixDimABC):
     """A concrete implementation of the Piston simulation test function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Piston simulation model from Ben-Ari and Steinberg (2007)"
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input_dimension = 7
-    _default_input = DEFAULT_INPUT_SELECTION
+    _default_input_id = DEFAULT_INPUT_SELECTION
 
     evaluate = staticmethod(evaluate)  # type: ignore

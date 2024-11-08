@@ -15,7 +15,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 
 __all__ = ["RSCircularBar"]
@@ -93,7 +93,7 @@ def evaluate(xx: np.ndarray, bar_diameter: float) -> np.ndarray:
     return yy
 
 
-class RSCircularBar(UQTestFunABC):
+class RSCircularBar(UQTestFunFixDimABC):
     """Concrete implementation of the circular bar RS reliability problem."""
 
     _tags = ["reliability"]

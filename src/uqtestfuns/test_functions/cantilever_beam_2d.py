@@ -29,7 +29,7 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["CantileverBeam2D"]
 
@@ -117,7 +117,7 @@ def evaluate(xx: np.ndarray, modulus: float, span: float) -> np.ndarray:
     return yy
 
 
-class CantileverBeam2D(UQTestFunABC):
+class CantileverBeam2D(UQTestFunFixDimABC):
     """Concrete implementation of the 2D cantilever beam reliability."""
 
     _tags = ["reliability"]
@@ -127,6 +127,5 @@ class CantileverBeam2D(UQTestFunABC):
     )
     _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_input_dimension = 2
 
     evaluate = staticmethod(evaluate)  # type: ignore
