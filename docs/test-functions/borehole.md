@@ -87,7 +87,7 @@ For example, to create a Borehole test function using
 the input specification by {cite}`Morris1993`:
 
 ```python
-my_testfun = uqtf.Borehole(prob_input_selection="Morris1993")
+my_testfun = uqtf.Borehole(input_id="Morris1993")
 ```
 
 ## Reference results

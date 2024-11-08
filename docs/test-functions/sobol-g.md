@@ -181,12 +181,12 @@ print(my_testfun.parameters)
 
 ````{note}
 To create an instance of the Sobol'-G function with different built-in parameter values, 
-pass the corresponding keyword to the parameter `parameters_selection`.
+pass the corresponding keyword to the parameter `parameters_id`.
 For example, to use the parameters of problem 3B from {cite}`Kucherenko2011`,
 type:
 
 ```python
-my_testfun = uqtf.SobolG(parameters_selection="Kucherenko2011-3b")
+my_testfun = uqtf.SobolG(parameters_id="Kucherenko2011-3b")
 ```
 ````
 ## Reference results

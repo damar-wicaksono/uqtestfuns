@@ -96,7 +96,7 @@ To create an instance of the simple portfolio model with a different set of
 parameter values from the selection above, type:
 
 ```python
-my_testfun = uqtf.Portfolio3D(parameters_selection="Saltelli2004")
+my_testfun = uqtf.Portfolio3D(parameters_id="Saltelli2004-2")
 ```
 ````
 
@@ -116,9 +116,9 @@ for the simple portfolio model with three different sets of parameters.
 np.random.seed(42)
 xx_test = my_testfun.prob_input.get_sample(100000)
 yy_test_1 = my_testfun(xx_test)
-my_testfun_2 = uqtf.Portfolio3D(parameters_selection="Saltelli2004-2")
+my_testfun_2 = uqtf.Portfolio3D(parameters_id="Saltelli2004-2")
 yy_test_2 = my_testfun_2(xx_test)
-my_testfun_3 = uqtf.Portfolio3D(parameters_selection="Saltelli2004-3")
+my_testfun_3 = uqtf.Portfolio3D(parameters_id="Saltelli2004-3")
 yy_test_3 = my_testfun_3(xx_test)
 
 plt.hist(yy_test_3, bins="auto", color="#fc8d62", label="Saltelli2004-3")
