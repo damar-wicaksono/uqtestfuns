@@ -64,6 +64,7 @@ regardless of their typical applications.
 |             {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`             |        3        |         `Portfolio3D()`         |
 |              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |        2        |        `RSCircularBar()`        |
 |                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |        2        |         `RSQuadratic()`         |
+|               {ref}`SaltelliLinear <test-functions:saltelli-linear>`                |        M        |       `SaltelliLinear()`        |
 |                      {ref}`Sobol'-G <test-functions:sobol-g>`                       |        M        |           `SobolG()`            |
 |           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |        5        |      `SpeedReducerShaft()`      |
 |                        {ref}`Sulfur <test-functions:sulfur>`                        |        9        |           `Sulfur()`            |

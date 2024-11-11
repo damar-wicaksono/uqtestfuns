@@ -579,11 +579,18 @@ class UQTestFunVarDimABC(UQTestFunABC, ABC):
         raw_data = deepcopy(self.available_inputs[input_id])
 
         # Process the marginals
-        marginals = []
-        for i in range(input_dim):
-            marginal = raw_data["marginals"][0].copy()
-            marginal["name"] = f"{marginal['name']}{i}"
-            marginals.append(Marginal(**marginal))
+        marginal = raw_data["marginals"]
+        if callable(marginal):
+            # Marginal specification is given as a function
+            marginals = marginal(input_dim)
+            marginals = [Marginal(**marginal) for marginal in marginals]
+        else:
+            # Marginal specification will be spawned up to the # of dimension
+            marginals = []
+            for i in range(input_dim):
+                marginal = raw_data["marginals"][0].copy()
+                marginal["name"] = f"{marginal['name']}{i}"
+                marginals.append(Marginal(**marginal))
 
         # Recast the type to satisfy type checker
         input_data = cast(ProbInputArgs, raw_data)

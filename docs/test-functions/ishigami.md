@@ -133,7 +133,7 @@ analytical values.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
+my_testfun.prob_input.reset_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], dtype=int)
 mean_estimates = np.empty(len(sample_sizes))
 var_estimates = np.empty(len(sample_sizes))
@@ -160,7 +160,7 @@ ax_1.errorbar(
     label="Mean"
 )
 # Plot the analytical mean
-a = my_testfun.parameters[0]
+a = my_testfun.parameters["a"]
 mean_analytical = a / 2.0
 ax_1.plot(
     sample_sizes,
@@ -185,7 +185,7 @@ ax_2.errorbar(
     label="Variance",
 )
 # Plot the analytical variance
-b = my_testfun.parameters[1]
+b = my_testfun.parameters["b"]
 var_analytical = a**2 / 8 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 18 + 0.5
 ax_2.plot(
     sample_sizes,

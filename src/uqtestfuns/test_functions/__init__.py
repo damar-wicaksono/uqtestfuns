@@ -29,6 +29,7 @@ from .piston import Piston
 from .portfolio_3d import Portfolio3D
 from .rs_circular_bar import RSCircularBar
 from .rs_quadratic import RSQuadratic
+from .saltelli_linear import SaltelliLinear
 from .sobol_g import SobolG
 from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
@@ -83,6 +84,7 @@ __all__ = [
     "Portfolio3D",
     "RSCircularBar",
     "RSQuadratic",
+    "SaltelliLinear",
     "SobolG",
     "SpeedReducerShaft",
     "Sulfur",

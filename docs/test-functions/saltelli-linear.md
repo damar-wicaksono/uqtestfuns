@@ -12,20 +12,17 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:sobol-g)=
-# Sobol'-G Function
+(test-functions:saltelli-linear)=
+# Saltelli Linear Function
 
-The Sobol'-G function is an $M$-dimensional scalar-valued function.
-It was introduced in {cite}`Bratley1992` for testing numerical integration
-algorithms (e.g., quasi-Monte-Carlo; see, for instance,
-{cite}`Radovic1996, Sobol1998`).
+The Saltelli Linear function is an $M$-dimensional scalar-valued function.
+It was introduced in {cite}`Saltelli2008` for illustrating sensitivity
+analysis methods.
+It is later used in {cite}`Sun2022` for benchmarking various sensitivity
+analysis methods.
 
-The current form (and name) was from {cite}`Saltelli1995` and used in
-the context of global sensitivity analysis.
-There, the function was generalized by introducing a set of parameters
-that determines the importance of each input variable.
-Later on, it becomes a popular testing function for global sensitivity analysis
-methods; see, for instance, {cite}`Marrel2008, Marrel2009, Kucherenko2011`.
+Due to its simple form, the moments and Sobol' sensitivity indices may be
+computed analytically.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -41,16 +38,24 @@ below.
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-# --- Create 1D data from Sobol'-G
-my_sobolg_1d = uqtf.SobolG(input_dimension=1)
-xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
-yy_1d = my_sobolg_1d(xx_1d)
+# --- Create 1D data from SaltelliLinear
+my_fun_1d = uqtf.SaltelliLinear(input_dimension=1)
+lb = my_fun_1d.prob_input.marginals[0].lower
+ub = my_fun_1d.prob_input.marginals[0].upper
+xx_1d = np.linspace(lb, ub, 1000)[:, np.newaxis]
+yy_1d = my_fun_1d(xx_1d)
 
-# --- Create 2D data from Sobol'-G
-my_sobolg_2d = uqtf.SobolG(input_dimension=2)
-mesh_2d = np.meshgrid(xx_1d, xx_1d)
+# --- Create 2D data from SaltelliLinear
+my_fun_2d = uqtf.SaltelliLinear(input_dimension=2)
+lb_1 = my_fun_2d.prob_input.marginals[0].lower
+ub_1 = my_fun_2d.prob_input.marginals[0].upper
+lb_2 = my_fun_2d.prob_input.marginals[1].lower
+ub_2 = my_fun_2d.prob_input.marginals[1].upper
+xx_1 = np.linspace(lb_1, ub_1, 1000)[:, np.newaxis]
+xx_2 = np.linspace(lb_2, ub_2, 1000)[:, np.newaxis]
+mesh_2d = np.meshgrid(xx_1, xx_2)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
-yy_2d = my_sobolg_2d(xx_2d)
+yy_2d = my_fun_2d(xx_2d)
 
 # --- Create two-dimensional plots
 fig = plt.figure(figsize=(15, 5))
@@ -61,7 +66,7 @@ axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
 axs_1.set_xlabel("$x$", fontsize=14)
 axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
-axs_1.set_title("1D Sobol'-G")
+axs_1.set_title("1D Saltelli Linear")
 
 # Surface
 axs_2 = plt.subplot(132, projection='3d')
@@ -77,7 +82,7 @@ axs_2.plot_surface(
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
 axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_2.set_title("Surface plot of 2D Sobol'-G", fontsize=14)
+axs_2.set_title("Surface plot of 2D Saltelli Linear", fontsize=14)
 
 # Contour
 axs_3 = plt.subplot(133)
@@ -86,11 +91,10 @@ cf = axs_3.contourf(
 )
 axs_3.set_xlabel("$x_1$", fontsize=14)
 axs_3.set_ylabel("$x_2$", fontsize=14)
-axs_3.set_title("Contour plot of 2D Sobol'-G", fontsize=14)
+axs_3.set_title("Contour plot of 2D Saltelli Linear", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
-axs_3.axis('scaled')
 
 fig.tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
@@ -98,10 +102,10 @@ plt.gcf().set_dpi(150);
 
 ## Test function instance
 
-To create a default instance of the Sobol'-G test function, type:
+To create a default instance of the test function, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolG()
+my_testfun = uqtf.SaltelliLinear()
 ```
 
 Check if it has been correctly instantiated:
@@ -113,11 +117,11 @@ print(my_testfun)
 By default, the input dimension is set to $2$[^default_dimension].
 To create an instance with another value of input dimension,
 pass an integer to the parameter `input_dimension` (the first parameter).
-For example, to create an instance of the Sobol'-G function in six dimensions,
-type:
+For example, to create an instance of the Saltelli Linear function
+in six dimensions, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolG(input_dimension=6)
+my_testfun = uqtf.SaltelliLinear(input_dimension=6)
 ```
 
 In the subsequent section, the function will be illustrated
@@ -125,20 +129,28 @@ using six dimensions.
 
 ## Description
 
-The Sobol'-G function is defined as follows[^location]:
+The Saltelli Linear function is defined as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}; \boldsymbol{a}) = \prod_{m = 1}^M \frac{\lvert 4 x_m - 2 \rvert + a_m}{1 + a_m}
+\mathcal{M}(\boldsymbol{x}) = \sum_{i = 1}^M x_i
 $$
 where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$ is the $M$-dimensional vector
-of input variables further defined below,
-and $\boldsymbol{a} = \{ a_1, \ldots, a_M \}$ are parameters of the function.
+of input variables further defined below.
 
 ## Probabilistic input
 
-Based on {cite}`Sobol1998` the probabilistic input model for the Sobol'-G
-function consists of $M$ independent uniform random variables with the ranges
-shown in the table below.
+Based on {cite}`Saltelli2008` the probabilistic input model for the function
+consists of $M$ independent uniform random variables with the following ranges:
+
+$$
+X_i \sim \mathcal{U}[x_{o, i} - \sigma_{o, i}, x_{o, i} + \sigma_{o, i}], \; i = 1, \ldots, M,
+$$
+where $x_{o, i} = 3^{i - 1}$ and $\sigma_{o, i} = 0.5 * x_{o, i}$.
+Notice that the higher the variable index, the larger its uncertainty both
+in absolute sense (i.e., the standard deviation is larger)
+and in relative sense (i.e., the coefficient of variation is larger).
+
+For the six-variable model, the ranges are shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -146,49 +158,6 @@ shown in the table below.
 print(my_testfun.prob_input)
 ```
 
-## Parameters
-
-The parameters of the Sobol-G function (that is, the coefficients $\{ a_m \}$)
-determine the overall behavior of the function as well as the importance of each
-input variable.
-There are several sets of parameters used in the literature
-as shown in the table below.  
-  
-| No. |                           Value                            |          Keyword           |                             Source                             |                                             Remark                                             |  
-|:---:|:----------------------------------------------------------:|:--------------------------:|:--------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|  
-|  1  |                  $a_1 = \ldots = a_M = 0$                  |      `Saltelli1995-1`      |  {cite}`Saltelli1995` (Example 1) (also {cite}`Bratley1992`)   |                           All input variables are equally important                            |  
-|  2  | $a_1 = a_2 = 0$<br> $a_3 = 3$<br> $a_3 = \ldots = a_M = 9$ |      `Saltelli1995-2`      |                {cite}`Saltelli1995` (Example 2)                | The first two are important, the next is moderately important, and the rest is non-influential |  
-|  3  |      $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$       | `Saltelli1995-3` (default) | {cite}`Saltelli1995` (Example 3) (also {cite}`Crestaux2007`  ) |              The most important input is the first one, the least is the last one              |
-|  4  |                $a_1 = \ldots = a_M = 0.01$                 |       `Sobol1998-1`        |                  {cite}`Sobol1998` (choice 1)                  |                   The supremum of the function grows exponentially at $2^M$                    |  
-|  5  |                 $a_1 = \ldots = a_M = 1.0$                 |       `Sobol1998-2`        |                  {cite}`Sobol1998` (choice 2)                  |                  The supremum of the function grows exponentially at  $1.5^M$                  |  
-|  6  |             $a_m = m$<br> $\, 1 \leq m \leq M$             |       `Sobol1998-3`        |                  {cite}`Sobol1998` (choice 3)                  |                The supremum of the function grows linearly at $1 + \frac{M}{2}$                |  
-|  7  |             $a_m = m^2$<br> $1 \leq m \leq M$              |       `Sobol1998-4`        |                  {cite}`Sobol1998` (choice 4)                  |                                The supremum is bounded at $1.0$                                |  
-|  8  |     $a_1 = a_2 = 0.0$<br> $a_3 = \ldots = a_M = 6.52$      |    `Kucherenko2011-2a`     |              {cite}`Kucherenko2011` (Problem 2A)               |                                     Originally, $M = 100$                                      |  
-|  9  |             $a_m = 6,52$<br> $1 \leq m \leq M$             |    `Kucherenko2011-3b`     |              {cite}`Kucherenko2011` (Problem 3B)               |                                                                                                |  
-
-```{note}
-The parameter values used in {cite}`Marrel2008` and {cite}`Marrel2009`
-correspond to the parameter choice 3 in {cite}`Sobol1998`.
-```
-
-The default parameter is shown below.
-
-```{code-cell} ipython3
-:tags: [hide-input]
-
-print(my_testfun.parameters)
-```
-
-````{note}
-To create an instance of the Sobol'-G function with different built-in parameter values, 
-pass the corresponding keyword to the parameter `parameters_id`.
-For example, to use the parameters of problem 3B from {cite}`Kucherenko2011`,
-type:
-
-```python
-my_testfun = uqtf.SobolG(parameters_id="Kucherenko2011-3b")
-```
-````
 
 ## Reference results
 
@@ -202,7 +171,7 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
+my_testfun.prob_input.reset_rng(42)
 xx_test = my_testfun.prob_input.get_sample(100000)
 yy_test = my_testfun(xx_test)
 
@@ -213,24 +182,57 @@ plt.xlabel("$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
-### Definite integration
-
-The integral value of the function over the whole domain $[0, 1]^M$
-is analytical:
-
-$$
-\int_{[0, 1]^M} \mathcal{M}(\boldsymbol{x}) \; d\boldsymbol{x} = 1.0.
-$$
-
 ### Moments estimation
 
-The mean and variance of the Sobol'-G function can be computed analytically,  
-and the results are:
-  
-- $\mathbb{E}[Y] = 1.0$[^integral]
-- $\mathbb{V}[Y] = \prod_{m = 1}^{M} \frac{\frac{4}{3} + 2 a_m + a_m^2}{(1 + a_m)^2} - 1$
+The mean and variance of the Sobol'-G function can be computed analytically.
 
-Notice that the values of these two moments depend on the choice of the parameter values.
+The mean is given as follows:
+
+$$
+\mathbb{E}[Y] = \sum_{i = 1}^M \mathbb{E}[X_i] = \sum_{i = 1}^M x_{o, i},
+$$
+where $x_{o, i} = 3^{i - 1}, i = 1, \ldots, M$.
+
+The variance is given as follows:
+
+$$
+\mathbb{V}[Y] = \sum_{i = 1}^M \mathbb{V}[X_i] = \frac{1}{12} \sum_{i = 1}^M x_{o, i}^2,
+$$
+
+The means and variances for the linear function up to dimension $10$ are shown
+in the table below.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+from tabulate import tabulate
+
+input_dims = 10
+
+# --- Compile data row-wise
+
+outputs = []
+for input_dim in range(1, input_dims + 1):
+    xx_o = 3**(np.arange(1, input_dim + 1) - 1)
+    outputs.append(
+        [input_dim, np.sum(xx_o), np.sum(xx_o**2) / 12]
+    )
+
+header_names = [
+    "Input dimensions",
+    "Mean",
+    "Variance",
+]
+
+tabulate(
+    outputs,
+    numalign="center",
+    stralign="center",
+    tablefmt="html",
+    floatfmt=("d", ".4e", ".4e"),
+    headers=header_names
+)
+```
 
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes compared with the
@@ -242,7 +244,7 @@ of the estimates obtained from $50$ replications.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
+my_testfun.prob_input.reset_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6], dtype=int)
 mean_estimates = np.empty((len(sample_sizes), 50))
 var_estimates = np.empty((len(sample_sizes), 50))
@@ -258,9 +260,9 @@ mean_estimates_errors = np.std(mean_estimates, axis=1)
 var_estimates_errors = np.std(var_estimates, axis=1)
 
 # --- Compute analytical mean and variance
-params = my_testfun.parameters["aa"]
-mean_analytical = 1.0
-var_analytical = np.prod((4 / 3 + 2 * params + params**2) / (1 + params)**2) - 1
+xx_o = 3**(np.arange(1, my_testfun.input_dimension + 1) - 1)
+mean_analytical = np.sum(xx_o)
+var_analytical = np.sum(xx_o**2) / 12.0
 
 # --- Plot the mean and variance estimates
 fig, ax_1 = plt.subplots(figsize=(6,4))
@@ -381,14 +383,70 @@ tabulate(
 )
 ```
 
+### Sensitivity indices
+
+The main-effect Sobol' sensitivity indices of the linear function are given
+by the following formula:
+
+$$
+S_i \equiv \frac{V_i}{\mathbb{V}[Y]} = \frac{\mathbb{V}[X_i]}{\mathbb{V}[Y]} = \frac{x_{o, i}^2}{\sum_{i = 1}^M x_{o, i}^2},\; i = 1, \ldots, M. 
+$$
+
+Since there is no interaction effect present in the model, the total-effect
+indices are equal to the main-effect indices.
+
+Some example values of the main-effect indices for the linear function 
+up to dimension $6$ is shown in the table below.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+from tabulate import tabulate
+
+input_dims = 6
+
+# --- Compile data row-wise
+
+outputs = []
+for input_dim in range(input_dims):
+    output = [f"X{input_dim + 1}"]
+    for _ in range(input_dim):
+        output.append(0.0)
+    for i in range(input_dim, input_dims):
+        xx_o = 3**(np.arange(1, i + 2) - 1)
+        
+        output.append(
+            xx_o[input_dim]**2 / np.sum(xx_o**2)
+        )
+
+    outputs.append(output)
+
+header_names = [
+    "Si",
+    "m = 1",
+    "m = 2",
+    "m = 3",
+    "m = 4",
+    "m = 5",
+    "m = 6",
+]
+
+tabulate(
+    outputs,
+    numalign="center",
+    stralign="center",
+    tablefmt="html",
+    floatfmt=("s", ".4e", ".4e", ".4e", ".4e", ".4e", ".4e"),
+    headers=header_names
+)
+```
+
 ## References
 
 ```{bibliography}
 :style: unsrtalpha
 :filter: docname in docnames
 ```
-
-[^location]: see Eqs. (23) and (24), p. 234 in {cite}`Saltelli1995`.
 
 [^integral]: The expected value is the same as the integral over the domain
 because the input is uniform in a unit hypercube.

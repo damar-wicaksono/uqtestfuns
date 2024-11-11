@@ -4,12 +4,13 @@ Core module that contains custom types used in UQTestFuns.
 Custom types are used to assist type checker during the code development.
 """
 
-from typing import List, Union, Optional, Any, Dict, Sequence
+from typing import Callable, List, Union, Optional, Any, Dict, Sequence
 from typing_extensions import TypedDict
 
 from uqtestfuns.core.prob_input.marginal import Marginal
 
 __all__ = [
+    "MarginalSpec",
     "MarginalSpecs",
     "ProbInputSpecs",
     "ProbInputArgs",
@@ -32,7 +33,7 @@ MarginalSpecs = List[MarginalSpec]
 class ProbInputSpec(TypedDict):
     function_id: str
     description: str
-    marginals: List[MarginalSpec]
+    marginals: Union[List[MarginalSpec], Callable]
     copulas: Optional[Any]
 
 
