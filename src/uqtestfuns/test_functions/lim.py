@@ -39,7 +39,7 @@ MARGINALS_LIM2002: MarginalSpecs = [
 
 
 def evaluate_poly(xx: np.ndarray) -> np.ndarray:
-    """Evaluate the non-polynomial test function from Lim et al (2002).
+    """Evaluate the polynomial test function from Lim et al (2002).
 
     The function is a polynomial with maximum total degree of 5.
 
@@ -89,3 +89,51 @@ class LimPoly(UQTestFunFixDimABC):
     _available_parameters = None
 
     evaluate = staticmethod(evaluate_poly)  # type: ignore
+
+
+def evaluate_non_poly(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the non-polynomial test function from Lim et al (2002).
+
+    The function is a polynomial with maximum total degree of 5.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    trm_1 = 30 + 5 * xx[:, 0] * np.sin(5 * xx[:, 0])
+    trm_2 = 4 + np.exp(-5 * xx[:, 1])
+
+    yy = (trm_1 * trm_2 - 100) / 6.0
+
+    return yy
+
+
+class LimNonPoly(UQTestFunFixDimABC):
+    """An implementation of the 2D non-polynomial from Lim et al. (2002)."""
+
+    _tags = ["metamodeling"]
+    _description = (
+        "Two-dimensional non-polynomial function from Lim et al. (2002)"
+    )
+    _available_inputs: ProbInputSpecs = {
+        "Lim2002": {
+            "function_id": "LimNonPoly",
+            "description": (
+                "Input specification for the non-polynomial function "
+                "from Lim et al. (2002)"
+            ),
+            "marginals": MARGINALS_LIM2002,
+            "copulas": None,
+        }
+    }
+    _available_parameters = None
+
+    evaluate = staticmethod(evaluate_non_poly)  # type: ignore

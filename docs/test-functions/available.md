@@ -50,6 +50,7 @@ regardless of their typical applications.
 |           {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>`            |        1        |        `Gramacy1DSine()`        |
 |               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |        2        |         `HyperSphere()`         |
 |                      {ref}`Ishigami <test-functions:ishigami>`                      |        3        |          `Ishigami()`           |
+|        {ref}`Lim et al. (2002) Non-Polynomial <test-functions:lim-non-poly>`        |        2        |         `LimNonPoly()`          |
 |            {ref}`Lim et al. (2002) Polynomial <test-functions:lim-poly>`            |        2        |           `LimPoly()`           |
 |                     {ref}`McLain S1 <test-functions:mclain-s1>`                     |        2        |          `McLainS1()`           |
 |                     {ref}`McLain S2 <test-functions:mclain-s2>`                     |        2        |          `McLainS2()`           |

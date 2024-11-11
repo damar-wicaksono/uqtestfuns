@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:lim-poly)=
-# Two-dimensional Polynomial Function from Lim et al. (2002)
+(test-functions:lim-non-poly)=
+# Two-dimensional Non-Polynomial Function from Lim et al. (2002)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The polynomial test function from Lim et al. (2002) (or `LimPoly` for short)
-is a two-dimensional scalar-valued function.
+The non-polynomial test function from Lim et al. (2002) (or `LimNonPoly` for
+short) is a two-dimensional scalar-valued function.
 The function was used in {cite}`Lim2002` in the context of establishing the
 connection between Gaussian process metamodel and polynomials.
 
@@ -31,7 +31,7 @@ connection between Gaussian process metamodel and polynomials.
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-my_fun = uqtf.LimPoly()
+my_fun = uqtf.LimNonPoly()
 
 # --- Create 2D data
 xx_1d = np.linspace(0.0, 1.0, 1000)[:, np.newaxis]
@@ -75,12 +75,13 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
+
 ## Test function instance
 
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.LimPoly()
+my_testfun = uqtf.LimNonPoly()
 ```
 
 Check if it has been correctly instantiated:
@@ -94,15 +95,16 @@ print(my_testfun)
 The test function is defined as follows[^location]:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = 9 + \frac{5}{2} x_1 - \frac{35}{2} x_2 + \frac{5}{2} x_1 x_2 + 19 x_2^2 - \frac{15}{2} x_1^3 - \frac{5}{2} x_1 x_2^2 - \frac{11}{2} x_2^4 + x_1^3 x_2^2,
+\mathcal{M}(\boldsymbol{x}) = \frac{(30 + 5 x_1 \sin{(5 x_1)}) (4 + \exp{(-5x_2)}) - 100}{6}
 $$
 where $\boldsymbol{x} = \{ x_1, x_2 \}$
 is the two-dimensional vector of input variables further defined below.
 
 ```{note}
-The coefficients of the test function are chosen such that its global features
-are similar to its
-{ref}`non-polynomial counterpart <test-functions:lim-non-poly>`.
+This function is a rescaled version of Eq. (6) in {cite}`Welch1992`.
+The function is also similar to its
+{ref}`polynomial counterpart <test-functions:lim-poly>`; in fact,
+the coefficients of the polynomial are chosen with that goal in mind.
 ```
 
 ## Probabilistic input
@@ -145,4 +147,4 @@ plt.gcf().set_dpi(150);
 :filter: docname in docnames
 ```
 
-[^location]: See Eq. (27), Section 7, p. 119 {cite}`Lim2002`.
+[^location]: See Eq. (28), Section 7, p. 121 {cite}`Lim2002`.

@@ -20,7 +20,7 @@ from .gayton_hat import GaytonHat
 from .gramacy2007 import Gramacy1DSine
 from .hyper_sphere import HyperSphere
 from .ishigami import Ishigami
-from .lim import LimPoly
+from .lim import LimPoly, LimNonPoly
 from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
@@ -69,6 +69,7 @@ __all__ = [
     "Gramacy1DSine",
     "HyperSphere",
     "Ishigami",
+    "LimNonPoly",
     "LimPoly",
     "Oakley1D",
     "OTLCircuit",
