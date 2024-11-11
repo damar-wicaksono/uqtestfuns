@@ -19,7 +19,7 @@ import numpy as np
 from uqtestfuns.core.custom_typing import ProbInputSpecs, MarginalSpecs
 from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
-__all__ = ["LimPoly"]
+__all__ = ["LimPoly", "LimNonPoly"]
 
 
 MARGINALS_LIM2002: MarginalSpecs = [

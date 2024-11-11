@@ -51,6 +51,8 @@ parts:
             title: Bratley et al. (1992) D
           - file: test-functions/cantilever-beam-2d
             title: Cantilever Beam (2D)
+          - file: test-functions/cheng2d
+            title: Cheng and Sandu (2010) 2D
           - file: test-functions/circular-pipe-crack
             title: Circular Pipe Crack
           - file: test-functions/convex-fail-domain
