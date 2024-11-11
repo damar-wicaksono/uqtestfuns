@@ -30,6 +30,7 @@ regardless of their typical applications.
 |            {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`             |        M        |        `Bratley1992c()`         |
 |            {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`             |        M        |        `Bratley1992d()`         |
 |           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |        2        |       `CantileverBeam2D `       |
+|              {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`              |        2        |           `Cheng2D `            |
 |           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |        2        |      `CircularPipeCrack()`      |
 |          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |        2        |      `ConvexFailDomain()`       |
 |                 {ref}`Damped Cosine <test-functions:damped-cosine>`                 |        1        |        `DampedCosine()`         |

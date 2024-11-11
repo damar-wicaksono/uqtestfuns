@@ -23,6 +23,7 @@ in the comparison of metamodeling approaches.
 |  {ref}`Alemazkoor & Meidani (2018) 2D <test-functions:alemazkoor-2d>`  |        2        |   `Alemazkoor2D()`   |
 | {ref}`Alemazkoor & Meidani (2018) 20D <test-functions:alemazkoor-20d>` |       20        |  `Alemazkoor20D()`   |
 |               {ref}`Borehole <test-functions:borehole>`                |        8        |     `Borehole()`     |
+|       {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`        |        2        |     `Cheng2D`        |
 |          {ref}`Damped Cosine <test-functions:damped-cosine>`           |        1        |   `DampedCosine()`   |
 |      {ref}`Damped Oscillator <test-functions:damped-oscillator>`       |        7        | `DampedOscillator()` |
 |                  {ref}`Flood <test-functions:flood>`                   |        8        |      `Flood()`       |
