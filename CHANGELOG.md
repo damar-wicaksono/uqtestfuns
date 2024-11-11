@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The M-dimensional linear function from Saltelli et al. (2008) for sensitivity
+  analysis.
 - The two-dimensional non-polynomial test function for metamodeling from
-  
+  Lim et al. (2002).
 - The two-dimensional polynomial test function for metamodeling from 
   Lim et al. (2002).
 - The three-dimensional sensitivity test function from Moon (2010).

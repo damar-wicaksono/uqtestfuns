@@ -119,6 +119,8 @@ parts:
             title: RS - Circular Bar
           - file: test-functions/rs-quadratic
             title: RS - Quadratic
+          - file: test-functions/saltelli-linear
+            title: Saltelli Linear
           - file: test-functions/sobol-g
             title: Sobol'-G
           - file: test-functions/speed-reducer-shaft
