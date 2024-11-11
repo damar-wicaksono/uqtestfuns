@@ -33,7 +33,7 @@ __all__ = ["SaltelliLinear"]
 
 
 def _create_marginals(input_dimension: int) -> MarginalSpecs:
-    """Create a list of marginal specifications of the given dimension.
+    r"""Create a list of marginal specifications of the given dimension.
 
     .. math::
 
