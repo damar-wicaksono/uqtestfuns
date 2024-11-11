@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The two-dimensional polynomial test function for metamodeling from 
+  Lim et al. (2002).
 - The three-dimensional sensitivity test function from Moon (2010).
 - Two new abstract base classes are added, namely `UQTestFunFixDimABC` and
   `UQTestFunVarDimABC` to deal with the construction of UQ test functions of

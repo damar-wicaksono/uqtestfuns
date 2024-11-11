@@ -3,6 +3,7 @@ The init for the 'test_functions' subpackage of UQTestFuns.
 """
 
 from .ackley import Ackley
+from .alemazkoor import Alemazkoor2D, Alemazkoor20D
 from .borehole import Borehole
 from .bratley1992 import Bratley1992a, Bratley1992b, Bratley1992c, Bratley1992d
 from .cantilever_beam_2d import CantileverBeam2D
@@ -19,7 +20,7 @@ from .gayton_hat import GaytonHat
 from .gramacy2007 import Gramacy1DSine
 from .hyper_sphere import HyperSphere
 from .ishigami import Ishigami
-from .alemazkoor import Alemazkoor2D, Alemazkoor20D
+from .lim import LimPoly
 from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
@@ -68,6 +69,7 @@ __all__ = [
     "Gramacy1DSine",
     "HyperSphere",
     "Ishigami",
+    "LimPoly",
     "Oakley1D",
     "OTLCircuit",
     "McLainS1",

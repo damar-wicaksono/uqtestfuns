@@ -91,6 +91,8 @@ parts:
             title: Hyper-sphere Bound
           - file: test-functions/ishigami
             title: Ishigami
+          - file: test-functions/lim-poly
+            title: Lim et al. (2002) Polynomial
           - file: test-functions/mclain-s1
             title: McLain S1
           - file: test-functions/mclain-s2
