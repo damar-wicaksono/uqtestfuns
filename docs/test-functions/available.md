@@ -67,6 +67,7 @@ regardless of their typical applications.
 |                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |        2        |         `RSQuadratic()`         |
 |               {ref}`SaltelliLinear <test-functions:saltelli-linear>`                |        M        |       `SaltelliLinear()`        |
 |                      {ref}`Sobol'-G <test-functions:sobol-g>`                       |        M        |           `SobolG()`            |
+|                   {ref}`Sobol'-G* <test-functions:sobol-g-star>`                    |        M        |         `SobolGStar()`          |
 |           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |        5        |      `SpeedReducerShaft()`      |
 |                        {ref}`Sulfur <test-functions:sulfur>`                        |        9        |           `Sulfur()`            |
 |             {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`             |        2        |          `Webster2D()`          |

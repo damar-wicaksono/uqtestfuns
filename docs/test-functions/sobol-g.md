@@ -230,7 +230,7 @@ and the results are:
 - $\mathbb{E}[Y] = 1.0$[^integral]
 - $\mathbb{V}[Y] = \prod_{m = 1}^{M} \frac{\frac{4}{3} + 2 a_m + a_m^2}{(1 + a_m)^2} - 1$
 
-Notice that the values of these two moments depend on the choice of the parameter values.
+Notice that the value of the variance depends on the choice of the parameter values.
 
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes compared with the
