@@ -275,7 +275,7 @@ of the estimates obtained from $50$ replications.
 
 # --- Compute the mean and variance estimate
 np.random.seed(42)
-sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6], dtype=int)
+sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5], dtype=int)
 mean_estimates = np.empty((len(sample_sizes), 50))
 var_estimates = np.empty((len(sample_sizes), 50))
 
@@ -319,7 +319,7 @@ ax_1.plot(
     color="#66c2a5",
     label="Analytical mean",
 )
-ax_1.set_xlim([5, 5e6])
+ax_1.set_xlim([5, 5e5])
 ax_1.set_xlabel("Sample size")
 ax_1.set_ylabel("Output mean estimate")
 ax_1.set_xscale("log");
