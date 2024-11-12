@@ -125,6 +125,8 @@ parts:
             title: Saltelli Linear
           - file: test-functions/sobol-g
             title: Sobol'-G
+          - file: test-functions/sobol-g-star
+            title: Sobol'-G*
           - file: test-functions/speed-reducer-shaft
             title: Speed Reducer Shaft
           - file: test-functions/sulfur

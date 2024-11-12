@@ -32,6 +32,7 @@ from .rs_circular_bar import RSCircularBar
 from .rs_quadratic import RSQuadratic
 from .saltelli_linear import SaltelliLinear
 from .sobol_g import SobolG
+from .sobol_g_star import SobolGStar
 from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
 from .webster import Webster2D
@@ -88,6 +89,7 @@ __all__ = [
     "RSQuadratic",
     "SaltelliLinear",
     "SobolG",
+    "SobolGStar",
     "SpeedReducerShaft",
     "Sulfur",
     "Webster2D",

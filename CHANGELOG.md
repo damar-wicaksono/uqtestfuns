@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The modified Sobol'-G test function (i.e., Sobol'-G*) from Saltelli et al.
+  (2010) for sensitivity analysis exercises.
 - The two-dimensional test function from Cheng and Sandu (2010)
   for metamodeling exercises.
 - The M-dimensional linear function from Saltelli et al. (2008) for sensitivity
