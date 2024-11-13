@@ -52,6 +52,7 @@ def test_one_dimension():
     # The slope of the linear one-dimensional function is sqrt(12)
     assert np.allclose(yy / xx[:, 0], np.sqrt(12))
 
+
 def test_inert_inputs():
     """Test whether the remaining inputs of Morris2006 are indeed inert."""
     # Construct two instances of test function

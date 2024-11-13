@@ -51,7 +51,7 @@ AVAILABLE_INPUTS: ProbInputSpecs = {
                 "distribution": "uniform",
                 "parameters": [0.0, 1.0],
                 "description": None,
-            }
+            },
         ],
         "copulas": None,
     },
@@ -71,9 +71,9 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "p",
                 "value": 10,
                 "type": int,
-                "description": "# of important inputs"
-            }
-        ]
+                "description": "# of important inputs",
+            },
+        ],
     }
 }
 
@@ -109,7 +109,8 @@ def evaluate(xx: np.ndarray, p: int) -> np.ndarray:
     beta = 12 / np.sqrt(10 * (p - 1))
     term_2 = np.zeros(len(xx))
     for i in range(p - 1):
-        term_2[:] += xx[:, i] * np.sum(xx[:, (i+1):p], axis=1)
+        ip1 = i + 1
+        term_2[:] += xx[:, i] * np.sum(xx[:, ip1:p], axis=1)
     term_2 *= beta
 
     yy = term_1 + term_2
