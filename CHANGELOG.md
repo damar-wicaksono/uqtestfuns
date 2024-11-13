@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The M-dimension Sobol'-Levitan function from Sobol' and Levitan (1999) for
+  sensitivity analysis exercises.
 - The M-dimensional test function from Morris et al. (2006) for sensitivity
   analysis exercises.
 - The modified Sobol'-G test function (i.e., Sobol'-G*) from Saltelli et al.

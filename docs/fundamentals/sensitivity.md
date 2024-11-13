@@ -36,6 +36,7 @@ in the comparison of sensitivity analysis methods.
 |    {ref}`SaltelliLinear <test-functions:saltelli-linear>`    |        M        |  `SaltelliLinear()`  |
 |           {ref}`Sobol'-G <test-functions:sobol-g>`           |        M        |      `SobolG()`      |
 |        {ref}`Sobol'-G* <test-functions:sobol-g-star>`        |        M        |    `SobolGStar()`    |
+|     {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`     |        M        |   `SobolLevitan()`   |
 |            {ref}`Sulfur <test-functions:sulfur>`             |        9        |      `Sulfur()`      |
 |    {ref}`Welch et al. (1992) <test-functions:welch1992>`     |       20        |    `Welch1992()`     |
 |       {ref}`Wing Weight <test-functions:wing-weight>`        |       10        |    `WingWeight()`    |

@@ -129,6 +129,8 @@ parts:
             title: Sobol'-G
           - file: test-functions/sobol-g-star
             title: Sobol'-G*
+          - file: test-functions/sobol-levitan
+            title: Sobol'-Levitan
           - file: test-functions/speed-reducer-shaft
             title: Speed Reducer Shaft
           - file: test-functions/sulfur
