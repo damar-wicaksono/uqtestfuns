@@ -26,6 +26,7 @@ from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
 from .moon3d import Moon3D
+from .morris2006 import Morris2006
 from .piston import Piston
 from .portfolio_3d import Portfolio3D
 from .rs_circular_bar import RSCircularBar
@@ -83,6 +84,7 @@ __all__ = [
     "McLainS4",
     "McLainS5",
     "Moon3D",
+    "Morris2006",
     "Piston",
     "Portfolio3D",
     "RSCircularBar",

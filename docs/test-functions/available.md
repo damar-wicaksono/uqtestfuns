@@ -59,6 +59,7 @@ regardless of their typical applications.
 |                     {ref}`McLain S4 <test-functions:mclain-s4>`                     |        2        |          `McLainS4()`           |
 |                     {ref}`McLain S5 <test-functions:mclain-s5>`                     |        2        |          `McLainS5()`           |
 |                    {ref}`Moon (2010) 3D <test-functions:moon3d>`                    |        3        |           `Moon3D()`            |
+|               {ref}`Morris et al. (2006) <test-functions:morris2006>`               |        M        |         `Morris2006()`          |
 |            {ref}`Oakley & O'Hagan (2002) 1D <test-functions:oakley-1d>`             |        1        |          `Oakley1D()`           |
 |                   {ref}`OTL Circuit <test-functions:otl-circuit>`                   |     6 / 20      |         `OTLCircuit()`          |
 |                  {ref}`Piston Simulation <test-functions:piston>`                   |     7 / 20      |           `Piston()`            |
