@@ -109,6 +109,8 @@ parts:
             title: McLain S5
           - file: test-functions/moon3d
             title: Moon (2010) 3D
+          - file: test-functions/morris2006
+            title: Morris et al. (2006)
           - file: test-functions/oakley-1d
             title: Oakley & O'Hagan (2002) 1D
           - file: test-functions/otl-circuit
