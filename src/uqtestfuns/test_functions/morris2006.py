@@ -63,7 +63,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
         "function_id": "Morris2006",
         "description": (
             "Parameter set for the M-dimensional function from "
-            "Morris et al. (2006); the parameter controls the number of"
+            "Morris et al. (2006); the parameter controls the number of "
             "important input variables"
         ),
         "declared_parameters": [
