@@ -218,8 +218,8 @@ such that the following conditions are satisfied:
 
 $$
 \begin{aligned}
-S_i \times \mathbb{V}[Y]  & = 1.0, & i = 1, \ldots, p \\
-S_i & = 0.0, & i = p + 1, \ldots, M,
+S_i \times \mathbb{V}[Y]  & = 1.0, & i & = 1, \ldots, p, \\
+S_i                       & = 0.0, & i &  = p + 1, \ldots, M,
 \end{aligned}
 $$
 
@@ -227,8 +227,8 @@ and
 
 $$
 \begin{aligned}
-ST_i \times \mathbb{V}[Y] & = 1.1 & i = 1, \ldots, p \\
-ST_i & = 0.0, & i = p + 1, \ldots, M,
+ST_i \times \mathbb{V}[Y] & = 1.1 & i & = 1, \ldots, p, \\
+ST_i & = 0.0, & i & = p + 1, \ldots, M,
 \end{aligned}
 $$
 
