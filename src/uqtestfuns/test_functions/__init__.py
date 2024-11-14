@@ -37,6 +37,7 @@ from .sobol_g_star import SobolGStar
 from .sobol_levitan import SobolLevitan
 from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
+from .undamped_oscillator import UndampedOscillator
 from .webster import Webster2D
 from .welch1992 import Welch1992
 from .wing_weight import WingWeight
@@ -96,6 +97,7 @@ __all__ = [
     "SobolLevitan",
     "SpeedReducerShaft",
     "Sulfur",
+    "UndampedOscillator",
     "Webster2D",
     "Welch1992",
     "WingWeight",
