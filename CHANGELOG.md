@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The 6-dimensional undamped non-linear oscillator function for reliability
+  analysis exercises.
 - The M-dimension Sobol'-Levitan function from Sobol' and Levitan (1999) for
   sensitivity analysis exercises.
 - The M-dimensional test function from Morris et al. (2006) for sensitivity

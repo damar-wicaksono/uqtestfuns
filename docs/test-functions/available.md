@@ -72,6 +72,7 @@ regardless of their typical applications.
 |                {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                 |        M        |        `SobolLevitan()`         |
 |           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |        5        |      `SpeedReducerShaft()`      |
 |                        {ref}`Sulfur <test-functions:sulfur>`                        |        9        |           `Sulfur()`            |
+|           {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`           |        6        |     `UndampedOscillator()`      |
 |             {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`             |        2        |          `Webster2D()`          |
 |                {ref}`Welch et al. (1992) <test-functions:welch1992>`                |       20        |          `Welch1992()`          |
 |                   {ref}`Wing Weight <test-functions:wing-weight>`                   |       10        |         `WingWeight()`          |

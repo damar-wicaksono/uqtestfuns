@@ -135,6 +135,8 @@ parts:
             title: Speed Reducer Shaft
           - file: test-functions/sulfur
             title: Sulfur
+          - file: test-functions/undamped-oscillator
+            title: Undamped Oscillator
           - file: test-functions/webster-2d
             title: Webster et al. (1996) 2D
           - file: test-functions/welch1992
