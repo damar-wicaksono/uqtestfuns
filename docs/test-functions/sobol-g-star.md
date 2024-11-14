@@ -15,10 +15,10 @@ kernelspec:
 (test-functions:sobol-g-star)=
 # Sobol'-G* Function
 
-The Sobol'-G* function (modified Sobol'-G) is an $M$-dimensional
-scalar-valued function.
-It was introduced in {cite}`Saltelli2010` for testing sensitivity analysis
-methods (further use, see {cite}`Sun2022`).
+The Sobol'-G* function (also known as the modified Sobol'-G function)
+is an $M$-dimensional scalar-valued function.
+It was used in {cite}`Saltelli2010, Sun2022` for testing sensitivity analysis
+methods.
 
 This function introduces shift and curvature parameters to the original 
 {ref}`Sobol'-G <test-functions:sobol-g>` test function
@@ -30,8 +30,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The plots for one-dimensional and two-dimensional Sobol'-G function can be seen
-below.
+The plots for one-dimensional and two-dimensional Sobol'-G* function
+are shown below.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
@@ -100,7 +100,7 @@ plt.gcf().set_dpi(150);
 
 ## Test function instance
 
-To create a default instance of the Sobol'-G test* function, type:
+To create a default instance of the Sobol'-G* test function, type:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.SobolGStar()
@@ -115,7 +115,7 @@ print(my_testfun)
 By default, the input dimension is set to $2$[^default_dimension].
 To create an instance with another value of input dimension,
 pass an integer to the parameter `input_dimension` (the first parameter).
-For example, to create an instance of the Sobol'-G function in ten dimensions,
+For example, to create an instance of the Sobol'-G* function in ten dimensions,
 type:
 
 ```{code-cell} ipython3
@@ -132,11 +132,13 @@ The Sobol'-G* function is defined as follows[^location]:
 $$
 \mathcal{M}(\boldsymbol{x}; \boldsymbol{a}, \boldsymbol{\delta}, \boldsymbol{\alpha}) = \prod_{m = 1}^M g^*_m(x_i; a_i, \delta_i, \alpha_i)
 $$
+
 where
 
 $$
 g^*_m(x_i; a_i, \delta_i, \alpha_i) = \frac{(1 + \alpha_i) \lvert 2 (x_i + \delta_i - \lfloor x_i + \delta_i \rfloor) - 1 \rvert^{\alpha_i} + a_i}{1 + a_i}
 $$
+
 where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$ is the $M$-dimensional vector
 of input variables further defined below,
 and $\boldsymbol{a}$, $\boldsymbol{\delta}$, and $\boldsymbol{\alpha}$ are the
@@ -155,27 +157,29 @@ print(my_testfun.prob_input)
 
 ## Parameters
 
-The parameters of the Sobol-G* function (that is, the coefficients
+The parameters of the Sobol-G* function---namely the coefficients
 $\boldsymbol{a}$, the shift parameter $\boldsymbol{\delta}$, and the 
-curvature parameter $\boldsymbol{\alpha}$)
-determine the overall behavior of the function.
-The shift parameter, however, cancels out when moments and Sobol' sensitivity
-indices are computed.
+curvature parameter $\boldsymbol{\alpha}$---determine the overall behavior
+of the function.
+It is worth noting that in the computation of moments and Sobol' sensitivity
+indices computation, the shift parameter $\boldsymbol{\delta}$ has no effect,
+as it cancels out. This property justifies why the value of
+$\boldsymbol{\delta}$ is typically generated randomly.
 
 The available parameters for the Sobol'-G* function are shown in the table
 below.
 
 ```{table} Parameters of the Sobol'-G* function
 :name: sobol-g-star-parameters
-| No. |                                      $\boldsymbol{a}$                                       |       $\boldsymbol{\delta}$        | $\boldsymbol{\alpha}$ |     Keyword      |                   Source                    |          Remark          |
-|:---:|:-------------------------------------------------------------------------------------------:|:----------------------------------:|:---------------------:|:----------------:|:-------------------------------------------:|:------------------------:|
-| 1.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 1.0$    | `Saltelli2010-1` | {cite}`Saltelli2010` (Table 5, test case 1) | Low effective dimension  |
-| 2.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 1.0$    | `Saltelli2010-2` | {cite}`Saltelli2010` (Table 5, test case 2) | High effective dimension |
-| 3.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 0.5$    | `Saltelli2010-3` | {cite}`Saltelli2010` (Table 5, test case 3) |   Convex version of 1    |
-| 4.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 0.5$    | `Saltelli2010-4` | {cite}`Saltelli2010` (Table 5, test case 4) |   Convex version of 2    |
-| 5.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 2.0$    | `Saltelli2010-5` | {cite}`Saltelli2010` (Table 5, test case 5) |   Concave version of 1   |
-| 6.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 2.0$    | `Saltelli2010-6` | {cite}`Saltelli2010` (Table 5, test case 6) |   Concave version of 2   |
-``` 
+| No. |                                      $\boldsymbol{a}$                                       |       $\boldsymbol{\delta}$        | $\boldsymbol{\alpha}$ |             Keyword             |                   Source                    |          Remark          |
+|:---:|:-------------------------------------------------------------------------------------------:|:----------------------------------:|:---------------------:|:-------------------------------:|:-------------------------------------------:|:------------------------:|
+| 1.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 1.0$    | `Saltelli2010-1` <br> (default) | {cite}`Saltelli2010` (Table 5, test case 1) | Low effective dimension  |
+| 2.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 1.0$    |        `Saltelli2010-2`         | {cite}`Saltelli2010` (Table 5, test case 2) | High effective dimension |
+| 3.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 0.5$    |        `Saltelli2010-3`         | {cite}`Saltelli2010` (Table 5, test case 3) |   Convex version of 1    |
+| 4.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 0.5$    |        `Saltelli2010-4`         | {cite}`Saltelli2010` (Table 5, test case 4) |   Convex version of 2    |
+| 5.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 2.0$    |        `Saltelli2010-5`         | {cite}`Saltelli2010` (Table 5, test case 5) |   Concave version of 1   |
+| 6.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 2.0$    |        `Saltelli2010-6`         | {cite}`Saltelli2010` (Table 5, test case 6) |   Concave version of 2   |
+```
 
 The default parameter is shown below.
 
@@ -186,13 +190,14 @@ print(my_testfun.parameters)
 ```
 
 ````{note}
-To create an instance of the Sobol'-G* function with different built-in parameter values, 
-pass the corresponding keyword to the parameter `parameters_id`.
+To create an instance of the Sobol'-G* function with a different set
+of built-in parameters, pass the corresponding keyword to the parameter
+`parameters_id`.
 For example, to use the parameters of test case 2 from {cite}`Saltelli2010`,
 type:
 
 ```python
-my_testfun = uqtf.SobolG(parameters_id="Saltelli2010-2")
+my_testfun = uqtf.SobolGStar(parameters_id="Saltelli2010-2")
 ```
 ````
 
@@ -267,7 +272,7 @@ Notice that the value of the variance depend on the choice of the parameter valu
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes compared with the
 analytical values.
-The error bars corresponds to twice the standard deviation
+The error bars correspond to twice the standard deviation
 of the estimates obtained from $50$ replications.
 
 ```{code-cell} ipython3

@@ -255,7 +255,7 @@ of the parameter values.
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes compared with the
 analytical values.
-The error bars corresponds to twice the standard deviation
+The error bars correspond to twice the standard deviation
 of the estimates obtained from $50$ replications.
 
 ```{code-cell} ipython3
