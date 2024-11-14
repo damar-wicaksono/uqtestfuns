@@ -8,7 +8,7 @@ The current form (and name) was from [4] and used in the context of global
 sensitivity analysis. There, the function was generalized by introducing
 a set of parameters that determines the importance of each input variable.
 Later on, it becomes a popular testing function for global sensitivity analysis
-methods; see, for instances, [5], [6], and [7].
+methods; see, for instances, [5], [6], [7], and [9].
 
 There are several sets of parameters used in the literature.
 
@@ -54,6 +54,11 @@ References
    of Model Output, 2007.
    Accessed: Jan. 25, 2023
    URL: http://samo2007.chem.elte.hu/lectures/Crestaux.pdf
+9. X. Sun, B. Croke, A. Jakeman, S. Roberts, "Benchmarking Active Subspace
+   methods of global sensitivity analysis against variance-based Sobol’
+   and Morris methods with established test functions," Environmental Modelling
+   & Software, vol. 149, p. 105310, 2022.
+   DOI: 10.1016/j.envsoft.2022.105310
 """
 
 import numpy as np
@@ -215,6 +220,25 @@ def _get_params_kucherenko_2011_3b(input_dimension: int) -> np.ndarray:
     return yy
 
 
+def _get_params_sun_2022(input_dimension: int) -> np.ndarray:
+    """Construct a parameter array for Sobol'-G according to Sec. 3. 2. [9].
+
+    Notes
+    -----
+    - The length of the array in [9] is originally seven following
+      a 7-dimensional function. If input dimension is larger than 7,
+      then the remaining coefficients are extrapolated
+      from the last available value.
+    """
+    aa = np.array([0.0, 1.0, 4.5, 9.0, 99, 99, 99])
+
+    if input_dimension > len(aa):
+        aa_ext = 99 * np.ones(input_dimension - len(aa))
+        aa = np.append(aa, aa_ext)
+
+    return aa[:input_dimension]
+
+
 AVAILABLE_PARAMETERS: FunParamSpecs = {
     "Saltelli1995-1": {
         "function_id": "SobolG",
@@ -227,7 +251,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "aa",
                 "value": _get_params_saltelli_1995_1,
                 "type": np.ndarray,
-                "description": "Parameter 'a'",
+                "description": "Coefficients 'a'",
             },
         ],
     },
@@ -243,7 +267,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "aa",
                 "value": _get_params_saltelli_1995_2,
                 "type": np.ndarray,
-                "description": "Parameter 'a'",
+                "description": "Coefficients 'a'",
             },
         ],
     },
@@ -260,7 +284,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "aa",
                 "value": _get_params_saltelli_1995_3,
                 "type": np.ndarray,
-                "description": "Parameter 'a'",
+                "description": "Coefficients 'a'",
             },
         ],
     },
@@ -276,7 +300,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "aa",
                 "value": _get_params_sobol_1998_1,
                 "type": np.ndarray,
-                "description": "Parameter 'a'",
+                "description": "Coefficients 'a'",
             },
         ],
     },
@@ -292,7 +316,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "aa",
                 "value": _get_params_sobol_1998_2,
                 "type": np.ndarray,
-                "description": "Parameter 'a'",
+                "description": "Coefficients 'a'",
             },
         ],
     },
@@ -308,7 +332,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "aa",
                 "value": _get_params_sobol_1998_3,
                 "type": np.ndarray,
-                "description": "Parameter 'a'",
+                "description": "Coefficients 'a'",
             },
         ],
     },
@@ -323,7 +347,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "aa",
                 "value": _get_params_sobol_1998_4,
                 "type": np.ndarray,
-                "description": "Parameter 'a'",
+                "description": "Coefficients 'a'",
             },
         ],
     },
@@ -338,7 +362,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "aa",
                 "value": _get_params_kucherenko_2011_2a,
                 "type": np.ndarray,
-                "description": "Parameter 'a'",
+                "description": "Coefficients 'a'",
             },
         ],
     },
@@ -354,7 +378,22 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
                 "keyword": "aa",
                 "value": _get_params_kucherenko_2011_3b,
                 "type": np.ndarray,
-                "description": "Parameter 'a'",
+                "description": "Coefficients 'a'",
+            },
+        ],
+    },
+    "Sun2022": {
+        "function_id": "SobolG",
+        "description": (
+            "Parameter set for the Sobol-G function from Sun et al. "
+            "(2022), Section 3.2"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "aa",
+                "value": _get_params_sun_2022,
+                "type": np.ndarray,
+                "description": "Coefficients 'a'",
             },
         ],
     },

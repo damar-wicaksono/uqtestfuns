@@ -25,7 +25,7 @@ the context of global sensitivity analysis.
 There, the function was generalized by introducing a set of parameters
 that determines the importance of each input variable.
 Later on, it becomes a popular testing function for global sensitivity analysis
-methods; see, for instance, {cite}`Marrel2008, Marrel2009, Kucherenko2011`.
+methods; see, for instance, {cite}`Marrel2008, Marrel2009, Kucherenko2011, Sun2022`.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -154,17 +154,21 @@ input variable.
 There are several sets of parameters used in the literature
 as shown in the table below.  
   
-| No. |                           Value                            |          Keyword           |                             Source                             |                                             Remark                                             |  
-|:---:|:----------------------------------------------------------:|:--------------------------:|:--------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|  
-|  1  |                  $a_1 = \ldots = a_M = 0$                  |      `Saltelli1995-1`      |  {cite}`Saltelli1995` (Example 1) (also {cite}`Bratley1992`)   |                           All input variables are equally important                            |  
-|  2  | $a_1 = a_2 = 0$<br> $a_3 = 3$<br> $a_3 = \ldots = a_M = 9$ |      `Saltelli1995-2`      |                {cite}`Saltelli1995` (Example 2)                | The first two are important, the next is moderately important, and the rest is non-influential |  
-|  3  |      $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$       | `Saltelli1995-3` (default) | {cite}`Saltelli1995` (Example 3) (also {cite}`Crestaux2007`  ) |              The most important input is the first one, the least is the last one              |
-|  4  |                $a_1 = \ldots = a_M = 0.01$                 |       `Sobol1998-1`        |                  {cite}`Sobol1998` (choice 1)                  |                   The supremum of the function grows exponentially at $2^M$                    |  
-|  5  |                 $a_1 = \ldots = a_M = 1.0$                 |       `Sobol1998-2`        |                  {cite}`Sobol1998` (choice 2)                  |                  The supremum of the function grows exponentially at  $1.5^M$                  |  
-|  6  |             $a_m = m$<br> $\, 1 \leq m \leq M$             |       `Sobol1998-3`        |                  {cite}`Sobol1998` (choice 3)                  |                The supremum of the function grows linearly at $1 + \frac{M}{2}$                |  
-|  7  |             $a_m = m^2$<br> $1 \leq m \leq M$              |       `Sobol1998-4`        |                  {cite}`Sobol1998` (choice 4)                  |                                The supremum is bounded at $1.0$                                |  
-|  8  |     $a_1 = a_2 = 0.0$<br> $a_3 = \ldots = a_M = 6.52$      |    `Kucherenko2011-2a`     |              {cite}`Kucherenko2011` (Problem 2A)               |                                     Originally, $M = 100$                                      |  
-|  9  |             $a_m = 6,52$<br> $1 \leq m \leq M$             |    `Kucherenko2011-3b`     |              {cite}`Kucherenko2011` (Problem 3B)               |                                                                                                |  
+```{table} Available parameters of the Sobol'-G function
+:name: sobol-g-parameters
+| No. |                             Value                             |          Keyword           |                             Source                             |                                             Remark                                             |  
+|:---:|:-------------------------------------------------------------:|:--------------------------:|:--------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|  
+|  1  |                   $a_1 = \ldots = a_M = 0$                    |      `Saltelli1995-1`      |  {cite}`Saltelli1995` (Example 1) (also {cite}`Bratley1992`)   |                           All input variables are equally important                            |  
+|  2  |  $a_1 = a_2 = 0$<br> $a_3 = 3$<br> $a_3 = \ldots = a_M = 9$   |      `Saltelli1995-2`      |                {cite}`Saltelli1995` (Example 2)                | The first two are important, the next is moderately important, and the rest is non-influential |  
+|  3  |        $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$        | `Saltelli1995-3` (default) | {cite}`Saltelli1995` (Example 3) (also {cite}`Crestaux2007`  ) |              The most important input is the first one, the least is the last one              |
+|  4  |                  $a_1 = \ldots = a_M = 0.01$                  |       `Sobol1998-1`        |                  {cite}`Sobol1998` (choice 1)                  |                   The supremum of the function grows exponentially at $2^M$                    |  
+|  5  |                  $a_1 = \ldots = a_M = 1.0$                   |       `Sobol1998-2`        |                  {cite}`Sobol1998` (choice 2)                  |                  The supremum of the function grows exponentially at  $1.5^M$                  |  
+|  6  |              $a_m = m$<br> $\, 1 \leq m \leq M$               |       `Sobol1998-3`        |                  {cite}`Sobol1998` (choice 3)                  |                The supremum of the function grows linearly at $1 + \frac{M}{2}$                |  
+|  7  |               $a_m = m^2$<br> $1 \leq m \leq M$               |       `Sobol1998-4`        |                  {cite}`Sobol1998` (choice 4)                  |                                The supremum is bounded at $1.0$                                |  
+|  8  |       $a_1 = a_2 = 0.0$<br> $a_3 = \ldots = a_M = 6.52$       |    `Kucherenko2011-2a`     |              {cite}`Kucherenko2011` (Problem 2A)               |                                     Originally, $M = 100$                                      |  
+|  9  |              $a_m = 6.52$<br> $1 \leq m \leq M$               |    `Kucherenko2011-3b`     |              {cite}`Kucherenko2011` (Problem 3B)               |                                                                                                |
+| 10  | $a_{1 - 4} = (0, 1, 4.5, 9)$ <br> $a_m = 99, 5 \leq m \leq M$ |         `Sun2022`          |                 {cite}`Sun2022` (Section 3.2)                  |                                                                                                |
+```
 
 ```{note}
 The parameter values used in {cite}`Marrel2008` and {cite}`Marrel2009`
@@ -180,8 +184,9 @@ print(my_testfun.parameters)
 ```
 
 ````{note}
-To create an instance of the Sobol'-G function with different built-in parameter values, 
-pass the corresponding keyword to the parameter `parameters_id`.
+To create an instance of the Sobol'-G function with different built-in
+parameter values, pass the corresponding keyword
+to the parameter `parameters_id`.
 For example, to use the parameters of problem 3B from {cite}`Kucherenko2011`,
 type:
 
@@ -192,8 +197,8 @@ my_testfun = uqtf.SobolG(parameters_id="Kucherenko2011-3b")
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
