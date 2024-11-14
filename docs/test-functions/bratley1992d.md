@@ -26,7 +26,8 @@ is an $M$-dimensional scalar-valued function.
 The function was introduced in {cite}`Bratley1992` as a test function
 for multi-dimensional numerical integration using low discrepancy sequences.
 It was used in {cite}`Kucherenko2009` and {cite}`Saltelli2010` in the context
-of global sensitivity analysis.
+of global sensitivity analysis; there the function is more commonly known as
+the $K$-function.
 
 ```{note}
 There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
@@ -40,9 +41,9 @@ There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
 - {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`:
   A sum of product (_this function_)
   
-The function was reintroduced in {cite}`Saltelli1995` with additional
-parameters for global sensitivity analysis purposes.
-The "generalized" function became known as the {ref}`Sobol'-G <test-functions:sobol-g>`. 
+This function was reintroduced by {cite}`Kucherenko2009` as a test function
+for global sensitivity analysis and was later renamed the $K$-function in 
+{cite}`Saltelli2010`.
 ```
 
 The plots for one-dimensional and two-dimensional `Bratley1992d` functions

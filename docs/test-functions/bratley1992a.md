@@ -38,9 +38,10 @@ There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
 - {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`:
   A sum of product
   
-The function was reintroduced in {cite}`Saltelli1995` with additional
+This function was reintroduced in {cite}`Saltelli1995` with additional
 parameters for global sensitivity analysis purposes.
-The "generalized" function became known as the {ref}`Sobol'-G <test-functions:sobol-g>`. 
+The "generalized" function became known as
+the {ref}`Sobol'-G <test-functions:sobol-g>`. 
 ```
 
 The plots for one-dimensional and two-dimensional `Bratley1992a` functions
