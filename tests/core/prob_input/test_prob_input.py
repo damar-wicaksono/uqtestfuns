@@ -147,7 +147,20 @@ def test_str():
     my_probinput = ProbInput(marginals)
 
     # Create a string
-    my_str = my_probinput.__str__()
+    my_str = str(my_probinput)
+
+    # Assertion
+    assert isinstance(my_str, str)
+
+
+def test_repr():
+    """Test __repr__ method of an instance of ProbInput."""
+    # Create a test instance
+    marginals = create_random_marginals(5)
+    my_probinput = ProbInput(marginals)
+
+    # Create a string
+    my_str = repr(my_probinput)
 
     # Assertion
     assert isinstance(my_str, str)
@@ -189,6 +202,29 @@ def test_reset_rng(input_dimension):
 
     # Reset the RNG and generate new sample points
     my_input.reset_rng(rng_seed)
+    xx_2 = my_input.get_sample(1000)
+
+    # Assertion: Both samples should now be equal
+    assert np.allclose(xx_1, xx_2)
+
+
+@pytest.mark.parametrize("input_dimension", [1, 2, 10, 100])
+def test_set_rng_seed(input_dimension):
+    """Test setting the RNG seed after an instance has been created."""
+    marginals = create_random_marginals(input_dimension)
+
+    # Create two instances with an identical seed number
+    my_input = ProbInput(marginals, rng_seed=42)
+
+    # Generate sample points
+    xx_1 = my_input.get_sample(1000)
+    xx_2 = my_input.get_sample(1000)
+
+    # Assertion: Both samples should not be equal
+    assert not np.allclose(xx_1, xx_2)
+
+    # Reset the RNG and generate new sample points
+    my_input.rng_seed = 42
     xx_2 = my_input.get_sample(1000)
 
     # Assertion: Both samples should now be equal

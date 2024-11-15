@@ -48,6 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- "None" copula is now printed as "Independence"; this is a temporary solution
+  as there is no independence copula object yet.
 - Application tags are now displayed when an instance of test function is
   printed on the terminal.
 - `list_functions()` is now printed in grid format and include information
