@@ -43,8 +43,9 @@ in the comparison of sensitivity analysis methods.
 |       {ref}`Wing Weight <test-functions:wing-weight>`        |       10        |    `WingWeight()`    |
 
 In a Python terminal, you can list all the available functions relevant
-for metamodeling applications using ``list_functions()`` and filter the results
-using the ``tag`` parameter:
+for metamodeling applications using ``list_functions()``
+and filter the results  using the ``tag`` parameter
+(shown below in the HTML format):
 
 ```{code-cell} ipython3
 :tags: ["output_scroll"]
@@ -53,3 +54,44 @@ import uqtestfuns as uqtf
 
 uqtf.list_functions(tag="sensitivity", tablefmt="html")
 ```
+
+## About sensitivity analysis
+
+**Sensitivity analysis** is a class of model inference techniques
+whose overarching aim is to _understand the input-output relationship_
+of a complex (perhaps, even a black-box) computational model.
+Within the uncertainty quantification (UQ) framework
+(see {ref}`fundamentals:overview`), this aim is reframed as determining
+how the uncertainty of the model output(s) is affected
+by the uncertainty of the inputs.
+
+While understanding the input-output relationship is valuable on its own[^model-building],
+sensitivity analysis often focuses on more practical tasks, including:
+
+- **Identifying of input variables that primarily drives the output uncertainty**:
+  This knowledge enables _factor prioritization_, where efforts are concentrated
+  on reducing the uncertainty of the most influential inputs (if possible)
+  to significantly decrease the uncertainty of the outputs
+- **Identifying of non-influential input variables**:
+  This knowledge enables _factor fixing/screening_, where non-influential
+  inputs are fixed to arbitrary value without 
+  affecting significantly (or at all) the uncertainty of the outputs.
+  In essence, factor fixing reduces the dimensionality of the problem.
+
+Sensitivity analysis within the UQ framework are typically carried out in
+a black-box manner, relying solely on model evaluations at carefully
+selected input points.
+The goal is then to achieve the aforementioned tasks with as few model
+evaluations as possible.
+
+For detailed discussions on this topic, see {cite}`Saltelli2007, Iooss2015`.
+
+## References
+
+```{bibliography}
+:style: unsrtalpha
+:filter: docname in docnames
+```
+
+[^model-building]: especially during model building and the ensuing verification
+and validation activities.

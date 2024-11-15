@@ -87,7 +87,7 @@ The different specifications alter the failure probability of the system
 |:---:|:------------------:|:----------------------:|:----------------------------:|  
 | 1.  | $\mu_{F_1} = 1.00$ | `Gayton2003` (default) | {cite}`Gayton2003` (Table 9) |  
 | 2.  | $\mu_{F_1} = 0.60$ |     `Echard2013-1`     | {cite}`Echard2013` (Table 4) |
-| 3.  | $\mu_{F_1} = 0.45} |     `Echard2013-2`     | {cite}`Echard2013` (Table 4) |
+| 3.  | $\mu_{F_1} = 0.45$ |     `Echard2013-2`     | {cite}`Echard2013` (Table 4) |
 ```
 
 The default input is shown below.
@@ -148,7 +148,7 @@ are summarized in the tables below according to the chosen input specification.
 |   Adaptive Kriging + {term}`MCS` + U   |       $45$        | $2.851 \times 10^{-2}$ |          &#8212;          |   {cite}`Echard2011` (Table 6)    |
 :::
 
-:::{tab-item} Sobol1999-2
+:::{tab-item} Echard2013-1
 |            Method             |         $N$          |      $\hat{P}_f$      | $\mathrm{CoV}[\hat{P}_f]$ |            Source            |
 |:-----------------------------:|:--------------------:|:---------------------:|:-------------------------:|:----------------------------:|
 |          {term}`MCS`          | $1.8 \times 10^{8}$  | $9.09 \times 10^{-6}$ |         $2.47\%$          | {cite}`Echard2013` (Table 5) |
@@ -157,7 +157,7 @@ are summarized in the tables below according to the chosen input specification.
 | Adaptive Kriging + {term}`IS` |      $29 + 38$       | $9.13 \times 10^{-6}$ |         $2.29\%$          | {cite}`Echard2013` (Table 5) |
 :::
 
-:::{tab-item} Moon2012-1
+:::{tab-item} Echard2013-2
 |            Method             |         $N$          |      $\hat{P}_f$      | $\mathrm{CoV}[\hat{P}_f]$ |            Source            |
 |:-----------------------------:|:--------------------:|:---------------------:|:-------------------------:|:----------------------------:|
 |          {term}`MCS`          |  $9 \times 10^{8}$   | $1.55 \times 10^{-8}$ |         $2.68\%$          | {cite}`Echard2013` (Table 5) |
