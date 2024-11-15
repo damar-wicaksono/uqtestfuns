@@ -12,6 +12,7 @@ kernelspec:
   name: python3
 ---
 
+(fundamentals:reliability)=
 # Test Functions for Reliability Analysis
 
 The table below listed the available test functions typically used

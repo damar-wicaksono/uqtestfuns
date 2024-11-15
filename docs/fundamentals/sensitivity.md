@@ -12,6 +12,7 @@ kernelspec:
   name: python3
 ---
 
+(fundamentals:sensitivity)=
 # Test Functions for Sensitivity Analysis
 
 The table below listed the available test functions typically used

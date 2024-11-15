@@ -12,6 +12,7 @@ kernelspec:
   name: python3
 ---
 
+(fundamentals:integration)=
 # Test Functions for Numerical Integration
 
 The table below listed the available test functions typically used
