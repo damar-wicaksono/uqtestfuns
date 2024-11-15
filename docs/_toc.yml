@@ -18,6 +18,7 @@ parts:
           - file: getting-started/tutorial-custom-functions
             title: Custom Test Functions
       - file: getting-started/about-uq-test-functions
+      - file: getting-started/citing
   - caption: Test Functions
     chapters:
       - file: fundamentals/overview
