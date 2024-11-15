@@ -1,5 +1,5 @@
 # UQTestFuns
-[![DOI](https://joss.theoj.org/papers/10.21105/joss.05671/status.svg)](https://doi.org/10.21105/joss.05671)
+[![JOSS](https://img.shields.io/badge/JOSS-10.21105/joss.05671-brightgreen?style=flat-square)](https://doi.org/10.21105/joss.05671)
 [![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.10047512-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.10047512)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
