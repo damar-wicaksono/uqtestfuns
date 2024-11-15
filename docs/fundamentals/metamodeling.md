@@ -55,8 +55,9 @@ in the comparison of metamodeling approaches.
 |            {ref}`Wing Weight <test-functions:wing-weight>`             |       10        |     `WingWeight()`      |
 
 In a Python terminal, you can list all the available functions relevant
-for metamodeling applications using ``list_functions()`` and filter the results
-using the ``tag`` parameter:
+for metamodeling applications using ``list_functions()``
+and filter the results using the ``tag`` parameter
+(shown below in the HTML format):
 
 ```{code-cell} ipython3
 :tags: ["output_scroll"]
@@ -64,4 +65,30 @@ using the ``tag`` parameter:
 import uqtestfuns as uqtf
 
 uqtf.list_functions(tag="metamodeling", tablefmt="html")
+```
+
+## About metamodeling
+
+In practice, the computational model $\mathcal{M}$ (see {ref}`fundamentals:overview`)
+is typically complex.
+Since an uncertainty quantification (UQ) analysis usually require numerous
+evaluations of $\mathcal{M}$ ($\sim 10^2$---$10^6$ or more!), the process
+may become computationally intractable if $\mathcal{M}$ is expensive to evaluate.
+
+To address this challenge, many UQ analyses employ a metamodel (surrogate model).
+Constructed on a limited number of model $\mathcal{M}$ evaluations,
+such a metamodel should be able to capture the most important aspects
+of the input/output mapping while being significantly cheaper to evaluate.
+This metamodel can then replace $\mathcal{M}$ in the analysis,
+providing a significant reduction in computational cost without
+sacrificing the accuracy of the analysis much.
+
+While not a goal of UQ analyse per se, metamodeling is nowadays an indispensable
+component of the UQ framework {cite}`Sudret2012, Sudret2017`.
+
+## References
+
+```{bibliography}
+:style: unsrtalpha
+:filter: docname in docnames
 ```
