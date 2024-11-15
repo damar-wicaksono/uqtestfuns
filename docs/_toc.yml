@@ -20,6 +20,8 @@ parts:
       - file: getting-started/about-uq-test-functions
   - caption: Test Functions
     chapters:
+      - file: fundamentals/overview
+        title: Overview
       - file: fundamentals/metamodeling
         title: Metamodeling
       - file: fundamentals/sensitivity
