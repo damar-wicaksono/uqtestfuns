@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- A commentary on metamodeling within the UQ framework in the docs.
+- A better overview of UQ framework in the docs.
 - A new parameter set for the Sobol'-G function from Sun et al. (2022).
 - The 6-dimensional undamped non-linear oscillator function for reliability
   analysis exercises.
