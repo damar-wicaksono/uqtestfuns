@@ -85,7 +85,7 @@ the system is in safe state if the maximum temperature
 does not exceed the regulatory limit.
 ```
 
-_Reliability analysis_[^rare-event] concerns with estimating
+**Reliability analysis**[^rare-event] concerns with estimating
 the failure probability of a system with a given performance function $g$. 
 For a given joint probability density function (PDF) $f_{\boldsymbol{X}}$
 of the uncertain input variables $\boldsymbol{X} = \{ \boldsymbol{X}_p, \boldsymbol{X}_s \}$,

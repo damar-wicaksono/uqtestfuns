@@ -12,6 +12,7 @@ kernelspec:
   name: python3
 ---
 
+(fundamentals:optimization)=
 # Test Functions for Optimization
 
 The table below listed the available test functions typically used
