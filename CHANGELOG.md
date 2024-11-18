@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The 5-dimensional single-diode solar cell model from Constantine et al.
+  (2015); this is the first function of which the solution must be computed
+  numerically.
 - Update the README with JOSS badge and instruction how to cite the paper and
   package.
 - A commentary on sensitivity analysis within the UQ framework in the docs.

@@ -9,7 +9,7 @@ References
 1. H. Cheng and A. Sandu, “Collocation least-squares polynomial chaos method,”
    in Proceedings of the 2010 Spring Simulation Multiconference, Orlando,
    Florida: Society for Computer Simulation International, 2010, pp. 1–6.
-   DOI: 10.1145/1878537.1878621].
+   DOI: 10.1145/1878537.1878621.
 """
 
 import numpy as np

@@ -35,6 +35,7 @@ from .saltelli_linear import SaltelliLinear
 from .sobol_g import SobolG
 from .sobol_g_star import SobolGStar
 from .sobol_levitan import SobolLevitan
+from .solar_cell import SolarCell
 from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
 from .undamped_oscillator import UndampedOscillator
@@ -95,6 +96,7 @@ __all__ = [
     "SobolG",
     "SobolGStar",
     "SobolLevitan",
+    "SolarCell",
     "SpeedReducerShaft",
     "Sulfur",
     "UndampedOscillator",

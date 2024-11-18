@@ -95,7 +95,7 @@ AVAILABLE_INPUTS: ProbInputSpecs = {
         "function_id": "Flood",
         "description": (
             "Probabilistic input model for the Flood model "
-            "from Iooss and Lemaître (2015)."
+            "from Iooss and Lemaître (2015)"
         ),
         "marginals": MARGINALS_IOOSS2015,
         "copulas": None,
