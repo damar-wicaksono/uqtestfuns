@@ -36,12 +36,12 @@ As can be seen, the function features many local optima with a single global opt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # --- Create 1D data from Ackley
-my_ackley_1d = uqtf.Ackley(spatial_dimension=1)
+my_ackley_1d = uqtf.Ackley(input_dimension=1)
 xx_1d = np.linspace(-32.768, 32.768, 1000)[:, np.newaxis]
 yy_1d = my_ackley_1d(xx_1d)
 
 # --- Create 2D data from Ackley
-my_ackley_2d = uqtf.Ackley(spatial_dimension=2)
+my_ackley_2d = uqtf.Ackley(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_ackley_2d(xx_2d)
@@ -104,13 +104,13 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
   
-By default, the spatial dimension is set to $2$[^default_dimension].
-To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (keyword only).
+By default, the input dimension is set to $2$[^default_dimension].
+To create an instance with another value of input dimension,
+pass an integer to the parameter `input_dimension` (keyword only).
 For example, to create an instance of 10-dimensional Ackley function, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Ackley(spatial_dimension=10)
+my_testfun = uqtf.Ackley(input_dimension=10)
 ```
 
 In the subsequent section, this 10-dimensional Ackley function will be used
@@ -137,14 +137,22 @@ In UQTestFuns, this search domain can be represented as probabilistic input
 using the uniform distribution with marginals shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Parameters
 
 The Ackley function requires three additional parameters
 to complete the specification.
-The recommended (and the default) values are $a_1 = 20, a_2 = 0.2, a_3 = 2 \pi$.
+The default values are shown below.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+print(my_testfun.parameters)
+```
 
 ## Reference results
 
@@ -181,4 +189,4 @@ $\mathcal{M}(\boldsymbol{x}^*) = 0$ at $x_m^* = 0,\, m = 1, \ldots, M$.
 ```
 
 [^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `spatial_dimension` argument is not given.
+test functions. It will be used if the `input_dimension` argument is not given.

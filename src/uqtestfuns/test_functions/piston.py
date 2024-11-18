@@ -20,92 +20,94 @@ References
    Variables," Ph. D. dissertation, Ohio State University, Ohio, 2010.
    URL: http://rave.ohiolink.edu/etdc/view?acc_num=osu1275422248
 """
+
 import numpy as np
 
-from copy import copy
+from copy import deepcopy
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Piston"]
 
+
 # Marginals specification from [1]
-INPUT_MARGINALS_BENARI2007 = [
-    UnivDistSpec(
-        name="M",
-        distribution="uniform",
-        parameters=[30.0, 60.0],
-        description="Piston weight [kg]",
-    ),
-    UnivDistSpec(
-        name="S",
-        distribution="uniform",
-        parameters=[0.005, 0.020],
-        description="Piston surface area [m^2]",
-    ),
-    UnivDistSpec(
-        name="V0",
-        distribution="uniform",
-        parameters=[0.002, 0.010],
-        description="Initial gas volume [m^3]",
-    ),
-    UnivDistSpec(
-        name="k",
-        distribution="uniform",
-        parameters=[1000.0, 5000.0],
-        description="Spring coefficient [N/m]",
-    ),
-    UnivDistSpec(
-        name="P0",
-        distribution="uniform",
-        parameters=[90000.0, 110000.0],
-        description="Atmospheric pressure [N/m^2]",
-    ),
-    UnivDistSpec(
-        name="Ta",
-        distribution="uniform",
-        parameters=[290.0, 296.0],
-        description="Ambient temperature [K]",
-    ),
-    UnivDistSpec(
-        name="T0",
-        distribution="uniform",
-        parameters=[340.0, 360.0],
-        description="Filling gas temperature [K]",
-    ),
+MARGINALS_BENARI2007: MarginalSpecs = [
+    {
+        "name": "M",
+        "distribution": "uniform",
+        "parameters": [30.0, 60.0],
+        "description": "Piston weight [kg]",
+    },
+    {
+        "name": "S",
+        "distribution": "uniform",
+        "parameters": [0.005, 0.020],
+        "description": "Piston surface area [m^2]",
+    },
+    {
+        "name": "V0",
+        "distribution": "uniform",
+        "parameters": [0.002, 0.010],
+        "description": "Initial gas volume [m^3]",
+    },
+    {
+        "name": "k",
+        "distribution": "uniform",
+        "parameters": [1000.0, 5000.0],
+        "description": "Spring coefficient [N/m]",
+    },
+    {
+        "name": "P0",
+        "distribution": "uniform",
+        "parameters": [90000.0, 110000.0],
+        "description": "Atmospheric pressure [N/m^2]",
+    },
+    {
+        "name": "Ta",
+        "distribution": "uniform",
+        "parameters": [290.0, 296.0],
+        "description": "Ambient temperature [K]",
+    },
+    {
+        "name": "T0",
+        "distribution": "uniform",
+        "parameters": [340.0, 360.0],
+        "description": "Filling gas temperature [K]",
+    },
 ]
 
 # Marginals specification from [2]
-INPUT_MARGINALS_MOON2010 = [copy(_) for _ in INPUT_MARGINALS_BENARI2007]
+MARGINALS_MOON2010 = [deepcopy(_) for _ in MARGINALS_BENARI2007]
 for i in range(13):
-    INPUT_MARGINALS_MOON2010.append(
-        UnivDistSpec(
-            name=f"Inert {i+1}",
-            distribution="uniform",
-            parameters=[100.0, 200.0],
-            description="Inert input [-]",
-        )
+    MARGINALS_MOON2010.append(
+        {
+            "name": f"Inert {i+1}",
+            "distribution": "uniform",
+            "parameters": [100.0, 200.0],
+            "description": "Inert input [-]",
+        }
     )
 
-AVAILABLE_INPUT_SPECS = {
-    "BenAri2007": ProbInputSpecFixDim(
-        name="Piston-BenAri2007",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "BenAri2007": {
+        "function_id": "Piston",
+        "description": (
             "Probabilistic input model for the Piston simulation model "
             "from Ben-Ari and Steinberg (2007)."
         ),
-        marginals=INPUT_MARGINALS_BENARI2007,
-        copulas=None,
-    ),
-    "Moon2010": ProbInputSpecFixDim(
-        name="Piston-Moon2010",
-        description=(
+        "marginals": MARGINALS_BENARI2007,
+        "copulas": None,
+    },
+    "Moon2010": {
+        "function_id": "Piston",
+        "description": (
             "Probabilistic input model for the Piston simulation model "
             "from Moon (2010)."
         ),
-        marginals=INPUT_MARGINALS_MOON2010,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_MOON2010,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "BenAri2007"
@@ -159,14 +161,13 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return cc
 
 
-class Piston(UQTestFunABC):
+class Piston(UQTestFunFixDimABC):
     """A concrete implementation of the Piston simulation test function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Piston simulation model from Ben-Ari and Steinberg (2007)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_spatial_dimension = 7
-    _default_input = DEFAULT_INPUT_SELECTION
+    _default_input_id = DEFAULT_INPUT_SELECTION
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

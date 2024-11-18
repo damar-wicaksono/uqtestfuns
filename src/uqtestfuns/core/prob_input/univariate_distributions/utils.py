@@ -1,6 +1,7 @@
 """
 Utility module for univariate distribution calculations.
 """
+
 import numpy as np
 
 from ....global_settings import ARRAY_FLOAT

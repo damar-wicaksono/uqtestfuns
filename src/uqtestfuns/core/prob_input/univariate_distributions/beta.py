@@ -19,6 +19,7 @@ and SciPy is as follows:
 - ``loc`` == ``a``
 - ``scale`` == ``(b-a)``
 """
+
 import numpy as np
 
 from scipy.stats import beta

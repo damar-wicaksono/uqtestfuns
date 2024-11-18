@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 ```
 
-(prob-input:univariate-distributions:triangular)=
+(prob-input:marginal-distributions:triangular)=
 # Triangular Distribution
 
 The triangular distribution is a three-parameter continuous probability
@@ -57,7 +57,7 @@ colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
 univ_dists = []
 for parameter in parameters:
-    univ_dists.append(uqtf.UnivDist(distribution="triangular", parameters=parameter))
+    univ_dists.append(uqtf.Marginal(distribution="triangular", parameters=parameter))
 
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 

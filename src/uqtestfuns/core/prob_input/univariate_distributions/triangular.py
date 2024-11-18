@@ -9,6 +9,7 @@ respectively.
 The density value at the modal value is computed such that the are under
 the distribution is 1.0.
 """
+
 import numpy as np
 
 from .utils import verify_param_nums, postprocess_icdf

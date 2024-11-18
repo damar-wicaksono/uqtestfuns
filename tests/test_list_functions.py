@@ -1,6 +1,7 @@
 """
 The test module for the high-level function 'list_functions()'
 """
+
 import pytest
 
 from conftest import assert_call
@@ -14,31 +15,89 @@ def test_default_call():
     assert_call(list_functions)
 
 
-@pytest.mark.parametrize("spatial_dimension", [1, 2, 10, "M"])
-@pytest.mark.parametrize("tag", SUPPORTED_TAGS)
-@pytest.mark.parametrize("tabulate", [True, False, None])
-def test_call_valid_arguments(spatial_dimension, tag, tabulate):
-    """Test function call with valid arguments."""
-    assert_call(list_functions, spatial_dimension, tag, tabulate)
+class TestValidArgument:
+    """A series of tests for calling list_functions() with valid arguments."""
+
+    @pytest.mark.parametrize("input_dimension", [1, 2, 10, "M", None])
+    def test_input_dimension(self, input_dimension):
+        """Test function call with 'input_dimension' argument."""
+        assert_call(list_functions, input_dimension=input_dimension)
+
+    @pytest.mark.parametrize("tag", SUPPORTED_TAGS)
+    def test_tag(self, tag):
+        """Test function call with 'tag' argument."""
+        assert_call(list_functions, tag=tag)
+
+    @pytest.mark.parametrize("output_dimension", [1, 2, 3, None])
+    def test_output_dimension(self, output_dimension):
+        """Test function call with 'tag' argument."""
+        assert_call(list_functions, output_dimension=output_dimension)
+
+    @pytest.mark.parametrize("parameterized", [True, False, None])
+    def test_parameterized(self, parameterized):
+        """Test function call with 'tag' argument."""
+        assert_call(list_functions, parameterized=parameterized)
+
+    @pytest.mark.parametrize("tabulate", [True, False, None])
+    def test_tabulate(self, tabulate):
+        """Test function call with 'tag' argument."""
+        assert_call(list_functions, tabulate=tabulate)
 
 
-@pytest.mark.parametrize("spatial_dimension", [1, -2, -3, "a"])
-@pytest.mark.parametrize("tag", ["hello", "world"])
-def test_call_invalid_value_arguments(spatial_dimension, tag):
-    """Test function call with invalid argument values."""
+class TestInvalidValueArgument:
+    """A series of tests for calling list_functions() w/ invalid value arg."""
 
-    with pytest.raises(ValueError):
-        list_functions(spatial_dimension, tag)
+    @pytest.mark.parametrize("input_dimension", [-1, -2, -3, "a"])
+    def test_input_dimension(self, input_dimension):
+        """Test function call with invalid value for 'input_dimension'."""
+        with pytest.raises(ValueError):
+            list_functions(input_dimension=input_dimension)
+
+    @pytest.mark.parametrize("tag", ["hello", "world"])
+    def test_tag(self, tag):
+        """Test function call with invalid value for 'tag'."""
+        with pytest.raises(ValueError):
+            list_functions(tag=tag)
+
+    @pytest.mark.parametrize("output_dimension", [-1, -2, -3])
+    def test_output_dimension(self, output_dimension):
+        """Test function call with invalid value for 'output_dimension'."""
+        with pytest.raises(ValueError):
+            list_functions(output_dimension=output_dimension)
 
 
-@pytest.mark.parametrize("spatial_dimension", [1, 1.0, [2], True])
-@pytest.mark.parametrize("tag", ["reliability", 1.0, 5.0, False])
-@pytest.mark.parametrize("tabulate", [1.0, 100, "100"])
-def test_call_invalid_type_arguments(spatial_dimension, tag, tabulate):
-    """Test function call with invalid argument types."""
+class TestInvalidTypeArgument:
+    """A series of tests for calling list_functions() w/ invalid type arg."""
 
-    with pytest.raises(TypeError):
-        list_functions(spatial_dimension, tag, tabulate)  # noqa
+    @pytest.mark.parametrize("input_dimension", [1.0, [2]])
+    def test_input_dimension(self, input_dimension):
+        """Test function call with invalid type for 'input_dimension'."""
+        with pytest.raises(TypeError):
+            list_functions(input_dimension=input_dimension)
+
+    @pytest.mark.parametrize("tag", [1.0, 5.0, False])
+    def test_tag(self, tag):
+        """Test function call with invalid type for 'tag'."""
+        with pytest.raises(TypeError):
+            list_functions(tag=tag)
+
+    @pytest.mark.parametrize("output_dimension", ["a", [2]])
+    def test_output_dimension(self, output_dimension):
+        """Test function call with invalid type for 'output_dimension'."""
+        with pytest.raises(TypeError):
+            list_functions(output_dimension=output_dimension)
+
+    @pytest.mark.parametrize("parameterized", ["a", 1, 2])
+    def test_parameterized(self, parameterized):
+        """Test function call with invalid type for 'parameterized'."""
+        with pytest.raises(TypeError):
+            list_functions(parameterized=parameterized)
+
+    @pytest.mark.parametrize("tabulate", [1.0, 100, "100"])
+    def test_tabulate(self, tabulate):
+        """Test function call with invalid type for 'tabulate'."""
+        with pytest.raises(TypeError):
+            list_functions(tabulate=tabulate)
 
 
 def test_untabulated_call():
@@ -56,3 +115,12 @@ def test_untabulated_call():
     assert len(my_classes_from_list) == len(my_classes_ref)
     for my_class in my_classes_from_list:
         assert my_class in list(my_classes_ref.values())
+
+
+def test_tablefmt_html():
+    """Test function call with 'html' as tablefmt."""
+
+    table = list_functions(tablefmt="html")
+
+    # Assertion
+    assert isinstance(table, str)

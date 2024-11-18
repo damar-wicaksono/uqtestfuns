@@ -83,7 +83,9 @@ for the damped oscillator reliability consists of eight independent random
 variables with marginal distributions shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 In the literature, the force capacity of the secondary spring (i.e., $F_s$)
@@ -103,8 +105,14 @@ With the higher mean of $F_s$, the failure probability becomes smaller.
 
 ## Parameters
 
-The performance function contains a single parameter (peak factor).
-From {cite}`DerKiureghian1991` this parameter is set to $3$.
+The performance function contains a single parameter whose default value
+is shown below {cite}`DerKiureghian1991`.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+print(my_testfun.parameters)
+```
 
 ## Reference results
 

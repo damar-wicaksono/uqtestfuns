@@ -38,159 +38,179 @@ References
    Université Blaise Pascal - Clermont II, Clermont-Ferrand, France, 2011.
    URL: https://sites.google.com/site/vincentdubourg/phd-thesis
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import (
+    ProbInputSpecs,
+    FunParamSpecs,
+    MarginalSpecs,
+)
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 from .utils import lognorm2norm_mean, lognorm2norm_std
 
 __all__ = ["DampedOscillator", "DampedOscillatorReliability"]
 
-INPUT_MARGINALS_DERKIUREGHIAN1991 = [  # From [2]
-    UnivDistSpec(
-        name="Mp",
-        distribution="lognormal",
-        parameters=[
+
+MARGINALS_DERKIUREGHIAN1991: MarginalSpecs = [  # From [2]
+    {
+        "name": "Mp",
+        "distribution": "lognormal",
+        "parameters": [
             lognorm2norm_mean(1.5, 0.1 * 1.5),
             lognorm2norm_std(1.5, 0.1 * 1.5),
         ],
-        description="Primary mass",
-    ),
-    UnivDistSpec(
-        name="Ms",
-        distribution="lognormal",
-        parameters=[
+        "description": "Primary mass",
+    },
+    {
+        "name": "Ms",
+        "distribution": "lognormal",
+        "parameters": [
             lognorm2norm_mean(0.01, 0.1 * 0.01),
             lognorm2norm_std(0.01, 0.1 * 0.01),
         ],
-        description="Secondary mass",
-    ),
-    UnivDistSpec(
-        name="Kp",
-        distribution="lognormal",
-        parameters=[
+        "description": "Secondary mass",
+    },
+    {
+        "name": "Kp",
+        "distribution": "lognormal",
+        "parameters": [
             lognorm2norm_mean(1.0, 0.2 * 1.0),
             lognorm2norm_std(1.0, 0.2 * 1.0),
         ],
-        description="Primary spring stiffness",
-    ),
-    UnivDistSpec(
-        name="Ks",
-        distribution="lognormal",
-        parameters=[
+        "description": "Primary spring stiffness",
+    },
+    {
+        "name": "Ks",
+        "distribution": "lognormal",
+        "parameters": [
             lognorm2norm_mean(0.01, 0.2 * 0.01),
             lognorm2norm_std(0.01, 0.2 * 0.01),
         ],
-        description="Secondary spring stiffness",
-    ),
-    UnivDistSpec(
-        name="Zeta_p",
-        distribution="lognormal",
-        parameters=[
+        "description": "Secondary spring stiffness",
+    },
+    {
+        "name": "Zeta_p",
+        "distribution": "lognormal",
+        "parameters": [
             lognorm2norm_mean(0.05, 0.4 * 0.05),
             lognorm2norm_std(0.05, 0.4 * 0.05),
         ],
-        description="Primary damping ratio",
-    ),
-    UnivDistSpec(
-        name="Zeta_s",
-        distribution="lognormal",
-        parameters=[
+        "description": "Primary damping ratio",
+    },
+    {
+        "name": "Zeta_s",
+        "distribution": "lognormal",
+        "parameters": [
             lognorm2norm_mean(0.02, 0.5 * 0.02),
             lognorm2norm_std(0.02, 0.5 * 0.02),
         ],
-        description="Secondary damping ratio",
-    ),
-    UnivDistSpec(
-        name="S0",
-        distribution="lognormal",
-        parameters=[
+        "description": "Secondary damping ratio",
+    },
+    {
+        "name": "S0",
+        "distribution": "lognormal",
+        "parameters": [
             lognorm2norm_mean(100.0, 0.1 * 100.0),
             lognorm2norm_std(100.0, 0.1 * 100.0),
         ],
-        description="White noise base acceleration",
-    ),
+        "description": "White noise base acceleration",
+    },
 ]
 
-AVAILABLE_INPUT_SPECS_BASE = {
-    "DerKiureghian1991": ProbInputSpecFixDim(
-        name="DampedOscillator-DerKiureghian1991",
-        description=(
+AVAILABLE_INPUTS_BASE: ProbInputSpecs = {
+    "DerKiureghian1991": {
+        "function_id": "DampedOscillator",
+        "description": (
             "Probabilistic input model for the Damped Oscillator model "
             "from Der Kiureghian and De Stefano (1991)."
         ),
-        marginals=INPUT_MARGINALS_DERKIUREGHIAN1991,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_DERKIUREGHIAN1991,
+        "copulas": None,
+    },
 }
 
 
-AVAILABLE_INPUT_SPECS_RELIABILITY = {
-    "DerKiureghian1990a": ProbInputSpecFixDim(
-        name="DampedOscillatorReliability-DerKiureghian1990a",
-        description=(
+AVAILABLE_INPUTS_RELIABILITY: ProbInputSpecs = {
+    "DerKiureghian1990a": {
+        "function_id": "DampedOscillatorReliability",
+        "description": (
             "Input model #1 for the damped oscillator reliability "
             "from Der Kiureghian and De Stefano (1990)"
         ),
-        marginals=INPUT_MARGINALS_DERKIUREGHIAN1991
+        "marginals": MARGINALS_DERKIUREGHIAN1991
         + [
-            UnivDistSpec(
-                name="Fs",
-                distribution="lognormal",
-                parameters=[
+            {
+                "name": "Fs",
+                "distribution": "lognormal",
+                "parameters": [
                     lognorm2norm_mean(15.0, 0.1 * 15.0),
                     lognorm2norm_std(15.0, 0.1 * 15.0),
                 ],
-                description="Force capacity of the secondary spring",
-            ),
+                "description": "Force capacity of the secondary spring",
+            },
         ],
-        copulas=None,
-    ),
-    "DerKiureghian1990b": ProbInputSpecFixDim(
-        name="DampedOscillatorReliability-DerKiureghian1990b",
-        description=(
+        "copulas": None,
+    },
+    "DerKiureghian1990b": {
+        "function_id": "DampedOscillatorReliability",
+        "description": (
             "Input model #2 for the damped oscillator reliability "
             "from Der Kiureghian and De Stefano (1990)"
         ),
-        marginals=INPUT_MARGINALS_DERKIUREGHIAN1991
+        "marginals": MARGINALS_DERKIUREGHIAN1991
         + [
-            UnivDistSpec(
-                name="Fs",
-                distribution="lognormal",
-                parameters=[
+            {
+                "name": "Fs",
+                "distribution": "lognormal",
+                "parameters": [
                     lognorm2norm_mean(21.5, 0.1 * 21.5),
                     lognorm2norm_std(21.5, 0.1 * 21.5),
                 ],
-                description="Force capacity of the secondary spring",
-            ),
+                "description": "Force capacity of the secondary spring",
+            },
         ],
-        copulas=None,
-    ),
-    "DerKiureghian1990c": ProbInputSpecFixDim(
-        name="DampedOscillatorReliability-DerKiureghian1990c",
-        description=(
+        "copulas": None,
+    },
+    "DerKiureghian1990c": {
+        "function_id": "DampedOscillatorReliability",
+        "description": (
             "Input model #3 for the damped oscillator reliability "
             "from Der Kiureghian and De Stefano (1990)"
         ),
-        marginals=INPUT_MARGINALS_DERKIUREGHIAN1991
+        "marginals": MARGINALS_DERKIUREGHIAN1991
         + [
-            UnivDistSpec(
-                name="Fs",
-                distribution="lognormal",
-                parameters=[
+            {
+                "name": "Fs",
+                "distribution": "lognormal",
+                "parameters": [
                     lognorm2norm_mean(27.5, 0.1 * 27.5),
                     lognorm2norm_std(27.5, 0.1 * 27.5),
                 ],
-                description="Force capacity of the secondary spring",
-            ),
+                "description": "Force capacity of the secondary spring",
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
-# peak factor
-AVAILABLE_PARAMETERS_RELIABILITY = {
-    "DerKiureghian1990": 3,
+
+AVAILABLE_PARAMETERS_RELIABILITY: FunParamSpecs = {
+    "DerKiureghian1990": {
+        "function_id": "DampedOscillatorReliability",
+        "description": (
+            "Parameter set for the damped oscillator reliability problem "
+            "from Der Kiureghian and De Stefano (1990)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "pf",
+                "value": 3.0,
+                "type": float,
+                "description": "Peak factor [-]",
+            },
+        ],
+    },
 }
 
 
@@ -249,21 +269,20 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return np.sqrt(xx_s)
 
 
-class DampedOscillator(UQTestFunABC):
+class DampedOscillator(UQTestFunFixDimABC):
     """A concrete implementation of the Damped oscillator test function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = (
         "Damped oscillator model from Igusa and Der Kiureghian (1985)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS_BASE
+    _available_inputs = AVAILABLE_INPUTS_BASE
     _available_parameters = None
-    _default_spatial_dimension = 8
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore
 
 
-def evaluate_reliability(xx: np.ndarray, parameters: float):
+def evaluate_reliability(xx: np.ndarray, pf: float):
     """Evaluate the performance function of the system reliability.
 
     Parameters
@@ -271,7 +290,7 @@ def evaluate_reliability(xx: np.ndarray, parameters: float):
     xx : np.ndarray
         An 8-dimensional input values given by an N-by-7 array
         where N is the number of input values.
-    parameters : float
+    pf : float
         The peak factor of the system.
 
     Returns
@@ -285,24 +304,21 @@ def evaluate_reliability(xx: np.ndarray, parameters: float):
     kk_s = xx[:, 3]  # Secondary spring stiffness
     ff_s = xx[:, -1]  # Force capacity of the secondary spring
 
-    pf = parameters  # peak factor
-
     yy = ff_s - pf * kk_s * rms_disp
 
     return yy
 
 
-class DampedOscillatorReliability(UQTestFunABC):
+class DampedOscillatorReliability(UQTestFunFixDimABC):
     """A concrete implementation of the Damped oscillator reliability func."""
 
     _tags = ["reliability"]
     _description = (
         "Performance function from Der Kiureghian and De Stefano (1990)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS_RELIABILITY
+    _available_inputs = AVAILABLE_INPUTS_RELIABILITY
     _available_parameters = AVAILABLE_PARAMETERS_RELIABILITY
-    _default_spatial_dimension = 8
-    _default_input = "DerKiureghian1990a"
-    _default_parameters = "DerKiureghian1990"
+    _default_input_id = "DerKiureghian1990a"
+    _default_parameters_id = "DerKiureghian1990"
 
-    eval_ = staticmethod(evaluate_reliability)
+    evaluate = staticmethod(evaluate_reliability)  # type: ignore

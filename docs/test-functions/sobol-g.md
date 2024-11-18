@@ -16,22 +16,16 @@ kernelspec:
 # Sobol'-G Function
 
 The Sobol'-G function is an $M$-dimensional scalar-valued function.
-It was introduced in {cite}`Radovic1996` for testing numerical integration
-algorithms (e.g., quasi-Monte-Carlo; see for instance {cite}`Sobol1998`.
+It was introduced in {cite}`Bratley1992` for testing numerical integration
+algorithms (e.g., quasi-Monte-Carlo; see, for instance,
+{cite}`Radovic1996, Sobol1998`).
+
+The current form (and name) was from {cite}`Saltelli1995` and used in
+the context of global sensitivity analysis.
+There, the function was generalized by introducing a set of parameters
+that determines the importance of each input variable.
 Later on, it becomes a popular testing function for global sensitivity analysis
-methods; see, for instances, {cite}`Marrel2008, Marrel2009, Kucherenko2011`.
-
-
-The Sobol'-G function is an M-dimensional scalar-valued function.
-It was introduced in [1] for testing numerical integration algorithms
-(e.g., quasi-Monte-Carlo; see also for instance [2] and [3]).
-The current form (and name) was from [4] and used in the context of global
-sensitivity analysis. There, the function was generalized by introducing
-a set of parameters that determines the importance of each input variable.
-Later on, it becomes a popular testing function for global sensitivity analysis
-methods; see, for instances, [5], [6], and [7].
-
-
+methods; see, for instance, {cite}`Marrel2008, Marrel2009, Kucherenko2011, Sun2022`.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -48,12 +42,12 @@ below.
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # --- Create 1D data from Sobol'-G
-my_sobolg_1d = uqtf.SobolG(spatial_dimension=1)
+my_sobolg_1d = uqtf.SobolG(input_dimension=1)
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
 yy_1d = my_sobolg_1d(xx_1d)
 
 # --- Create 2D data from Sobol'-G
-my_sobolg_2d = uqtf.SobolG(spatial_dimension=2)
+my_sobolg_2d = uqtf.SobolG(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_sobolg_2d(xx_2d)
@@ -116,14 +110,14 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the spatial dimension is set to $2$[^default_dimension].
-To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (keyword only).
+By default, the input dimension is set to $2$[^default_dimension].
+To create an instance with another value of input dimension,
+pass an integer to the parameter `input_dimension` (the first parameter).
 For example, to create an instance of the Sobol'-G function in six dimensions,
 type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolG(spatial_dimension=6)
+my_testfun = uqtf.SobolG(input_dimension=6)
 ```
 
 In the subsequent section, the function will be illustrated
@@ -134,7 +128,7 @@ using six dimensions.
 The Sobol'-G function is defined as follows[^location]:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^M \frac{\lvert 4 x_m - 2 \rvert + a_m}{1 + a_m}
+\mathcal{M}(\boldsymbol{x}; \boldsymbol{a}) = \prod_{m = 1}^M \frac{\lvert 4 x_m - 2 \rvert + a_m}{1 + a_m}
 $$
 where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$ is the $M$-dimensional vector
 of input variables further defined below,
@@ -147,7 +141,9 @@ function consists of $M$ independent uniform random variables with the ranges
 shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Parameters
@@ -158,37 +154,51 @@ input variable.
 There are several sets of parameters used in the literature
 as shown in the table below.  
   
-| No. |                           Value                            |          Keyword           |                             Source                             |                                             Remark                                             |  
-|:---:|:----------------------------------------------------------:|:--------------------------:|:--------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|  
-|  1  |                  $a_1 = \ldots = a_M = 0$                  |      `Saltelli1995-1`      |  {cite}`Saltelli1995` (Example 1) (also {cite}`Bratley1992`)   |                           All input variables are equally important                            |  
-|  2  | $a_1 = a_2 = 0$<br> $a_3 = 3$<br> $a_3 = \ldots = a_M = 9$ |      `Saltelli1995-2`      |                {cite}`Saltelli1995` (Example 2)                | The first two are important, the next is moderately important, and the rest is non-influential |  
-|  3  |      $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$       | `Saltelli1995-3` (default) | {cite}`Saltelli1995` (Example 3) (also {cite}`Crestaux2007`  ) |              The most important input is the first one, the least is the last one              |
-|  4  |                $a_1 = \ldots = a_M = 0.01$                 |       `Sobol1998-1`        |                  {cite}`Sobol1998` (choice 1)                  |                   The supremum of the function grows exponentially at $2^M$                    |  
-|  5  |                 $a_1 = \ldots = a_M = 1.0$                 |       `Sobol1998-2`        |                  {cite}`Sobol1998` (choice 2)                  |                  The supremum of the function grows exponentially at  $1.5^M$                  |  
-|  6  |             $a_m = m$<br> $\, 1 \leq m \leq M$             |       `Sobol1998-3`        |                  {cite}`Sobol1998` (choice 3)                  |                The supremum of the function grows linearly at $1 + \frac{M}{2}$                |  
-|  7  |             $a_m = m^2$<br> $1 \leq m \leq M$              |       `Sobol1998-4`        |                  {cite}`Sobol1998` (choice 4)                  |                                The supremum is bounded at $1.0$                                |  
-|  8  |     $a_1 = a_2 = 0.0$<br> $a_3 = \ldots = a_M = 6.52$      |    `Kucherenko2011-2a`     |              {cite}`Kucherenko2011` (Problem 2A)               |                                     Originally, $M = 100$                                      |  
-|  9  |             $a_m = 6,52$<br> $1 \leq m \leq M$             |    `Kucherenko2011-3b`     |              {cite}`Kucherenko2011` (Problem 3B)               |                                                                                                |  
+```{table} Available parameters of the Sobol'-G function
+:name: sobol-g-parameters
+| No. |                             Value                             |          Keyword           |                             Source                             |                                             Remark                                             |  
+|:---:|:-------------------------------------------------------------:|:--------------------------:|:--------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|  
+|  1  |                   $a_1 = \ldots = a_M = 0$                    |      `Saltelli1995-1`      |  {cite}`Saltelli1995` (Example 1) (also {cite}`Bratley1992`)   |                           All input variables are equally important                            |  
+|  2  |  $a_1 = a_2 = 0$<br> $a_3 = 3$<br> $a_3 = \ldots = a_M = 9$   |      `Saltelli1995-2`      |                {cite}`Saltelli1995` (Example 2)                | The first two are important, the next is moderately important, and the rest is non-influential |  
+|  3  |        $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$        | `Saltelli1995-3` (default) | {cite}`Saltelli1995` (Example 3) (also {cite}`Crestaux2007`  ) |              The most important input is the first one, the least is the last one              |
+|  4  |                  $a_1 = \ldots = a_M = 0.01$                  |       `Sobol1998-1`        |                  {cite}`Sobol1998` (choice 1)                  |                   The supremum of the function grows exponentially at $2^M$                    |  
+|  5  |                  $a_1 = \ldots = a_M = 1.0$                   |       `Sobol1998-2`        |                  {cite}`Sobol1998` (choice 2)                  |                  The supremum of the function grows exponentially at  $1.5^M$                  |  
+|  6  |              $a_m = m$<br> $\, 1 \leq m \leq M$               |       `Sobol1998-3`        |                  {cite}`Sobol1998` (choice 3)                  |                The supremum of the function grows linearly at $1 + \frac{M}{2}$                |  
+|  7  |               $a_m = m^2$<br> $1 \leq m \leq M$               |       `Sobol1998-4`        |                  {cite}`Sobol1998` (choice 4)                  |                                The supremum is bounded at $1.0$                                |  
+|  8  |       $a_1 = a_2 = 0.0$<br> $a_3 = \ldots = a_M = 6.52$       |    `Kucherenko2011-2a`     |              {cite}`Kucherenko2011` (Problem 2A)               |                                     Originally, $M = 100$                                      |  
+|  9  |              $a_m = 6.52$<br> $1 \leq m \leq M$               |    `Kucherenko2011-3b`     |              {cite}`Kucherenko2011` (Problem 3B)               |                                                                                                |
+| 10  | $a_{1 - 4} = (0, 1, 4.5, 9)$ <br> $a_m = 99, 5 \leq m \leq M$ |         `Sun2022`          |                 {cite}`Sun2022` (Section 3.2)                  |                                                                                                |
+```
 
 ```{note}
 The parameter values used in {cite}`Marrel2008` and {cite}`Marrel2009`
 correspond to the parameter choice 3 in {cite}`Sobol1998`.
 ```
 
+The default parameter is shown below.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+print(my_testfun.parameters)
+```
+
 ````{note}
-To create an instance of the Sobol'-G function with different built-in parameter values, 
-pass the corresponding keyword to the parameter `parameters_selection`.
+To create an instance of the Sobol'-G function with different built-in
+parameter values, pass the corresponding keyword
+to the parameter `parameters_id`.
 For example, to use the parameters of problem 3B from {cite}`Kucherenko2011`,
 type:
 
 ```python
-my_testfun = uqtf.SobolG(parameters_selection="Kucherenko2011-3b")
+my_testfun = uqtf.SobolG(parameters_id="Kucherenko2011-3b")
 ```
 ````
+
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -225,7 +235,7 @@ and the results are:
 - $\mathbb{E}[Y] = 1.0$[^integral]
 - $\mathbb{V}[Y] = \prod_{m = 1}^{M} \frac{\frac{4}{3} + 2 a_m + a_m^2}{(1 + a_m)^2} - 1$
 
-Notice that the values of these two moments depend on the choice of the parameter values.
+Notice that the value of the variance depends on the choice of the parameter values.
 
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes compared with the
@@ -253,7 +263,7 @@ mean_estimates_errors = np.std(mean_estimates, axis=1)
 var_estimates_errors = np.std(var_estimates, axis=1)
 
 # --- Compute analytical mean and variance
-params = my_testfun.parameters
+params = my_testfun.parameters["aa"]
 mean_analytical = 1.0
 var_analytical = np.prod((4 / 3 + 2 * params + params**2) / (1 + params)**2) - 1
 
@@ -389,4 +399,4 @@ tabulate(
 because the input is uniform in a unit hypercube.
 
 [^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `spatial_dimension` argument is not given.
+test functions. It will be used if the `input_dimension` argument is not given.

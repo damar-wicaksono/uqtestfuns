@@ -25,49 +25,67 @@ References
    Structural Safety, vol. 73, pp. 42–53, 2018.
    DOI: 10.1016/j.strusafe.2018.02.005
 """
+
 import numpy as np
 
-from typing import Tuple
-
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["CantileverBeam2D"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Rajashekhar1993": ProbInputSpecFixDim(
-        name="Cantilever2D-Rajashekhar1993",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Rajashekhar1993": {
+        "function_id": "Cantilever2D",
+        "description": (
             "Input model for the cantilever beam problem "
             "from Rajashekhar and Ellingwood (1993)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="W",
-                distribution="normal",
-                parameters=[1000.0, 200.0],
-                description="Load per unit area [N/m^2]",
-            ),
-            UnivDistSpec(
-                name="H",
-                distribution="normal",
-                parameters=[250.0, 37.5],
-                description="Depth of the cross-section [mm]",
-            ),
+        "marginals": [
+            {
+                "name": "W",
+                "distribution": "normal",
+                "parameters": [1000.0, 200.0],
+                "description": "Load per unit area [N/m^2]",
+            },
+            {
+                "name": "H",
+                "distribution": "normal",
+                "parameters": [250.0, 37.5],
+                "description": "Depth of the cross-section [mm]",
+            },
         ],
-        copulas=None,
-    ),
-}
-
-AVAILABLE_PARAMETERS = {
-    "Rajashekhar1993": (
-        2.6e4,  # Modulus of elasticity [MPa]
-        6.0e3,  # Span of the beam [mm]
-    )
+        "copulas": None,
+    },
 }
 
 
-def evaluate(xx: np.ndarray, parameters: Tuple[float, float]) -> np.ndarray:
+AVAILABLE_PARAMETERS: FunParamSpecs = {
+    "Rajashekhar1993": {
+        "function_id": "CantileverBeam2D",
+        "description": (
+            "Parameter set for the 2D cantilever beam problem from "
+            "Rajashekhar and Ellingwood (1993)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "modulus",
+                "value": 2.6e4,
+                "type": float,
+                "description": "Modulus of elasticity 'E' [MPa]",
+            },
+            {
+                "keyword": "span",
+                "value": 6.0e3,
+                "type": float,
+                "description": "Span of the beam 'l' [mm]",
+            },
+        ],
+    },
+}
+
+
+def evaluate(xx: np.ndarray, modulus: float, span: float) -> np.ndarray:
     """Evaluate the 2D cantilever beam function on a set of input values.
 
     Parameters
@@ -75,10 +93,10 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float]) -> np.ndarray:
     xx : np.ndarray
         A two-dimensional input values given by an N-by-2 array
         where N is the number of input values.
-
-    parameters : Tuple[float, float]
-        The parameters of the test function, namely the modulus of elasticity
-        and the span of the beam.
+    modulus : float
+        The modulus of elasticity in [MPa].
+    span : float
+        The span of the beam in [mm].
 
     Returns
     -------
@@ -87,23 +105,19 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float]) -> np.ndarray:
         system. If negative, the system is in failed state.
         The output is a one-dimensional array of length N.
     """
-    # Get parameters
-    mod_el = parameters[0]
-    beam_span = parameters[1]
-
-    mod_el *= 1e6  # from [MPa] to [Pa]
+    modulus *= 1e6  # from [MPa] to [Pa]
 
     # Get the input
     ww = xx[:, 0]  # Load per unit area [N/m^2] ([Pa])
     hh = xx[:, 1]  # Depth of the cross-section [mm]
 
     # Compute the performance function
-    yy = beam_span / 325 - 12 / 8 * beam_span**4 / mod_el * ww / hh**3
+    yy = span / 325 - 12 / 8 * span**4 / modulus * ww / hh**3
 
     return yy
 
 
-class CantileverBeam2D(UQTestFunABC):
+class CantileverBeam2D(UQTestFunFixDimABC):
     """Concrete implementation of the 2D cantilever beam reliability."""
 
     _tags = ["reliability"]
@@ -111,8 +125,7 @@ class CantileverBeam2D(UQTestFunABC):
         "Cantilever beam reliability problem "
         "from Rajashekhar and Ellington (1993)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_spatial_dimension = 2
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

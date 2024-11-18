@@ -1,12 +1,13 @@
 """
 Test module for UnivariateInput instances with a truncated normal distribution.
 """
+
 import pytest
 import numpy as np
 
 from scipy.stats import norm
 
-from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
+from uqtestfuns.core.prob_input.marginal import Marginal
 from uqtestfuns.global_settings import ARRAY_FLOAT
 from conftest import create_random_alphanumeric
 
@@ -55,7 +56,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.sort(np.random.rand(6))
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=distribution, parameters=parameters)
+        Marginal(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_failed_parameter_verification() -> None:
@@ -67,13 +68,13 @@ def test_failed_parameter_verification() -> None:
     parameters = [7.71, -10, 1, 2]
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=distribution, parameters=parameters)
+        Marginal(name=name, distribution=distribution, parameters=parameters)
 
     # The lower bound must be smaller than upper bound!
     parameters = [3.5, 2, 4, 3]
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=distribution, parameters=parameters)
+        Marginal(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_estimate_mean() -> None:
@@ -88,7 +89,7 @@ def test_estimate_mean() -> None:
     # Insert sigma as the second parameter
     parameters = np.insert(parameters, 1, np.random.rand(1))
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         name=name, distribution=distribution, parameters=parameters
     )
 
@@ -117,7 +118,7 @@ def test_estimate_std() -> None:
     # Insert sigma as the second parameter
     parameters = np.insert(parameters, 1, np.random.rand(1))
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         name=name, distribution=distribution, parameters=parameters
     )
 
@@ -151,12 +152,12 @@ def test_untruncated() -> None:
     distribution = DISTRIBUTION_NAME
     parameters = [10, 2, -np.inf, np.inf]
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         name=name, distribution=distribution, parameters=parameters
     )
 
     # Create a reference normal distribution
-    my_univariate_input_ref = UnivDist(
+    my_univariate_input_ref = Marginal(
         distribution="normal", parameters=parameters[:2]
     )
 

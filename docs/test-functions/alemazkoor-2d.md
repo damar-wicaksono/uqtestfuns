@@ -26,7 +26,8 @@ is a two-dimensional polynomial function.
 It was used as a test function for
 a metamodeling exercise (i.e., sparse polynomial chaos expansion).
 The function features a low-dimensional polynomial function (two-dimensional)
-with a high degree (a total degree of $20$).
+with a high degree (a total degree of $20$); in other words, the function
+is low in dimension but of high-degree.
 
 The surface and contour plots of the `Alemazkoor2D` function are shown below.
 
@@ -95,11 +96,12 @@ print(my_testfun)
 
 ## Description
 
-The McLain S1 function is defined as follows:
+The `Alemazkoor2D` function is defined as follows:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \sum_{i = 1}^{5} x_1^{2i} x_2^{2i}
 $$
+
 where $\boldsymbol{x} = \{ x_1, x_2 \}$
 is the two-dimensional vector of input variables further defined below.
 
@@ -109,7 +111,9 @@ Based on {cite}`Alemazkoor2018`, the probabilistic input model
 for the function consists of two independent random variables as shown below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Reference results
@@ -140,3 +144,5 @@ plt.gcf().set_dpi(150);
 :style: unsrtalpha
 :filter: docname in docnames
 ```
+
+[^location]: see Section 4.2, Eq. (33) in {cite}`Alemazkoor2018`.

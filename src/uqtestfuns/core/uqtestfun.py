@@ -2,9 +2,11 @@
 This module contains the concrete implementation of a generic class to
 create a UQ test function in runtime or within a running Python session.
 """
-from typing import Any, Callable, Optional
+
+from typing import Callable, Optional
 
 from .uqtestfun_abc import UQTestFunBareABC
+from .parameters import FunParams
 from .prob_input.probabilistic_input import ProbInput
 
 __all__ = ["UQTestFun"]
@@ -23,22 +25,24 @@ class UQTestFun(UQTestFunBareABC):
     parameters : Any, optional
         The parameters set of the UQ test function.
         If not specified, `None` is used.
-    name : str, optional
-        The name of the UQ test function.
+    function_id : str, optional
+        The ID of the UQ test function.
     """
 
     def __init__(
         self,
         evaluate: Callable,
         prob_input: ProbInput,
-        parameters: Optional[Any] = None,
-        name: Optional[str] = None,
+        parameters: Optional[FunParams] = None,
+        function_id: Optional[str] = None,
     ):
+        if parameters is None:
+            parameters = FunParams()
+
         self._evaluate = evaluate
-        super().__init__(prob_input, parameters, name)
+        super().__init__(prob_input, parameters, function_id)
 
-    def evaluate(self, xx):
-        if self.parameters is not None:
-            return self._evaluate(xx, self.parameters)
+    def _eval(self, xx):
+        return self._evaluate(xx, **self.parameters.as_dict())
 
-        return self._evaluate(xx)
+    evaluate = None  # type: ignore

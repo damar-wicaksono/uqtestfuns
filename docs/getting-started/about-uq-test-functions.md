@@ -96,7 +96,7 @@ reasons:
   for various types of analyses.
 - Although test functions are taken as black boxes, _their features are known_;
   this enables a thorough diagnosis of a UQ method.
-- Test functions provide _a common ground_ for comparing the performance of
+- Test functions provide a _fair means_ for comparing the performance of
   various UQ methods in solving the same class of problems.
 
 Assuming that real models are expensive to evaluate,

@@ -20,53 +20,77 @@ References
    Structural Safety, vol. 73, pp. 42–53, 2018.
    DOI: 10.1016/j.strusafe.2018.02.005
 """
+
 import numpy as np
 
-from typing import Tuple
-
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 
 __all__ = ["CircularPipeCrack"]
 
 
-AVAILABLE_INPUT_SPECS = {
-    "Verma2015": ProbInputSpecFixDim(
-        name="CircularPipeCrack-Verma2015",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Verma2015": {
+        "function_id": "CircularPipeCrack",
+        "description": (
             "Input model for the circular pipe crack problem "
             "from Verma et al. (2015)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="sigma_f",
-                distribution="normal",
-                parameters=[301.079, 14.78],
-                description="flow stress [MNm]",
-            ),
-            UnivDistSpec(
-                name="theta",
-                distribution="normal",
-                parameters=[0.503, 0.049],
-                description="half crack angle [-]",
-            ),
+        "marginals": [
+            {
+                "name": "sigma_f",
+                "distribution": "normal",
+                "parameters": [301.079, 14.78],
+                "description": "flow stress [MNm]",
+            },
+            {
+                "name": "theta",
+                "distribution": "normal",
+                "parameters": [0.503, 0.049],
+                "description": "half crack angle [-]",
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
-AVAILABLE_PARAMETERS = {
-    "Verma2016": (
-        3.377e-1,  # Radius of the pipe [m]
-        3.377e-2,  # Thickness of the pipe [m]
-        3.0,  # Applied bending moment [Nm]
-    ),
+AVAILABLE_PARAMETERS: FunParamSpecs = {
+    "Verman2016": {
+        "function_id": "CircularPipeCrack",
+        "description": (
+            "Parameter set for the circular pipe crack reliability problem "
+            "from Verma et al. (2016)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "pipe_radius",
+                "value": 3.377e-1,
+                "type": float,
+                "description": "Radius of the pipe [m]",
+            },
+            {
+                "keyword": "pipe_thickness",
+                "value": 3.377e-2,
+                "type": float,
+                "description": "Thickness of the pipe [m]",
+            },
+            {
+                "keyword": "bending_moment",
+                "value": 3.0,
+                "type": float,
+                "description": "Applied bending moment [Nm]",
+            },
+        ],
+    },
 }
 
 
 def evaluate(
-    xx: np.ndarray, parameters: Tuple[float, float, float]
+    xx: np.ndarray,
+    pipe_radius: float,
+    pipe_thickness: float,
+    bending_moment: float,
 ) -> np.ndarray:
     """Evaluate the circular pipe crack reliability on a set of input values.
 
@@ -75,10 +99,12 @@ def evaluate(
     xx : np.ndarray
         A two-dimensional input values given by N-by-2 arrays
         where N is the number of input values.
-    parameters : Tuple[float, float, float]
-        The parameters of the test function, namely (and in the following
-        order) the radius of the pipe, the thickness of the pipe,
-        and the applied bending moment.
+    pipe_radius : float
+        The radius of the pipe in [m].
+    pipe_thickness : float
+        The thickness of the pipe in [m].
+    bending_moment : float
+        The applied bending moment in [Nm].
 
     Returns
     -------
@@ -87,9 +113,6 @@ def evaluate(
         If negative, then the system is in failed state.
         The output is a one-dimensional array of length N.
     """
-    # Get parameters
-    pipe_radius, pipe_thickness, bending_moment = parameters
-
     # NOTE: Convert the flow stress from [MNm] to [Nm]
     yy = (
         4
@@ -103,15 +126,14 @@ def evaluate(
     return yy
 
 
-class CircularPipeCrack(UQTestFunABC):
+class CircularPipeCrack(UQTestFunFixDimABC):
     """A concrete implementation of the circular pipe crack problem."""
 
     _tags = ["reliability"]
     _description = (
         "Circular pipe under bending moment from Verma et al. (2015)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_spatial_dimension = 2
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

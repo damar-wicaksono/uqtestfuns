@@ -46,11 +46,11 @@ The Ishigami function, a highly non-linear and non-monotonic function,
 is given as follows:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \sin(x_1) + a \sin^2(x_2) + b \, x_3^4 \sin(x_1)
+\mathcal{M}(\boldsymbol{x}; \boldsymbol{p}) = \sin(x_1) + a \sin^2(x_2) + b \, x_3^4 \sin(x_1)
 $$
 where $\boldsymbol{x} = \{ x_1, x_2, x_3 \}$ is the three-dimensional vector of
-input variables further defined below, and $a$ and $b$ are parameters
-of the function.
+input variables further defined below, and $\boldsymbol{p} = \{ a, b \}$
+are the parameters of the function.
 
 ## Probabilistic input
 
@@ -59,7 +59,9 @@ function consists of three independent uniform random variables with the ranges
 shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Parameters
@@ -68,25 +70,24 @@ The parameters of the Ishigami function are two real-valued numbers.
 Some of the available parameter values taken from the literature are shown in
 the table below.
 
-| No. |        Value         |         Keyword          |        Source        |
-|:---:|:--------------------:|:------------------------:|:--------------------:|
-|  1  | $a = 7$, $b = 0.1$   | `Ishigami1991` (default) | {cite}`Ishigami1991` |
-|  2  | $a = 7$, $b = 0.05$  |       `Sobol1999`        |  {cite}`Sobol1999`   |
+| No. |        Value        |         Keyword          |        Source        |
+|:---:|:-------------------:|:------------------------:|:--------------------:|
+|  1  | $a = 7$, $b = 0.1$  | `Ishigami1991` (default) | {cite}`Ishigami1991` |
+|  2  | $a = 7$, $b = 0.05$ |       `Sobol1999`        |  {cite}`Sobol1999`   |
 
-Alternatively, to create an instance of the Ishigami function with
-different parameter values, type:
+```{code-cell} ipython3
+:tags: [hide-input]
 
-```python
-my_testfun = uqtf.Ishigami(parameters_selection="Sobol1999")
+print(my_testfun.parameters)
 ```
 
 ````{note}
 To use another set of parameters, create a default test function
 and pass one of the available keywords
-(as indicated in the table above) to the `parameters_selection` parameter.
+(as indicated in the table above) to the `parameters_id` parameter.
 For example:
 ```python
-my_testfun = uqtf.Ishigami(parameters_selection="Sobol1999")
+my_testfun = uqtf.Ishigami(parameters_id="Sobol1999")
 ```
 ````
 
@@ -132,7 +133,7 @@ analytical values.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
+my_testfun.prob_input.reset_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], dtype=int)
 mean_estimates = np.empty(len(sample_sizes))
 var_estimates = np.empty(len(sample_sizes))
@@ -159,7 +160,7 @@ ax_1.errorbar(
     label="Mean"
 )
 # Plot the analytical mean
-a = my_testfun.parameters[0]
+a = my_testfun.parameters["a"]
 mean_analytical = a / 2.0
 ax_1.plot(
     sample_sizes,
@@ -184,7 +185,7 @@ ax_2.errorbar(
     label="Variance",
 )
 # Plot the analytical variance
-b = my_testfun.parameters[1]
+b = my_testfun.parameters["b"]
 var_analytical = a**2 / 8 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 18 + 0.5
 ax_2.plot(
     sample_sizes,

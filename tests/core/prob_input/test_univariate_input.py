@@ -1,13 +1,14 @@
 """
 Test module for UnivariateInput instances.
 """
+
 import pytest
 import numpy as np
 
 from typing import Tuple, Dict, Union, Any
 from numpy.typing import ArrayLike
 
-from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
+from uqtestfuns.core.prob_input.marginal import Marginal
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 from conftest import create_random_alphanumeric
 
@@ -18,31 +19,39 @@ MARGINALS = list(SUPPORTED_MARGINALS.keys())
 @pytest.fixture(params=MARGINALS)
 def univariate_input(
     request: Any,
-) -> Tuple[UnivDist, Dict[str, Union[str, ArrayLike]]]:
+) -> Tuple[Marginal, Dict[str, Union[str, ArrayLike]]]:
     """Test fixture, an instance of UnivariateInput."""
+
+    # All random values (distribution parameters are limited to 5 digits
+    # to avoid awkward yet unrealistic values)
     name = create_random_alphanumeric(8)
     distribution = request.param
     if request.param == "uniform":
-        parameters = np.sort(np.random.rand(2))
+        parameters = np.sort(np.round(np.random.rand(2), decimals=5))
     elif request.param == "beta":
-        parameters = np.sort(np.random.rand(4))
+        parameters = np.sort(np.round(np.random.rand(4), decimals=5))
+    elif distribution == "exponential":
+        # Single parameter, must be strictly positive
+        parameters = 1 + np.round(np.random.rand(1), decimals=5)
     elif distribution == "triangular":
-        parameters = np.sort(1 + 2 * np.random.rand(2))
+        parameters = np.sort(1 + 2 * np.round(np.random.rand(2), decimals=5))
         # Append the mid point
-        parameters = np.insert(
-            parameters, 2, np.random.uniform(parameters[0], parameters[1])
+        mid_p = np.round(
+            np.random.uniform(parameters[0], parameters[1]),
+            decimals=5,
         )
+        parameters = np.insert(parameters, 2, mid_p, axis=0)
     elif distribution in ["trunc-normal", "trunc-gumbel"]:
         # mu must be inside the bounds
-        parameters = np.sort(1 + 2 * np.random.rand(3))
+        parameters = np.sort(1 + 2 * np.round(np.random.rand(3), decimals=5))
         parameters[[0, 1]] = parameters[[1, 0]]
         # Insert sigma as the second parameter
         parameters = np.insert(parameters, 1, np.random.rand(1))
     elif distribution == "lognormal":
         # Limit the size of the parameters
-        parameters = 1 + np.random.rand(2)
+        parameters = 1 + np.round(np.random.rand(2), decimals=5)
     else:
-        parameters = 5 * np.random.rand(2)
+        parameters = 5 * np.round(np.random.rand(2), decimals=5)
         parameters[1] += 1.0
 
     specs = {
@@ -51,7 +60,7 @@ def univariate_input(
         "parameters": parameters,
     }
 
-    my_univariate_input = UnivDist(**specs)
+    my_univariate_input = Marginal(**specs)
 
     return my_univariate_input, specs
 
@@ -73,7 +82,7 @@ def test_create_instance_unsupported_marginal() -> None:
     parameters = list(np.sort(np.random.rand(2)))
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=distribution, parameters=parameters)
+        Marginal(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_generate_sample(univariate_input: Any) -> None:
@@ -154,7 +163,7 @@ def test_transform_sample() -> None:
     distribution_1 = "uniform"
     parameters_1 = np.sort(np.random.rand(2))
 
-    my_univariate_input_1 = UnivDist(
+    my_univariate_input_1 = Marginal(
         name=name_1, distribution=distribution_1, parameters=parameters_1
     )
 
@@ -165,7 +174,7 @@ def test_transform_sample() -> None:
     distribution_2 = "uniform"
     parameters_2 = np.sort(np.random.rand(2))
 
-    my_univariate_input_2 = UnivDist(
+    my_univariate_input_2 = Marginal(
         name=name_2, distribution=distribution_2, parameters=parameters_2
     )
 
@@ -184,7 +193,7 @@ def test_failed_transform_sample() -> None:
     distribution = "uniform"
     parameters = np.sort(np.random.rand(2))
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         name=name, distribution=distribution, parameters=parameters
     )
 
@@ -223,8 +232,8 @@ def test_pass_random_seed():
 
     # Create two instances with an identical seed number
     rng_seed = 42
-    my_input_1 = UnivDist("uniform", [0, 1], rng_seed=rng_seed)
-    my_input_2 = UnivDist("uniform", [0, 1], rng_seed=rng_seed)
+    my_input_1 = Marginal("uniform", [0, 1], rng_seed=rng_seed)
+    my_input_2 = Marginal("uniform", [0, 1], rng_seed=rng_seed)
 
     # Generate sample points
     xx_1 = my_input_1.get_sample(1000)
@@ -239,7 +248,7 @@ def test_reset_rng():
 
     # Create two instances with an identical seed number
     rng_seed = 42
-    my_input = UnivDist("uniform", [0, 1], rng_seed=rng_seed)
+    my_input = Marginal("uniform", [0, 1], rng_seed=rng_seed)
 
     # Generate sample points
     xx_1 = my_input.get_sample(1000)

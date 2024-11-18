@@ -20,12 +20,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 ```
 
-(prob-input:univariate-distributions:logitnormal)=
+(prob-input:marginal-distributions:logitnormal)=
 # Logit-Normal Distribution
 
 The logit-normal distribution is a two-parameter continuous probability distribution.
 A logit-normal random variable is a variable whose _logit_ is
-a {ref}`normally distributed <prob-input:univariate-distributions:normal>` 
+a {ref}`normally distributed <prob-input:marginal-distributions:normal>` 
 random variable.
 
 ```{admonition} Logit and logistic function
@@ -85,7 +85,7 @@ colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 univ_dists = []
 for parameter in parameters:
     univ_dists.append(
-    uqtf.UnivDist(distribution="logitnormal", parameters=parameter)
+    uqtf.Marginal(distribution="logitnormal", parameters=parameter)
     )
 
 fig, axs = plt.subplots(2, 2, figsize=(10,10))

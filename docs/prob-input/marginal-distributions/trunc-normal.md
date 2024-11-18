@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 ```
 
-(prob-input:univariate-distributions:trunc-normal)=
+(prob-input:marginal-distributions:trunc-normal)=
 # Truncated Normal (Gaussian) Distribution
 
 The normal (or Gaussian) distribution is a two-parameter continuous probability
@@ -62,7 +62,7 @@ colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
 univ_dists = []
 for parameter in parameters:
-    univ_dists.append(uqtf.UnivDist(distribution="trunc-normal", parameters=parameter))
+    univ_dists.append(uqtf.Marginal(distribution="trunc-normal", parameters=parameter))
 
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 

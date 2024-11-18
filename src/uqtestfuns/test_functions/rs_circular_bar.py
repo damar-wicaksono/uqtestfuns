@@ -11,43 +11,60 @@ References
    in Reliability Engineering. London: Springer London, 2016, pp. 257–292.
    DOI: 10.1007/978-1-4471-6269-8_8
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
+
 
 __all__ = ["RSCircularBar"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Verma2016": ProbInputSpecFixDim(
-        name="RSCircularBar-Verma2016",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Verma2016": {
+        "function_id": "RSCircularBar",
+        "description": (
             "Input model for the circular bar RS from Verma et al. (2016)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="Y",
-                distribution="normal",
-                parameters=[250.0, 25.0],
-                description="Material mean yield strength [MPa]",
-            ),
-            UnivDistSpec(
-                name="F",
-                distribution="normal",
-                parameters=[70.0, 7.0],
-                description="Force mean value [kN]",
-            ),
+        "marginals": [
+            {
+                "name": "Y",
+                "distribution": "normal",
+                "parameters": [250.0, 25.0],
+                "description": "Material mean yield strength [MPa]",
+            },
+            {
+                "name": "F",
+                "distribution": "normal",
+                "parameters": [70.0, 7.0],
+                "description": "Force mean value [kN]",
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
-AVAILABLE_PARAMETERS = {
-    "Verma2016": 25,  # bar diameter in [mm]
+AVAILABLE_PARAMETERS: FunParamSpecs = {
+    "Verma2016": {
+        "function_id": "RSCircularBar",
+        "description": (
+            "Parameter set for the RS circular bar reliability problem "
+            "from Verma et al. (2016)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "bar_diameter",
+                "value": 25.0,
+                "type": float,
+                "description": "Diameter of the circular bar [mm]",
+            },
+        ],
+    },
 }
 
 
-def evaluate(xx: np.ndarray, parameter: float) -> np.ndarray:
+def evaluate(xx: np.ndarray, bar_diameter: float) -> np.ndarray:
     """Evaluate the circular bar RS problem on a set of input values.
 
     Parameters
@@ -55,8 +72,8 @@ def evaluate(xx: np.ndarray, parameter: float) -> np.ndarray:
     xx : np.ndarray
         A two-dimensional input values given by an N-by-2 array
         where N is the number of input values.
-    parameter : float
-        The parameter of the function (i.e., the diameter of the bar in [mm]).
+    bar_diameter : float
+        The diameter of the bar in [mm].
 
     Returns
     -------
@@ -68,7 +85,7 @@ def evaluate(xx: np.ndarray, parameter: float) -> np.ndarray:
     # Convert to SI units
     yy_ = xx[:, 0] * 1e6  # From [MPa] to [Pa]
     ff = xx[:, 1] * 1e3  # From [kN] to [N]
-    diam = parameter * 1e-3  # From [mm] to [m]
+    diam = bar_diameter * 1e-3  # From [mm] to [m]
 
     # Compute the performance function
     yy = yy_ - ff / (np.pi * diam**2 / 4)
@@ -76,13 +93,13 @@ def evaluate(xx: np.ndarray, parameter: float) -> np.ndarray:
     return yy
 
 
-class RSCircularBar(UQTestFunABC):
+class RSCircularBar(UQTestFunFixDimABC):
     """Concrete implementation of the circular bar RS reliability problem."""
 
     _tags = ["reliability"]
     _description = "RS problem as a circular bar from Verma et al. (2016)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_spatial_dimension = 2
+    _default_input_dimension = 2
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

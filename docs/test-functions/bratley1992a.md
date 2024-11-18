@@ -38,9 +38,10 @@ There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
 - {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`:
   A sum of product
   
-The function was reintroduced in {cite}`Saltelli1995` with additional
+This function was reintroduced in {cite}`Saltelli1995` with additional
 parameters for global sensitivity analysis purposes.
-The "generalized" function became known as the {ref}`Sobol'-G <test-functions:sobol-g>`. 
+The "generalized" function became known as
+the {ref}`Sobol'-G <test-functions:sobol-g>`. 
 ```
 
 The plots for one-dimensional and two-dimensional `Bratley1992a` functions
@@ -52,12 +53,12 @@ are shown below.
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # --- Create 1D data
-my_bratley1992a_1d = uqtf.Bratley1992a(spatial_dimension=1)
+my_bratley1992a_1d = uqtf.Bratley1992a(input_dimension=1)
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
 yy_1d = my_bratley1992a_1d(xx_1d)
 
 # --- Create 2D data
-my_bratley1992a_2d = uqtf.Bratley1992a(spatial_dimension=2)
+my_bratley1992a_2d = uqtf.Bratley1992a(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_bratley1992a_2d(xx_2d)
@@ -120,14 +121,14 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the spatial dimension is set to $2$[^default_dimension].
-To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (keyword only).
+By default, the input dimension is set to $2$[^default_dimension].
+To create an instance with another value of input dimension,
+pass an integer to the parameter `input_dimension` (keyword only).
 For example, to create an instance of 10-dimensional `Bratley1992a` function,
 type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Bratley1992a(spatial_dimension=10)
+my_testfun = uqtf.Bratley1992a(input_dimension=10)
 ```
 
 ## Description
@@ -153,7 +154,6 @@ random variables as shown in the table below.
 |  1        | $x_1$    | uniform       | [0.0 1.0]  |     N/A     |
 |  $\vdots$ | $\vdots$ | $\vdots$      | $\vdots$   |  $\vdots$   |
 |  M        | $x_M$    | uniform       | [0.0 1.0]  |     N/A     |
-
 
 ## Reference results
 
@@ -222,4 +222,4 @@ for a very large dimension.
 in {cite}`Bratley1992`.
 
 [^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `spatial_dimension` argument is not given.
+test functions. It will be used if the `input_dimension` argument is not given.

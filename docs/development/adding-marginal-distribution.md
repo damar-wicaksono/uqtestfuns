@@ -1,8 +1,9 @@
-(development:adding-univ-dist)=
-# Adding a New Univariate Distribution Type
+(development:adding-marginal-distribution)=
+# Adding a New Marginal Distribution Type
 
-UQTestFuns is delivered with several {ref}`univariate distributions <prob-input:available-univariate-distributions>`
-that are used by the currently available test functions.
+UQTestFuns is delivered with several one-dimensional
+{ref}`marginal distributions <prob-input:available-marginal-distributions>`
+(i.e., univariate distributions) that are used by the currently available test functions.
 In case a new univariate distribution type is required for a new test function,
 the distribution should be added first to the code base.
 
@@ -27,12 +28,12 @@ For example:
 
 ```python
 >>> import uqtestfuns as uqtf
->>> my_var = uqtf.UnivDist(distribution="uniform", parameters=[3, 5])
+>>> my_var = uqtf.Marginal(distribution="uniform", parameters=[3, 5])
 ```
 
 ## Step 0: Putting things in the right place
 
-Univariate random variables in UQTestFuns are represented as instances of the `UnivDist` class.
+Univariate random variables in UQTestFuns are represented as instances of the `Marginal` class.
 The supported distributions for the random variables are implemented in separate modules
 located in the `src/uqtestfuns/core/prob_input/univariate_distributions` directory.
 Here's how the directory look:
@@ -361,11 +362,11 @@ SUPPORTED_MARGINALS = {
 }
 ```
 
-This way you can create a new instance of `UnivDist` class by passing the chosen name as the `distribution` and the corresponding parameters:
+This way you can create a new instance of `Marginal` class by passing the chosen name as the `distribution` and the corresponding parameters:
 
 ```python
 >>> import uqtestfuns as uqtf
->>> my_var = uqtf.UnivDist(distribution="uniform", parameters=[3, 5])
+>>> my_var = uqtf.Marginal(distribution="uniform", parameters=[3, 5])
 ```
 
 Remember that the name `uniform` was chosen as the name of this distribution via the module-level variable `DISTRIBUTION_NAME`.

@@ -77,7 +77,9 @@ specification, all parameters of the log-normal marginals are given in terms
 of geometric mean and geometric standard deviation.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ```{note}
@@ -143,7 +145,7 @@ $$
 
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes compared with the
-analytical values. The error bars corresponds to twice the standard deviation
+analytical values. The error bars correspond to twice the standard deviation
 of the estimates obtained from $25$ replications.
 
 ```{code-cell} ipython3

@@ -174,8 +174,8 @@ These inputs are probabilistically defined further below.
 
 The parameters of the test function $\boldsymbol{p} = \{ E, l \}$,
 namely the beam's modulus of elasticity ($E$)
-and the span of the beam ($l$) are set to
-$2.6 \times 10^{4} \; \mathrm{[MPa]}$ and $6.0 \; \mathrm{[m]}$, respectively.
+and the span of the beam ($l$).
+The values for these parameters can be found the subsequent section.
 
 The failure state and the failure probability are defined as
 $g(\boldsymbol{x}; \boldsymbol{p}) \leq 0$
@@ -189,7 +189,19 @@ the test function consists of two independent standard normal random variables
 (see the table below).
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
+```
+
+## Parameters
+
+The default values of the parameters are shown below.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+print(my_testfun.parameters)
 ```
 
 ## Reference results

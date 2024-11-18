@@ -14,30 +14,32 @@ References
    p. 769-784, 2002.
    DOI: 10.1093/biomet/89.4.769
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Oakley1D"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Oakley2002": ProbInputSpecFixDim(
-        name="Oakley2002",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Oakley2002": {
+        "function_id": "Oakley1D",
+        "description": (
             "Probabilistic input model for the one-dimensional function "
             "from Oakley and O'Hagan (2002)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="x",
-                distribution="normal",
-                parameters=[0.0, 4.0],
-                description="None",
-            )
+        "marginals": [
+            {
+                "name": "x",
+                "distribution": "normal",
+                "parameters": [0.0, 4.0],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -62,13 +64,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Oakley1D(UQTestFunABC):
+class Oakley1D(UQTestFunFixDimABC):
     """An implementation of the 1D function from Oakley & O'Hagan (2002)."""
 
     _tags = ["metamodeling"]
     _description = "One-dimensional function from Oakley and O'Hagan (2002)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_spatial_dimension = 1
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

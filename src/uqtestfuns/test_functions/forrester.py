@@ -13,30 +13,32 @@ References
    experiments," Technometrics, vol. 34, no. 1, pp. 15-25, 1992.
    DOI: 10.2307/1269548
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Forrester2008"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Forrester2008": ProbInputSpecFixDim(
-        name="Forrester2008",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Forrester2008": {
+        "function_id": "Forrester2008",
+        "description": (
             "Input specification for the 1D test function "
             "from Forrester et al. (2008)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="x",
-                distribution="uniform",
-                parameters=[0, 1],
-                description="None",
-            )
+        "marginals": [
+            {
+                "name": "x",
+                "distribution": "uniform",
+                "parameters": [0, 1],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -61,13 +63,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Forrester2008(UQTestFunABC):
+class Forrester2008(UQTestFunFixDimABC):
     """An implementation of the 1D function of Forrester et al. (2008)."""
 
     _tags = ["optimization", "metamodeling"]
     _description = "One-dimensional function from Forrester et al. (2008)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_spatial_dimension = 1
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

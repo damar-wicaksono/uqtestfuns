@@ -1,10 +1,11 @@
 """
 Test module specifically for UnivariateInput instances with normal dist.
 """
+
 import pytest
 import numpy as np
 
-from uqtestfuns.core.prob_input.univariate_distribution import UnivDist
+from uqtestfuns.core.prob_input.marginal import Marginal
 from conftest import create_random_alphanumeric
 
 
@@ -16,7 +17,7 @@ def test_wrong_number_of_parameters() -> None:
     parameters = np.sort(np.random.rand(10))
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=distribution, parameters=parameters)
+        Marginal(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_failed_parameter_verification() -> None:
@@ -27,7 +28,7 @@ def test_failed_parameter_verification() -> None:
     parameters = [7.71, -1]
 
     with pytest.raises(ValueError):
-        UnivDist(name=name, distribution=distribution, parameters=parameters)
+        Marginal(name=name, distribution=distribution, parameters=parameters)
 
 
 def test_get_pdf_values() -> None:
@@ -37,7 +38,7 @@ def test_get_pdf_values() -> None:
     distribution = "normal"
     parameters = np.sort(np.random.rand(2))
 
-    my_univariate_input = UnivDist(
+    my_univariate_input = Marginal(
         name=name, distribution=distribution, parameters=parameters
     )
 

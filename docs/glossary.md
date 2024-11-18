@@ -6,6 +6,9 @@ CDF
     Cumulative distribution function, denoted by $F_X(x; \circ)$ where $\circ$
     is a placeholder for the distribution parameter(s).
 
+DS
+    Directional sampling
+
 FORM
     First-order reliability method
 

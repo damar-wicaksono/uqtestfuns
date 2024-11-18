@@ -6,6 +6,7 @@ Notes
 - High-level functions typically contain many guardrails against invalidity
   of the input arguments.
 """
+
 from tabulate import tabulate as tbl  # 'tabulate' is used as a parameter name
 from .utils import get_available_classes, SUPPORTED_TAGS
 from . import test_functions
@@ -16,26 +17,65 @@ from .core import UQTestFunABC
 __all__ = ["list_functions"]
 
 
+HEADER: dict = {
+    "input_dim": {
+        "header_name": "# Input",
+        "colalign": "center",
+        "maxcolwidth": None,
+    },
+    "output_dim": {
+        "header_name": "# Output",
+        "colalign": "center",
+        "maxcolwidth": None,
+    },
+    "parameterized": {
+        "header_name": "Param.",
+        "colalign": "center",
+        "maxcolwidth": None,
+    },
+    "tags": {
+        "header_name": "Application",
+        "colalign": "center",
+        "maxcolwidth": 20,
+    },
+    "description": {
+        "header_name": "Description",
+        "colalign": "left",
+        "maxcolwidth": 30,
+    },
+}
+
+
 def list_functions(
-    spatial_dimension: Optional[Union[str, int]] = None,
+    input_dimension: Optional[Union[str, int]] = None,
     tag: Optional[str] = None,
+    output_dimension: Optional[int] = None,
+    parameterized: Optional[bool] = None,
     tabulate: bool = True,
-) -> Optional[List[UQTestFunABC]]:
+    tablefmt: str = "grid",
+) -> Optional[Union[List[UQTestFunABC], str]]:
     """List of all the available functions.
 
     Parameters
     ----------
-    spatial_dimension : Optional[Union[str, int]]
-        Filter based on the number of spatial dimension.
+    input_dimension : Optional[Union[str, int]]
+        Filter based on the number of input dimension.
         For variable dimension (i.e., M-dimensional test functions),
         use the string "M".
     tag : Optional[str]
         Filter based on the application tag.
         Supported tags: "metamodeling", "sensitivity", "optimization",
         "reliability".
+    output_dimension : Optional[Union[str, int]]
+        Filter based on the number of output dimension.
+    parameterized : bool, optional
+        Filter based on whether the test function is parameterized.
     tabulate : bool, optional
         The flag whether to print a table on the console or a list
         of the available functions (each in fully-qualified class name).
+    tablefmt : str, optional
+        Format of the table output; use "html" to return a table in HTML
+        format nicely rendered in Jupyter notebook.
 
     Returns
     -------
@@ -46,176 +86,132 @@ def list_functions(
 
     Notes
     -----
-    - When both ``spatial_dimension`` and ``tag`` are specified the results are
+    - When both ``input_dimension`` and ``tag`` are specified the results are
       intersected. Entries that satisfy both are returned.
     """
 
     # --- Parse input arguments
-    _verify_input_args(spatial_dimension, tag, tabulate)
-
-    # --- Get all the available classes that implement the test functions
-    available_classes = get_available_classes(test_functions)
-    available_classes_dict = dict(available_classes)
-
-    # --- Filter according to the requested spatial dimension
-    if spatial_dimension:
-        available_classes_from_dimension = _get_functions_from_dimension(
-            available_classes_dict, spatial_dimension
-        )
-    else:
-        available_classes_from_dimension = list(available_classes_dict.keys())
-
-    # --- Filter according to the requested tag
-    if tag:
-        available_classes_from_tag = _get_functions_from_tag(
-            available_classes_dict, tag.lower()
-        )
-    else:
-        available_classes_from_tag = list(available_classes_dict.keys())
-
-    # --- Combine the results of both filters to obtain the final list
-    available_class_names = set(available_classes_from_dimension).intersection(
-        set(available_classes_from_tag)
+    _verify_input_args(
+        input_dimension, tag, output_dimension, parameterized, tabulate
     )
 
-    if not available_class_names:
-        return None
+    # --- Parse the module-level data
+    data = _parse_modules_data(test_functions)
 
-    constructors = []
+    # --- Filter based on the input dimension
+    data = _filter_on_input_dim(data, input_dimension)
+
+    # --- Filter based on the output dimension
+    data = _filter_on_output_dim(data, output_dimension)
+
+    # --- Filter based on parameterization
+    data = _filter_on_parameterized(data, parameterized)
+
+    # --- Filter based on the tags
+    data = _filter_on_tag(data, tag)
 
     # --- When asked, immediately return all the fully-qualified class name
     if not tabulate:
-        for available_class_name in available_class_names:
-            constructor = available_classes_dict[available_class_name]
-            constructors.append(constructor)
-
+        constructors = [
+            data[k]["full_path"] for k in sorted(list(data.keys()))
+        ]
         return constructors
 
-    # --- Create a tabulated view of the list
-    if tag is None:
-        header_names = [
-            "No.",
-            "Constructor",
-            "Dimension",
-            "Application",
-            "Description",
-        ]
-    else:
-        header_names = [
-            "No.",
-            "Constructor",
-            "Dimension",
-            "Description",
-        ]
+    # --- Get the arguments for tabulate
+    print_attribs, header_names, colalign, maxcolwidth = _get_table_formatting(
+        input_dimension,
+        tag,
+        output_dimension,
+        parameterized,
+    )
 
-    values = []
-    for idx, available_class_name in enumerate(
-        sorted(list(available_class_names))
-    ):
-        available_class = available_classes_dict[available_class_name]
+    values = _create_list_values(data, print_attribs)
 
-        if not available_class.default_spatial_dimension:
-            default_spatial_dimension = "M"
-        else:
-            default_spatial_dimension = (
-                available_class.default_spatial_dimension
-            )
+    if len(values) == 0:
+        return None
 
-        description = available_class.description
-
-        if tag is None:
-            tags = ", ".join(available_class.tags)
-            value = [
-                idx + 1,
-                f"{available_class_name}()",
-                f"{default_spatial_dimension}",
-                tags,
-                f"{description}",
-            ]
-        else:
-            value = [
-                idx + 1,
-                f"{available_class_name}()",
-                f"{default_spatial_dimension}",
-                f"{description}",
-            ]
-
-        values.append(value)
-
-    if tag is None:
+    if tablefmt == "html":
+        colalign[-1] = "center"
         table = tbl(
             values,
             headers=header_names,
-            stralign="center",
-            colalign=("center", "center", "center", "center", "left"),
+            tablefmt=tablefmt,
+            colalign=colalign,
+            maxcolwidths=maxcolwidth,
         )
+        return table
     else:
         table = tbl(
             values,
             headers=header_names,
-            stralign="center",
-            colalign=("center", "center", "center", "left"),
+            tablefmt=tablefmt,
+            colalign=colalign,
+            maxcolwidths=maxcolwidth,
         )
-
-    print(table)
+        print(table)
 
     return None
 
 
 def _verify_input_args(
-    spatial_dimension: Optional[Union[str, int]] = None,
+    input_dimension: Optional[Union[str, int]] = None,
     tag: Optional[str] = None,
+    output_dimension: Optional[int] = None,
+    parameterized: Optional[bool] = None,
     tabulate: bool = True,
 ) -> None:
     """Verify the input arguments.
 
     Parameters
     ----------
-    spatial_dimension : Optional[Union[str, int]]
-        The number of spatial dimension to filter the list.
+    input_dimension : Optional[Union[str, int]]
+        The number of input dimension to filter the list of test functions.
         For variable dimension (i.e., M-dimensional test functions),
         use the string "M".
     tag : Optional[str]
-        The application tag to filter the list.
+        The application tag to filter the list of test functions.
         Supported tags: "metamodeling", "sensitivity", "optimization",
         "reliability".
+    output_dimension : int, optional
+        The number of output dimension to filter the list of test functions.
+    parameterized : bool, optional
+        The flag based on whether the test function is parameterized to filter
+        the list of test functions.
     tabulate : bool, optional
         The flag whether to print a table on the console or a list
         of the available functions (each in fully-qualified class name).
 
-    Returns
-    ------
-    None
-        The function exits without any return value when nothing is wrong.
-
     Raises
     ------
     ValueError
-        If ``spatial_dimension`` is not a positive integer or the string "M".
+        If ``input_dimension`` is not a positive integer or the string "M".
         If ``tag`` is not one of the supported tags.
+        If ``output_dimension`` is not a positive integer.
     TypeError
-        If ``spatial_dimension`` is not either an integer, string, or NoneType.
+        If ``input_dimension`` is not either an integer, string, or NoneType.
         If ``tag`` is not a string.
+        If ``output_dimension`` is not an integer, string, or NoneType.
+        If ``parameterized`` is not a bool.
         If ``tabulate`` is not a bool.
     """
-    # --- Parse 'spatial_dimension'
-    if not isinstance(spatial_dimension, (int, str, type(None))):
+    # --- Parse 'input_dimension'
+    if not isinstance(input_dimension, (int, str, type(None))):
         raise TypeError(
-            f"Invalid type for spatial dimension! "
+            f"Invalid type for input dimension! "
             f"Expected either an integer or a string. "
-            f"Got instead {type(spatial_dimension)}."
+            f"Got instead {type(input_dimension)}."
         )
-    if spatial_dimension is not None and isinstance(spatial_dimension, str):
-        if spatial_dimension.lower() != "m":
+    if input_dimension is not None and isinstance(input_dimension, str):
+        if input_dimension.lower() != "m":
             raise ValueError(
-                f"Invalid value ({spatial_dimension}) for spatial dimension! "
+                f"Invalid value ({input_dimension}) for input dimension! "
                 f"Either a positive integer or 'M' to indicate "
                 f"a variable-dimension test function."
             )
-    if spatial_dimension is not None and isinstance(spatial_dimension, int):
-        if spatial_dimension <= 0:
+    if input_dimension is not None and isinstance(input_dimension, int):
+        if input_dimension <= 0:
             raise ValueError(
-                f"Invalid value ({spatial_dimension}) for spatial dimension! "
+                f"Invalid value ({input_dimension}) for input dimension! "
                 f"Either a positive integer or 'M' to indicate "
                 f"a variable-dimension test function."
             )
@@ -228,6 +224,27 @@ def _verify_input_args(
             f"Tag {tag!r} is not supported. Use one of {SUPPORTED_TAGS}!"
         )
 
+    # --- Parse 'input_dimension'
+    if not isinstance(output_dimension, (int, type(None))):
+        raise TypeError(
+            f"Invalid type for output dimension! "
+            f"Expected either an integer or a string. "
+            f"Got instead {type(output_dimension)}."
+        )
+    if output_dimension is not None:
+        if output_dimension <= 0:
+            raise ValueError(
+                f"Invalid value ({output_dimension}) for output dimension! "
+                f"Must be a positive integer."
+            )
+
+    # --- Parse 'parameterized'
+    if not isinstance(parameterized, (bool, type(None))):
+        raise TypeError(
+            f"'parameterized' argument must be of bool type! "
+            f"Got {type(parameterized)}."
+        )
+
     # --- Parse 'tabulate'
     if not isinstance(tabulate, (bool, type(None))):
         raise TypeError(
@@ -235,44 +252,123 @@ def _verify_input_args(
         )
 
 
-def _get_functions_from_dimension(
-    available_classes: dict,
-    spatial_dimension: Union[int, str],
-) -> List[str]:
-    """Get the function keys that satisfy the spatial dimension filter."""
+def _filter_on_input_dim(data, input_dimension):
+    """Filter the dictionary of test functions data based on the input dim."""
+    if input_dimension is not None:
+        if isinstance(input_dimension, str):
+            input_dimension = input_dimension.upper()
+        data = {
+            k: v for k, v in data.items() if v["input_dim"] == input_dimension
+        }
+
+    return data
+
+
+def _filter_on_output_dim(data, output_dimension):
+    """Filter the dictionary of test functions data based on the output dim."""
+    if output_dimension is not None:
+        data = {
+            k: v
+            for k, v in data.items()
+            if v["output_dim"] == output_dimension
+        }
+
+    return data
+
+
+def _filter_on_parameterized(data, parameterized):
+    """Filter the dictionary of test functions data based on the param."""
+    if parameterized is not None:
+        data = {
+            k: v
+            for k, v in data.items()
+            if v["parameterized"] is parameterized
+        }
+
+    return data
+
+
+def _filter_on_tag(data, tag):
+    """Filter the dictionary of test functions data based on the tag."""
+    if tag is not None:
+        data = {k: v for k, v in data.items() if tag in v["tags"]}
+
+    return data
+
+
+def _create_list_values(data, print_attribs):
+    """Get the selected values from dictionary test functions data."""
     values = []
-
-    # --- Make sure to check against a lower-case string
-    if isinstance(spatial_dimension, str):
-        spatial_dimension = spatial_dimension.lower()
-
-    for (
-        available_class_name,
-        available_class_path,
-    ) in available_classes.items():
-        default_spatial_dimension = (
-            available_class_path.default_spatial_dimension
-        )
-        if not default_spatial_dimension:
-            default_spatial_dimension = "m"
-
-        if default_spatial_dimension == spatial_dimension:
-            values.append(available_class_name)
+    for i, function_name in enumerate(sorted(list(data.keys()))):
+        values_tmp = [i + 1, data[function_name]["constructor"]]
+        for print_attrib in print_attribs:
+            values_tmp.append(data[function_name][print_attrib])
+        values.append(values_tmp)
 
     return values
 
 
-def _get_functions_from_tag(available_classes: dict, tag: str) -> List[str]:
-    """Get the function keys that satisfy the tag filter."""
-    values = []
+def _get_table_formatting(
+    input_dimension,
+    tag,
+    output_dimension,
+    parameterized,
+):
+    """Get the table formatting as arguments to 'tabulate()'."""
+    header_names: List[str] = ["No.", "Constructor"]
+    colalign: List[str] = ["center", "center"]
+    maxcolwidth: List[Optional[int]] = [None, None]
+    print_attribs: List[str] = []
 
-    for (
-        available_class_name,
-        available_class_path,
-    ) in available_classes.items():
-        tags = available_class_path.tags
+    # The printed attribute should appear in this order
+    if input_dimension is None:
+        print_attribs.append("input_dim")
 
-        if tag in tags:
-            values.append(available_class_name)
+    if output_dimension is None:
+        print_attribs.append("output_dim")
 
-    return values
+    if parameterized is None:
+        print_attribs.append("parameterized")
+
+    if tag is None:
+        print_attribs.append("tags")
+
+    # --- Always get description
+    print_attribs.append("description")
+
+    # --- Get the arguments for tabulate
+    for print_attrib in print_attribs:
+        header_names.append(HEADER[print_attrib]["header_name"])
+        colalign.append(HEADER[print_attrib]["colalign"])
+        maxcolwidth.append(HEADER[print_attrib]["maxcolwidth"])
+
+    return print_attribs, header_names, colalign, maxcolwidth
+
+
+def _parse_modules_data(package):
+    available_classes = get_available_classes(package)
+
+    data = {}
+
+    for available_class, class_path in available_classes:
+
+        # Create an instance of test function to parse its properties
+        instance: UQTestFunABC = class_path()
+
+        # Get the dimension
+        if instance.variable_dimension:
+            input_dimension = "M"
+        else:
+            input_dimension = str(instance.input_dimension)
+
+        data[available_class] = {
+            "constructor": available_class + "()",
+            "input_dim": input_dimension,
+            "output_dim": instance.output_dimension,
+            "parameterized": True if instance.parameters else False,
+            "tags": ", ".join(instance.tags),
+            "description": instance.description,
+            "full_path": class_path,
+        }
+
+    return data

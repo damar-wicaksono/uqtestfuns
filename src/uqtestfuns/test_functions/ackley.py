@@ -19,58 +19,65 @@ References
    vol. 1, no. 1, pp. 1–23, 1993.
    DOI: 10.1162/evco.1993.1.1.1.
 """
+
 import numpy as np
 
-from typing import List, Tuple
-
-from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
+from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
 
 __all__ = ["Ackley"]
 
 
-def _ackley_input(spatial_dimension: int) -> List[UnivDistSpec]:
-    """Create a list of marginals for the M-dimensional Ackley function.
-
-    Parameters
-    ----------
-    spatial_dimension : int
-        The requested spatial dimension of the probabilistic input model.
-
-    Returns
-    -------
-    List[UnivDistSpec]
-        A list of marginals for the multivariate input following Ref. [1]
-    """
-    marginals = []
-    for i in range(spatial_dimension):
-        marginals.append(
-            UnivDistSpec(
-                name=f"X{i + 1}",
-                distribution="uniform",
-                parameters=[-32.768, 32.768],
-                description="None",
-            )
-        )
-
-    return marginals
-
-
-AVAILABLE_INPUT_SPECS = {
-    "Ackley1987": ProbInputSpecVarDim(
-        name="Ackley1987",
-        description=(
-            "Search domain for the Ackley function from Ackley (1987)."
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Ackley1987": {
+        "function_id": "Ackley",
+        "description": (
+            "Search domain for the Ackley function from Ackley (1987)"
         ),
-        marginals_generator=_ackley_input,
-        copulas=None,
-    ),
+        "marginals": [
+            {
+                "name": "X",
+                "distribution": "uniform",
+                "parameters": [-32.768, 32.768],
+                "description": None,
+            },
+        ],
+        "copulas": None,
+    }
 }
 
-AVAILABLE_PARAMETERS = {"Ackley1987": np.array([20, 0.2, 2 * np.pi])}
+
+AVAILABLE_PARAMETERS: FunParamSpecs = {
+    "Ackley1987": {
+        "function_id": "Ackley",
+        "description": (
+            "Parameter set for the Ackley function from Ackley (1987)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "a",
+                "value": 20.0,
+                "type": float,
+                "description": "Height of the ridges surrounding the minimum",
+            },
+            {
+                "keyword": "b",
+                "value": 0.2,
+                "type": float,
+                "description": "Decay rate of the Euclidean distance",
+            },
+            {
+                "keyword": "c",
+                "value": 2 * np.pi,
+                "type": float,
+                "description": "Scaling constant for the cosine term",
+            },
+        ],
+    },
+}
 
 
-def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
+def evaluate(xx: np.ndarray, a: float, b: float, c: float) -> np.ndarray:
     """Evaluate the Ackley function on a set of input values.
 
     Parameters
@@ -78,8 +85,12 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
     xx : np.ndarray
         M-Dimensional input values given by an N-by-M array where
         N is the number of input values.
-    parameters : Tuple[float, float, float]
-        A tuple of length 3 for the parameters of the Ackley function.
+    a : float
+        Height of the ridges surrounding the minimum.
+    b : float
+        Decay rate of the Euclidean distance.
+    c : float
+        Scaling constant for the cosine term.
 
     Returns
     -------
@@ -89,7 +100,6 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
     """
 
     m = xx.shape[1]
-    a, b, c = parameters
 
     # Compute the Ackley function
     term_1 = -1 * a * np.exp(-1 * b * np.sqrt(np.sum(xx**2, axis=1) / m))
@@ -100,13 +110,12 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float, float]):
     return yy
 
 
-class Ackley(UQTestFunABC):
+class Ackley(UQTestFunVarDimABC):
     """A concrete implementation of the M-dimensional Ackley test function."""
 
     _tags = ["optimization", "metamodeling"]
     _description = "Optimization test function from Ackley (1987)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_spatial_dimension = None  # Indicate that this is variable dim.
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

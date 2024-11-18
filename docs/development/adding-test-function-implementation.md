@@ -109,8 +109,8 @@ Here are the few things we usually use:
 ```python
 import numpy as np
 
-from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Branin"]
 ```
@@ -118,17 +118,18 @@ __all__ = ["Branin"]
 Here are some explanations:
 
 - NumPy is usually a must, especially for implementing the evaluation function.
-- All built-in test functions are concrete implementations of the abstract base
-  class `UQTestFunABC`.
-- The specification for a probabilistic input model is stored in `UnivDistSpec`
-  (the one-dimensional marginal specification) and `ProbInputSpecFixDim`
-  (the probabilistic input model). These are lightweight _containers_
-  (meaning no custom methods) of all the information required to construct,
-  later on, `UnivDist` and `ProbInput` instances, respectively.
+- Because Branin test function is a test function with a fixed number of (input)
+  dimensions, the class will be derived from the abstract base class
+  {ref}`UQTestFunFixDimABC <api_reference_uqtestfun_fix_dim_abc>`.
+- To assist specifying the data for probabilistic input model the custom type
+  `ProbInputSpecs` can be used; these are supposed to help you specifying
+  all the required data via the typechecker.
+- Similarly, the custom type `FunParamSpecs` is used for specifying the
+  function parameters.
 
-```{note}
-There is also the corresponding `ProbInputSpecVarDim` to store the information
-required to construct probabilistic input model with variable dimension.
+```{notes}
+In case the function is of variable dimension, use the abstract base class
+{ref}`UQTestFunVarDimABC <api_reference_uqtestfun_var_dim_abc>` instead.
 ```
 
 ### Implementing a concrete evaluation function
@@ -138,37 +139,39 @@ For an implementation of a test function, create a top module-level function
 module):
 
 ```python
-def evaluate(xx: np.ndarray, parameters: Any) -> np.ndarray:
+def evaluate(xx: np.ndarray, a: float, b: float, c: float, r: float, s: float, t: float):
     """Evaluate the Branin function on a set of input values.
-
+    
     Parameters
     ----------
     xx : np.ndarray
         2-Dimensional input values given by an N-by-2 array where
         N is the number of input values.
-    parameters : Any
-        The parameters of the test function (six numbers)
-
+    a : float
+        Parameter 'a' of the Branin function.
+    b : float
+        Parameter 'b' of the Branin function.
+    c : float
+        Parameter 'c' of the Branin function.
+    r : float
+        Parameter 'r' of the Branin function.
+    s : float
+        Parameter 's' of the Branin function.
+    t : float
+        Parameter 't' of the Branin function.
+    
     Returns
     -------
     np.ndarray
         The output of the Branin function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
+        The output is a 1-dimensional array of length N.    
     """
-    params = parameters
     yy = (
-        params[0]
-        * (
-            xx[:, 1]
-            - params[1] * xx[:, 0] ** 2
-            + params[2] * xx[:, 0]
-            - params[3]
-        )
-        ** 2
-        + params[4] * (1 - params[5]) * np.cos(xx[:, 0])
-        + params[4]
+        a * (xx[:, 1] - b * xx[:, 0]**2 + c * xx[:, 0] - r)**2
+        + s * (1 - t) * np.cos(xx[:, 0]) 
+        + s
     )
-
+    
     return yy
 ```
 
@@ -179,36 +182,36 @@ include the parameters.
 
 The specification of the probabilistic model is stored in a module-level
 dictionary. While you're free to name the dictionary anything you like,
-the convention is `AVAILABLE_INPUT_SPECS`.
+the convention is `AVAILABLE_INPUTS`.
 We define the variable as follows:
 
 ```python
-AVAILABLE_INPUT_SPECS = {
-    "Dixon1978": ProbInputSpecFixDim(
-        name="Branin-Dixon-2008",
-        description=(
+AVAILABLE_INPUT_SPECS: ProbInputSpecs = {
+    "Dixon1978": {
+        "name": "Branin",
+        "description": (
             "Search domain for the Branin function from Dixon and Szegö (1978)."
         ),
-        marginals=[
-          UnivDistSpec(
-            name="x1",
-            distribution="uniform",
-            parameters=[-5, 10],
-            description="None",
-          ),
-          UnivDistSpec(
-            name="x2",
-            distribution="uniform",
-            parameters=[0.0, 15.0],
-            description="None",
-          )
+        "marginals": [
+            {
+                "name": "x1",
+                "distribution": "uniform",
+                "parameters": [-5, 10],
+                "description": None,
+            },
+            {
+                "name": "x2",
+                "distribution": "uniform",
+                "parameters": [0.0, 15.0],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 ```
 
-Each key-value pair of this dictionary contains a complete specification
+Each key-value pair of this dictionary contains the specification
 to create an input model as an instance of the `ProbInput` class.
 For this particular example, we only have one input specification available.
 If there were more, we would add them here in the dictionary each with a unique keyword.
@@ -217,9 +220,9 @@ If there were more, we would add them here in the dictionary each with a unique 
 The keyword is, by convention, the citation key of the particular reference as listed in the BibTeX file. 
 ```
 
-Also notice that in the code above, we store the specifications of the marginals
-in a list of {ref}`api_reference_input_spec_univdist`.
-Each element of this list is used to create an instance of `UnivDist`.
+Also notice that in the code above, we store the specifications of
+the marginals in a list of marginal specifications.
+Each element of this list is used to create an instance of `Marginal`.
 
 With that, we have completed the input specification of the Branin function.
 
@@ -230,15 +233,52 @@ dictionary that stores the parameter sets.
 Conventionally, we name this variable `AVAILABLE_PARAMETERS`:
 
 ```python
-AVAILABLE_PARAMETERS = {
-    "Dixon1978": np.array(
-        [1.0, 5.1 / (2 * np.pi) ** 2, 5 / np.pi, 6, 10, 1 / 8 / np.pi]
-    )
+AVAILABLE_PARAMETERS: FunParamSpecs = {
+    "Dixon1978": {
+      "function_id": "Branin",
+      "description": "Parameter set for the Branin function from Dixon (1978)",
+      "declared_parameters": [
+          {
+              "keyword": "a",
+              "value": 1.0,
+              "type": float,
+          },
+          {
+              "keyword": "b",
+              "value": 5.1 / (2 * np.pi) ** 2,
+              "type": float,
+          },
+          {
+              "keyword": "c",
+              "value": 5 / np.pi,
+              "type": float,
+          },
+          {
+              "keyword": "r",
+              "value": 6.0,
+              "type": float,
+          },
+          {
+              "keyword": "s",
+              "value": 10.0,
+              "type": float,
+          },
+          {
+              "keyword": "t",
+              "value": 1 / 8 / np.pi,
+              "type": float,
+          },
+      ],
+    },
 }
 ```
 
-The value of the parameters can be of any type, as long as it is consistent
-with how the parameters are going to be consumed by the `evaluate()` function.
+This is a nested dictionary, where each top key-value pair contains one set of 
+parameters from the literature.
+
+The value of the parameters in the set can be of any type, as long as it is
+consistent  with how the parameters are going to be consumed
+by the `evaluate()` function.
 
 As before, if there are multiple parameter sets available in the literature,
 additional key-value pair should be added here.
@@ -249,31 +289,29 @@ Each built-in test function is an implementation of the abstract base class
 `UQTestFunABC`.
 A concrete implementation of this base class requires the following:
 
-- a static method named `eval_()`
+- a static method named `evaluate()`
 - several class-level properties, namely: `_tags`, `_description`, 
-  `_available_inputs`, `_available_parameters`, `_default_spatial_dimension`,
-  `_default_input`, and `_default_parameters`.
+  `_available_inputs`, `_available_parameters`, `_default_input_id`,
+  and `_default_parameters_id`.
 
 The full definition of the class for the Branin test function is shown below.
 
 ```python
-class Branin(UQTestFunFixDimABC):
+class Branin(UQTestFunABC):
     """A concrete implementation of the Branin test function."""
   
     _tags = ["optimization"]  # Application tags
     _description = "Branin function from Dixon and Szegö (1978)"  # Short description
-    _available_inputs = AVAILABLE_INPUT_SPECS    # As defined above 
-    _available_parameters = AVAILABLE_PARAMETERS # As defined above
-    _default_spatial_dimension = 2  # Spatial dimension of the function
-    _default_input = "Dixon1978"       # Optional, if only one input is available
-    _default_parameters = "Dixon1978"  # Optional, if only one set of parameters is available
+    _available_inputs = AVAILABLE_INPUTS          # As defined above 
+    _available_parameters = AVAILABLE_PARAMETERS  # As defined above
+    _default_input_id = "Dixon1978"       # Optional, if only one input is available
+    _default_parameters_id = "Dixon1978"  # Optional, if only one set of parameters is available
 
-    eval_ = staticmethod(evaluate)  # assuming `evaluate()` has been defined
+    evaluate = staticmethod(evaluate)  # assuming `evaluate()` has been defined
 ```
 
 There is no need to define an `__init__()` method.
 We will use the default `__init__()` from the base class.
-
 
 Notice the two last class properties: `_default_input` and `_default_parameters`.
 In case of only one input specification (resp. set of parameters) is available,
@@ -307,11 +345,26 @@ built-in functions from a Python terminal.
 ```python
 >>> import uqtestfuns as uqtf
 >>> uqtf.list_functions()
- No.      Constructor       Spatial Dimension          Application          Description
------  ------------------  -------------------  --------------------------  ----------------------------------------------------------------------------
-  1         Ackley()                M           optimization, metamodeling  Ackley function from Ackley (1987)
-  2        Borehole()               8           metamodeling, sensitivity   Borehole function from Harper and Gupta (1983)
-  3         Branin()                2                  optimization         Branin function from Dixon and Szegö (1978)
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
+|  No.  |          Constructor          |  # Input  |  # Output  |  Param.  |  Application  | Description                    |
++=======+===============================+===========+============+==========+===============+================================+
+|   1   |           Ackley()            |     M     |     1      |   True   | optimization, | Optimization test function     |
+|       |                               |           |            |          | metamodeling  | from Ackley (1987)             |
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
+|   2   |        Alemazkoor20D()        |    20     |     1      |  False   | metamodeling  | High-dimensional low-degree    |
+|       |                               |           |            |          |               | polynomial from Alemazkoor &   |
+|       |                               |           |            |          |               | Meidani (2018)                 |
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
+|   3   |        Alemazkoor2D()         |     2     |     1      |  False   | metamodeling  | Low-dimensional high-degree    |
+|       |                               |           |            |          |               | polynomial from Alemazkoor &   |
+|       |                               |           |            |          |               | Meidani (2018)                 |
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
+|   4   |          Borehole()           |     8     |     1      |  False   | metamodeling, | Borehole function from Harper  |
+|       |                               |           |            |          |  sensitivity  | and Gupta (1983)               |
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
+|   5   |            Branin()           |     2     |     1      |  False   | optimization  | Branin function from Dixon     |
+|       |                               |           |            |          |               | and Szegö (1978)               |
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
 ...
 ```
 

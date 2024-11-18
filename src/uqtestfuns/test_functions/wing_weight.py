@@ -19,87 +19,89 @@ References
    Orlando, Florida, 2020. American Institute of Aeronautics and Astronautics.
    DOI: 10.2514/6.2020-1865.
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 from .utils import deg2rad
 
 __all__ = ["WingWeight"]
 
-INPUT_MARGINALS_FORRESTER2008 = [
-    UnivDistSpec(
-        name="Sw",
-        distribution="uniform",
-        parameters=[150.0, 200.0],
-        description="wing area [ft^2]",
-    ),
-    UnivDistSpec(
-        name="Wfw",
-        distribution="uniform",
-        parameters=[220.0, 300.0],
-        description="weight of fuel in the wing [lb]",
-    ),
-    UnivDistSpec(
-        name="A",
-        distribution="uniform",
-        parameters=[6.0, 10.0],
-        description="aspect ratio [-]",
-    ),
-    UnivDistSpec(
-        name="Lambda",
-        distribution="uniform",
-        parameters=[-10.0, 10.0],
-        description="quarter-chord sweep [degrees]",
-    ),
-    UnivDistSpec(
-        name="q",
-        distribution="uniform",
-        parameters=[16.0, 45.0],
-        description="dynamic pressure at cruise [lb/ft^2]",
-    ),
-    UnivDistSpec(
-        name="lambda",
-        distribution="uniform",
-        parameters=[0.5, 1.0],
-        description="taper ratio [-]",
-    ),
-    UnivDistSpec(
-        name="tc",
-        distribution="uniform",
-        parameters=[0.08, 0.18],
-        description="aerofoil thickness to chord ratio [-]",
-    ),
-    UnivDistSpec(
-        name="Nz",
-        distribution="uniform",
-        parameters=[2.5, 6.0],
-        description="ultimate load factor [-]",
-    ),
-    UnivDistSpec(
-        name="Wdg",
-        distribution="uniform",
-        parameters=[1700, 2500],
-        description="flight design gross weight [lb]",
-    ),
-    UnivDistSpec(
-        name="Wp",
-        distribution="uniform",
-        parameters=[0.025, 0.08],
-        description="paint weight [lb/ft^2]",
-    ),
+
+MARGINALS_FORRESTER2008: MarginalSpecs = [
+    {
+        "name": "Sw",
+        "distribution": "uniform",
+        "parameters": [150.0, 200.0],
+        "description": "wing area [ft^2]",
+    },
+    {
+        "name": "Wfw",
+        "distribution": "uniform",
+        "parameters": [220.0, 300.0],
+        "description": "weight of fuel in the wing [lb]",
+    },
+    {
+        "name": "A",
+        "distribution": "uniform",
+        "parameters": [6.0, 10.0],
+        "description": "aspect ratio [-]",
+    },
+    {
+        "name": "Lambda",
+        "distribution": "uniform",
+        "parameters": [-10.0, 10.0],
+        "description": "quarter-chord sweep [degrees]",
+    },
+    {
+        "name": "q",
+        "distribution": "uniform",
+        "parameters": [16.0, 45.0],
+        "description": "dynamic pressure at cruise [lb/ft^2]",
+    },
+    {
+        "name": "lambda",
+        "distribution": "uniform",
+        "parameters": [0.5, 1.0],
+        "description": "taper ratio [-]",
+    },
+    {
+        "name": "tc",
+        "distribution": "uniform",
+        "parameters": [0.08, 0.18],
+        "description": "aerofoil thickness to chord ratio [-]",
+    },
+    {
+        "name": "Nz",
+        "distribution": "uniform",
+        "parameters": [2.5, 6.0],
+        "description": "ultimate load factor [-]",
+    },
+    {
+        "name": "Wdg",
+        "distribution": "uniform",
+        "parameters": [1700, 2500],
+        "description": "flight design gross weight [lb]",
+    },
+    {
+        "name": "Wp",
+        "distribution": "uniform",
+        "parameters": [0.025, 0.08],
+        "description": "paint weight [lb/ft^2]",
+    },
 ]
 
-AVAILABLE_INPUT_SPECS = {
-    "Forrester2008": ProbInputSpecFixDim(
-        name="Wing-Weight-Forrester-2008",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Forrester2008": {
+        "function_id": "WingWeight",
+        "description": (
             "Probabilistic input model for the Wing Weight model "
             "from Forrester et al. (2008)."
         ),
-        marginals=INPUT_MARGINALS_FORRESTER2008,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_FORRESTER2008,
+        "copulas": None,
+    },
 }
 
 
@@ -133,13 +135,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class WingWeight(UQTestFunABC):
+class WingWeight(UQTestFunFixDimABC):
     """A concrete implementation of the wing weight test function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Wing weight model from Forrester et al. (2008)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_spatial_dimension = 10
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

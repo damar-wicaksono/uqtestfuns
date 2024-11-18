@@ -8,9 +8,13 @@ To make sense of how the objects in UQTestFuns are organized,
 let's start from the top, the {ref}`built-in test functions <test-functions:available>`:
 
 - Each of the built-in UQ test functions is a concrete implementation of the
-  abstract base class {ref}`UQTestFunABC <api_reference_uqtestfun_abc>`.
-  The base class, in turns, is derived 
-  from {ref}`UQTestFunABC <api_reference_uqtestfun_bare_abc>`).
+  abstract base classes: {ref}`UQTestFunFixDimABC <api_reference_uqtestfun_fix_dim_abc>`
+  (for UQ test functions with fixed dimension) or
+  {ref}`UQTestFunVarDimABC <api_reference_uqtestfun_var_dim_abc>`
+  (for UQ test functions with variable dimension).
+- Both of those abstract classes are derived from {ref}`UQTestFunABC <api_reference_uqtestfun_abc>`.
+  This base class, in turn, is derived 
+  from {ref}`UQTestFunBareABC <api_reference_uqtestfun_bare_abc>`).
   Therefore, all the instances share the same underlying interfaces.
   In particular, all instances share, among other things, the ``evaluate()`` 
   method, the ``prob_input`` property, and the ``parameters`` property [^essence].
@@ -21,22 +25,17 @@ let's start from the top, the {ref}`built-in test functions <test-functions:avai
   represents the input of an uncertainty quantification (UQ) test function.
 - An instance of the ``ProbInput`` class consists mainly of the one-dimensional
   marginals and a copula specification (not yet supported). Each one-dimensional
-  marginal comes from a univariate random variable which in turn
-  is represented by the {ref}`UnivDist <api_reference_univariate_distribution>`
-  class. 
-- An instance of class ``UnivDist`` has a (parametric) probability distribution.
-  Although different instances may have different probability distributions,
-  they are all instances of the same class.
-- As lightweight containers to specify the specifications of a ``ProbInput`` and
-  a ``UnivDist``, {ref}`three custom <api_reference_input_spec>` ``NamedTuple``
-  are defined, namely {ref}`api_reference_input_spec_univdist`, 
-  {ref}`api_reference_input_spec_fixdim`, and {ref}`api_reference_input_spec_vardim`.
+  marginal comes is represented
+  by the {ref}`Marginal <api_reference_marginal_distribution>` class. 
+- An instance of the ``Marginal`` class has a (parametric) probability
+  distribution. Although different instances may have different
+  probability distributions, they are all instances of the same class.
 
 ```{note}
 To facilitate the creation of a custom UQ test function
 in runtime or within a running Python session, UQTestFuns also includes
 the concrete {ref}`api_reference_uqtestfun` class.
-You can see the usage {ref}`here <getting-started:creating-a-custom>`.
+You can see the usage {ref}`here <getting-started:tutorial-custom-functions>`.
 ```
 
 Additionally, there is currently one top-level convenient function used to

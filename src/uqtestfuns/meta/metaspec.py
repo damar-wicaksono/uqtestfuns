@@ -2,19 +2,20 @@
 This module contains the classes that implement specification
 for a meta and the resulting test function.
 """
+
 import numpy as np
 import itertools
 from dataclasses import dataclass, field, InitVar
 from scipy.special import comb
 from typing import Dict, Callable, Tuple, Optional, Union, List
 
-from ..core import UnivDist
+from ..core import Marginal
 
 __all__ = ["UQMetaFunSpec", "UQTestFunSpec"]
 
 
 def _preprocess_effects(
-    effects_dict: Dict[int, Optional[int]], spatial_dimension: int
+    effects_dict: Dict[int, Optional[int]], input_dimension: int
 ) -> Dict[int, int]:
     """Preprocess the effects dictionary.
 
@@ -25,8 +26,8 @@ def _preprocess_effects(
       or it's zero, then exclude the key.
 
     >>> effects_dict = {1: None, 2: 3, 3: None, 4: 10}
-    >>> spatial_dimension = 3
-    >>> _preprocess_effects(effects_dict, spatial_dimension)
+    >>> input_dimension = 3
+    >>> _preprocess_effects(effects_dict, input_dimension)
     {1: 3, 2: 3, 3: 1}
 
     Parameters
@@ -34,7 +35,7 @@ def _preprocess_effects(
     effects_dict : Dict[int, Optional[int]]
         Specified effects with the corresponding length to take into account
         in a realization of test function.
-    spatial_dimension : int
+    input_dimension : int
         Number of dimensions of the test function.
 
     Returns
@@ -45,27 +46,27 @@ def _preprocess_effects(
     effects = dict()
 
     for key in list(effects_dict):
-        if key <= spatial_dimension and effects_dict[key] != 0:
+        if key <= input_dimension and effects_dict[key] != 0:
             if effects_dict[key] is None:
                 # NOTE: scipy.special.comb returns a flot
-                effects[key] = int(comb(spatial_dimension, key))
+                effects[key] = int(comb(input_dimension, key))
             else:
                 effects[key] = effects_dict[key]  # type: ignore
 
     return effects
 
 
-def _select_basis(spatial_dimension: int, num_basis: int) -> Tuple[int, ...]:
+def _select_basis(input_dimension: int, num_basis: int) -> Tuple[int, ...]:
     """Select basis of a certain length from a selection of basis.
 
-    For example, with spatial dimension of 3 and number of basis functions
+    For example, with input dimension of 3 and number of basis functions
     of 9, the output may be a tuple of integers: (7, 3, 8) which means
     the first, second, and third dimension has the 7th, 3rd,
     and 8th basis function, respectively.
 
     Parameters
     ----------
-    spatial_dimension : int
+    input_dimension : int
         Number of dimensions of the test function.
     num_basis : int
         Number of available basis functions to select from.
@@ -75,33 +76,33 @@ def _select_basis(spatial_dimension: int, num_basis: int) -> Tuple[int, ...]:
     Tuple[int, ...]
         Selected basis function in each dimension.
     """
-    selection = tuple(np.random.randint(0, num_basis, size=spatial_dimension))
+    selection = tuple(np.random.randint(0, num_basis, size=input_dimension))
 
     return selection
 
 
 def _create_effects_tuples(
-    spatial_dimension: int, effects_dict: Dict[int, int]
+    input_dimension: int, effects_dict: Dict[int, int]
 ) -> Dict[int, Tuple[Tuple[int, ...], ...]]:
     """Create a dictionary of effect matrices.
 
-    >>> spatial_dimension = 3
+    >>> input_dimension = 3
     >>> effects_dict = {1: None, 2: None, 3: None}
-    >>> _create_effects_tuples(spatial_dimension, effects_dict)
+    >>> _create_effects_tuples(input_dimension, effects_dict)
     {1: ((0,), (1,), (2,)), 2: ((0, 1), (0, 2), (1, 2)), 3: ((0, 1, 2),)}
     >>> effects_dict = {}
-    >>> _create_effects_tuples(spatial_dimension, effects_dict)
+    >>> _create_effects_tuples(input_dimension, effects_dict)
     {}
     >>> effects_dict = {1: 0, 2: None, 3: 0}
-    >>> _create_effects_tuples(spatial_dimension, effects_dict)
+    >>> _create_effects_tuples(input_dimension, effects_dict)
     {2: ((0, 1), (0, 2), (1, 2))}
     >>> effects_dict = {5: None}
-    >>> _create_effects_tuples(spatial_dimension, effects_dict)
+    >>> _create_effects_tuples(input_dimension, effects_dict)
     {}
 
     Parameters
     ----------
-    spatial_dimension : int
+    input_dimension : int
         Number of dimensions of the test function.
     effects_dict : Dict[int, int]
         Specified effects to take into account.
@@ -114,17 +115,17 @@ def _create_effects_tuples(
     Notes
     -----
     - If an effect has a value of 0 then no effect is taken into account.
-    - If an effect is larger than the spatial dimension of the test function
+    - If an effect is larger than the input dimension of the test function
       then no effect is taken into account.
     """
     effects_tuples = dict()
 
     for key in effects_dict:
         if (
-            effects_dict[key] != 0 and key <= spatial_dimension
+            effects_dict[key] != 0 and key <= input_dimension
         ):  # pragma: no cover
             effects_tuples[key] = tuple(
-                itertools.combinations(np.arange(spatial_dimension), key)
+                itertools.combinations(np.arange(input_dimension), key)
             )
 
     return effects_tuples
@@ -194,7 +195,7 @@ def _generate_effect_coeffs(
 
 
 def _select_marginals(
-    marginals: Union[List[Dict], Tuple[Dict, ...]], spatial_dimension: int
+    marginals: Union[List[Dict], Tuple[Dict, ...]], input_dimension: int
 ) -> Union[List[Dict], Tuple[Dict, ...]]:
     """Randomly select marginals of a given dimension from a set of inputs.
     # TODO: Update the description and the type hints
@@ -203,7 +204,7 @@ def _select_marginals(
     inputs : Union[List[Dict], Tuple[Dict, ...]]
         List of available marginals to construct a probabilistic input model
         for a test function realization.
-    spatial_dimension : int
+    input_dimension : int
         Number of dimensions of the test function.
 
     Returns
@@ -214,7 +215,7 @@ def _select_marginals(
     """
     selected_marginals = []
     indices = np.random.randint(
-        low=0, high=len(marginals), size=spatial_dimension
+        low=0, high=len(marginals), size=input_dimension
     )
 
     for num, idx in enumerate(indices):
@@ -223,7 +224,7 @@ def _select_marginals(
         if name is None:
             name = f"X{num + 1}"
         # Create a new instance (now with a name)
-        selected_marginal = UnivDist(
+        selected_marginal = Marginal(
             name=name,
             distribution=selected_marginal.distribution,
             parameters=selected_marginal.parameters,
@@ -244,7 +245,7 @@ class UQTestFunSpec:
 
     Parameters
     ----------
-    spatial_dimension : int
+    input_dimension : int
         Number of dimension of the test function.
     basis_functions : Dict[int, Callable]
         Collection of basis functions to choose from.
@@ -261,12 +262,12 @@ class UQTestFunSpec:
         the test function.
     """
 
-    spatial_dimension: int
+    input_dimension: int
     basis_functions: Dict[int, Callable]
     selected_basis: Tuple[int, ...]
     effects_tuples: Dict[int, Tuple[Tuple[int, ...], ...]]
     effects_coeffs: Dict[int, np.ndarray]
-    inputs: Union[List[UnivDist], Tuple[UnivDist, ...]]
+    inputs: Union[List[Marginal], Tuple[Marginal, ...]]
 
 
 @dataclass
@@ -275,7 +276,7 @@ class UQMetaFunSpec:
 
     Parameters
     ----------
-    spatial_dimension : int
+    input_dimension : int
         Number of dimension of the generated test functions.
     basis_functions : Dict[int, Callable]
         Collection of basis functions to choose from.
@@ -289,27 +290,24 @@ class UQMetaFunSpec:
         Function to generate the coefficient values for each effect term.
     """
 
-    spatial_dimension: int
+    input_dimension: int
     basis_functions: Dict[int, Callable]
     effects: Dict[int, int] = field(init=False)
     effects_dict: InitVar[Dict[int, Optional[int]]]
-    input_marginals: Union[List[UnivDist], Tuple[UnivDist, ...]]
+    input_marginals: Union[List[Marginal], Tuple[Marginal, ...]]
     coeffs_generator: Callable
     _effects_tuples: Optional[Dict[int, Tuple[Tuple[int, ...], ...]]] = field(
         init=False, repr=False
     )
 
     def __post_init__(self, effects_dict):
-        if self.spatial_dimension < 1:
+        if self.input_dimension < 1:
             raise ValueError(
-                f"Spatial dimension must be > 0! "
-                f"Got {self.spatial_dimension}"
+                f"input dimension must be > 0! Got {self.input_dimension}"
             )
         self._effects_tuples = None
         # Clean up the effects dictionary
-        self.effects = _preprocess_effects(
-            effects_dict, self.spatial_dimension
-        )
+        self.effects = _preprocess_effects(effects_dict, self.input_dimension)
 
     def get_sample(
         self, sample_size: int = 1
@@ -340,14 +338,14 @@ class UQMetaFunSpec:
         # Generate all possible requested interactions and cache them
         if self._effects_tuples is None:
             self._effects_tuples = _create_effects_tuples(
-                self.spatial_dimension, self.effects
+                self.input_dimension, self.effects
             )
 
         sample = []
         for _ in range(sample_size):
             # Randomly select basis
             num_basis = len(self.basis_functions)
-            selected_basis = _select_basis(self.spatial_dimension, num_basis)
+            selected_basis = _select_basis(self.input_dimension, num_basis)
 
             # Randomly select tuples of interaction terms
             effects_tuples = _select_effects(
@@ -361,12 +359,12 @@ class UQMetaFunSpec:
 
             # Randomly select input marginals and create an instance
             selected_input_marginals = _select_marginals(
-                self.input_marginals, self.spatial_dimension
+                self.input_marginals, self.input_dimension
             )
 
             # Create an instance of UQTestFunSpec
             uqtestfun_spec = UQTestFunSpec(
-                self.spatial_dimension,
+                self.input_dimension,
                 self.basis_functions,
                 selected_basis,
                 effects_tuples,

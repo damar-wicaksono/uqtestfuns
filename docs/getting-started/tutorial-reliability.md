@@ -220,13 +220,13 @@ The input variables $w$ and $h$ are probabilistically defined according
 to the table below.
 
 ```{code-cell} ipython3
-cantilever.prob_input
+print(cantilever.prob_input)
 ```
 
 The default values of the parameters $E$ and $l$ are:
 
 ```{code-cell} ipython3
-cantilever.parameters
+print(cantilever.parameters)
 ```
 
 For reproducibility of this tutorial, set the seed number of the 

@@ -13,6 +13,7 @@ In the SciPy implementation, the mean (mu) corresponds
 to the ``loc`` parameter, while the standard deviation (sigma) corresponds
 to the ``scale`` parameter.
 """
+
 import numpy as np
 from scipy.stats import norm
 from scipy.special import logit

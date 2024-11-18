@@ -18,8 +18,11 @@ parts:
           - file: getting-started/tutorial-custom-functions
             title: Custom Test Functions
       - file: getting-started/about-uq-test-functions
+      - file: getting-started/citing
   - caption: Test Functions
     chapters:
+      - file: fundamentals/overview
+        title: Overview
       - file: fundamentals/metamodeling
         title: Metamodeling
       - file: fundamentals/sensitivity
@@ -37,6 +40,8 @@ parts:
             title: Ackley
           - file: test-functions/alemazkoor-2d
             title: Alemazkoor & Meidani (2018) 2D
+          - file: test-functions/alemazkoor-20d
+            title: Alemazkoor & Meidani (2018) 20D
           - file: test-functions/borehole
             title: Borehole
           - file: test-functions/bratley1992a
@@ -49,6 +54,8 @@ parts:
             title: Bratley et al. (1992) D
           - file: test-functions/cantilever-beam-2d
             title: Cantilever Beam (2D)
+          - file: test-functions/cheng2d
+            title: Cheng and Sandu (2010) 2D
           - file: test-functions/circular-pipe-crack
             title: Circular Pipe Crack
           - file: test-functions/convex-fail-domain
@@ -77,6 +84,10 @@ parts:
             title: (5th) Franke
           - file: test-functions/franke-6
             title: (6th) Franke
+          - file: test-functions/friedman-6d
+            title: Friedman (6D)
+          - file: test-functions/friedman-10d
+            title: Friedman (10D)
           - file: test-functions/gayton-hat
             title: Gayton Hat
           - file: test-functions/gramacy-1d-sine
@@ -85,6 +96,10 @@ parts:
             title: Hyper-sphere Bound
           - file: test-functions/ishigami
             title: Ishigami
+          - file: test-functions/lim-non-poly
+            title: Lim et al. (2002) Non-Polynomial
+          - file: test-functions/lim-poly
+            title: Lim et al. (2002) Polynomial
           - file: test-functions/mclain-s1
             title: McLain S1
           - file: test-functions/mclain-s2
@@ -95,22 +110,38 @@ parts:
             title: McLain S4
           - file: test-functions/mclain-s5
             title: McLain S5
+          - file: test-functions/moon3d
+            title: Moon (2010) 3D
+          - file: test-functions/morris2006
+            title: Morris et al. (2006)
           - file: test-functions/oakley-1d
             title: Oakley & O'Hagan (2002) 1D
           - file: test-functions/otl-circuit
             title: OTL Circuit
           - file: test-functions/piston
             title: Piston Simulation
+          - file: test-functions/portfolio-3d
+            title: Simple Portfolio Model
           - file: test-functions/rs-circular-bar
             title: RS - Circular Bar
           - file: test-functions/rs-quadratic
             title: RS - Quadratic
+          - file: test-functions/saltelli-linear
+            title: Saltelli Linear
           - file: test-functions/sobol-g
             title: Sobol'-G
+          - file: test-functions/sobol-g-star
+            title: Sobol'-G*
+          - file: test-functions/sobol-levitan
+            title: Sobol'-Levitan
+          - file: test-functions/solar-cell
+            title: Solar Cell
           - file: test-functions/speed-reducer-shaft
             title: Speed Reducer Shaft
           - file: test-functions/sulfur
             title: Sulfur
+          - file: test-functions/undamped-oscillator
+            title: Undamped Oscillator
           - file: test-functions/webster-2d
             title: Webster et al. (1996) 2D
           - file: test-functions/welch1992
@@ -128,25 +159,27 @@ parts:
       - file: prob-input/probabilistic-input
         title: Probabilistic Input Model
       - file: prob-input/available
-        title: Univariate Distributions
+        title: One-Dimensional Marginal Distributions
         sections:
-          - file: prob-input/univariate-distributions/beta
+          - file: prob-input/marginal-distributions/beta
             title: Beta
-          - file: prob-input/univariate-distributions/gumbel
+          - file: prob-input/marginal-distributions/exponential
+            title: Exponential
+          - file: prob-input/marginal-distributions/gumbel
             title: Gumbel (max.)
-          - file: prob-input/univariate-distributions/logitnormal
+          - file: prob-input/marginal-distributions/logitnormal
             title: Logit-Normal
-          - file: prob-input/univariate-distributions/lognormal
+          - file: prob-input/marginal-distributions/lognormal
             title: Log-Normal
-          - file: prob-input/univariate-distributions/normal
+          - file: prob-input/marginal-distributions/normal
             title: Normal (Gaussian)
-          - file: prob-input/univariate-distributions/triangular
+          - file: prob-input/marginal-distributions/triangular
             title: Triangular
-          - file: prob-input/univariate-distributions/trunc-gumbel
+          - file: prob-input/marginal-distributions/trunc-gumbel
             title: Truncated Gumbel (max.)
-          - file: prob-input/univariate-distributions/trunc-normal
+          - file: prob-input/marginal-distributions/trunc-normal
             title: Truncated Normal (Gaussian)
-          - file: prob-input/univariate-distributions/uniform
+          - file: prob-input/marginal-distributions/uniform
             title: Uniform
   - caption: API Reference
     chapters:
@@ -160,10 +193,12 @@ parts:
         title: UQTestFun
       - file: api/probinput
         title: ProbInput
-      - file: api/univdist
-        title: UnivDist
+      - file: api/marginal
+        title: Marginal
       - file: api/input-spec
         title: ProbInputSpec
+      - file: api/funparams
+        title: FunParams
   - caption: Development
     chapters:
       - file: development/overview
@@ -176,8 +211,8 @@ parts:
         title: Test Function Docs
       - file: development/making-a-pull-request
         title: Making a Pull Request
-      - file: development/adding-univariate-distribution
-        title: Univariate Distribution
+      - file: development/adding-marginal-distribution
+        title: Adding a Marginal Distribution
       - file: development/about
         title: About UQTestFuns
       - file: development/code-of-conduct

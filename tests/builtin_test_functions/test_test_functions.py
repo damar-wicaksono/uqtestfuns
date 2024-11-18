@@ -8,6 +8,7 @@ Notes
   implementations not about the correctness of computation of a particular
   implementation.
 """
+
 import numpy as np
 import pytest
 import copy
@@ -42,17 +43,17 @@ def test_create_instance_with_custom_name(builtin_testfun):
     testfun_class = builtin_testfun
 
     # Get the default name of the test function
-    name = testfun_class.__name__
+    function_id = testfun_class.__name__
 
     # Create a default instance
     my_fun = testfun_class()
 
     # Assertion
-    assert my_fun.name == name
+    assert my_fun.function_id == function_id
 
     # Use custom name to create a test function
-    my_fun = testfun_class(name=name)
-    assert my_fun.name == name
+    my_fun = testfun_class(function_id=function_id)
+    assert my_fun.function_id == function_id
 
 
 def test_create_instance_with_prob_input(builtin_testfun):
@@ -105,7 +106,7 @@ def test_create_instance_with_parameters(builtin_testfun):
         my_fun_2.parameters = parameters
         assert my_fun_2.parameters is parameters
     else:
-        assert my_fun.parameters is None
+        assert len(my_fun.parameters) == 0
 
 
 def test_available_inputs(builtin_testfun):
@@ -116,7 +117,7 @@ def test_available_inputs(builtin_testfun):
     available_inputs = testfun_class.available_inputs
 
     for available_input in available_inputs:
-        assert_call(testfun_class, prob_input_selection=available_input)
+        assert_call(testfun_class, input_id=available_input)
 
 
 def test_available_parameters(builtin_testfun):
@@ -128,9 +129,7 @@ def test_available_parameters(builtin_testfun):
 
     if available_parameters is not None:
         for available_parameter in available_parameters:
-            assert_call(
-                testfun_class, parameters_selection=available_parameter
-            )
+            assert_call(testfun_class, parameters_id=available_parameter)
 
 
 def test_call_instance(builtin_testfun):
@@ -153,13 +152,33 @@ def test_str(builtin_testfun):
     # Create an instance
     my_fun = builtin_testfun()
 
+    if my_fun.variable_dimension:
+        input_dim = f"{my_fun.input_dimension} (variable)"
+    else:
+        input_dim = f"{my_fun.input_dimension} (fixed)"
+    tags = ", ".join(my_fun.tags)
     str_ref = (
-        f"Name              : {my_fun.name}\n"
-        f"Spatial dimension : {my_fun.spatial_dimension}\n"
-        f"Description       : {my_fun.description}"
+        f"Function ID      : {my_fun.function_id}\n"
+        f"Input Dimension  : {input_dim}\n"
+        f"Output Dimension : {my_fun.output_dimension}\n"
+        f"Parameterized    : {bool(my_fun.parameters)}\n"
+        f"Description      : {my_fun.description}\n"
+        f"Applications     : {tags}"
     )
 
     assert my_fun.__str__() == str_ref
+
+
+def test_str_prob_input(builtin_testfun):
+    """Test the __str__() method of the input attached to a test function."""
+    # Create an instance
+    my_fun = builtin_testfun()
+
+    # str of the ProbInput
+    my_prob_input_str = my_fun.prob_input.__str__()
+
+    # Assertion
+    assert isinstance(my_prob_input_str, str)
 
 
 def test_transform_input(builtin_testfun):
@@ -176,7 +195,7 @@ def test_transform_input(builtin_testfun):
 
     # Transformation from the default uniform domain to the input domain
     rng = np.random.default_rng(rng_seed)
-    xx_1 = -1 + 2 * rng.random((sample_size, my_fun.spatial_dimension))
+    xx_1 = -1 + 2 * rng.random((sample_size, my_fun.input_dimension))
     xx_1 = my_fun.transform_sample(xx_1)
 
     # Directly sample from the input property
@@ -200,7 +219,7 @@ def test_transform_input_non_default(builtin_testfun):
 
     # Transformation from non-default uniform domain to the input domain
     rng = np.random.default_rng(rng_seed)
-    xx_1 = rng.random((sample_size, my_fun.spatial_dimension))
+    xx_1 = rng.random((sample_size, my_fun.input_dimension))
     xx_1 = my_fun.transform_sample(xx_1, min_value=0.0, max_value=1.0)
 
     # Directly sample from the input property
@@ -215,7 +234,7 @@ def test_evaluate_wrong_input_dim(builtin_testfun):
 
     testfun = builtin_testfun()
 
-    xx = np.random.rand(10, testfun.spatial_dimension * 2)
+    xx = np.random.rand(10, testfun.input_dimension * 2)
 
     with pytest.raises(ValueError):
         testfun(xx)
@@ -227,14 +246,14 @@ def test_evaluate_wrong_input_domain(builtin_testfun):
     testfun = builtin_testfun()
 
     # Create a sample in [-2, 2]
-    xx = -2 + 4 * np.random.rand(1000, testfun.spatial_dimension)
+    xx = -2 + 4 * np.random.rand(1000, testfun.input_dimension)
 
     with pytest.raises(ValueError):
         # By default, the transformation domain is from [-1, 1]
         testfun.transform_sample(xx)
 
     # Create sampled input values from the default and perturb them
-    xx = np.empty((100, testfun.spatial_dimension))
+    xx = np.empty((100, testfun.input_dimension))
     for i, marginal in enumerate(testfun.prob_input.marginals):
         lb = marginal.lower + 1000
         ub = marginal.upper - 1000
@@ -245,15 +264,15 @@ def test_evaluate_wrong_input_domain(builtin_testfun):
         testfun(xx)
 
 
-def test_evaluate_invalid_spatial_dim(builtin_testfun):
-    """Test if an exception is raised if invalid spatial dimension is given."""
+def test_evaluate_invalid_input_dim(builtin_testfun):
+    """Test if an exception is raised if invalid input dimension is given."""
 
-    if hasattr(builtin_testfun, "default_spatial_dimension"):
+    if hasattr(builtin_testfun, "default_input_dimension"):
         with pytest.raises(TypeError):
-            builtin_testfun(spatial_dimension="10")
+            builtin_testfun(input_dimension="10")
 
 
 def test_evaluate_invalid_input_selection(builtin_testfun):
     """Test if an exception is raised if invalid input selection is given."""
     with pytest.raises(KeyError):
-        builtin_testfun(prob_input_selection=100)
+        builtin_testfun(input_id=100)

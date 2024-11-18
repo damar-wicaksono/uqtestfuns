@@ -1,9 +1,10 @@
 """
 Test module for UQTestFun class, a generic class for generic UQ test function.
 """
+
 import pytest
 
-from uqtestfuns import UQTestFun, ProbInput
+from uqtestfuns import UQTestFun, ProbInput, FunParams
 from conftest import assert_call, create_random_marginals
 
 
@@ -15,20 +16,29 @@ def uqtestfun():
     def evaluate(x, p):
         return p * (x + 1)
 
-    parameters = 10
+    parameters = FunParams(
+        declared_parameters=[
+            {
+                "keyword": "p",
+                "value": 10.0,
+                "type": None,
+                "description": None,
+            }
+        ]
+    )
 
     my_args = {
         "evaluate": evaluate,
         "prob_input": ProbInput(input_marginals),
         "parameters": parameters,
-        "name": "Test function",
+        "function_id": "TestFunction",
     }
 
     uqtestfun_instance = UQTestFun(
         evaluate=evaluate,
         prob_input=ProbInput(input_marginals),
         parameters=parameters,
-        name="Test function",
+        function_id="TestFunction",
     )
 
     return uqtestfun_instance, my_args
@@ -40,12 +50,12 @@ def test_create_instance(uqtestfun):
     uqtestfun_instance, uqtestfun_dict = uqtestfun
 
     # Assertions
-    assert uqtestfun_instance.name == uqtestfun_dict["name"]
+    assert uqtestfun_instance.function_id == uqtestfun_dict["function_id"]
     # The original evaluate function is stored in a hidden attribute
     assert uqtestfun_instance._evaluate == uqtestfun_dict["evaluate"]
     assert (
-        uqtestfun_instance.spatial_dimension
-        == uqtestfun_dict["prob_input"].spatial_dimension
+        uqtestfun_instance.input_dimension
+        == uqtestfun_dict["prob_input"].input_dimension
     )
     assert uqtestfun_instance.parameters == uqtestfun_dict["parameters"]
 
@@ -65,8 +75,10 @@ def test_str(uqtestfun):
     uqtestfun_instance, _ = uqtestfun
 
     str_ref = (
-        f"Name              : {uqtestfun_instance.name}\n"
-        f"Spatial dimension : {uqtestfun_instance.spatial_dimension}"
+        f"Function ID      : {uqtestfun_instance.function_id}\n"
+        f"Input Dimension  : {uqtestfun_instance.input_dimension}\n"
+        f"Output Dimension : {uqtestfun_instance.output_dimension}\n"
+        f"Parameterized    : {bool(uqtestfun_instance.parameters)}"
     )
 
     assert uqtestfun_instance.__str__() == str_ref

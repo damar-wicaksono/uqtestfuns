@@ -20,21 +20,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 ```
 
-(prob-input:univariate-distributions:gumbel)=
-# Gumbel (max.) Distribution
+(prob-input:marginal-distributions:uniform)=
+# Uniform Distribution
 
-The Gumbel (max.) distribution is a two-parameter continuous probability distribution.
+The uniform distribution is a two-parameter continuous probability distribution.
 The table below summarizes some important aspects of the distribution.
 
-|                      |                                                                                                                                   |
-|---------------------:|-----------------------------------------------------------------------------------------------------------------------------------|
-|         **Notation** | $X \sim \mathrm{Gumbel}(\mu, \beta)$                                                                                              |
-|       **Parameters** | $\mu \in \mathbb{R}$ (location parameter)                                                                                         |
-|                      | $\beta > 0$ (scale parameter)                                                                                                     |
-|  **{term}`Support`** | $\mathcal{D}_X = (-\infty, \infty)$                                                                                               |
-|      **{term}`PDF`** | $f_X (x; \mu, \beta) = \frac{1}{\beta} \exp{- \left[ \frac{x - \mu}{\beta} + \exp{-\left(\frac{x - \mu}{\beta} \right)} \right]}$ |
-|      **{term}`CDF`** | $F_X (x; \mu, \beta) = \exp{-\left[ \exp{- \left(\frac{x - \mu}{\beta} \right)} \right]}$                                         |
-|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \beta) = \mu + \beta \ln{(\ln{x})}$                                                                            |
+|                      |                                                                                                          |
+|---------------------:|----------------------------------------------------------------------------------------------------------|
+|         **Notation** | $X \sim \mathcal{U}(a, b)$                                                                               |
+|       **Parameters** | $a \in (-\infty, b)$ (lower bound)                                                                       |
+|                      | $b \in (a, \infty)$ (upper bound)                                                                        |
+|  **{term}`Support`** | $\mathcal{D}_X = [a, b] \subset \mathbb{R}$                                                              |
+|      **{term}`PDF`** | $f_X (x; a, b) = \begin{cases} \frac{1}{b - a} & x \in [a, b] \\ 0 & x \notin [a, b] \end{cases}$        |
+|      **{term}`CDF`** | $F_X (x; a, b) = \begin{cases} 0 & x < a \\ \frac{x - a}{b - a} & x \in [a, b] \\ 1 & x > b \end{cases}$ |
+|     **{term}`ICDF`** | $F^{-1}_X (x; a, b) = a + (b - a) \, x$                                                                  |
+
 
 The plots of probability density functions (PDFs),
 sample histogram (of $5'000$ points),
@@ -49,23 +50,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 
-parameters = [[-1, 2.0], [1.0, 2.0], [1.5, 3.0], [3.0, 4.0]]
+parameters = [[0, 1], [-1, 1.0], [-5, -2], [1, 5]]
 colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c"]
 
 univ_dists = []
 for parameter in parameters:
-    univ_dists.append(uqtf.UnivDist(distribution="gumbel", parameters=parameter))
-    
+    univ_dists.append(uqtf.Marginal(distribution="uniform", parameters=parameter))
+
 fig, axs = plt.subplots(2, 2, figsize=(10,10))
 
 # --- PDF
-xx = np.linspace(-10, 30, 1000)
+xx = np.linspace(-6, 6, 1000)
 for i, univ_dist in enumerate(univ_dists):
     axs[0, 0].plot(
         xx,
         univ_dist.pdf(xx),
         color=colors[i],
-        label=f"$\\mu = {univ_dist.parameters[0]}, \\beta={univ_dist.parameters[1]}$",
+        label=f"$a = {univ_dist.parameters[0]}, b={univ_dist.parameters[1]}$",
         linewidth=2,
     )
 axs[0, 0].legend();
@@ -83,11 +84,11 @@ for col, univ_dist in zip(reversed(colors), reversed(univ_dists)):
         alpha=0.75
     )
 axs[0, 1].grid();
-axs[0, 1].set_xlim([-10, 30]);
+axs[0, 1].set_xlim([-6, 6]);
 axs[0, 1].set_title("Sample histogram");
 
 # --- CDF
-xx = np.linspace(-10, 30, 1000)
+xx = np.linspace(-6, 6, 1000)
 for i, univ_dist in enumerate(univ_dists):
     axs[1, 0].plot(
         xx,
@@ -108,7 +109,7 @@ for i, univ_dist in enumerate(univ_dists):
         linewidth=2
     )
 axs[1, 1].grid();
-axs[1, 1].set_ylim([-10, 30]);
+axs[1, 1].set_ylim([-6, 6]);
 axs[1, 1].set_title("Inverse CDF");
 
 plt.gcf().set_dpi(150)

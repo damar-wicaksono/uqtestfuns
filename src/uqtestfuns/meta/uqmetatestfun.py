@@ -13,6 +13,7 @@ References
    doi:
    `10.1016/j.ress.2020.107189 <https://doi.org/10.1016/j.ress.2020.107189>`_.
 """
+
 import math
 import numpy as np
 
@@ -20,9 +21,10 @@ from dataclasses import dataclass
 from numpy.typing import ArrayLike
 from typing import Optional, Union, List
 
+from uqtestfuns.core.parameters import FunParams
 from .metaspec import UQMetaFunSpec, UQTestFunSpec
 from .basis_functions import BASIS_BY_ID
-from ..core import UQTestFun, ProbInput, UnivDist
+from ..core import UQTestFun, ProbInput, Marginal
 
 
 __all__ = ["UQMetaTestFun", "default_coeffs_gen"]
@@ -65,21 +67,19 @@ def default_coeffs_gen(sample_size: int) -> np.ndarray:
     return yy
 
 
-def _evaluate_test_function(
-    xx: np.ndarray, uqtestfun_spec: UQTestFunSpec
-) -> np.ndarray:
+def _evaluate_test_function(xx: np.ndarray, spec: UQTestFunSpec) -> np.ndarray:
     """Alternative way to evaluate metafunction realizations."""
 
-    basis_functions = uqtestfun_spec.basis_functions
-    selected_basis = uqtestfun_spec.selected_basis
+    basis_functions = spec.basis_functions
+    selected_basis = spec.selected_basis
 
     # Evaluate the selected basis functions on xx
-    basis_vals = np.zeros((xx.shape[0], uqtestfun_spec.spatial_dimension))
+    basis_vals = np.zeros((xx.shape[0], spec.input_dimension))
     for idx, basis_id in enumerate(selected_basis):
         basis_vals[:, idx] = basis_functions[basis_id](xx[:, idx])
 
-    effects_tuples = uqtestfun_spec.effects_tuples
-    effects_coeffs = uqtestfun_spec.effects_coeffs
+    effects_tuples = spec.effects_tuples
+    effects_coeffs = spec.effects_coeffs
 
     # Evaluate each effect term of the test function
     yy = np.zeros(xx.shape[0])
@@ -147,13 +147,22 @@ class UQMetaTestFun:
             # Create an instance of inputs
             prob_input = ProbInput(testfun_specs.inputs)
             # Assign the realized spec as a parameter
-            parameters = testfun_specs
+            parameters = FunParams(
+                declared_parameters=[
+                    {
+                        "keyword": "spec",
+                        "value": testfun_specs,
+                        "type": UQTestFunSpec,
+                        "description": None,
+                    },
+                ],
+            )
 
             return UQTestFun(
                 evaluate=evaluate,
                 prob_input=prob_input,
                 parameters=parameters,
-                name=name,
+                function_id=name,
             )
 
         sample = []
@@ -162,14 +171,23 @@ class UQMetaTestFun:
             assert isinstance(testfun_specs, list)
             prob_input = ProbInput(testfun_specs[i].inputs)
             # Assign the realized spec as a parameter
-            parameters = testfun_specs[i]
+            parameters = FunParams(
+                declared_parameters=[
+                    {
+                        "keyword": "spec",
+                        "value": testfun_specs[i],
+                        "type": UQTestFunSpec,
+                        "description": None,
+                    },
+                ],
+            )
 
             sample.append(
                 UQTestFun(
                     evaluate=evaluate,
                     prob_input=prob_input,
                     parameters=parameters,
-                    name=name,
+                    function_id=name,
                 )
             )
 
@@ -178,14 +196,14 @@ class UQMetaTestFun:
     @classmethod
     def from_default(
         cls,
-        spatial_dimension: ArrayLike,
+        input_dimension: ArrayLike,
         input_id: Optional[int] = None,
     ):
         """Create a metafunction with parameters according to Becker (2019).
 
         Parameters
         ----------
-        spatial_dimension : Union[int, Sized]
+        input_dimension : Union[int, Sized]
             Number of dimensions of the test functions generated
             by the meta. If a set of values are given, a single value
             will be selected at random.
@@ -195,38 +213,38 @@ class UQMetaTestFun:
         UQMetaTestFun
             An instance of metafunction with the default parameters.
         """
-        # Select a single spatial dimension randomly
-        if not isinstance(spatial_dimension, int):
-            spatial_dimension = np.asarray(spatial_dimension)
-            spatial_dimension = int(np.random.choice(spatial_dimension))
+        # Select a single input dimension randomly
+        if not isinstance(input_dimension, int):
+            input_dimension = np.asarray(input_dimension)
+            input_dimension = int(np.random.choice(input_dimension))
 
         effects_dict = {
             1: None,  # Take all
-            2: math.floor(0.5 * spatial_dimension),
-            3: math.floor(0.2 * spatial_dimension),
+            2: math.floor(0.5 * input_dimension),
+            3: math.floor(0.2 * input_dimension),
         }
 
         if input_id is None:
             input_id = np.random.randint(0, 8)
 
         input_marginals = [
-            UnivDist(distribution="uniform", parameters=[0, 1]),
-            UnivDist(
+            Marginal(distribution="uniform", parameters=[0, 1]),
+            Marginal(
                 distribution="trunc-normal",
                 parameters=[0.5, 0.15, 0.0, 1.0],
             ),
-            UnivDist(distribution="beta", parameters=[8.0, 2.0, 0.0, 1.0]),
-            UnivDist(distribution="beta", parameters=[2.0, 8.0, 0.0, 1.0]),
-            UnivDist(distribution="beta", parameters=[2.0, 0.8, 0.0, 1.0]),
-            UnivDist(distribution="beta", parameters=[0.8, 2.0, 0.0, 1.0]),
-            UnivDist(distribution="logitnormal", parameters=[0.0, 3.16]),
+            Marginal(distribution="beta", parameters=[8.0, 2.0, 0.0, 1.0]),
+            Marginal(distribution="beta", parameters=[2.0, 8.0, 0.0, 1.0]),
+            Marginal(distribution="beta", parameters=[2.0, 0.8, 0.0, 1.0]),
+            Marginal(distribution="beta", parameters=[0.8, 2.0, 0.0, 1.0]),
+            Marginal(distribution="logitnormal", parameters=[0.0, 3.16]),
         ]
 
         if input_id < 7:
             input_marginals = [input_marginals[input_id]]
 
         metafun_spec = UQMetaFunSpec(
-            spatial_dimension=spatial_dimension,
+            input_dimension=input_dimension,
             basis_functions=BASIS_BY_ID,
             effects_dict=effects_dict,
             input_marginals=input_marginals,

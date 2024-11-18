@@ -32,68 +32,47 @@ References
    Communications, vol. 181, no. 2, pp. 259–270, 2010,
    DOI:10.1016/j.cpc.2009.09.018
 """
+
 import numpy as np
 
 from scipy.special import eval_chebyt
-from typing import List
 
 from .sobol_g import evaluate as evaluate_sobol_g
 
-from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecVarDim
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
 
 __all__ = ["Bratley1992a", "Bratley1992b", "Bratley1992c", "Bratley1992d"]
 
 
-def _bratley_input(spatial_dimension: int) -> List[UnivDistSpec]:
-    """Create a list of marginals for the M-dimensional Bratley test functions.
-
-    Parameters
-    ----------
-    spatial_dimension : int
-        The requested spatial dimension of the probabilistic input model.
-
-    Returns
-    -------
-    List[UnivDistSpec]
-        A list of marginals for the multivariate input following Ref. [1]
-    """
-    marginals = []
-    for i in range(spatial_dimension):
-        marginals.append(
-            UnivDistSpec(
-                name=f"X{i + 1}",
-                distribution="uniform",
-                parameters=[0.0, 1.0],
-                description="None",
-            )
-        )
-
-    return marginals
-
-
-AVAILABLE_INPUT_SPECS = {
-    "Bratley1992": ProbInputSpecVarDim(
-        name="Bratley1992",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Bratley1992": {
+        "function_id": "Bratley1992",
+        "description": (
             "Integration domain of the functions from Bratley et al. (1992)"
         ),
-        marginals_generator=_bratley_input,
-        copulas=None,
-    ),
+        "marginals": [
+            {
+                "name": "X",
+                "distribution": "uniform",
+                "parameters": [0.0, 1.0],
+                "description": None,
+            },
+        ],
+        "copulas": None,
+    },
 }
 
 # Common metadata used in each class definition of Bratley test functions
 COMMON_METADATA = dict(
     _tags=["integration", "sensitivity"],
-    _available_inputs=AVAILABLE_INPUT_SPECS,
+    _available_inputs=AVAILABLE_INPUTS,
     _available_parameters=None,
-    _default_spatial_dimension=None,
     _description="from Bratley et al. (1992)",
 )
 
 
-def evaluate_bratley1992a(xx: np.ndarray):
+def evaluate_bratley1992a(xx: np.ndarray) -> np.ndarray:
     """Evaluate the test function on a set of input values.
 
     Parameters
@@ -115,7 +94,7 @@ def evaluate_bratley1992a(xx: np.ndarray):
     return yy
 
 
-class Bratley1992a(UQTestFunABC):
+class Bratley1992a(UQTestFunVarDimABC):
     """An implementation of the test function 1 from Bratley et al. (1992).
 
     The function (used as an integrand) is a product of an absolute function.
@@ -131,12 +110,11 @@ class Bratley1992a(UQTestFunABC):
     )
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = None
 
-    eval_ = staticmethod(evaluate_bratley1992a)
+    evaluate = staticmethod(evaluate_bratley1992a)  # type: ignore
 
 
-def evaluate_bratley1992b(xx: np.ndarray):
+def evaluate_bratley1992b(xx: np.ndarray) -> np.ndarray:
     """Evaluate the test function on a set of input values.
 
     Parameters
@@ -161,7 +139,7 @@ def evaluate_bratley1992b(xx: np.ndarray):
     return yy
 
 
-class Bratley1992b(UQTestFunABC):
+class Bratley1992b(UQTestFunVarDimABC):
     """An implementation of the test function 2 from Bratley et al. (1992).
 
     The function (used as an integrand) is a product of a trigonometric
@@ -174,12 +152,11 @@ class Bratley1992b(UQTestFunABC):
     )
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = None
 
-    eval_ = staticmethod(evaluate_bratley1992b)
+    evaluate = staticmethod(evaluate_bratley1992b)  # type: ignore
 
 
-def evaluate_bratley1992c(xx: np.ndarray):
+def evaluate_bratley1992c(xx: np.ndarray) -> np.ndarray:
     """Evaluate the test function #3 of Bratley et al. (1992).
 
     Parameters
@@ -206,8 +183,8 @@ def evaluate_bratley1992c(xx: np.ndarray):
     return yy
 
 
-class Bratley1992c(UQTestFunABC):
-    """An implementation of the test function 2 from Bratley et al. (1992).
+class Bratley1992c(UQTestFunVarDimABC):
+    """An implementation of the test function 3 from Bratley et al. (1992).
 
     The function (used as an integrand) is a product of a trigonometric
     function.
@@ -219,12 +196,11 @@ class Bratley1992c(UQTestFunABC):
     )
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = None
 
-    eval_ = staticmethod(evaluate_bratley1992c)
+    evaluate = staticmethod(evaluate_bratley1992c)  # type: ignore
 
 
-def evaluate_bratley1992d(xx: np.ndarray):
+def evaluate_bratley1992d(xx: np.ndarray) -> np.ndarray:
     """Evaluate the test function on a set of input values.
 
     Parameters
@@ -250,7 +226,7 @@ def evaluate_bratley1992d(xx: np.ndarray):
     return yy
 
 
-class Bratley1992d(UQTestFunABC):
+class Bratley1992d(UQTestFunVarDimABC):
     """An implementation of the test function 4 from Bratley et al. (1992).
 
     The function (used as an integrand) is a sum of products.
@@ -262,6 +238,5 @@ class Bratley1992d(UQTestFunABC):
     )
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = None
 
-    eval_ = staticmethod(evaluate_bratley1992d)
+    evaluate = staticmethod(evaluate_bratley1992d)  # type: ignore

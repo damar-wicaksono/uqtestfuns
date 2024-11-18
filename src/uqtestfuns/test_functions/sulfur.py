@@ -58,82 +58,86 @@ References
    Accessed: Jan. 25, 2023
    URL: http://www.physicalgeography.net/fundamentals/8o.html.
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Sulfur"]
 
-INPUT_MARGINALS_PENNER1994 = [  # From [3] (Table 2)
-    UnivDistSpec(
-        name="Q",
-        distribution="lognormal",
-        parameters=[np.log(71.0), np.log(1.15)],
-        description="Source strength of anthropogenic Sulfur [10^12 g/year]",
-    ),
-    UnivDistSpec(
-        name="Y",
-        distribution="lognormal",
-        parameters=[np.log(0.5), np.log(1.5)],
-        description="Fraction of SO2 oxidized to SO4(2-) aerosol [-]",
-    ),
-    UnivDistSpec(
-        name="L",
-        distribution="lognormal",
-        parameters=[np.log(5.5), np.log(1.5)],
-        description="Average lifetime of atmospheric SO4(2-) [days]",
-    ),
-    UnivDistSpec(
-        name="Psi_e",
-        distribution="lognormal",
-        parameters=[np.log(5.0), np.log(1.4)],
-        description="Aerosol mass scattering efficiency [m^2/g]",
-    ),
-    UnivDistSpec(
-        name="beta",
-        distribution="lognormal",
-        parameters=[np.log(0.3), np.log(1.3)],
-        description="Fraction of light scattered upward hemisphere [-]",
-    ),
-    UnivDistSpec(
-        name="f_Psi_e",
-        distribution="lognormal",
-        parameters=[np.log(1.7), np.log(1.2)],
-        description="Fractional increase in aerosol scattering efficiency "
+
+MARGINALS_PENNER1994: MarginalSpecs = [  # From [3] (Table 2)
+    {
+        "name": "Q",
+        "distribution": "lognormal",
+        "parameters": [np.log(71.0), np.log(1.15)],
+        "description": (
+            "Source strength of anthropogenic Sulfur [10^12 g/year]"
+        ),
+    },
+    {
+        "name": "Y",
+        "distribution": "lognormal",
+        "parameters": [np.log(0.5), np.log(1.5)],
+        "description": "Fraction of SO2 oxidized to SO4(2-) aerosol [-]",
+    },
+    {
+        "name": "L",
+        "distribution": "lognormal",
+        "parameters": [np.log(5.5), np.log(1.5)],
+        "description": "Average lifetime of atmospheric SO4(2-) [days]",
+    },
+    {
+        "name": "Psi_e",
+        "distribution": "lognormal",
+        "parameters": [np.log(5.0), np.log(1.4)],
+        "description": "Aerosol mass scattering efficiency [m^2/g]",
+    },
+    {
+        "name": "beta",
+        "distribution": "lognormal",
+        "parameters": [np.log(0.3), np.log(1.3)],
+        "description": "Fraction of light scattered upward hemisphere [-]",
+    },
+    {
+        "name": "f_Psi_e",
+        "distribution": "lognormal",
+        "parameters": [np.log(1.7), np.log(1.2)],
+        "description": "Fractional increase in aerosol scattering efficiency "
         "due to hygroscopic growth [-]",
-    ),
-    UnivDistSpec(
-        name="T^2",
-        distribution="lognormal",
-        parameters=[np.log(0.58), np.log(1.4)],
-        description="Square of atmospheric "
+    },
+    {
+        "name": "T^2",
+        "distribution": "lognormal",
+        "parameters": [np.log(0.58), np.log(1.4)],
+        "description": "Square of atmospheric "
         "transmittance above aerosol layer [-]",
-    ),
-    UnivDistSpec(
-        name="(1-Ac)",
-        distribution="lognormal",
-        parameters=[np.log(0.39), np.log(1.1)],
-        description="Fraction of earth not covered by cloud [-]",
-    ),
-    UnivDistSpec(
-        name="(1-Rs)^2",
-        distribution="lognormal",
-        parameters=[np.log(0.72), np.log(1.2)],
-        description="Square of surface coalbedo [-]",
-    ),
+    },
+    {
+        "name": "(1-Ac)",
+        "distribution": "lognormal",
+        "parameters": [np.log(0.39), np.log(1.1)],
+        "description": "Fraction of earth not covered by cloud [-]",
+    },
+    {
+        "name": "(1-Rs)^2",
+        "distribution": "lognormal",
+        "parameters": [np.log(0.72), np.log(1.2)],
+        "description": "Square of surface coalbedo [-]",
+    },
 ]
 
-AVAILABLE_INPUT_SPECS = {
-    "Penner1994": ProbInputSpecFixDim(
-        name="Sulfur-Penner1994",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Penner1994": {
+        "function_id": "Sulfur",
+        "description": (
             "Probabilistic input model for the Sulfur model "
             "from Penner et al. (1994)."
         ),
-        marginals=INPUT_MARGINALS_PENNER1994,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_PENNER1994,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "Penner1994"
@@ -193,13 +197,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return dd_f
 
 
-class Sulfur(UQTestFunABC):
+class Sulfur(UQTestFunFixDimABC):
     """A concrete implementation of the Sulfur model test function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Sulfur model from Charlson et al. (1992)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_spatial_dimension = 9
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

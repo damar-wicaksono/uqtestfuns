@@ -10,30 +10,32 @@ References
    p. 769-784, 2002.
    DOI: 10.1093/biomet/89.4.769
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["DampedCosine"]
 
-AVAILABLE_INPUT_SPECS = {
-    "Santner2018": ProbInputSpecFixDim(
-        name="Santner2018",
-        description=(
+
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Santner2018": {
+        "function_id": "DampedCosine",
+        "description": (
             "Input model for the one-dimensional damped cosine "
             "from Santner et al. (2018)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="x",
-                distribution="uniform",
-                parameters=[0.0, 1.0],
-                description="None",
-            )
+        "marginals": [
+            {
+                "name": "x",
+                "distribution": "uniform",
+                "parameters": [0.0, 1.0],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    }
 }
 
 
@@ -58,13 +60,13 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class DampedCosine(UQTestFunABC):
+class DampedCosine(UQTestFunFixDimABC):
     """An implementation of the 1D damped cosine from Santner et al. (2018)."""
 
     _tags = ["metamodeling"]
     _description = "One-dimensional damped cosine from Santner et al. (2018)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_spatial_dimension = 1
+    _default_input_dimension = 1
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

@@ -12,37 +12,38 @@ References
    Structural Safety, vol. 73, pp. 42–53, 2018.
    DOI: 10.1016/j.strusafe.2018.02.005.
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["HyperSphere"]
 
 
-AVAILABLE_INPUT_SPECS = {
-    "Li2018": ProbInputSpecFixDim(
-        name="Li2018",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Li2018": {
+        "function_id": "Li2018",
+        "description": (
             "Input model for the hyper-sphere reliability problem "
             "from Li et al. (2018)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="X1",
-                distribution="normal",
-                parameters=[0.5, 0.2],
-                description="None",
-            ),
-            UnivDistSpec(
-                name="X2",
-                distribution="normal",
-                parameters=[0.5, 0.2],
-                description="None",
-            ),
+        "marginals": [
+            {
+                "name": "X1",
+                "distribution": "normal",
+                "parameters": [0.5, 0.2],
+                "description": None,
+            },
+            {
+                "name": "X2",
+                "distribution": "normal",
+                "parameters": [0.5, 0.2],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
+        "copulas": None,
+    },
 }
 
 
@@ -66,15 +67,15 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class HyperSphere(UQTestFunABC):
+class HyperSphere(UQTestFunFixDimABC):
     """A concrete implementation of the hyper-sphere reliability problem."""
 
     _tags = ["reliability"]
     _description = (
         "Hyper-sphere bound reliability problem from Li et al. (2018)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_spatial_dimension = 2
+    _default_input_dimension = 2
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

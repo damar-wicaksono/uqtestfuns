@@ -8,6 +8,7 @@ The underlying implementation is based on the implementation from scipy.stats.
 In the SciPy convention, the mean (mu) corresponds to the ``loc`` parameter,
 while the standard deviation (sigma) corresponds to the ``scale`` parameter.
 """
+
 import numpy as np
 from scipy.stats import norm
 
@@ -68,7 +69,7 @@ def lower(parameters: ARRAY_FLOAT) -> float:
       However, for numerical reason a lower bound is set.
     - The lower bound of the normal distribution is chosen such that
       the probability mass between the lower and upper bound is at least
-      1 - 1e.15.
+      1 - 1e-15.
     """
     # -8.222082216130435 is the quantile values with probability of 1e-16
     # for the standard Normal distribution (mu = 0.0, sigma = 1.0)

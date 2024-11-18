@@ -166,13 +166,20 @@ the test function consists of two independent standard normal random variables
 (see the table below).
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Parameter
 
-The parameter of the function is $d$ which from {cite}`Verma2015` is set to
-$25\;\mathrm{[mm]}$.
+The parameter of the function is $d$ as shown below.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+print(my_testfun.parameters)
+```
 
 ## Reference results
 

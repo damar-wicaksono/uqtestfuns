@@ -74,7 +74,9 @@ Oakley-O'Hagan function consists of a normal random variable
 with the parameters shown in the table below.
 
 ```{code-cell} ipython3
-my_testfun.prob_input
+:tags: [hide-input]
+
+print(my_testfun.prob_input)
 ```
 
 ## Reference results

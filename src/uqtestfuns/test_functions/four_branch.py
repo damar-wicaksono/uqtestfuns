@@ -31,46 +31,76 @@ References
    p. D4016002, 2017.
    DOI: 10.1061/AJRUA6.0000870.
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["FourBranch"]
 
 
-AVAILABLE_INPUT_SPECS = {
-    "Katsuki1994": ProbInputSpecFixDim(
-        name="FourBranch-Katsuki1994",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Katsuki1994": {
+        "function_id": "FourBranch",
+        "description": (
             "Input model for the four-branch function "
             "from Katsuki and Frangopol (1994)"
         ),
-        marginals=[
-            UnivDistSpec(
-                name="X1",
-                distribution="normal",
-                parameters=[0, 1],
-                description="None",
-            ),
-            UnivDistSpec(
-                name="X2",
-                distribution="normal",
-                parameters=[0, 1],
-                description="None",
-            ),
+        "marginals": [
+            {
+                "name": "X1",
+                "distribution": "normal",
+                "parameters": [0, 1],
+                "description": None,
+            },
+            {
+                "name": "X2",
+                "distribution": "normal",
+                "parameters": [0, 1],
+                "description": None,
+            },
         ],
-        copulas=None,
-    ),
-}
-
-AVAILABLE_PARAMETERS = {
-    "Katsuki1994": 3.5 * np.sqrt(2),
-    "Schueremans2005": 6.0 / np.sqrt(2),
+        "copulas": None,
+    },
 }
 
 
-def evaluate(xx: np.ndarray, parameters: float) -> np.ndarray:
+AVAILABLE_PARAMETERS: FunParamSpecs = {
+    "Katsuki1994": {
+        "function_id": "FourBranch",
+        "description": (
+            "Parameter set for the Four-branch function from Katsuki and "
+            "Frangopol (1994)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "p",
+                "value": 3.5 * np.sqrt(2),
+                "type": float,
+                "description": None,
+            },
+        ],
+    },
+    "Schueremans2005": {
+        "function_id": "FourBranch",
+        "description": (
+            "Parameter set for the Four-branch function from Schueremans "
+            "(2005)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "p",
+                "value": 6.0 / np.sqrt(2),
+                "type": float,
+                "description": None,
+            },
+        ],
+    },
+}
+
+
+def evaluate(xx: np.ndarray, p: float) -> np.ndarray:
     """Evaluate the four-branch function on a set of input values.
 
     Parameters
@@ -78,7 +108,7 @@ def evaluate(xx: np.ndarray, parameters: float) -> np.ndarray:
     xx : np.ndarray
         A two-Dimensional input values given by an N-by-2 array
         where N is the number of input values.
-    parameters : float
+    p : float
         The parameter of the test function; a single float.
 
     Returns
@@ -87,7 +117,6 @@ def evaluate(xx: np.ndarray, parameters: float) -> np.ndarray:
         The output of the test function evaluated on the input values.
         The output is a 1-dimensional array of length N.
     """
-    p = parameters
 
     # Compute the performance function components
     yy_1 = (
@@ -108,16 +137,15 @@ def evaluate(xx: np.ndarray, parameters: float) -> np.ndarray:
     return np.min(yy, axis=0)
 
 
-class FourBranch(UQTestFunABC):
+class FourBranch(UQTestFunFixDimABC):
     """A concrete implementation of the four-branch test function."""
 
     _tags = ["reliability"]
     _description = (
         "Series system reliability from Katsuki and Frangopol (1994)"
     )
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_spatial_dimension = 2
-    _default_parameters = "Schueremans2005"
+    _default_parameters_id = "Schueremans2005"
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

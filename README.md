@@ -1,5 +1,6 @@
 # UQTestFuns
-[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.10047512-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.10047512)
+[![JOSS](https://img.shields.io/badge/JOSS-10.21105/joss.05671-brightgreen?style=flat-square)](https://doi.org/10.21105/joss.05671)
+[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.14180639-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.14180639)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
@@ -33,17 +34,23 @@ To list the available functions:
 ```python-repl
 >>> import uqtestfuns as uqtf
 >>> uqtf.list_functions()
- No.            Constructor            Dimension                Application                Description
------  -----------------------------  -----------  --------------------------------------  ----------------------------------------------------------------------------
-  1              Ackley()                  M             optimization, metamodeling        Optimization test function from Ackley (1987)
-  2           Alemazkoor2D()               2                    metamodeling               Two-dimensional high-degree polynomial from Alemazkoor & Meidani (2018)
-  3             Borehole()                 8             metamodeling, sensitivity         Borehole function from Harper and Gupta (1983)
-  4           Bratley1992a()               M              integration, sensitivity         Integration test function #1 from Bratley et al. (1992)
-  5           Bratley1992b()               M              integration, sensitivity         Integration test function #2 from Bratley et al. (1992)
-  6           Bratley1992c()               M              integration, sensitivity         Integration test function #3 from Bratley et al. (1992)
-  7           Bratley1992d()               M              integration, sensitivity         Integration test function #4 from Bratley et al. (1992)
-  8         CantileverBeam2D()             2                    reliability                Cantilever beam reliability problem from Rajashekhar and Ellington (1993)
-  9         CircularPipeCrack()            2                    reliability                Circular pipe under bending moment from Verma et al. (2015)
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
+|  No.  |          Constructor          |  # Input  |  # Output  |  Param.  |  Application  | Description                    |
++=======+===============================+===========+============+==========+===============+================================+
+|   1   |           Ackley()            |     M     |     1      |   True   | optimization, | Optimization test function     |
+|       |                               |           |            |          | metamodeling  | from Ackley (1987)             |
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
+|   2   |        Alemazkoor20D()        |    20     |     1      |  False   | metamodeling  | High-dimensional low-degree    |
+|       |                               |           |            |          |               | polynomial from Alemazkoor &   |
+|       |                               |           |            |          |               | Meidani (2018)                 |
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
+|   3   |        Alemazkoor2D()         |     2     |     1      |  False   | metamodeling  | Low-dimensional high-degree    |
+|       |                               |           |            |          |               | polynomial from Alemazkoor &   |
+|       |                               |           |            |          |               | Meidani (2018)                 |
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
+|   4   |          Borehole()           |     8     |     1      |  False   | metamodeling, | Borehole function from Harper  |
+|       |                               |           |            |          |  sensitivity  | and Gupta (1983)               |
++-------+-------------------------------+-----------+------------+----------+---------------+--------------------------------+
 ...
 ```
 
@@ -53,33 +60,37 @@ and sensitivity analysis purposes; to create an instance of this test function:
 ```python-repl
 >>> my_testfun = uqtf.Borehole()
 >>> print(my_testfun)
-Name              : Borehole
-Spatial dimension : 8
-Description       : Borehole function from Harper and Gupta (1983)
+Function ID      : Borehole
+Input Dimension  : 8 (fixed)
+Output Dimension : 1
+Parameterized    : False
+Description      : Borehole function from Harper and Gupta (1983)
+Applications     : metamodeling, sensitivity
 ```
 
 The probabilistic input specification of this test function is built-in:
 
 ```python-repl
 >>> print(my_testfun.prob_input)
-Name         : Borehole-Harper-1983
-Spatial Dim. : 8
-Description  : Probabilistic input model of the Borehole model from Harper and Gupta (1983).
-Marginals    :
+Function ID     : Borehole
+Input ID        : Harper1983
+Input Dimension : 8
+Description     : Probabilistic input model of the Borehole model from
+                  Harper and Gupta (1983)
+Marginals       :
 
-  No.   Name    Distribution        Parameters                          Description                  
-                                                                                                     
+ No.    Name    Distribution        Parameters                          Description
 -----  ------  --------------  ---------------------  -----------------------------------------------
-    1    rw        normal      [0.1       0.0161812]            radius of the borehole [m]
-    2    r       lognormal        [7.71   1.0056]                 radius of influence [m]
-    3    Tu       uniform        [ 63070. 115600.]      transmissivity of upper aquifer [m^2/year]
-    4    Hu       uniform          [ 990. 1100.]         potentiometric head of upper aquifer [m]
-    5    Tl       uniform          [ 63.1 116. ]        transmissivity of lower aquifer [m^2/year]
-    6    Hl       uniform           [700. 820.]          potentiometric head of lower aquifer [m]    
-    7    L        uniform          [1120. 1680.]                length of the borehole [m]                                       
-    8    Kw       uniform         [ 9985. 12045.]     hydraulic conductivity of the borehole [m/year]
+  1      rw        normal      [0.1       0.0161812]            radius of the borehole [m]
+  2      r       lognormal        [7.71   1.0056]                 radius of influence [m]
+  3      Tu       uniform        [ 63070. 115600.]      transmissivity of upper aquifer [m^2/year]
+  4      Hu       uniform          [ 990. 1100.]         potentiometric head of upper aquifer [m]
+  5      Tl       uniform          [ 63.1 116. ]        transmissivity of lower aquifer [m^2/year]
+  6      Hl       uniform           [700. 820.]          potentiometric head of lower aquifer [m]
+  7      L        uniform          [1120. 1680.]                length of the borehole [m]
+  8      Kw       uniform         [ 9985. 12045.]     hydraulic conductivity of the borehole [m/year]
 
-    Copulas      : None
+Copulas         : Independence
 ```
 
 A sample of input values can be generated from the input model:
@@ -145,6 +156,49 @@ and the documentation (including new reference results) are welcomed!
 Please consider the [Contribution Guidelines](CONTRIBUTING.MD) first,
 before making a pull request. 
 
+## Citing UQTestFuns
+
+If you use this package in your research or projects, please consider citing
+both the associated paper and the Zenodo archive (for the specific version
+used).
+
+### Citing the paper (JOSS)
+
+The citation of the paper associated with this package is:
+
+```bibtex
+@article{Wicaksono2023,
+  author    = {Wicaksono, Damar and Hecht, Michael},
+  title     = {{UQTestFuns}: A {Python3} library of uncertainty quantification ({UQ}) test functions},
+  journal   = {Journal of Open Source Software},
+  year      = {2023},
+  volume    = {8},
+  number    = {90},
+  doi       = {10.21105/joss.05671},
+}
+```
+
+### Citing a specific version (Zenodo)
+
+To ensure reproducibility, cite the exact version of the package you used.
+Each release is archived on Zenodo with a unique DOI; find and use the DOI
+for the version you used at [Zenodo].
+
+The citation for the current public version is:
+
+```bibtex
+@software{UQTestFuns_0_5_0,
+  author       = {Wicaksono, Damar and Hecht, Michael},
+  title        = {{UQTestFuns: A Python3 Library of Uncertainty Quantification (UQ) Test Functions}},
+  month        = nov,
+  year         = 2024,
+  publisher    = {Zenodo},
+  version      = {v0.5.0},
+  doi          = {10.5281/zenodo.14180639},
+  url          = {https://doi.org/10.5281/zenodo.14180639}
+}
+```
+
 ## Credits and contributors
 
 <!--Credits and contributors-->
@@ -166,3 +220,5 @@ led by Michael Hecht ([HZDR/CASUS](https://www.casus.science/)) at CASUS.
 
 <!--License-->
 UQTestFuns is released under the [MIT License](LICENSE).
+
+[Zenodo]: https://zenodo.org/search?q=parent.id%3A7701903&f=allversions%3Atrue&l=list&p=1&s=10&sort=version

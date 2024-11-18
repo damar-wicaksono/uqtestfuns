@@ -4,6 +4,7 @@ Module with routines involving the uniform probability distribution.
 The uniform distribution in UQTestFuns is parametrized by two parameters:
 the lower and upper bounds.
 """
+
 import numpy as np
 
 from .utils import postprocess_icdf, verify_param_nums

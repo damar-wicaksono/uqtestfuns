@@ -12,15 +12,16 @@ kernelspec:
   name: python3
 ---
 
+(fundamentals:optimization)=
 # Test Functions for Optimization
 
 The table below listed the available test functions typically used
 in the comparison of global optimization methods.
 
-|                            Name                             | Spatial Dimension |     Constructor      |
-|:-----------------------------------------------------------:|:-----------------:|:--------------------:|
-|            {ref}`Ackley <test-functions:ackley>`            |         M         |      `Ackley()`      |
-| {ref}`Forrester et al. (2008) <test-functions:forrester>`   |         1         |  `Forrester2008()`   |
+|                            Name                             | Input Dimension |     Constructor      |
+|:-----------------------------------------------------------:|:---------------:|:--------------------:|
+|            {ref}`Ackley <test-functions:ackley>`            |        M        |      `Ackley()`      |
+| {ref}`Forrester et al. (2008) <test-functions:forrester>`   |        1        |  `Forrester2008()`   |
 
 In a Python terminal, you can list all the available functions relevant
 for optimization applications using ``list_functions()`` and filter the results
@@ -31,5 +32,5 @@ using the ``tag`` parameter:
 
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tag="optimization")
+uqtf.list_functions(tag="optimization", tablefmt="html")
 ```

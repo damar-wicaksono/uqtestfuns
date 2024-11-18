@@ -27,45 +27,44 @@ References
    Technical Report No. NPS53-79-003, 1979.
    URL: https://core.ac.uk/reader/36727660
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["McLainS1", "McLainS2", "McLainS3", "McLainS4", "McLainS5"]
 
-INPUT_MARGINALS_MCLAIN1974 = [  # From Ref. [1]
-    UnivDistSpec(
-        name="X1",
-        distribution="uniform",
-        parameters=[1.0, 10.0],
-        description="None",
-    ),
-    UnivDistSpec(
-        name="X2",
-        distribution="uniform",
-        parameters=[1.0, 10.0],
-        description="None",
-    ),
-]
 
-AVAILABLE_INPUT_SPECS = {
-    "McLain1974": ProbInputSpecFixDim(
-        name="McLain-1974",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "McLain1974": {
+        "function_id": "McLain",
+        "description": (
             "Input specification for the McLain's test functions "
             "from McLain (1974)."
         ),
-        marginals=INPUT_MARGINALS_MCLAIN1974,
-        copulas=None,
-    ),
+        "marginals": [  # From Ref. [1]
+            {
+                "name": "X1",
+                "distribution": "uniform",
+                "parameters": [1.0, 10.0],
+                "description": None,
+            },
+            {
+                "name": "X2",
+                "distribution": "uniform",
+                "parameters": [1.0, 10.0],
+                "description": None,
+            },
+        ],
+        "copulas": None,
+    },
 }
 
 COMMON_METADATA = dict(
     _tags=["metamodeling"],
-    _available_inputs=AVAILABLE_INPUT_SPECS,
+    _available_inputs=AVAILABLE_INPUTS,
     _available_parameters=None,
-    _default_spatial_dimension=2,
     _description="from McLain (1974)",
 )
 
@@ -91,7 +90,7 @@ def evaluate_mclain_s1(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class McLainS1(UQTestFunABC):
+class McLainS1(UQTestFunFixDimABC):
     """A concrete implementation of the McLain S1 function.
 
     The function features a part of a sphere.
@@ -101,9 +100,8 @@ class McLainS1(UQTestFunABC):
     _description = f"McLain S1 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s1)
+    evaluate = staticmethod(evaluate_mclain_s1)  # type: ignore
 
 
 def evaluate_mclain_s2(xx: np.ndarray) -> np.ndarray:
@@ -126,7 +124,7 @@ def evaluate_mclain_s2(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class McLainS2(UQTestFunABC):
+class McLainS2(UQTestFunFixDimABC):
     """A concrete implementation of the McLain S2 function.
 
     The function features a steep hill rising from a plain.
@@ -136,9 +134,8 @@ class McLainS2(UQTestFunABC):
     _description = f"McLain S2 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s2)
+    evaluate = staticmethod(evaluate_mclain_s2)  # type: ignore
 
 
 def evaluate_mclain_s3(xx: np.ndarray) -> np.ndarray:
@@ -161,7 +158,7 @@ def evaluate_mclain_s3(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class McLainS3(UQTestFunABC):
+class McLainS3(UQTestFunFixDimABC):
     """A concrete implementation of the McLain S3 function.
 
     The function features a less steep hill (compared to S2).
@@ -171,9 +168,8 @@ class McLainS3(UQTestFunABC):
     _description = f"McLain S3 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s3)
+    evaluate = staticmethod(evaluate_mclain_s3)  # type: ignore
 
 
 def evaluate_mclain_s4(xx: np.ndarray) -> np.ndarray:
@@ -199,7 +195,7 @@ def evaluate_mclain_s4(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class McLainS4(UQTestFunABC):
+class McLainS4(UQTestFunFixDimABC):
     """A concrete implementation of the McLain S4 function.
 
     The function features a long narrow hill.
@@ -209,9 +205,8 @@ class McLainS4(UQTestFunABC):
     _description = f"McLain S4 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s4)
+    evaluate = staticmethod(evaluate_mclain_s4)  # type: ignore
 
 
 def evaluate_mclain_s5(xx: np.ndarray) -> np.ndarray:
@@ -234,7 +229,7 @@ def evaluate_mclain_s5(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class McLainS5(UQTestFunABC):
+class McLainS5(UQTestFunFixDimABC):
     """A concrete implementation of the McLain S5 function.
 
     The function features two plateaus separated by a steep cliff.
@@ -244,6 +239,5 @@ class McLainS5(UQTestFunABC):
     _description = f"McLain S5 function {COMMON_METADATA['_description']}"
     _available_inputs = COMMON_METADATA["_available_inputs"]
     _available_parameters = COMMON_METADATA["_available_parameters"]
-    _default_spatial_dimension = COMMON_METADATA["_default_spatial_dimension"]
 
-    eval_ = staticmethod(evaluate_mclain_s5)
+    evaluate = staticmethod(evaluate_mclain_s5)  # type: ignore

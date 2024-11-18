@@ -21,101 +21,103 @@ References
    prediction,” Technometrics, vol. 35, no. 3, pp. 243–255, 1993.
    DOI: 10.1080/00401706.1993.10485320
 """
+
 import numpy as np
 
-from ..core.uqtestfun_abc import UQTestFunABC
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
+from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Borehole"]
 
+
 # From Ref. [1]
-INPUT_MARGINALS_HARPER1983 = [
-    UnivDistSpec(
-        name="rw",
-        distribution="normal",
-        parameters=[0.10, 0.0161812],
-        description="radius of the borehole [m]",
-    ),
-    UnivDistSpec(
-        name="r",
-        distribution="lognormal",
-        parameters=[7.71, 1.0056],
-        description="radius of influence [m]",
-    ),
-    UnivDistSpec(
-        name="Tu",
-        distribution="uniform",
-        parameters=[63070.0, 115600.0],
-        description="transmissivity of upper aquifer [m^2/year]",
-    ),
-    UnivDistSpec(
-        name="Hu",
-        distribution="uniform",
-        parameters=[990.0, 1100.0],
-        description="potentiometric head of upper aquifer [m]",
-    ),
-    UnivDistSpec(
-        name="Tl",
-        distribution="uniform",
-        parameters=[63.1, 116.0],
-        description="transmissivity of lower aquifer [m^2/year]",
-    ),
-    UnivDistSpec(
-        name="Hl",
-        distribution="uniform",
-        parameters=[700.0, 820.0],
-        description="potentiometric head of lower aquifer [m]",
-    ),
-    UnivDistSpec(
-        name="L",
-        distribution="uniform",
-        parameters=[1120.0, 1680.0],
-        description="length of the borehole [m]",
-    ),
-    UnivDistSpec(
-        name="Kw",
-        distribution="uniform",
-        parameters=[9985.0, 12045.0],
-        description="hydraulic conductivity of the borehole [m/year]",
-    ),
+MARGINALS_HARPER1983: MarginalSpecs = [
+    {
+        "name": "rw",
+        "distribution": "normal",
+        "parameters": [0.10, 0.0161812],
+        "description": "radius of the borehole [m]",
+    },
+    {
+        "name": "r",
+        "distribution": "lognormal",
+        "parameters": [7.71, 1.0056],
+        "description": "radius of influence [m]",
+    },
+    {
+        "name": "Tu",
+        "distribution": "uniform",
+        "parameters": [63070.0, 115600.0],
+        "description": "transmissivity of upper aquifer [m^2/year]",
+    },
+    {
+        "name": "Hu",
+        "distribution": "uniform",
+        "parameters": [990.0, 1100.0],
+        "description": "potentiometric head of upper aquifer [m]",
+    },
+    {
+        "name": "Tl",
+        "distribution": "uniform",
+        "parameters": [63.1, 116.0],
+        "description": "transmissivity of lower aquifer [m^2/year]",
+    },
+    {
+        "name": "Hl",
+        "distribution": "uniform",
+        "parameters": [700.0, 820.0],
+        "description": "potentiometric head of lower aquifer [m]",
+    },
+    {
+        "name": "L",
+        "distribution": "uniform",
+        "parameters": [1120.0, 1680.0],
+        "description": "length of the borehole [m]",
+    },
+    {
+        "name": "Kw",
+        "distribution": "uniform",
+        "parameters": [9985.0, 12045.0],
+        "description": "hydraulic conductivity of the borehole [m/year]",
+    },
 ]
 
 # From Ref. [2]
-INPUT_MARGINALS_MORRIS1993 = list(INPUT_MARGINALS_HARPER1983)
-INPUT_MARGINALS_MORRIS1993[0:2] = [
-    UnivDistSpec(
-        name="rw",
-        distribution="uniform",
-        parameters=[0.05, 0.15],
-        description="radius of the borehole [m]",
-    ),
-    UnivDistSpec(
-        name="r",
-        distribution="uniform",
-        parameters=[100, 50000],
-        description="radius of influence [m]",
-    ),
+MARGINALS_MORRIS1993 = list(MARGINALS_HARPER1983)
+MARGINALS_MORRIS1993[0:2] = [
+    {
+        "name": "rw",
+        "distribution": "uniform",
+        "parameters": [0.05, 0.15],
+        "description": "radius of the borehole [m]",
+    },
+    {
+        "name": "r",
+        "distribution": "uniform",
+        "parameters": [100, 50000],
+        "description": "radius of influence [m]",
+    },
 ]
 
-AVAILABLE_INPUT_SPECS = {
-    "Harper1983": ProbInputSpecFixDim(
-        name="Borehole-Harper-1983",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Harper1983": {
+        "function_id": "Borehole",
+        "description": (
             "Probabilistic input model of the Borehole model "
-            "from Harper and Gupta (1983)."
+            "from Harper and Gupta (1983)"
         ),
-        marginals=INPUT_MARGINALS_HARPER1983,
-        copulas=None,
-    ),
-    "Morris1993": ProbInputSpecFixDim(
-        name="Borehole-Morris-1993",
-        description=(
+        "marginals": MARGINALS_HARPER1983,
+        "copulas": None,
+    },
+    "Morris1993": {
+        "function_id": "Borehole",
+        "description": (
             "Probabilistic input model of the Borehole model "
-            "from Morris et al. (1993)."
+            "from Morris et al. (1993)"
         ),
-        marginals=INPUT_MARGINALS_MORRIS1993,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_MORRIS1993,
+        "copulas": None,
+    },
 }
 
 DEFAULT_INPUT_SELECTION = "Harper1983"
@@ -152,14 +154,13 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Borehole(UQTestFunABC):
+class Borehole(UQTestFunFixDimABC):
     """A concrete implementation of the Borehole function."""
 
     _tags = ["metamodeling", "sensitivity"]
     _description = "Borehole function from Harper and Gupta (1983)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_input = DEFAULT_INPUT_SELECTION
-    _default_spatial_dimension = 8
+    _default_input_id = DEFAULT_INPUT_SELECTION
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

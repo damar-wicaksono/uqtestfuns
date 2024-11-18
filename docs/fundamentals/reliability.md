@@ -12,23 +12,25 @@ kernelspec:
   name: python3
 ---
 
+(fundamentals:reliability)=
 # Test Functions for Reliability Analysis
 
 The table below listed the available test functions typically used
 in the comparison of reliability analysis methods.
 
-|                                        Name                                         | Spatial Dimension |           Constructor           |
-|:-----------------------------------------------------------------------------------:|:-----------------:|:-------------------------------:|
-|           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |         2         |       `CantileverBeam2D `       |
-|           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |         2         |      `CircularPipeCrack()`      |
-|          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |         2         |      `ConvexFailDomain()`       |
-| {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |         8         | `DampedOscillatorReliability()` |
-|                   {ref}`Four-branch <test-functions:four-branch>`                   |         2         |         `FourBranch()`          |
-|                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |         2         |          `GaytonHat()`          |
-|               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |         2         |         `HyperSphere()`         |
-|              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |         2         |        `RSCircularBar()`        |
-|                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |         2         |         `RSQuadratic()`         |
-|           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |         5         |      `SpeedReducerShaft()`      |
+|                                        Name                                         | Input Dimension |           Constructor           |
+|:-----------------------------------------------------------------------------------:|:---------------:|:-------------------------------:|
+|           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |        2        |       `CantileverBeam2D `       |
+|           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |        2        |      `CircularPipeCrack()`      |
+|          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |        2        |      `ConvexFailDomain()`       |
+| {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |        8        | `DampedOscillatorReliability()` |
+|                   {ref}`Four-branch <test-functions:four-branch>`                   |        2        |         `FourBranch()`          |
+|                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |        2        |          `GaytonHat()`          |
+|               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |        2        |         `HyperSphere()`         |
+|              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |        2        |        `RSCircularBar()`        |
+|                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |        2        |         `RSQuadratic()`         |
+|           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |        5        |      `SpeedReducerShaft()`      |
+|           {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`           |        6        |     `UndampedOscillator()`      |
 
 In a Python terminal, you can list all the available functions relevant
 for metamodeling applications using ``list_functions()`` and filter the results
@@ -39,7 +41,7 @@ using the ``tag`` parameter:
 
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tag="reliability")
+uqtf.list_functions(tag="reliability", tablefmt="html")
 ```
 
 ## About reliability analysis
@@ -83,7 +85,7 @@ the system is in safe state if the maximum temperature
 does not exceed the regulatory limit.
 ```
 
-_Reliability analysis_[^rare-event] concerns with estimating
+**Reliability analysis**[^rare-event] concerns with estimating
 the failure probability of a system with a given performance function $g$. 
 For a given joint probability density function (PDF) $f_{\boldsymbol{X}}$
 of the uncertain input variables $\boldsymbol{X} = \{ \boldsymbol{X}_p, \boldsymbol{X}_s \}$,

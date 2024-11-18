@@ -27,58 +27,101 @@ References
    vol. 94, no. 3, pp. 742–751, 2009.
    DOI:10.1016/j.ress.2008.07.008
 """
+
 import numpy as np
 
-from typing import Tuple
-
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import (
+    MarginalSpecs,
+    ProbInputSpecs,
+    FunParamSpecs,
+)
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Ishigami"]
 
 
-INPUT_MARGINALS_ISHIGAMI1991 = [
-    UnivDistSpec(
-        name="X1",
-        distribution="uniform",
-        parameters=[-np.pi, np.pi],
-        description="None",
-    ),
-    UnivDistSpec(
-        name="X2",
-        distribution="uniform",
-        parameters=[-np.pi, np.pi],
-        description="None",
-    ),
-    UnivDistSpec(
-        name="X3",
-        distribution="uniform",
-        parameters=[-np.pi, np.pi],
-        description="None",
-    ),
+MARGINALS_ISHIGAMI1991: MarginalSpecs = [
+    {
+        "name": "X1",
+        "distribution": "uniform",
+        "parameters": [-np.pi, np.pi],
+        "description": None,
+    },
+    {
+        "name": "X2",
+        "distribution": "uniform",
+        "parameters": [-np.pi, np.pi],
+        "description": None,
+    },
+    {
+        "name": "X3",
+        "distribution": "uniform",
+        "parameters": [-np.pi, np.pi],
+        "description": None,
+    },
 ]
 
-AVAILABLE_INPUT_SPECS = {
-    "Ishigami1991": ProbInputSpecFixDim(
-        name="Ishigami1991",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Ishigami1991": {
+        "function_id": "Ishigami",
+        "description": (
             "Probabilistic input model for the Ishigami function "
             "from Ishigami and Homma (1991)."
         ),
-        marginals=INPUT_MARGINALS_ISHIGAMI1991,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_ISHIGAMI1991,
+        "copulas": None,
+    },
 }
 
-AVAILABLE_PARAMETERS = {
-    "Ishigami1991": (7, 0.05),  # from [1]
-    "Sobol1999": (7, 0.1),  # from [2]
+AVAILABLE_PARAMETERS: FunParamSpecs = {
+    "Ishigami1991": {
+        "function_id": "Ishigami",
+        "description": (
+            "Parameter set for the Ishigami function from Ishigami and Homma "
+            "(1991)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "a",
+                "value": 7.0,
+                "type": float,
+                "description": None,
+            },
+            {
+                "keyword": "b",
+                "value": 0.1,
+                "type": float,
+                "description": None,
+            },
+        ],
+    },
+    "Sobol1999": {
+        "function_id": "Ishigami",
+        "description": (
+            "Parameter set for the Ishigami function from Sobol' and Levitan "
+            "(1999)"
+        ),
+        "declared_parameters": [
+            {
+                "keyword": "a",
+                "value": 7.0,
+                "type": float,
+                "description": None,
+            },
+            {
+                "keyword": "b",
+                "value": 0.05,
+                "type": float,
+                "description": None,
+            },
+        ],
+    },
 }
 
 DEFAULT_PARAMETERS_SELECTION = "Ishigami1991"
 
 
-def evaluate(xx: np.ndarray, parameters: Tuple[float, float]):
+def evaluate(xx: np.ndarray, a: float, b: float) -> np.ndarray:
     """Evaluate the Ishigami function on a set of input values.
 
     Parameters
@@ -86,8 +129,10 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float]):
     xx : np.ndarray
         3-Dimensional input values given by N-by-3 arrays where
         N is the number of input values.
-    parameters : Tuple[float, float]
-        Tuple of two values as the parameters of the function.
+    a : float
+        The first parameter of the Ishigami function.
+    b : float
+        The second parameter of the Ishigami function.
 
     Returns
     -------
@@ -97,22 +142,21 @@ def evaluate(xx: np.ndarray, parameters: Tuple[float, float]):
     """
     # Compute the Ishigami function
     term_1 = np.sin(xx[:, 0])
-    term_2 = parameters[0] * np.sin(xx[:, 1]) ** 2
-    term_3 = parameters[1] * xx[:, 2] ** 4 * np.sin(xx[:, 0])
+    term_2 = a * np.sin(xx[:, 1]) ** 2
+    term_3 = b * xx[:, 2] ** 4 * np.sin(xx[:, 0])
 
     yy = term_1 + term_2 + term_3
 
     return yy
 
 
-class Ishigami(UQTestFunABC):
+class Ishigami(UQTestFunFixDimABC):
     """An implementation of the Ishigami test function."""
 
     _tags = ["sensitivity"]
     _description = "Ishigami function from Ishigami and Homma (1991)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = AVAILABLE_PARAMETERS
-    _default_parameters = DEFAULT_PARAMETERS_SELECTION
-    _default_spatial_dimension = 3
+    _default_parameters_id = DEFAULT_PARAMETERS_SELECTION
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

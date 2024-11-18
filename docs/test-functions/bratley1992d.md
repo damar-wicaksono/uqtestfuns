@@ -26,7 +26,8 @@ is an $M$-dimensional scalar-valued function.
 The function was introduced in {cite}`Bratley1992` as a test function
 for multi-dimensional numerical integration using low discrepancy sequences.
 It was used in {cite}`Kucherenko2009` and {cite}`Saltelli2010` in the context
-of global sensitivity analysis.
+of global sensitivity analysis; there the function is more commonly known as
+the $K$-function.
 
 ```{note}
 There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
@@ -40,9 +41,9 @@ There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
 - {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`:
   A sum of product (_this function_)
   
-The function was reintroduced in {cite}`Saltelli1995` with additional
-parameters for global sensitivity analysis purposes.
-The "generalized" function became known as the {ref}`Sobol'-G <test-functions:sobol-g>`. 
+This function was reintroduced by {cite}`Kucherenko2009` as a test function
+for global sensitivity analysis and was later renamed the $K$-function in 
+{cite}`Saltelli2010`.
 ```
 
 The plots for one-dimensional and two-dimensional `Bratley1992d` functions
@@ -54,12 +55,12 @@ are shown below.
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # --- Create 1D data
-my_bratley1992d_1d = uqtf.Bratley1992d(spatial_dimension=1)
+my_bratley1992d_1d = uqtf.Bratley1992d(input_dimension=1)
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
 yy_1d = my_bratley1992d_1d(xx_1d)
 
 # --- Create 2D data
-my_bratley1992d_2d = uqtf.Bratley1992d(spatial_dimension=2)
+my_bratley1992d_2d = uqtf.Bratley1992d(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_bratley1992d_2d(xx_2d)
@@ -122,14 +123,14 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the spatial dimension is set to $2$[^default_dimension].
-To create an instance with another value of spatial dimension,
-pass an integer to the parameter `spatial_dimension` (keyword only).
+By default, the input dimension is set to $2$[^default_dimension].
+To create an instance with another value of input dimension,
+pass an integer to the parameter `input_dimension` (keyword only).
 For example, to create an instance of 10-dimensional `Bratley1992d` function,
 type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Bratley1992d(spatial_dimension=10)
+my_testfun = uqtf.Bratley1992d(input_dimension=10)
 ```
 
 ## Description
@@ -232,4 +233,4 @@ where:
 in {cite}`Bratley1992`.
 
 [^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `spatial_dimension` argument is not given.
+test functions. It will be used if the `input_dimension` argument is not given.

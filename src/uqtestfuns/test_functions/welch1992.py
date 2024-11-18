@@ -18,35 +18,37 @@ References
    experiments," Technometrics, vol. 34, no. 1, pp. 15-25, 1992.
    DOI: 10.2307/1269548
 """
+
 import numpy as np
 
-from ..core.prob_input.input_spec import UnivDistSpec, ProbInputSpecFixDim
-from ..core.uqtestfun_abc import UQTestFunABC
+from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
+from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
 __all__ = ["Welch1992"]
 
 
-INPUT_MARGINALS_WELCH1992 = [
-    UnivDistSpec(
-        name=f"x{i}",
-        distribution="uniform",
-        parameters=[-0.5, 0.5],
-        description="None",
-    )
+MARGINALS_WELCH1992: MarginalSpecs = [
+    {
+        "name": f"x{i}",
+        "distribution": "uniform",
+        "parameters": [-0.5, 0.5],
+        "description": None,
+    }
     for i in range(1, 20 + 1)
 ]
 
-AVAILABLE_INPUT_SPECS = {
-    "Welch1992": ProbInputSpecFixDim(
-        name="Welch1992",
-        description=(
+AVAILABLE_INPUTS: ProbInputSpecs = {
+    "Welch1992": {
+        "function_id": "Welch1992",
+        "description": (
             "Input specification for the test function "
             "from Welch et al. (1992)"
         ),
-        marginals=INPUT_MARGINALS_WELCH1992,
-        copulas=None,
-    ),
+        "marginals": MARGINALS_WELCH1992,
+        "copulas": None,
+    },
 }
+
 
 DEFAULT_INPUT_SELECTION = "Welch1992"
 
@@ -94,13 +96,12 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Welch1992(UQTestFunABC):
+class Welch1992(UQTestFunFixDimABC):
     """A concrete implementation of the Welch et al. (1992) test function."""
 
     _tags = ["metamodeling", "sensitivity", "integration"]
     _description = "20-Dimensional function from Welch et al. (1992)"
-    _available_inputs = AVAILABLE_INPUT_SPECS
+    _available_inputs = AVAILABLE_INPUTS
     _available_parameters = None
-    _default_spatial_dimension = 20
 
-    eval_ = staticmethod(evaluate)
+    evaluate = staticmethod(evaluate)  # type: ignore

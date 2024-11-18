@@ -92,11 +92,13 @@ The typical values for the parameters are shown in the table below.
 The first component of a test function is the evaluation function itself.
 UQTestFuns requires for such a function to have at least the input array
 as its first parameter.
-When applicable, the parameters must be the second parameter of the function.
+When applicable, the parameters must appear after the input array.
+It's your choice whether to lump the parameters together or split them as
+exemplified below.
 The Branin evaluation function can be defined as a Python function as follows:
 
 ```{code-cell} ipython3
-def evaluate_branin(xx: np.ndarray, params: np.ndarray):
+def evaluate_branin(xx: np.ndarray, a: float, b: float, c: float, r: float, s: float, t: float):
     """Evaluate the Branin function on a set of input values.
     
     Parameters
@@ -104,9 +106,18 @@ def evaluate_branin(xx: np.ndarray, params: np.ndarray):
     xx : np.ndarray
         2-Dimensional input values given by an N-by-2 array where
         N is the number of input values.
-    params : np.ndarray
-        The parameters of the Branin function;
-        a 1-Dimensional array of length 5.
+    a : float
+        Parameter 'a' of the Branin function.
+    b : float
+        Parameter 'b' of the Branin function.
+    c : float
+        Parameter 'c' of the Branin function.
+    r : float
+        Parameter 'r' of the Branin function.
+    s : float
+        Parameter 's' of the Branin function.
+    t : float
+        Parameter 't' of the Branin function.
     
     Returns
     -------
@@ -115,9 +126,9 @@ def evaluate_branin(xx: np.ndarray, params: np.ndarray):
         The output is a 1-dimensional array of length N.    
     """
     yy = (
-        params[0] * (xx[:, 1] - params[1] * xx[:, 0]**2 + params[2] * xx[:, 0] - params[3])**2
-        + params[4] * (1 - params[5]) * np.cos(xx[:, 0]) 
-        + params[4]
+        a * (xx[:, 1] - b * xx[:, 0]**2 + c * xx[:, 0] - r)**2
+        + s * (1 - t) * np.cos(xx[:, 0]) 
+        + s
     )
     
     return yy
@@ -125,21 +136,21 @@ def evaluate_branin(xx: np.ndarray, params: np.ndarray):
 
 ## Input and parameters
 
-The second and third components of a test function are
-the (probabilistic) input specification and the parameters.
+The second a test function is the (probabilistic) input specification.
 The input specification of the Branin function consists of
 two independent uniform random variables with different bounds.
-In UQTestFuns, a probabilistic input model is represented by `ProbInput` class
-and an instance of it can be defined as follows:
+In UQTestFuns, a probabilistic input model is represented
+by the the {ref}`ProbInput <api_reference_probabilistic_input>`
+class  and an instance of it can be defined as follows:
 
 ```{code-cell} ipython3
 # Define a list of marginals
 marginals = [
-    uqtf.UnivDist(distribution="uniform", parameters=[-5, 10], name="x1"),
-    uqtf.UnivDist(distribution="uniform", parameters=[0, 15], name="x2"),
+    uqtf.Marginal(distribution="uniform", parameters=[-5, 10], name="x1"),
+    uqtf.Marginal(distribution="uniform", parameters=[0, 15], name="x2"),
 ]
 # Create a probabilistic input
-my_input = uqtf.ProbInput(marginals=marginals, name="Branin-Input")
+my_input = uqtf.ProbInput(marginals=marginals, function_id="Branin", input_id="custom")
 ```
 
 To verify if the instance has been created successfully,
@@ -149,18 +160,52 @@ print it out to the terminal:
 print(my_input)
 ```
 
-Finally, the parameters of the Branin function defined above can be defined
-as a NumPy array as follows:
+## Parameters
+
+The third and final component of a test function is the parameter set.
+A test function may or may not have a parameter set; in the case of the Branin
+function, the set contains six parameters $\{ a, b, c, r, s, t \}$.
+
+A parameter set in UQTestFuns is represented
+by the {ref}`FunParams <api_reference_function_parameters>` class.
+As defined above, the test function requires six separate parameters.
+An instance of `FunParams` can be created as follows:
 
 ```{code-cell} ipython3
-my_params = np.array([1.0, 5.1 / (2 * np.pi)**2, 5 / np.pi, 6, 10, 1 / (8 * np.pi)])
+my_params = uqtf.FunParams(
+    function_id="Branin",
+    parameter_id="custom",
+    description="Parameter set for the Branin function",
+)
 ```
 
+Each of the parameters can then be added to the set as follows:
+
+```{code-cell} ipython3
+my_params.add(keyword="a", value=1.0, type=float)
+my_params.add(keyword="b", value=5.1 / (2 * np.pi)**2, type=float)
+my_params.add(keyword="c", value=5 / np.pi, type=float)
+my_params.add(keyword="r", value=6.0, type=float)
+my_params.add(keyword="s", value=10.0, type=float)
+my_params.add(keyword="t", value=1 / (8 * np.pi), type=float)
+```
+
+Notice that the values to the `keyword` parameter are consistent with the
+names that appear in the function definition
+The value of the parameters can practically be of any Python data type.
+They only depend on how they are going to be consumed by the specified
+evaluatuon function.
+
 ```{note}
-The parameters can practically be of any Python data type.
-They only depend on how they are going to be consumed
-by the specified evaluation function.
-In other words, you have full control on how to define the parameters.
+The `type` parameter is optional; when specified the set value must be
+consistent.
+```
+
+To verify if the instance has been created successfully,
+print it out to the terminal:
+
+```{code-cell} ipython3
+print(my_params)
 ```
 
 ## Creating a test function
@@ -179,7 +224,7 @@ my_testfun = uqtf.UQTestFun(
   evaluate=evaluate_branin,
   prob_input=my_input,
   parameters=my_params,
-  name="Branin function",
+  function_id="Branin",
 )
 ```
 
@@ -256,6 +301,63 @@ The Branin function is a test function typically used for
 testing optimization algorithms.
 Shown in the contour plot above are the locations of
 the three global optima of the function.
+
+You can change the value of the parameters on the fly 
+by accessing the parameter by its keyword. For example:
+
+```{code-cell} ipython3
+my_testfun.parameters["a"] = 3.5
+my_testfun.parameters["t"] = 1 / (4 * np.pi)
+```
+
+which will alter the landscape.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+# --- Create a 2-D grid
+xx_1 = np.linspace(
+    my_input.marginals[0].lower, my_input.marginals[0].upper, 2000
+)
+xx_2 = np.linspace(
+    my_input.marginals[1].lower, my_input.marginals[1].upper, 2000
+)
+mesh_2d = np.meshgrid(xx_1, xx_2)
+xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
+yy_2d = my_testfun(xx_2d)
+
+# --- Create the plots
+fig = plt.figure(figsize=(11, 5))
+
+# Surface
+axs_1 = plt.subplot(121, projection='3d')
+axs_1.plot_surface(
+    mesh_2d[0],
+    mesh_2d[1],
+    yy_2d.reshape(2000, 2000).T,
+    cmap="plasma",
+    linewidth=0,
+    antialiased=False,
+    alpha=0.5
+)
+axs_1.set_xlabel("$x_1$", fontsize=14)
+axs_1.set_ylabel("$x_2$", fontsize=14)
+axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+
+# Contour
+axs_2 = plt.subplot(122)
+cf = axs_2.contourf(
+    mesh_2d[0], mesh_2d[1], yy_2d.reshape(2000, 2000).T, 20, cmap="plasma"
+)
+axs_2.set_xlabel("$x_1$", fontsize=14)
+axs_2.set_ylabel("$x_2$", fontsize=14)
+divider = make_axes_locatable(axs_2)
+cax = divider.append_axes('right', size='5%', pad=0.05)
+fig.colorbar(cf, cax=cax, orientation='vertical')
+axs_2.axis('scaled');
+```
 
 ## Concluding remarks
 
