@@ -1,6 +1,6 @@
 # UQTestFuns
 [![JOSS](https://img.shields.io/badge/JOSS-10.21105/joss.05671-brightgreen?style=flat-square)](https://doi.org/10.21105/joss.05671)
-[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.14180639-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.14180639)
+[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.14181563-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.14181563)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
@@ -194,8 +194,8 @@ The citation for the current public version is:
   year         = 2024,
   publisher    = {Zenodo},
   version      = {v0.5.0},
-  doi          = {10.5281/zenodo.14180639},
-  url          = {https://doi.org/10.5281/zenodo.14180639}
+  doi          = {10.5281/zenodo.14181563},
+  url          = {https://doi.org/10.5281/zenodo.14181563}
 }
 ```
 
