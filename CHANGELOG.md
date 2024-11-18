@@ -7,13 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2024-11-18
+
 ### Added
 
 - The 5-dimensional single-diode solar cell model from Constantine et al.
   (2015); this is the first function of which the solution must be computed
   numerically.
-- Update the README with JOSS badge and instruction how to cite the paper and
-  package.
+- JOSS badge and instruction how to cite the paper and package in the README.
 - A commentary on sensitivity analysis within the UQ framework in the docs.
 - A commentary on metamodeling within the UQ framework in the docs.
 - A better overview of UQ framework in the docs.
@@ -70,11 +71,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The property `spatial_dimension` of `ProbInput` and `UQTestFunBareABC` is
   renamed to `input_dimension` for clarity (as opposed to `output_dimension`).
 - The property `name` of UQ test function instances has been renamed to
-  `function_id` that implies uniqueness although it is not strictly enforced.
+  `function_id` that implies uniqueness, although it is not strictly enforced.
 - The parameter in the Gramacy 1D sine function is now removed. Noise can
   be added on the fly if needed.
 - `evaluate()` abstract method is now must be implemented directly in the
   concrete UQ test function; `eval_()` in the `UQTestFunABC` has been removed.
+
+### Fixed
+
+- Minor fixes of issues (typos and grammatical mistakes) related to the
+  documentation with additional overall improvements.
 
 ## [0.4.1] - 2023-10-27
 
@@ -254,6 +260,7 @@ First public release of UQTestFuns.
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
 [Unreleased]: https://github.com/damar-wicaksono/uqtestfuns/compare/main...dev
+[0.5.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.2.0...v0.3.0
