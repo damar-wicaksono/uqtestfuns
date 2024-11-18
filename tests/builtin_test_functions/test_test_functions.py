@@ -156,13 +156,14 @@ def test_str(builtin_testfun):
         input_dim = f"{my_fun.input_dimension} (variable)"
     else:
         input_dim = f"{my_fun.input_dimension} (fixed)"
+    tags = ", ".join(my_fun.tags)
     str_ref = (
         f"Function ID      : {my_fun.function_id}\n"
         f"Input Dimension  : {input_dim}\n"
         f"Output Dimension : {my_fun.output_dimension}\n"
         f"Parameterized    : {bool(my_fun.parameters)}\n"
         f"Description      : {my_fun.description}\n"
-        f"Applications     : {my_fun.tags}"
+        f"Applications     : {tags}"
     )
 
     assert my_fun.__str__() == str_ref
