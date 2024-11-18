@@ -65,7 +65,7 @@ Input Dimension  : 8 (fixed)
 Output Dimension : 1
 Parameterized    : False
 Description      : Borehole function from Harper and Gupta (1983)
-Applications     : ['metamodeling', 'sensitivity']
+Applications     : metamodeling, sensitivity
 ```
 
 The probabilistic input specification of this test function is built-in:

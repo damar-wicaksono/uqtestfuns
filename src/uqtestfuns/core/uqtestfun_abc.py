@@ -293,13 +293,14 @@ class UQTestFunABC(UQTestFunBareABC, ABC):
             input_dimension = f"{self.input_dimension} (variable)"
         else:
             input_dimension = f"{self.input_dimension} (fixed)"
+        tags = ", ".join(self.tags)
         out = (
             f"Function ID      : {self.function_id}\n"
             f"Input Dimension  : {input_dimension}\n"
             f"Output Dimension : {self.output_dimension}\n"
             f"Parameterized    : {bool(self.parameters)}\n"
             f"Description      : {self.description}\n"
-            f"Applications     : {self.tags}"
+            f"Applications     : {tags}"
         )
 
         return out
