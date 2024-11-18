@@ -32,8 +32,8 @@ The citation for the current public version is:
   year         = 2024,
   publisher    = {Zenodo},
   version      = {v0.5.0},
-  doi          = {10.5281/zenodo.14180639},
-  url          = {https://doi.org/10.5281/zenodo.14180639}
+  doi          = {10.5281/zenodo.14181563},
+  url          = {https://doi.org/10.5281/zenodo.14181563}
 }
 ```
 

@@ -18,7 +18,7 @@ authors:
     orcid: 'https://orcid.org/0000-0001-9214-8253'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.14180639
+    value: 10.5281/zenodo.14181563
     description: The Zenodo URL of version 0.5.0 of the package
 repository-code: 'https://github.com/damar-wicaksono/uqtestfuns'
 url: 'https://uqtestfuns.readthedocs.io/en/latest/'
