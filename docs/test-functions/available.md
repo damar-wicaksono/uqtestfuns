@@ -70,6 +70,7 @@ regardless of their typical applications.
 |                      {ref}`Sobol'-G <test-functions:sobol-g>`                       |        M        |           `SobolG()`            |
 |                   {ref}`Sobol'-G* <test-functions:sobol-g-star>`                    |        M        |         `SobolGStar()`          |
 |                {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                 |        M        |        `SobolLevitan()`         |
+|                 {ref}`Solar Cell Model <test-functions:solar-cell>`                 |        5        |          `SolarCell()`          |
 |           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |        5        |      `SpeedReducerShaft()`      |
 |                        {ref}`Sulfur <test-functions:sulfur>`                        |        9        |           `Sulfur()`            |
 |           {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`           |        6        |     `UndampedOscillator()`      |
