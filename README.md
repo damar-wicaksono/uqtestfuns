@@ -1,6 +1,6 @@
 # UQTestFuns
 [![JOSS](https://img.shields.io/badge/JOSS-10.21105/joss.05671-brightgreen?style=flat-square)](https://doi.org/10.21105/joss.05671)
-[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.10047512-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.10047512)
+[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.14180639-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.14180639)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
@@ -187,15 +187,15 @@ for the version you used at [Zenodo].
 The citation for the current public version is:
 
 ```bibtex
-@software{UQTestFuns_0_4_1,
+@software{UQTestFuns_0_5_0,
   author       = {Wicaksono, Damar and Hecht, Michael},
   title        = {{UQTestFuns: A Python3 Library of Uncertainty Quantification (UQ) Test Functions}},
-  month        = oct,
-  year         = 2023,
+  month        = nov,
+  year         = 2024,
   publisher    = {Zenodo},
-  version      = {v0.4.1},
-  doi          = {10.5281/zenodo.10047512},
-  url          = {https://doi.org/10.5281/zenodo.10047512}
+  version      = {v0.5.0},
+  doi          = {10.5281/zenodo.14180639},
+  url          = {https://doi.org/10.5281/zenodo.14180639}
 }
 ```
 
