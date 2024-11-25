@@ -101,8 +101,8 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
         The output is a 1-dimensional array of length N.
     """
     # Rearrange inputs
-    ll = xx[:, :4]
-    theta = xx[:, 4:]
+    ll = xx[:, :4]  # Segment lengths
+    theta = xx[:, 4:]  # Angles
 
     # Compute the position on the x-coord
     xx_loc = np.zeros(len(xx))
@@ -110,8 +110,8 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
 
     # Compute the end locations
     for i in range(4):
-        xx_loc += xx[:, i] * np.cos(np.sum(theta[:, :i + 1]))
-        yy_loc += xx[:, i] * np.sin(np.sum(theta[:, :i + 1]))
+        xx_loc += ll[:, i] * np.cos(np.sum(theta[:, : i + 1]))
+        yy_loc += ll[:, i] * np.sin(np.sum(theta[:, : i + 1]))
 
     # Compute the distance between end location and origin
     yy = np.sqrt(xx_loc**2 + yy_loc**2)
