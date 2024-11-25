@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The 8-dimensional robot arm function for metamodeling exercises.
+
 ## [0.5.0] - 2024-11-18
 
 ### Added
