@@ -94,6 +94,8 @@ parts:
             title: Friedman (10D)
           - file: test-functions/gayton-hat
             title: Gayton Hat
+          - file: test-functions/genz-corner-peak
+            title: Genz (Corner Peak)
           - file: test-functions/gramacy-1d-sine
             title: Gramacy (2007) 1D Sine
           - file: test-functions/hyper-sphere

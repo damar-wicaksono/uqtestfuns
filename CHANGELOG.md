@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The M-dimensional corner peak function from Genz (1984) for integration
+  and sensitivity analysis exercises.
 - The one-dimensional sine function from Currin et al. (1988) for metamodeling
   exercise.
 - The two-dimensional, time-dependent (vector-valued) cooling cup model

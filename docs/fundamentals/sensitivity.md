@@ -28,6 +28,7 @@ in the comparison of sensitivity analysis methods.
 | {ref}`Damped Oscillator <test-functions:damped-oscillator>`  |        7        | `DampedOscillator()` |
 |             {ref}`Flood <test-functions:flood>`              |        8        |      `Flood()`       |
 |      {ref}`Friedman (6D) <test-functions:friedman-6d>`       |        6        |    `Friedman6D()`    |
+| {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`  |        M        |  `GenzCornerPeak()`  |
 |          {ref}`Ishigami <test-functions:ishigami>`           |        3        |     `Ishigami()`     |
 |        {ref}`Moon (2010) 3D <test-functions:moon3d>`         |        3        |      `Moon3D()`      |
 |   {ref}`Morris et al. (2006) <test-functions:morris2006>`    |        M        |    `Morris2006()`    |
