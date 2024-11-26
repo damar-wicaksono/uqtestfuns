@@ -9,7 +9,7 @@ import numpy as np
 
 from copy import deepcopy
 from inspect import signature
-from typing import Callable, cast, List, Optional, Type
+from typing import Callable, cast, List, Optional, Tuple, Type, Union
 
 from .prob_input.marginal import Marginal
 from .prob_input.probabilistic_input import ProbInput
@@ -76,7 +76,6 @@ class UQTestFunBareABC(abc.ABC):
         self.prob_input = prob_input
         self._parameters = parameters
         self._function_id = function_id
-        self._output_dimension: Optional[int] = None
 
     @property
     def prob_input(self) -> ProbInput:
@@ -119,19 +118,18 @@ class UQTestFunBareABC(abc.ABC):
         return self.prob_input.input_dimension
 
     @property
-    def output_dimension(self) -> int:
-        if self._output_dimension is None:
-            xx = self.prob_input.get_sample()
-            yy = self(xx)
-            if yy.ndim == 1:
-                self._output_dimension = 1
-            elif yy.ndim == 2:
-                self._output_dimension = yy.shape[1]
-            else:
-                self._output_dimension = yy.shape[1:]
-            return self._output_dimension
+    def output_dimension(self) -> Union[int, Tuple[int, ...]]:
+        """The output dimension of the UQ test function."""
+        xx = self.prob_input.get_sample()
+        yy = self(xx)
+        if yy.ndim == 1:
+            output_dim = 1
+        elif yy.ndim == 2:
+            output_dim = yy.shape[1]
+        else:
+            output_dim = yy.shape[1:]
 
-        return self._output_dimension
+        return output_dim
 
     def transform_sample(
         self,

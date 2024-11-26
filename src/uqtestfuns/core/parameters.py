@@ -312,7 +312,7 @@ def _get_values_as_list(
         if isinstance(value, np.ndarray):
             value = f"{value.shape} array"
         elif isinstance(value, int):
-            value = f"{value:1.0e}"
+            value = f"{value:1.5e}"
         elif isinstance(value, float):
             value = f"{value:1.5e}"
         else:

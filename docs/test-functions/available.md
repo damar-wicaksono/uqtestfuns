@@ -32,6 +32,7 @@ regardless of their typical applications.
 |           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |        2        |       `CantileverBeam2D `       |
 |              {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`              |        2        |           `Cheng2D `            |
 |           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |        2        |      `CircularPipeCrack()`      |
+|                 {ref}`Coffee Cup Model <test-functions:coffee-cup>`                 |        2        |          `CoffeeCup()`          |
 |          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |        2        |      `ConvexFailDomain()`       |
 |                 {ref}`Damped Cosine <test-functions:damped-cosine>`                 |        1        |        `DampedCosine()`         |
 |             {ref}`Damped Oscillator <test-functions:damped-oscillator>`             |        7        |      `DampedOscillator()`       |
@@ -63,8 +64,8 @@ regardless of their typical applications.
 |            {ref}`Oakley & O'Hagan (2002) 1D <test-functions:oakley-1d>`             |        1        |          `Oakley1D()`           |
 |                   {ref}`OTL Circuit <test-functions:otl-circuit>`                   |     6 / 20      |         `OTLCircuit()`          |
 |                  {ref}`Piston Simulation <test-functions:piston>`                   |     7 / 20      |           `Piston()`            |
-|                     {ref}`Robot Arm <test-functions:robot-arm>`                     |        8        |          `RobotArm()`           |
 |             {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`             |        3        |         `Portfolio3D()`         |
+|                     {ref}`Robot Arm <test-functions:robot-arm>`                     |        8        |          `RobotArm()`           |
 |              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |        2        |        `RSCircularBar()`        |
 |                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |        2        |         `RSQuadratic()`         |
 |               {ref}`SaltelliLinear <test-functions:saltelli-linear>`                |        M        |       `SaltelliLinear()`        |
