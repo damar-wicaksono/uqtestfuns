@@ -215,6 +215,9 @@ class ProbInput:
             disable_numparse=True,
         )
 
+        if self.input_dimension == 1:
+            return table
+
         # Temporary solution for independence copula
         copulas = "Independence" if self.copulas is None else self.copulas
 

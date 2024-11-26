@@ -73,7 +73,7 @@ print(my_testfun)
 
 The temperature evolution of a coffee cup, $T(t)$, as it cools down
 to an ambient temperature, $T_{\text{amb}}$, is described by
-the following initial value problem (IVP):
+the following initial value problem (IVP)[^location]:
 
 $$
 \frac{dT (t)}{dt} = - \kappa (T (t) - T_{\text{amb}}), T \in [ 0, t_e ],
@@ -148,4 +148,4 @@ must be recognized by the method.
 :filter: docname in docnames
 ```
 
-[^location]: See Eqs. (9-12), Section 3.1 in {cite}`Constantine2015`.
+[^location]: See Eqs. (18-20), Section 4.1 in {cite}`Tennoee2018`.

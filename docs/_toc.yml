@@ -62,6 +62,8 @@ parts:
             title: Coffee Cup
           - file: test-functions/convex-fail-domain
             title: Convex Failure Domain
+          - file: test-functions/currin-sine
+            title: Currin Sine
           - file: test-functions/damped-cosine
             title: Damped Cosine
           - file: test-functions/damped-oscillator

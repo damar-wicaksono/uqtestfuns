@@ -11,6 +11,7 @@ from .cheng2010 import Cheng2D
 from .circular_pipe_crack import CircularPipeCrack
 from .coffee_cup import CoffeeCup
 from .convex_fail_domain import ConvexFailDomain
+from .currin_sine import CurrinSine
 from .damped_cosine import DampedCosine
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
 from .flood import Flood
@@ -62,6 +63,7 @@ __all__ = [
     "CircularPipeCrack",
     "CoffeeCup",
     "ConvexFailDomain",
+    "CurrinSine",
     "DampedCosine",
     "DampedOscillator",
     "DampedOscillatorReliability",
