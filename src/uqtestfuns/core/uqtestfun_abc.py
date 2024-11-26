@@ -588,7 +588,7 @@ class UQTestFunVarDimABC(UQTestFunABC, ABC):
             marginals = []
             for i in range(input_dim):
                 marginal = raw_data["marginals"][0].copy()
-                marginal["name"] = f"{marginal['name']}{i}"
+                marginal["name"] = f"{marginal['name']}{i+1}"
                 marginals.append(Marginal(**marginal))
 
         # Recast the type to satisfy type checker
