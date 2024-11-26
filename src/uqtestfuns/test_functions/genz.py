@@ -31,7 +31,9 @@ References
 import numpy as np
 
 from uqtestfuns.core.custom_typing import (
-    FunParamSpecs, MarginalSpecs, ProbInputSpecs
+    FunParamSpecs,
+    MarginalSpecs,
+    ProbInputSpecs,
 )
 from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
 
@@ -105,7 +107,7 @@ def evaluate_corner_peak(xx: np.ndarray, aa: np.ndarray) -> np.ndarray:
     """
     dim = xx.shape[1]
 
-    yy = (1 + (xx @ aa))**(-(dim + 1))
+    yy = (1 + (xx @ aa)) ** (-(dim + 1))
 
     return yy
 
