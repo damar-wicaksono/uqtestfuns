@@ -33,6 +33,7 @@ regardless of their typical applications.
 |              {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`              |        2        |           `Cheng2D `            |
 |           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |        2        |      `CircularPipeCrack()`      |
 |                 {ref}`Coffee Cup Model <test-functions:coffee-cup>`                 |        2        |          `CoffeeCup()`          |
+|                   {ref}`Currin Sine <test-functions:currin-sine>`                   |        1        |         `CurrinSine()`          |
 |          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |        2        |      `ConvexFailDomain()`       |
 |                 {ref}`Damped Cosine <test-functions:damped-cosine>`                 |        1        |        `DampedCosine()`         |
 |             {ref}`Damped Oscillator <test-functions:damped-oscillator>`             |        7        |      `DampedOscillator()`       |
