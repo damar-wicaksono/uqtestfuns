@@ -58,6 +58,8 @@ parts:
             title: Cheng and Sandu (2010) 2D
           - file: test-functions/circular-pipe-crack
             title: Circular Pipe Crack
+          - file: test-functions/coffee-cup
+            title: Coffee Cup
           - file: test-functions/convex-fail-domain
             title: Convex Failure Domain
           - file: test-functions/damped-cosine

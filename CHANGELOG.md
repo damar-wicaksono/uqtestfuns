@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The two-dimensional, time-dependent (vector-valued) cooling cup model
+  for metamodeling exercise.
 - The 8-dimensional robot arm function for metamodeling exercises.
 
 ## [0.5.0] - 2024-11-18
