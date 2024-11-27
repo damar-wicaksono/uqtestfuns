@@ -27,22 +27,7 @@ integration routines.
 It is one of six functions introduced by Genz {cite}`Genz1984`;
 see the box below.
 
-```{note}
-Genz {cite}`Genz1984` introduced six challenging
-parameterized $M$-dimensional functions
-designed to test the performance of numerical integration routines:
-
-- {ref}`Corner peak <test-functions:genz-product-peak>` features a prominent
-  peak in the center of the multidimensional space. (_this function_)
-- {ref}`Corner peak <test-functions:genz-corner-peak>` features a prominent
-  peak in one corner of the multidimensional space.
-
-The functions are further characterized by offset (shift) and shape parameters.
-While the offset parameter has minimal impact on the integral's value,
-the shape parameter significantly affects
-the difficulty of the integration problem.
-```
-
+The function features a peak at the center of the multidimensional space.
 The plots for one-dimensional and two-dimensional Genz product peak function
 with the default parameters can be seen below.
 
@@ -104,6 +89,26 @@ axs_3.axis('scaled')
 
 fig.tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
+```
+
+```{note}
+Genz {cite}`Genz1984` introduced six challenging
+parameterized $M$-dimensional functions
+designed to test the performance of numerical integration routines:
+
+- {ref}`Product peak <test-functions:genz-product-peak>` function features
+  a prominent peak at the center of the multidimensional space.
+  (_this function_)
+- {ref}`Corner peak <test-functions:genz-corner-peak>` function features
+  a prominent peak in one corner of the multidimensional space.
+- {ref}`Continuous <test-functions:genz-continuous>` function features
+  an exponential decay from the center of the multidimensional space.
+  The function is continuous everywhere, but non-differentiable at the center.
+  
+The functions are further characterized by offset (shift) and shape parameters.
+While the offset parameter has minimal impact on the integral's value,
+the shape parameter significantly affects
+the difficulty of the integration problem.
 ```
 
 ## Test function instance

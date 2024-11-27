@@ -39,6 +39,7 @@ in the comparison of metamodeling approaches.
 |             {ref}`(6th) Franke <test-functions:franke-6>`              |        2        |      `Franke6()`       |
 |           {ref}`Friedman (6D) <test-functions:friedman-6d>`            |        6        |     `Friedman6D()`     |
 |          {ref}`Friedman (10D) <test-functions:friedman-10d>`           |       10        |    `Friedman10D()`     |
+|      {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`       |        M        |   `GenzCornerPeak()`   |
 |     {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>`     |        1        |   `Gramacy1DSine()`    |
 | {ref}`Lim et al. (2002) Non-Polynomial <test-functions:lim-non-poly>`  |        2        |     `LimNonPoly()`     |
 |     {ref}`Lim et al. (2002) Polynomial <test-functions:lim-poly>`      |        2        |      `LimPoly()`       |
