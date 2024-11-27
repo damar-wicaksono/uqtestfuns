@@ -52,6 +52,7 @@ regardless of their typical applications.
 |                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |        2        |          `GaytonHat()`          |
 |              {ref}`Genz (Continuous) <test-functions:genz-continuous>`              |        M        |       `GenzContinuous()`        |
 |             {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`             |        M        |       `GenzCornerPeak()`        |
+|           {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>`           |        M        |      `GenzDiscontinuous()`      |
 |                {ref}`Genz (Gaussian) <test-functions:genz-gaussian>`                |        M        |        `GenzGaussian()`         |
 |             {ref}`Genz (Oscillatory) <test-functions:genz-oscillatory>`             |        M        |       `GenzOscillatory()`       |
 |            {ref}`Genz (Product Peak) <test-functions:genz-product-peak>`            |        M        |       `GenzProductPeak()`       |

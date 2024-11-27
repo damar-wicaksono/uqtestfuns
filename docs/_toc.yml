@@ -100,6 +100,8 @@ parts:
             title: Genz (Corner Peak)
           - file: test-functions/genz-gaussian
             title: Genz (Gaussian)
+          - file: test-functions/genz-discontinuous
+            title: Genz (Discontinuous)
           - file: test-functions/genz-oscillatory
             title: Genz (Oscillatory)
           - file: test-functions/genz-product-peak

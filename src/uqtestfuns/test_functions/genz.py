@@ -4,9 +4,23 @@ Module with implementations of integral test functions from Genz (1984).
 Genz [1] introduced six challenging parameterized $M$-dimensional functions
 designed to test the performance of numerical integration routines:
 
+- Oscillatory function features an oscillating shape in the multidimensional
+  space.
+- Product peak function features a prominent peak at the center
+  of the multidimensional space.
 - Corner peak function features a prominent peak in one corner
   of the multidimensional space. This function was featured as a test function
-  in sensitivity analysis ([2]) and metamodeling [3] exercises.
+  in sensitivity analysis ([2]) and metamodeling ([3]) exercises.
+- Gaussian function features a bell-shaped peak at the center
+  of the multidimensional space.
+- Continuous function features an exponential decay from the center
+  of the multidimensional space. The function is continuous everywhere,
+  but non-differentiable at the center.
+- Discontinuous function features an exponential rise from corner
+  of the multidimensional space up to the offset parameter value,
+  after which the function value drops to zero everywhere,
+  creating discontinuity. This function was featured as a test function
+  in sensitivity analysis ([2])
 
 The functions are further characterized by shift and scale parameters.
 While the shift parameter has minimal impact on the integral's value,
@@ -42,6 +56,7 @@ from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
 __all__ = [
     "GenzContinuous",
     "GenzCornerPeak",
+    "GenzDiscontinuous",
     "GenzGaussian",
     "GenzOscillatory",
     "GenzProductPeak",
@@ -484,3 +499,83 @@ class GenzContinuous(UQTestFunVarDimABC):
     _default_parameters_id = "Genz1984"
 
     evaluate = staticmethod(evaluate_continuous)  # type: ignore
+
+
+def evaluate_discontinuous(
+    xx: np.ndarray, aa: np.ndarray, bb: np.ndarray
+) -> np.ndarray:
+    """Compute the discontinuous function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-M array where
+        N is the number of input values.
+    aa : np.ndarray
+        The vector of shape parameters of the Genz family of integrand
+        functions; the larger the value the more difficult the integrations.
+        The length of the vector must M.
+    bb : np.ndarray
+        The vector of offset parameters of the Genz family of integrand
+        functions; the values do not alter significantly the difficulty of
+        the integration problem.
+        The length of the vector must be M.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = np.exp(np.sum(xx * aa, axis=1))
+
+    # Filter the output to make the function discontinuous
+    mask = np.zeros(xx.shape[0], dtype=bool)
+    for i in range(xx.shape[1]):
+        mask |= xx[:, i] > bb[i]
+    yy[mask] = 0
+
+    return yy
+
+
+class GenzDiscontinuous(UQTestFunVarDimABC):
+    """A concrete implementation of the Genz discontinuous function."""
+
+    _tags = ["integration", "sensitivity"]
+    _description = "Discontinuous integrand from Genz (1984)"
+    _available_inputs: ProbInputSpecs = {
+        "Genz1984": {
+            "function_id": "GenzDiscontinuous",
+            "description": (
+                "Input specification for the Genz family of integrand"
+            ),
+            "marginals": MARGINALS_GENZ1984,
+            "copulas": None,
+        }
+    }
+    _available_parameters: FunParamSpecs = {
+        "Genz1984": {
+            "function_id": "GenzDiscontinuous",
+            "description": (
+                "Parameter set for the discontinuous function from Genz (1984)"
+                "; constant shape and offset values"
+            ),
+            "declared_parameters": [
+                {
+                    "keyword": "aa",
+                    "value": _get_aa_genz_1984,
+                    "type": np.ndarray,
+                    "description": "Shape parameter",
+                },
+                {
+                    "keyword": "bb",
+                    "value": _get_bb_genz_1984,
+                    "type": np.ndarray,
+                    "description": "Offset parameter",
+                },
+            ],
+        },
+    }
+    _default_parameters_id = "Genz1984"
+
+    evaluate = staticmethod(evaluate_discontinuous)  # type: ignore
