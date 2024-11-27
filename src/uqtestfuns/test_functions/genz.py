@@ -39,7 +39,12 @@ from uqtestfuns.core.custom_typing import (
 )
 from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
 
-__all__ = ["GenzContinuous", "GenzCornerPeak", "GenzProductPeak"]
+__all__ = [
+    "GenzContinuous",
+    "GenzCornerPeak",
+    "GenzGaussian",
+    "GenzProductPeak",
+]
 
 
 MARGINALS_GENZ1984: MarginalSpecs = [
@@ -258,6 +263,80 @@ class GenzProductPeak(UQTestFunVarDimABC):
     _default_parameters_id = "Genz1984"
 
     evaluate = staticmethod(evaluate_product_peak)  # type: ignore
+
+
+def evaluate_gaussian(
+    xx: np.ndarray, aa: np.ndarray, bb: np.ndarray
+) -> np.ndarray:
+    """Compute the Gaussian function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-M array where
+        N is the number of input values.
+    aa : np.ndarray
+        The vector of shape parameters of the Genz family of integrand
+        functions; the larger the value the more difficult the integrations.
+        The length of the vector must M.
+    bb : np.ndarray
+        The vector of offset parameters of the Genz family of integrand
+        functions; the values do not alter significantly the difficulty of
+        the integration problem.
+        The length of the vector must be M.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = np.exp(-1 * np.sum((xx - bb) ** 2 * aa**2, axis=1))
+
+    return yy
+
+
+class GenzGaussian(UQTestFunVarDimABC):
+    """A concrete implementation of the Genz Gaussian function."""
+
+    _tags = ["integration"]
+    _description = "Gaussian integrand from Genz (1984)"
+    _available_inputs: ProbInputSpecs = {
+        "Genz1984": {
+            "function_id": "GenzGaussian",
+            "description": (
+                "Input specification for the Genz family of integrand"
+            ),
+            "marginals": MARGINALS_GENZ1984,
+            "copulas": None,
+        }
+    }
+    _available_parameters: FunParamSpecs = {
+        "Genz1984": {
+            "function_id": "GenzGaussian",
+            "description": (
+                "Parameter set for the continuous function from Genz (1984);"
+                " constant shape and offset values"
+            ),
+            "declared_parameters": [
+                {
+                    "keyword": "aa",
+                    "value": _get_aa_genz_1984,
+                    "type": np.ndarray,
+                    "description": "Shape parameter",
+                },
+                {
+                    "keyword": "bb",
+                    "value": _get_bb_genz_1984,
+                    "type": np.ndarray,
+                    "description": "Offset parameter",
+                },
+            ],
+        },
+    }
+    _default_parameters_id = "Genz1984"
+
+    evaluate = staticmethod(evaluate_gaussian)  # type: ignore
 
 
 def evaluate_continuous(

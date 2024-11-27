@@ -102,6 +102,8 @@ designed to test the performance of numerical integration routines:
   a prominent peak at the center of the multidimensional space.
 - {ref}`Corner peak <test-functions:genz-corner-peak>` function features
   a prominent peak in one corner of the multidimensional space.
+- {ref}`Gaussian <test-functions:genz-gaussian>` function features
+  a bell-shaped peak at the center of the multidimensional space.
 - {ref}`Continuous <test-functions:genz-continuous>` function features
   an exponential decay from the center of the multidimensional space.
   The function is continuous everywhere, but non-differentiable at the center.
