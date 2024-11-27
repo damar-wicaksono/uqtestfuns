@@ -52,7 +52,7 @@ def test_parameter_nts(n_ts):
     assert fun.output_dimension == n_ts
 
 
-@pytest.mark.parametrize("temp_0", [50, 60, 70])
+@pytest.mark.parametrize("temp_0", [50.0, 60.0, 70.0])
 def test_parameter_temp0(temp_0):
     # Create an instance
     fun = CoffeeCup()

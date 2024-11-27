@@ -252,7 +252,7 @@ class FunParams:
         # When a parameter is assigned, be more forgiving
         if not isinstance(value, type_):
             warnings.warn(
-                message="Expected {type_} but got {type(value)}",
+                message=f"Expected {type_} but got {type(value)}",
                 category=UserWarning,
                 stacklevel=2,
             )
