@@ -108,6 +108,10 @@ designed to test the performance of numerical integration routines:
 - {ref}`Continuous <test-functions:genz-continuous>` function features
   an exponential decay from the center of the multidimensional space.
   The function is continuous everywhere, but non-differentiable at the center.
+- {ref}`Discontinuous <test-functions:genz-discontinuous>` function features
+  an exponential rise from corner of the multidimensional space up to the
+  offset parameter value, after which the function value drops to zero
+  everywhere, creating discontinuity.
 
 The functions are further characterized by offset (shift) and shape parameters.
 While the offset parameter has minimal impact on the integral's value,

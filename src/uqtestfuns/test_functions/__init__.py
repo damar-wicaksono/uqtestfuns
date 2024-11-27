@@ -21,6 +21,7 @@ from .franke import Franke1, Franke2, Franke3, Franke4, Franke5, Franke6
 from .friedman import Friedman6D, Friedman10D
 from .gayton_hat import GaytonHat
 from .genz import (
+    GenzDiscontinuous,
     GenzContinuous,
     GenzCornerPeak,
     GenzGaussian,
@@ -88,6 +89,7 @@ __all__ = [
     "GaytonHat",
     "GenzContinuous",
     "GenzCornerPeak",
+    "GenzDiscontinuous",
     "GenzGaussian",
     "GenzOscillatory",
     "GenzProductPeak",
