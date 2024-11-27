@@ -48,8 +48,6 @@ yy_1d = my_fun_1d(xx_1d)
 
 # --- Create 2D data from Genz Discontinuous
 my_fun_2d = uqtf.GenzDiscontinuous(input_dimension=2)
-my_fun_2d.parameters["aa"] = np.array([2, 2])
-my_fun_2d.parameters["bb"] = np.array([0.8, 0.3])
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_fun_2d(xx_2d)
