@@ -215,7 +215,7 @@ my_testfun.prob_input.reset_rng(42)
 xx_test = my_testfun.prob_input.get_sample(100000)
 yy_test = my_testfun(xx_test)
 
-plt.hist(yy_test, bins="auto", color="#8da0cb");
+plt.hist(yy_test, color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
 plt.xlabel("$\mathcal{M}(\mathbf{X})$");
