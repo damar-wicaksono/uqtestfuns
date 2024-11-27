@@ -20,7 +20,13 @@ from .four_branch import FourBranch
 from .franke import Franke1, Franke2, Franke3, Franke4, Franke5, Franke6
 from .friedman import Friedman6D, Friedman10D
 from .gayton_hat import GaytonHat
-from .genz import GenzContinuous, GenzCornerPeak, GenzGaussian, GenzProductPeak
+from .genz import (
+    GenzContinuous,
+    GenzCornerPeak,
+    GenzGaussian,
+    GenzOscillatory,
+    GenzProductPeak,
+)
 from .gramacy2007 import Gramacy1DSine
 from .hyper_sphere import HyperSphere
 from .ishigami import Ishigami
@@ -83,6 +89,7 @@ __all__ = [
     "GenzContinuous",
     "GenzCornerPeak",
     "GenzGaussian",
+    "GenzOscillatory",
     "GenzProductPeak",
     "Gramacy1DSine",
     "HyperSphere",
