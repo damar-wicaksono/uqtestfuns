@@ -212,7 +212,7 @@ def evaluate_product_peak(
         The output of the test function evaluated on the input values.
         The output is a 1-dimensional array of length N.
     """
-    yy = np.prod(1 / ((xx - bb)**2 + aa**(-2)), axis=1)
+    yy = np.prod(1 / ((xx - bb) ** 2 + aa ** (-2)), axis=1)
 
     return yy
 
