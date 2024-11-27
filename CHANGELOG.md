@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The M-dimensional discontinuous function from Genz (1984) for integration and
+  sensitivity analysis exercises; one parameter set from the literature
+  is included.
 - The M-dimensional oscillatory function from Genz (1984) for integration
   exercises; one parameter set from the literature is included.
 - The M-dimensional Gaussian function from Genz (1984) for integration
