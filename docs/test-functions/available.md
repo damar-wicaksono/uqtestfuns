@@ -51,6 +51,7 @@ regardless of their typical applications.
 |                 {ref}`Friedman (10D) <test-functions:friedman-10d>`                 |       10        |         `Friedman10D()`         |
 |                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |        2        |          `GaytonHat()`          |
 |             {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`             |        M        |       `GenzCornerPeak()`        |
+|            {ref}`Genz (Product Peak) <test-functions:genz-product-peak>`            |        M        |       `GenzProductPeak()`       |
 |           {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>`            |        1        |        `Gramacy1DSine()`        |
 |               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |        2        |         `HyperSphere()`         |
 |                      {ref}`Ishigami <test-functions:ishigami>`                      |        3        |          `Ishigami()`           |
