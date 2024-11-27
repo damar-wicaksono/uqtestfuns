@@ -98,6 +98,8 @@ Genz {cite}`Genz1984` introduced six challenging
 parameterized $M$-dimensional functions
 designed to test the performance of numerical integration routines:
 
+- {ref}`Oscillatory <test-functions:genz-oscillatory>` function features
+  an oscillating shape in the multidimensional space.
 - {ref}`Product peak <test-functions:genz-product-peak>` function features
   a prominent peak at the center of the multidimensional space.
 - {ref}`Corner peak <test-functions:genz-corner-peak>` function features
@@ -174,7 +176,7 @@ The shape parameters determines the extent of the product peaking;
 Larger values of $\boldsymbol{a}$
 increase the prominence of the peak,
 making the integration problem more challenging.
-The offset parameters, on the other hand, does not affect significantly
+The offset parameters, on the other hand, do not affect significantly
 the difficulty of the problem and can be chosen randomly.
 
 The default parameter is shown below.

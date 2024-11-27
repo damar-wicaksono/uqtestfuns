@@ -101,6 +101,8 @@ Genz {cite}`Genz1984` introduced six challenging
 parameterized $M$-dimensional functions
 designed to test the performance of numerical integration routines:
 
+- {ref}`Oscillatory <test-functions:genz-oscillatory>` function features
+  an oscillating shape in the multidimensional space.
 - {ref}`Product peak <test-functions:genz-product-peak>` function features
   a prominent peak at the center of the multidimensional space.
 - {ref}`Corner peak <test-functions:genz-corner-peak>` function features

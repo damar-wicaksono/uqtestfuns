@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:genz-gaussian)=
-# Genz Gaussian Function
+(test-functions:genz-oscillatory)=
+# Genz Corner Peak Function
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,15 +21,15 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Genz Gaussian function is an $M$-dimensional scalar-valued
+The Genz corner peak function is an $M$-dimensional scalar-valued
 function commonly used to assess the accuracy of numerical
 integration routines.
 It is one of six functions introduced by Genz {cite}`Genz1984`;
 see the box below.
 
-The function features a multidimensional bell-shaped peak at the center
-of the multidimensional space.
-The plots for one-dimensional and two-dimensional Genz Gaussian function
+The function features an oscillating shape (cosine)
+in the multidimensional space.
+The plots for one-dimensional and two-dimensional Genz corner peak function
 with the default parameters can be seen below.
 
 ```{code-cell} ipython3
@@ -37,13 +37,13 @@ with the default parameters can be seen below.
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-# --- Create 1D data from Genz Gaussian
-my_fun_1d = uqtf.GenzGaussian(input_dimension=1)
+# --- Create 1D data from Genz Oscillatory
+my_fun_1d = uqtf.GenzOscillatory(input_dimension=1)
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
 yy_1d = my_fun_1d(xx_1d)
 
-# --- Create 2D data from Genz Gaussian
-my_fun_2d = uqtf.GenzGaussian(input_dimension=2)
+# --- Create 2D data from Genz Oscillatory
+my_fun_2d = uqtf.GenzOscillatory(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_fun_2d(xx_2d)
@@ -57,7 +57,7 @@ axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
 axs_1.set_xlabel("$x$", fontsize=14)
 axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
-axs_1.set_title("1D Genz Gaussian")
+axs_1.set_title("1D Genz oscillatory")
 
 # Surface
 axs_2 = plt.subplot(132, projection='3d')
@@ -73,7 +73,7 @@ axs_2.plot_surface(
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
 axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_2.set_title("Surface plot of 2D Genz Gaussian", fontsize=14)
+axs_2.set_title("Surface plot of 2D Genz oscillatory", fontsize=14)
 
 # Contour
 axs_3 = plt.subplot(133)
@@ -82,7 +82,7 @@ cf = axs_3.contourf(
 )
 axs_3.set_xlabel("$x_1$", fontsize=14)
 axs_3.set_ylabel("$x_2$", fontsize=14)
-axs_3.set_title("Contour plot of 2D Genz Gaussian", fontsize=14)
+axs_3.set_title("Contour plot of 2D Genz oscillatory", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -98,14 +98,13 @@ parameterized $M$-dimensional functions
 designed to test the performance of numerical integration routines:
 
 - {ref}`Oscillatory <test-functions:genz-oscillatory>` function features
-  an oscillating shape in the multidimensional space.
+  an oscillating shape in the multidimensional space. (_this function_)
 - {ref}`Product peak <test-functions:genz-product-peak>` function features
   a prominent peak at the center of the multidimensional space.
 - {ref}`Corner peak <test-functions:genz-corner-peak>` function features
   a prominent peak in one corner of the multidimensional space.
 - {ref}`Gaussian <test-functions:genz-gaussian>` function features
   a bell-shaped peak at the center of the multidimensional space.
-  (_this function_)
 - {ref}`Continuous <test-functions:genz-continuous>` function features
   an exponential decay from the center of the multidimensional space.
   The function is continuous everywhere, but non-differentiable at the center.
@@ -121,7 +120,7 @@ the difficulty of the integration problem.
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.GenzGaussian()
+my_testfun = uqtf.GenzOscillatory()
 ```
 
 Check if it has been correctly instantiated:
@@ -137,27 +136,27 @@ For example, to create an instance of the test function in six dimensions,
 type:
 
 ```python
-my_testfun = uqtf.GenzGaussian(input_dimension=6)
+my_testfun = uqtf.GenzOscillatory(input_dimension=6)
 ```
 
 ## Description
 
-The Genz continuous is defined as:
+The Genz oscillatory function is defined as:
 
 $$
-\mathcal{M}(\boldsymbol{x}; \boldsymbol{a}, \boldsymbol{b}) = \exp{\left[ - \sum_{i = 1}^M a^2_i \left( x_i - b_i \right)^2 \right]},
+\mathcal{M}(\boldsymbol{x}; \boldsymbol{a}, b) = \cos{\left(2 \pi b + \sum_{i = 1}^M a_i x_i \right)},
 $$
 
 where $\boldsymbol{x} = \left( x_1, \ldots, x_M \right)$
 is the $M$-dimensional vector of input variables;
-and $\boldsymbol{a} = \left( a_1, \ldots, a_M \right)$ 
-$\boldsymbol{b} = \left( b_1, \ldots, b_M \right)$ are $M$-dimensional
-vectors corresponding to the (fixed) shape and offset parameters, respectively.
+$\boldsymbol{a} = \left( a_1, \ldots, a_M \right)$ 
+is $M$-dimensional vector corresponding to the (fixed) shape and parameters;
+and $b$ is the scalar offset parameter.
 Further details about these parameters are provided below.
 
 ## Probabilistic input
 
-The input specification for the Genz Gaussian function is shown below.
+The input specification for the Genz oscillatory function is shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -169,13 +168,13 @@ print(my_testfun.prob_input)
 
 The parameters of the Genz Gaussian function consists
 of the vector of shape (scale) parameters $\boldsymbol{a}$
-and the vector of offset parameters $\boldsymbol{b}$. 
+and the scalar of offset parameter $b$. 
 
 The shape parameters determines the extent of the product peaking;
 Larger values of $\boldsymbol{a}$
 increase the prominence of the peak,
 making the integration problem more challenging.
-The offset parameters, on the other hand, do not affect significantly
+The offset parameter, on the other hand, does not affect significantly
 the difficulty of the problem and can be chosen randomly.
 
 The default parameter is shown below.
@@ -208,6 +207,8 @@ plt.ylabel("Counts [-]");
 plt.xlabel("$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
+
+Notice that the values are indeed mostly zeros.
 
 ## References
 

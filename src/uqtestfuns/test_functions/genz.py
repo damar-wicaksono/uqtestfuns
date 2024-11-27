@@ -43,6 +43,7 @@ __all__ = [
     "GenzContinuous",
     "GenzCornerPeak",
     "GenzGaussian",
+    "GenzOscillatory",
     "GenzProductPeak",
 ]
 
@@ -97,6 +98,76 @@ def _get_aa_zhang_2014_2(input_dimension: int) -> np.ndarray:
     aa = 0.1 * np.arange(1, input_dimension + 1)
 
     return aa
+
+
+def evaluate_oscillatory(
+    xx: np.ndarray, aa: np.ndarray, b: float
+) -> np.ndarray:
+    """Evaluate the oscillatory function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-M array where
+        N is the number of input values.
+    aa : np.ndarray
+        The vector of shape parameters of the Genz family of integrand
+        functions; the larger the value the more difficult the integrations.
+    b : float
+        The scalar shift parameter of the Genz family of integrand.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = np.cos(2 * np.pi * b + np.sum(xx * aa, axis=1))
+
+    return yy
+
+
+class GenzOscillatory(UQTestFunVarDimABC):
+    """A concrete implementation of the Genz oscillatory function."""
+
+    _tags = ["integration"]
+    _description = "Oscillatory integrand from Genz (1984)"
+    _available_inputs: ProbInputSpecs = {
+        "Genz1984": {
+            "function_id": "GenzOscillatory",
+            "description": (
+                "Input specification for the Genz family of integrand"
+            ),
+            "marginals": MARGINALS_GENZ1984,
+            "copulas": None,
+        }
+    }
+    _available_parameters: FunParamSpecs = {
+        "Genz1984": {
+            "function_id": "GenzOscillatory",
+            "description": (
+                "Parameter set for the oscillatory function from Genz (1984);"
+                " constant shape and offset values"
+            ),
+            "declared_parameters": [
+                {
+                    "keyword": "aa",
+                    "value": _get_aa_genz_1984,
+                    "type": np.ndarray,
+                    "description": "Shape parameter",
+                },
+                {
+                    "keyword": "b",
+                    "value": 0.5,
+                    "type": float,
+                    "description": "Offset parameter",
+                },
+            ],
+        },
+    }
+    _default_parameters_id = "Genz1984"
+
+    evaluate = staticmethod(evaluate_oscillatory)  # type: ignore
 
 
 def evaluate_corner_peak(xx: np.ndarray, aa: np.ndarray) -> np.ndarray:
