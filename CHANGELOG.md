@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The M-dimensional continuous function from Genz (1984) for integration
+  exercises; one parameter set from the literature is included.
 - The M-dimensional product peak function from Genz (1984) for integration
   exercises; one parameter set from the literature is included.
 - The M-dimensional corner peak function from Genz (1984) for integration

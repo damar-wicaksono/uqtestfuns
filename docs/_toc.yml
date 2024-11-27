@@ -94,6 +94,8 @@ parts:
             title: Friedman (10D)
           - file: test-functions/gayton-hat
             title: Gayton Hat
+          - file: test-functions/genz-continuous
+            title: Genz (Continuous)
           - file: test-functions/genz-corner-peak
             title: Genz (Corner Peak)
           - file: test-functions/genz-product-peak

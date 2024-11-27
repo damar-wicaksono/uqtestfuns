@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:genz-corner-peak)=
-# Genz Corner Peak Function
+(test-functions:genz-continuous)=
+# Genz Continuous Function
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,19 +21,16 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Genz corner peak function is an $M$-dimensional scalar-valued
+The Genz continuous function is an $M$-dimensional scalar-valued
 function commonly used to assess the accuracy of numerical
 integration routines.
 It is one of six functions introduced by Genz {cite}`Genz1984`;
 see the box below.
 
-The function was later featured in {cite}`Zhang2014` as a test function
-for a global sensitivity analysis method and in {cite}`Jakeman2015` for
-metamodeling applications.
-
-The function features a prominent peak in one corner of the multidimensional
-space.
-The plots for one-dimensional and two-dimensional Genz corner peak function
+The function features an exponential decay from the center
+of the multidimensional space. The function is continuous everywhere,
+but non-differentiable at the center.
+The plots for one-dimensional and two-dimensional Genz continuous function
 with the default parameters can be seen below.
 
 ```{code-cell} ipython3
@@ -41,13 +38,13 @@ with the default parameters can be seen below.
 
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-# --- Create 1D data from Genz Corner Peak
-my_fun_1d = uqtf.GenzCornerPeak(input_dimension=1)
+# --- Create 1D data from Genz Continuous
+my_fun_1d = uqtf.GenzContinuous(input_dimension=1)
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
 yy_1d = my_fun_1d(xx_1d)
 
-# --- Create 2D data from Genz Corner Peak
-my_fun_2d = uqtf.GenzCornerPeak(input_dimension=2)
+# --- Create 2D data from Genz Continuous
+my_fun_2d = uqtf.GenzContinuous(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_fun_2d(xx_2d)
@@ -61,7 +58,7 @@ axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
 axs_1.set_xlabel("$x$", fontsize=14)
 axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
-axs_1.set_title("1D Genz corner peak")
+axs_1.set_title("1D Genz continuous")
 
 # Surface
 axs_2 = plt.subplot(132, projection='3d')
@@ -77,7 +74,7 @@ axs_2.plot_surface(
 axs_2.set_xlabel("$x_1$", fontsize=14)
 axs_2.set_ylabel("$x_2$", fontsize=14)
 axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_2.set_title("Surface plot of 2D Genz corner peak", fontsize=14)
+axs_2.set_title("Surface plot of 2D Genz continuous", fontsize=14)
 
 # Contour
 axs_3 = plt.subplot(133)
@@ -86,7 +83,7 @@ cf = axs_3.contourf(
 )
 axs_3.set_xlabel("$x_1$", fontsize=14)
 axs_3.set_ylabel("$x_2$", fontsize=14)
-axs_3.set_title("Contour plot of 2D Genz corner peak", fontsize=14)
+axs_3.set_title("Contour plot of 2D Genz continuous", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -105,10 +102,10 @@ designed to test the performance of numerical integration routines:
   a prominent peak at the center of the multidimensional space.
 - {ref}`Corner peak <test-functions:genz-corner-peak>` function features
   a prominent peak in one corner of the multidimensional space.
-  (_this function_)
 - {ref}`Continuous <test-functions:genz-continuous>` function features
   an exponential decay from the center of the multidimensional space.
   The function is continuous everywhere, but non-differentiable at the center.
+  (_this function_)
 
 The functions are further characterized by offset (shift) and shape parameters.
 While the offset parameter has minimal impact on the integral's value,
@@ -121,7 +118,7 @@ the difficulty of the integration problem.
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.GenzCornerPeak()
+my_testfun = uqtf.GenzContinuous()
 ```
 
 Check if it has been correctly instantiated:
@@ -137,26 +134,27 @@ For example, to create an instance of the test function in six dimensions,
 type:
 
 ```python
-my_testfun = uqtf.GenzCornerPeak(input_dimension=6)
+my_testfun = uqtf.GenzContinuous(input_dimension=6)
 ```
 
 ## Description
 
-The Genz corner peak function is defined as:
+The Genz continuous is defined as:
 
 $$
-\mathcal{M}(\boldsymbol{x}; \boldsymbol{a}) = \left( 1 + \sum_{i = 1}^{M} a_i x_i \right)^{-(M + 1)}
+\mathcal{M}(\boldsymbol{x}; \boldsymbol{a}, \boldsymbol{b}) = \exp{\left[ - \sum_{i = 1}^M a_i \lvert x_i - b_i \rvert \right]},
 $$
 
 where $\boldsymbol{x} = \left( x_1, \ldots, x_M \right)$
-is the $M$-dimensional vector of input variables
-and $\boldsymbol{a} = \left( a_1, \ldots, a_M \right)$ is the $M$-dimensional
-vector of (fixed) shape parameters.
+is the $M$-dimensional vector of input variables;
+and $\boldsymbol{a} = \left( a_1, \ldots, a_M \right)$ 
+$\boldsymbol{b} = \left( b_1, \ldots, b_M \right)$ are $M$-dimensional
+vectors corresponding to the (fixed) shape and offset parameters, respectively.
 Further details about these parameters are provided below.
 
 ## Probabilistic input
 
-The input specification for the Genz corner peak function is shown below.
+The input specification for the Genz continuous function is shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -167,24 +165,15 @@ print(my_testfun.prob_input)
 ## Parameters
 
 The parameters of the Genz corner peak function consists
-of the vector of shape (scale) parameters $\boldsymbol{a}$,
-which determine the extent of the corner peaking.
+of the vector of shape (scale) parameters $\boldsymbol{a}$
+and the vector of offset parameters $\boldsymbol{b}$. 
+
+The shape parameters determines the extent of the product peaking;
 Larger values of $\boldsymbol{a}$
 increase the prominence of the peak,
 making the integration problem more challenging.
-
-The available parameters for the Genz corner peak function
-are shown in the table below.
-
-```{table} Available parameters of the Genz corner peak function
-:name: genz-corner-peak-parameters
-
-```
-| No. |                    $\boldsymbol{a}$                    |          Keyword          |             Source              |          Remark           |
-|:---:|:------------------------------------------------------:|:-------------------------:|:-------------------------------:|:-------------------------:|
-| 1.  |                $a_1 = \ldots = a_M = 5$                | `Genz1984` <br> (default) |        {cite}`Genz1984`         |            ---            |
-| 2.  | $a_i = 0.02 + 0.03 \times (i - 1),\, i = 1, \ldots, M$ |       `Zhang2014-1`       | {cite}`Zhang2014` (Section 4.4) | Originally, 3 dimensions  |
-| 3.  |       $a_i = 0.01 \times i,\, i = 1, \ldots, M$        |       `Zhang2014-2`       | {cite}`Zhang2014` (Section 4.4) | Originally, 10 dimensions |
+The offset parameters, on the other hand, does not affect significantly
+the difficulty of the problem and can be chosen randomly.
 
 The default parameter is shown below.
 
@@ -193,17 +182,6 @@ The default parameter is shown below.
 
 print(my_testfun.parameters)
 ```
-
-````{note}
-To create an instance of the Genz corner peak function with different built-in
-parameter values, pass the corresponding keyword to the parameter `parameters_id`.
-For example, to use the parameters from {cite}`Zhang2014`,
-type:
-
-```python
-my_testfun = uqtf.GenzCornerPeak(parameters_id="Zhang2014-1")
-```
-````
 
 ## Reference results
 
@@ -227,8 +205,6 @@ plt.ylabel("Counts [-]");
 plt.xlabel("$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
-
-Notice that the values are indeed mostly zeros.
 
 ## References
 
