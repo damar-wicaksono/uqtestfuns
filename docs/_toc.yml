@@ -98,6 +98,8 @@ parts:
             title: Genz (Continuous)
           - file: test-functions/genz-corner-peak
             title: Genz (Corner Peak)
+          - file: test-functions/genz-gaussian
+            title: Genz (Gaussian)
           - file: test-functions/genz-product-peak
             title: Genz (Product Peak)
           - file: test-functions/gramacy-1d-sine
