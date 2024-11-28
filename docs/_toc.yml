@@ -108,6 +108,8 @@ parts:
             title: Genz (Product Peak)
           - file: test-functions/gramacy-1d-sine
             title: Gramacy (2007) 1D Sine
+          - file: test-functions/holsclaw-sine
+            title: Holsclaw Sine
           - file: test-functions/hyper-sphere
             title: Hyper-sphere Bound
           - file: test-functions/ishigami

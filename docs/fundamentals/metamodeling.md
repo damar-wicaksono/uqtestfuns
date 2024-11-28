@@ -26,7 +26,7 @@ in the comparison of metamodeling approaches.
 |               {ref}`Borehole <test-functions:borehole>`                |        8        |      `Borehole()`      |
 |       {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`        |        2        |       `Cheng2D`        |
 |          {ref}`Coffee Cup Model <test-functions:coffee-cup>`           |        2        |     `CoffeeCup()`      |
-|            {ref}`Currin Sine <test-functions:currin-sine>`             |        1        |     `CurrinSine()`     |
+|     {ref}`Currin et al. (1988) Sine <test-functions:currin-sine>`      |        1        |     `CurrinSine()`     |
 |          {ref}`Damped Cosine <test-functions:damped-cosine>`           |        1        |    `DampedCosine()`    |
 |      {ref}`Damped Oscillator <test-functions:damped-oscillator>`       |        7        |  `DampedOscillator()`  |
 |                  {ref}`Flood <test-functions:flood>`                   |        8        |       `Flood()`        |
@@ -41,6 +41,7 @@ in the comparison of metamodeling approaches.
 |          {ref}`Friedman (10D) <test-functions:friedman-10d>`           |       10        |    `Friedman10D()`     |
 |      {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`       |        M        |   `GenzCornerPeak()`   |
 |     {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>`     |        1        |   `Gramacy1DSine()`    |
+|   {ref}`Holsclaw et al. (2013) Sine <test-functions:holsclaw-sine>`    |        1        |    `HolsclawSine()`    |
 | {ref}`Lim et al. (2002) Non-Polynomial <test-functions:lim-non-poly>`  |        2        |     `LimNonPoly()`     |
 |     {ref}`Lim et al. (2002) Polynomial <test-functions:lim-poly>`      |        2        |      `LimPoly()`       |
 |              {ref}`McLain S1 <test-functions:mclain-s1>`               |        2        |      `McLainS1()`      |

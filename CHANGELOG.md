@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The One-dimensional sine function from Holsclaw et al. (2013) for
+  metamodeling exercises.
 - The M-dimensional discontinuous function from Genz (1984) for integration and
   sensitivity analysis exercises; one parameter set from the literature
   is included.

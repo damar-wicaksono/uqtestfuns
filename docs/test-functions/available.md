@@ -33,7 +33,7 @@ regardless of their typical applications.
 |              {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`              |        2        |           `Cheng2D `            |
 |           {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`           |        2        |      `CircularPipeCrack()`      |
 |                 {ref}`Coffee Cup Model <test-functions:coffee-cup>`                 |        2        |          `CoffeeCup()`          |
-|                   {ref}`Currin Sine <test-functions:currin-sine>`                   |        1        |         `CurrinSine()`          |
+|            {ref}`Currin et al. (1988) Sine <test-functions:currin-sine>`            |        1        |         `CurrinSine()`          |
 |          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |        2        |      `ConvexFailDomain()`       |
 |                 {ref}`Damped Cosine <test-functions:damped-cosine>`                 |        1        |        `DampedCosine()`         |
 |             {ref}`Damped Oscillator <test-functions:damped-oscillator>`             |        7        |      `DampedOscillator()`       |
@@ -57,6 +57,7 @@ regardless of their typical applications.
 |             {ref}`Genz (Oscillatory) <test-functions:genz-oscillatory>`             |        M        |       `GenzOscillatory()`       |
 |            {ref}`Genz (Product Peak) <test-functions:genz-product-peak>`            |        M        |       `GenzProductPeak()`       |
 |           {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>`            |        1        |        `Gramacy1DSine()`        |
+|          {ref}`Holsclaw et al. (2013) Sine <test-functions:holsclaw-sine>`          |        1        |        `HolsclawSine()`         |
 |               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |        2        |         `HyperSphere()`         |
 |                      {ref}`Ishigami <test-functions:ishigami>`                      |        3        |          `Ishigami()`           |
 |        {ref}`Lim et al. (2002) Non-Polynomial <test-functions:lim-non-poly>`        |        2        |         `LimNonPoly()`          |

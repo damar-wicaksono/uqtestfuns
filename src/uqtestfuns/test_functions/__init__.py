@@ -29,6 +29,7 @@ from .genz import (
     GenzProductPeak,
 )
 from .gramacy2007 import Gramacy1DSine
+from .holsclaw_sine import HolsclawSine
 from .hyper_sphere import HyperSphere
 from .ishigami import Ishigami
 from .lim import LimPoly, LimNonPoly
@@ -55,8 +56,6 @@ from .welch1992 import Welch1992
 from .wing_weight import WingWeight
 
 # NOTE: Import the new test function implementation class from its respective
-# module manually here and update the list below.
-
 __all__ = [
     "Ackley",
     "Alemazkoor2D",
@@ -94,6 +93,7 @@ __all__ = [
     "GenzOscillatory",
     "GenzProductPeak",
     "Gramacy1DSine",
+    "HolsclawSine",
     "HyperSphere",
     "Ishigami",
     "LimNonPoly",
@@ -124,3 +124,4 @@ __all__ = [
     "Welch1992",
     "WingWeight",
 ]
+# module manually here and update the list below.
