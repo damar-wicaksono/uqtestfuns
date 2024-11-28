@@ -69,7 +69,7 @@ def create_random_marginals(length: int) -> List[Marginal]:
             parameters = np.sort(1 + 2 * np.random.rand(3))
             parameters[[0, 1]] = parameters[[1, 0]]
             # Insert sigma/beta as the second parameter
-            parameters = np.insert(parameters, 1, np.random.rand(1))
+            parameters = np.insert(parameters, 1, 0.5 + np.random.rand(1))
         elif distribution == "lognormal":
             # Limit the size of the parameters
             parameters = 1 + np.random.rand(2)

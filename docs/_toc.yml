@@ -70,6 +70,8 @@ parts:
             title: Damped Oscillator
           - file: test-functions/damped-oscillator-reliability
             title: Damped Oscillator Reliability
+          - file: test-functions/dette-exp
+            title: Dette & Pepelyshev (2010) Exponential
           - file: test-functions/flood
             title: Flood
           - file: test-functions/forrester
