@@ -63,7 +63,7 @@ parts:
           - file: test-functions/convex-fail-domain
             title: Convex Failure Domain
           - file: test-functions/currin-sine
-            title: Currin Sine
+            title: Currin et al. (1988) Sine
           - file: test-functions/damped-cosine
             title: Damped Cosine
           - file: test-functions/damped-oscillator
@@ -108,8 +108,10 @@ parts:
             title: Genz (Product Peak)
           - file: test-functions/gramacy-1d-sine
             title: Gramacy (2007) 1D Sine
+          - file: test-functions/higdon-sine
+            title: Higdon (2002) Sine
           - file: test-functions/holsclaw-sine
-            title: Holsclaw Sine
+            title: Holsclaw et al. (2013) Sine
           - file: test-functions/hyper-sphere
             title: Hyper-sphere Bound
           - file: test-functions/ishigami
