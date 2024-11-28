@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The tree-dimensional exponential function from Dette and Pepelyshev (2010)
+  for metamodeling exercises.
 - The one-dimensional sine function from Higdon (2002) featuring behaviors
   that are different in two scales; for metamodeling (multi-resolution)
   exercises.
