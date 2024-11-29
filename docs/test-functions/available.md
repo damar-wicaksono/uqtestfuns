@@ -38,6 +38,7 @@ regardless of their typical applications.
 |                 {ref}`Damped Cosine <test-functions:damped-cosine>`                 |        1        |        `DampedCosine()`         |
 |             {ref}`Damped Oscillator <test-functions:damped-oscillator>`             |        7        |      `DampedOscillator()`       |
 | {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |        8        | `DampedOscillatorReliability()` |
+|        {ref}`Dette & Pepelyshev (2010) Curved <test-functions:dette-curved>`        |        3        |         `DetteCurved()`         |
 |       {ref}`Dette & Pepelyshev (2010) Exponential <test-functions:dette-exp>`       |        3        |          `DetteExp()`           |
 |                         {ref}`Flood <test-functions:flood>`                         |        8        |            `Flood()`            |
 |              {ref}`Forrester et al. (2008) <test-functions:forrester>`              |        1        |        `Forrester2008()`        |
