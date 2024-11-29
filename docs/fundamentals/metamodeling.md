@@ -29,6 +29,7 @@ in the comparison of metamodeling approaches.
 |      {ref}`Currin et al. (1988) Sine <test-functions:currin-sine>`      |        1        |     `CurrinSine()`     |
 |           {ref}`Damped Cosine <test-functions:damped-cosine>`           |        1        |    `DampedCosine()`    |
 |       {ref}`Damped Oscillator <test-functions:damped-oscillator>`       |        7        |  `DampedOscillator()`  |
+|      {ref}`Dette & Pepelyshev (2010) 8D <test-functions:dette-8d>`      |        3        |      `Dette8D()`       |
 |  {ref}`Dette & Pepelyshev (2010) Curved <test-functions:dette-curved>`  |        3        |    `DetteCurved()`     |
 | {ref}`Dette & Pepelyshev (2010) Exponential <test-functions:dette-exp>` |        3        |      `DetteExp()`      |
 |                   {ref}`Flood <test-functions:flood>`                   |        8        |       `Flood()`        |
