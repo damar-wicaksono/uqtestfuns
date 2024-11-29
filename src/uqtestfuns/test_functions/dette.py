@@ -18,7 +18,7 @@ import numpy as np
 from uqtestfuns.core.custom_typing import ProbInputSpecs
 from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
-__all__ = ["DetteExp"]
+__all__ = ["DetteCurved", "DetteExp"]
 
 
 def evaluate_exp(xx: np.ndarray) -> np.ndarray:
@@ -41,6 +41,28 @@ def evaluate_exp(xx: np.ndarray) -> np.ndarray:
     return 100 * yy
 
 
+def evaluate_curved(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the highly-curved function from Dette and Pepelyshev (2010).
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-3 array where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    term_1 = 4 * (xx[:, 0] - 2 + 8 * xx[:, 1] - 8 * xx[:, 1] ** 2)
+    term_2 = (3 - 4 * xx[:, 1]) ** 2
+    term_3 = (16 * (xx[:, 2] + 1) ** 0.5) * (2 * xx[:, 2] - 1) ** 2
+
+    return term_1 + term_2 + term_3
+
+
 class DetteExp(UQTestFunFixDimABC):
     """A concrete implementation of the exponential function."""
 
@@ -51,7 +73,7 @@ class DetteExp(UQTestFunFixDimABC):
             "function_id": "DetteExp",
             "description": (
                 "Input specification for the exponential test function "
-                "from Dette and Pepelyshev et al. (2010)"
+                "from Dette and Pepelyshev (2010)"
             ),
             "marginals": [
                 {
@@ -68,3 +90,32 @@ class DetteExp(UQTestFunFixDimABC):
     _available_parameters = None
 
     evaluate = staticmethod(evaluate_exp)  # type: ignore
+
+
+class DetteCurved(UQTestFunFixDimABC):
+    """A concrete implementation of the highly-curved function."""
+
+    _tags = ["metamodeling"]
+    _description = "Curved function from Dette and Pepelyshev (2010)"
+    _available_inputs: ProbInputSpecs = {
+        "Dette2010": {
+            "function_id": "DetteCurved",
+            "description": (
+                "Input specification for the highly-curved test function "
+                "from Dette and Pepelyshev (2010)"
+            ),
+            "marginals": [
+                {
+                    "name": f"x_{i + 1}",
+                    "distribution": "uniform",
+                    "parameters": [0, 1],
+                    "description": None,
+                }
+                for i in range(3)
+            ],
+            "copulas": None,
+        },
+    }
+    _available_parameters = None
+
+    evaluate = staticmethod(evaluate_curved)  # type: ignore
