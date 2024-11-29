@@ -70,6 +70,8 @@ parts:
             title: Damped Oscillator
           - file: test-functions/damped-oscillator-reliability
             title: Damped Oscillator Reliability
+          - file: test-functions/dette-8d
+            title: Dette & Pepelyshev (2010) 8D
           - file: test-functions/dette-curved
             title: Dette & Pepelyshev (2010) Curved
           - file: test-functions/dette-exp

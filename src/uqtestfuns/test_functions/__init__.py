@@ -14,7 +14,7 @@ from .convex_fail_domain import ConvexFailDomain
 from .currin_sine import CurrinSine
 from .damped_cosine import DampedCosine
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
-from .dette import DetteCurved, DetteExp
+from .dette import Dette8D, DetteCurved, DetteExp
 from .flood import Flood
 from .forrester import Forrester2008
 from .four_branch import FourBranch
@@ -76,6 +76,7 @@ __all__ = [
     "DampedCosine",
     "DampedOscillator",
     "DampedOscillatorReliability",
+    "Dette8D",
     "DetteCurved",
     "DetteExp",
     "Flood",
