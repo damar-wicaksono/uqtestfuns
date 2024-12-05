@@ -35,7 +35,7 @@ from .holsclaw_sine import HolsclawSine
 from .hyper_sphere import HyperSphere
 from .ishigami import Ishigami
 from .lim import LimPoly, LimNonPoly
-from .linkletter import LinkletterLinear
+from .linkletter import LinkletterLinear, LinkletterDecCoeffs
 from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
@@ -105,6 +105,7 @@ __all__ = [
     "Ishigami",
     "LimNonPoly",
     "LimPoly",
+    "LinkletterDecCoeffs",
     "LinkletterLinear",
     "Oakley1D",
     "OTLCircuit",
