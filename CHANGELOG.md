@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The ten-dimensional linear function from Linkletter et al. (2006) featuring
+  only four active input variables out of ten; the function was used
+  in the context of metamodeling and sensitivity analysis.
 - The eight-dimensional function from Dette and Pepelyshev (2010) featuring
   curved and logarithm terms for metamodeling exercises.
 - The three-dimensional highly-curved function from Dette and Pepelyshev (2010)
