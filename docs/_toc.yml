@@ -126,6 +126,10 @@ parts:
             title: Lim et al. (2002) Non-Polynomial
           - file: test-functions/lim-poly
             title: Lim et al. (2002) Polynomial
+          - file: test-functions/linkletter-dec-coeffs
+            title: Linkletter et al. (2006) Dec. Coeffs.
+          - file: test-functions/linkletter-linear
+            title: Linkletter et al. (2006) Linear
           - file: test-functions/mclain-s1
             title: McLain S1
           - file: test-functions/mclain-s2
