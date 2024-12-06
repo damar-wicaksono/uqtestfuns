@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The ten-dimensional sine function from Linkletter et al. (2006) featuring
+  only two active input variables out of ten; the function was used in the
+  context of metamodeling and sensitivity analysis.
 - The ten-dimensional linear function with decreasing coefficients from
   Linkletter et al. (2006) featuring only eight active input variables out of
   ten; the function was used in the context of metamodeling and sensitivity

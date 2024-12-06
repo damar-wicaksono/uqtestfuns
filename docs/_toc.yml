@@ -130,6 +130,8 @@ parts:
             title: Linkletter et al. (2006) Dec. Coeffs.
           - file: test-functions/linkletter-linear
             title: Linkletter et al. (2006) Linear
+          - file: test-functions/linkletter-sine
+            title: Linkletter et al. (2006) Sine
           - file: test-functions/mclain-s1
             title: McLain S1
           - file: test-functions/mclain-s2
