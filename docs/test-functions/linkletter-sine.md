@@ -41,6 +41,8 @@ in the context of Gaussian process metamodeling:
 - {ref}`Sine <test-functions:linkletter-sine>` function features only two
   active input variables (out of 10); the effect of the two inputs on
   the output, however, is very different. (_this function_).
+- {ref}`Inert <test-functions:linkletter-inert>` function does not have any
+  active input variables; a constant zero is returned for any input values.  
 ```
 
 Because the function is effectively two dimensional, the surface and contour

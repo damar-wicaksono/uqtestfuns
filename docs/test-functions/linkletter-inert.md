@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:linkletter-linear)=
-# Linear Function from Linkletter et al. (2006)
+(test-functions:linkletter-inert)=
+# Inert Function from Linkletter et al. (2006)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -22,7 +22,7 @@ import uqtestfuns as uqtf
 ```
 
 The function is a ten-dimensional, scalar-valued function.
-Only the first four input variables are active, while the rest is inert.
+None of the input variables are active, while the rest is inert.
 The function was used in {cite}`Linkletter2006` to demonstrate a variable
 selection method (i.e., sensitivity analysis)
 in the context of Gaussian process metamodeling.
@@ -35,7 +35,6 @@ in the context of Gaussian process metamodeling:
 
 - {ref}`Linear <test-functions:linkletter-linear>` function features
   a simple function with four active input variables (out of 10).
-  (_this function_)
 - {ref}`Linear with decreasing coefficients <test-functions:linkletter-dec-coeffs>`
   function features a slightly more complex linear function with eight active
   input variables (out of 10).
@@ -44,15 +43,15 @@ in the context of Gaussian process metamodeling:
   the output, however, is very different.
 - {ref}`Inert <test-functions:linkletter-inert>` function does not have any
   active input variables; a constant zero is returned for any input values.
+  (_this function_)
 ```
-
 
 ## Test function instance
 
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.LinkletterLinear()
+my_testfun = uqtf.LinkletterSine()
 ```
 
 Check if it has been correctly instantiated:
@@ -66,17 +65,18 @@ print(my_testfun)
 The test function is defined as[^location]:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = 0.2 \sum_{i = 1}^4 x_i,
+\mathcal{M}(\boldsymbol{x}) = 0,
 $$
 
 where $\boldsymbol{x} = \left( x_1, \ldots x_{10} \right)$
 is the ten-dimensional vector of input variables further defined below.
-Notice that only four out of ten input variables are active.
+Notice that none of the ten input variables are active.
 
 ```{note}
 In the original paper, the function was added with an independent identically
 distributed (i.i.d) noise from $\mathcal{N}(0, \sigma)$
-with a standard deviation $\sigma = 0.05$.
+with a standard deviation $\sigma = 0.05$. The response of this function
+is basically just a random noise.
 
 Furthermore, also in the original paper, a batch of data is generated from
 the function and then standardized to have mean $0.0$ and standard deviation
@@ -97,30 +97,6 @@ The probabilistic input model for the test function is shown below.
 print(my_testfun.prob_input)
 ```
 
-## Reference results
-
-This section provides several reference results of typical UQ analyses involving
-the test function.
-
-### Sample histogram
-
-Shown below is the histogram of the output based on $100'000$ random points:
-
-```{code-cell} ipython3
-:tags: [hide-input]
-
-my_testfun.prob_input.reset_rng(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
-
-plt.hist(yy_test, bins="auto", color="#8da0cb");
-plt.grid();
-plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(X)$");
-plt.gcf().tight_layout(pad=3.0)
-plt.gcf().set_dpi(150);
-```
-
 ## References
 
 ```{bibliography}
@@ -128,4 +104,4 @@ plt.gcf().set_dpi(150);
 :filter: docname in docnames
 ```
 
-[^location]: see Eq. (5), Example 1, in {cite}`Linkletter2006`.
+[^location]: see Example 2, in {cite}`Linkletter2006`.
