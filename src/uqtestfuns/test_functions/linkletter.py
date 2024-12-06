@@ -8,8 +8,9 @@ All functions are defined in ten dimensions but some of them are inactive.
 
 Available functions are:
 
-- Linear function with four active input variables..
+- Linear function with four active input variables.
 - Linear function with decreasing coefficients, eight active input variables.
+- Sine function with two active input variables.
 
 References
 ----------
@@ -22,10 +23,21 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs
+from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
 from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
-__all__ = ["LinkletterLinear", "LinkletterDecCoeffs"]
+
+MARGINALS_LINKLETTER2006: MarginalSpecs = [
+    {
+        "name": f"x_{i + 1}",
+        "distribution": "uniform",
+        "parameters": [0, 1],
+        "description": None,
+    }
+    for i in range(10)
+]
+
+__all__ = ["LinkletterLinear", "LinkletterDecCoeffs", "LinkletterSine"]
 
 
 def evaluate_linear(xx: np.ndarray) -> np.ndarray:
@@ -42,6 +54,10 @@ def evaluate_linear(xx: np.ndarray) -> np.ndarray:
     np.ndarray
         The output of the test function evaluated on the input values.
         The output is a 1-dimensional array of length N.
+
+    Notes
+    -----
+    - Only the first four input variables are active; the rest is inactive.
     """
     yy = 0.2 * np.sum(xx[:, :4], axis=1)
 
@@ -62,6 +78,10 @@ def evaluate_dec_coeffs(xx: np.ndarray) -> np.ndarray:
     np.ndarray
         The output of the test function evaluated on the input values.
         The output is a 1-dimensional array of length N.
+
+    Notes
+    -----
+    - Only the first eight input variables are active; the rest is inactive.
     """
     exps = np.arange(8)  # 8 input variables are active
     coeffs = 0.2 / 2**exps
@@ -71,11 +91,37 @@ def evaluate_dec_coeffs(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
+def evaluate_sine(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the sine function from Linkletter et al. (2006).
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-10 array where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+
+    Notes
+    -----
+    - Only the first two input variables are active; the rest is inactive.
+    """
+    yy = np.sin(xx[:, 0]) + np.sin(5 * xx[:, 1])
+
+    return yy
+
+
 class LinkletterLinear(UQTestFunFixDimABC):
     """A concrete implementation of the linear function."""
 
     _tags = ["metamodeling", "sensitivity"]
-    _description = "Linear function from Linkletter et al. (2006)"
+    _description = (
+        "Linear function with 4 active inputs from Linkletter et al. (2006)"
+    )
     _available_inputs: ProbInputSpecs = {
         "Linkletter2006": {
             "function_id": "LinkletterLinear",
@@ -83,15 +129,7 @@ class LinkletterLinear(UQTestFunFixDimABC):
                 "Input specification for the linear test function Eq. (5)"
                 "from Linkletter et al. (2006)"
             ),
-            "marginals": [
-                {
-                    "name": f"x_{i + 1}",
-                    "distribution": "uniform",
-                    "parameters": [0, 1],
-                    "description": None,
-                }
-                for i in range(10)
-            ],
+            "marginals": MARGINALS_LINKLETTER2006,
             "copulas": None,
         },
     }
@@ -105,8 +143,8 @@ class LinkletterDecCoeffs(UQTestFunFixDimABC):
 
     _tags = ["metamodeling", "sensitivity"]
     _description = (
-        "Linear function with decreasing coefficients from Linkletter et al. "
-        "(2006)"
+        "Linear function with decreasing coefficients (8 active inputs) "
+        "from Linkletter et al. (2006)"
     )
     _available_inputs: ProbInputSpecs = {
         "Linkletter2006": {
@@ -115,18 +153,33 @@ class LinkletterDecCoeffs(UQTestFunFixDimABC):
                 "Input specification for the linear test function with "
                 "decreasing coefficients Eq. (6) from Linkletter et al. (2006)"
             ),
-            "marginals": [
-                {
-                    "name": f"x_{i + 1}",
-                    "distribution": "uniform",
-                    "parameters": [0, 1],
-                    "description": None,
-                }
-                for i in range(10)
-            ],
+            "marginals": MARGINALS_LINKLETTER2006,
             "copulas": None,
         },
     }
     _available_parameters = None
 
     evaluate = staticmethod(evaluate_dec_coeffs)  # type: ignore
+
+
+class LinkletterSine(UQTestFunFixDimABC):
+    """A concrete implementation of the sine function."""
+
+    _tags = ["metamodeling", "sensitivity"]
+    _description = (
+        "Sine function with 2 active inputs from Linkletter et al. (2006)"
+    )
+    _available_inputs: ProbInputSpecs = {
+        "Linkletter2006": {
+            "function_id": "LinkletterSine",
+            "description": (
+                "Input specification for the sine test function with Eq. (7)"
+                "from Linkletter et al. (2006)"
+            ),
+            "marginals": MARGINALS_LINKLETTER2006,
+            "copulas": None,
+        },
+    }
+    _available_parameters = None
+
+    evaluate = staticmethod(evaluate_sine)  # type: ignore

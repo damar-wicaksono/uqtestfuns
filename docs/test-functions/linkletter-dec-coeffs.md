@@ -21,12 +21,12 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The linear function is a ten-dimensional, scalar-valued function whose
+The function is a ten-dimensional, scalar-valued function whose
 coefficients are decreasing. Only the first eight input variables are active,
 while the rest is inert.
 The function was used in {cite}`Linkletter2006` to demonstrate a variable
 selection method (i.e., sensitivity analysis)
-in the context of Gaussian process metamodeling:
+in the context of Gaussian process metamodeling.
 
 ```{note}
 Linkletter et al. {cite}`Linkletter2006` introduced four ten-dimensional
@@ -39,6 +39,9 @@ in the context of Gaussian process metamodeling:
 - {ref}`Linear with decreasing coefficients <test-functions:linkletter-dec-coeffs>`
   function features a slightly more complex linear function with eight active
   input variables (out of 10). (_this function_)
+- {ref}`Sine <test-functions:linkletter-sine>` function features only two
+  active input variables (out of 10); the effect of the two inputs on
+  the output, however, is very different.
 ```
 
 

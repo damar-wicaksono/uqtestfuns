@@ -68,6 +68,7 @@ regardless of their typical applications.
 |                 {ref}`Lim et al. (2002) Polynomial <test-functions:lim-poly>`                  |        2        |           `LimPoly()`           |
 | {ref}`Linkletter et al. (2006) Decreasing Coefficients <test-functions:linkletter-dec-coeffs>` |       10        |     `LinkletterDecCoeffs()`     |
 |           {ref}`Linkletter et al. (2006) Linear <test-functions:linkletter-linear>`            |       10        |      `LinkletterLinear()`       |
+|             {ref}`Linkletter et al. (2006) Sine <test-functions:linkletter-sine>`              |       10        |       `LinkletterSine()`        |
 |                          {ref}`McLain S1 <test-functions:mclain-s1>`                           |        2        |          `McLainS1()`           |
 |                          {ref}`McLain S2 <test-functions:mclain-s2>`                           |        2        |          `McLainS2()`           |
 |                          {ref}`McLain S3 <test-functions:mclain-s3>`                           |        2        |          `McLainS3()`           |
