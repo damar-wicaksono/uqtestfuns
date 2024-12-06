@@ -32,6 +32,7 @@ in the comparison of sensitivity analysis methods.
 |                {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>`                 |        M        |  `GenzDiscontinuous()`  |
 |                           {ref}`Ishigami <test-functions:ishigami>`                            |        3        |      `Ishigami()`       |
 | {ref}`Linkletter et al. (2006) Decreasing Coefficients <test-functions:linkletter-dec-coeffs>` |       10        | `LinkletterDecCoeffs()` |
+|            {ref}`Linkletter et al. (2006) Inert <test-functions:linkletter-inert>`             |       10        |   `LinkletterInert()`   |
 |           {ref}`Linkletter et al. (2006) Linear <test-functions:linkletter-linear>`            |       10        |  `LinkletterLinear()`   |
 |             {ref}`Linkletter et al. (2006) Sine <test-functions:linkletter-sine>`              |       10        |   `LinkletterSine()`    |
 |                         {ref}`Moon (2010) 3D <test-functions:moon3d>`                          |        3        |       `Moon3D()`        |

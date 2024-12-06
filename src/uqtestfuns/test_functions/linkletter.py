@@ -11,6 +11,7 @@ Available functions are:
 - Linear function with four active input variables.
 - Linear function with decreasing coefficients, eight active input variables.
 - Sine function with two active input variables.
+- Inert function without any active input variables.
 
 References
 ----------
@@ -37,7 +38,12 @@ MARGINALS_LINKLETTER2006: MarginalSpecs = [
     for i in range(10)
 ]
 
-__all__ = ["LinkletterLinear", "LinkletterDecCoeffs", "LinkletterSine"]
+__all__ = [
+    "LinkletterLinear",
+    "LinkletterDecCoeffs",
+    "LinkletterInert",
+    "LinkletterSine",
+]
 
 
 def evaluate_linear(xx: np.ndarray) -> np.ndarray:
@@ -115,6 +121,30 @@ def evaluate_sine(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
+def evaluate_inert(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the inert function from Linkletter et al. (2006).
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        M-Dimensional input values given by an N-by-10 array where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the test function evaluated on the input values.
+        The output is a 1-dimensional array of length N.
+
+    Notes
+    -----
+    - None of the input variables is active; the function always returns 0.
+    """
+    yy = np.zeros(xx.shape[0])
+
+    return yy
+
+
 class LinkletterLinear(UQTestFunFixDimABC):
     """A concrete implementation of the linear function."""
 
@@ -173,8 +203,8 @@ class LinkletterSine(UQTestFunFixDimABC):
         "Linkletter2006": {
             "function_id": "LinkletterSine",
             "description": (
-                "Input specification for the sine test function with Eq. (7)"
-                "from Linkletter et al. (2006)"
+                "Input specification for the sine test function Eq. (7) with "
+                "two active inputs from Linkletter et al. (2006)"
             ),
             "marginals": MARGINALS_LINKLETTER2006,
             "copulas": None,
@@ -183,3 +213,26 @@ class LinkletterSine(UQTestFunFixDimABC):
     _available_parameters = None
 
     evaluate = staticmethod(evaluate_sine)  # type: ignore
+
+
+class LinkletterInert(UQTestFunFixDimABC):
+    """A concrete implementation of the inert function."""
+
+    _tags = ["sensitivity"]
+    _description = (
+        "Inert function with 10 inactive inputs from Linkletter et al. (2006)"
+    )
+    _available_inputs: ProbInputSpecs = {
+        "Linkletter2006": {
+            "function_id": "LinkletterInert",
+            "description": (
+                "Input specification for the inert test function "
+                "from Linkletter et al. (2006)"
+            ),
+            "marginals": MARGINALS_LINKLETTER2006,
+            "copulas": None,
+        },
+    }
+    _available_parameters = None
+
+    evaluate = staticmethod(evaluate_inert)  # type: ignore
