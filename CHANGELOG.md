@@ -52,6 +52,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for metamodeling exercise.
 - The 8-dimensional robot arm function for metamodeling exercises.
 
+## Changed
+
+- The function `Gramacy1DSine` has been renamed to `GramacySine` for
+  conciseness and consistency with the other sine-based functions.
+
 ## Fixed
 
 - The fifth input variable of the Friedman is now active instead of the sixth.

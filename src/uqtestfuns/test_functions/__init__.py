@@ -29,7 +29,7 @@ from .genz import (
     GenzOscillatory,
     GenzProductPeak,
 )
-from .gramacy2007 import Gramacy1DSine
+from .gramacy2007 import GramacySine
 from .higdon_sine import HigdonSine
 from .holsclaw_sine import HolsclawSine
 from .hyper_sphere import HyperSphere
@@ -103,7 +103,7 @@ __all__ = [
     "GenzGaussian",
     "GenzOscillatory",
     "GenzProductPeak",
-    "Gramacy1DSine",
+    "GramacySine",
     "HigdonSine",
     "HolsclawSine",
     "HyperSphere",

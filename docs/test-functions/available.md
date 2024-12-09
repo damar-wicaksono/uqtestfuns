@@ -59,7 +59,7 @@ regardless of their typical applications.
 |                     {ref}`Genz (Gaussian) <test-functions:genz-gaussian>`                      |        M        |        `GenzGaussian()`         |
 |                  {ref}`Genz (Oscillatory) <test-functions:genz-oscillatory>`                   |        M        |       `GenzOscillatory()`       |
 |                 {ref}`Genz (Product Peak) <test-functions:genz-product-peak>`                  |        M        |       `GenzProductPeak()`       |
-|                 {ref}`Gramacy (2007) 1D Sine <test-functions:gramacy-1d-sine>`                 |        1        |        `Gramacy1DSine()`        |
+|                    {ref}`Gramacy (2007) Sine <test-functions:gramacy-sine>`                    |        1        |         `GramacySine()`         |
 |                     {ref}`Higdon (2002) Sine <test-functions:higdon-sine>`                     |        1        |         `HigdonSine()`          |
 |               {ref}`Holsclaw et al. (2013) Sine <test-functions:holsclaw-sine>`                |        1        |        `HolsclawSine()`         |
 |                    {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`                     |        2        |         `HyperSphere()`         |
