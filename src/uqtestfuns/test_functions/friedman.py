@@ -80,8 +80,9 @@ def evaluate_friedman(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        6-Dimensional input values given by an N-by-6 array
-        where N is the number of input values.
+        6-Dimensional input values given by an N-by-M array
+        where N is the number of input values and M >= 5 is the number of
+        input dimensions.
 
     Returns
     -------
@@ -89,11 +90,15 @@ def evaluate_friedman(xx: np.ndarray) -> np.ndarray:
         The output of the six-dimensional Friedman function evaluated
         on the input values.
         The output is a 1-dimensional array of length N.
+
+    Notes
+    -----
+    - Only the first five input variables are active; the rest is inactive.
     """
     yy_1 = 10 * np.sin(np.pi * xx[:, 0] * xx[:, 1])
     yy_2 = 20 * (xx[:, 2] - 0.5) ** 2
     yy_3 = 10 * xx[:, 3]
-    yy_4 = 5 * xx[:, 5]
+    yy_4 = 5 * xx[:, 4]
 
     return yy_1 + yy_2 + yy_3 + yy_4
 
