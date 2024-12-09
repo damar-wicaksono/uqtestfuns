@@ -61,6 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Fixed
 
+- Assigning an integer value to `rng_seed` property of `ProbInput` now
+  correctly reset the RNG with the assigned seed number.
 - The fifth input variable of the Friedman is now active instead of the sixth.
   Only the first five input variables of the Friedman functions are active.
 - The argument `input_dimension` to filter the output of `list_functions()`

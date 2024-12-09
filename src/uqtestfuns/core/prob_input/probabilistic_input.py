@@ -85,7 +85,7 @@ class ProbInput:
     @rng_seed.setter
     def rng_seed(self, value: Optional[int]):
         """Set/reset the seed for RNG."""
-        self.reset_rng(self._rng_seed)
+        self.reset_rng(value)
 
     def transform_sample(self, xx: np.ndarray, other: ProbInput):
         """Transform a sample from the distribution to another."""

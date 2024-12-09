@@ -214,7 +214,7 @@ def test_set_rng_seed(input_dimension):
     marginals = create_random_marginals(input_dimension)
 
     # Create two instances with an identical seed number
-    my_input = ProbInput(marginals, rng_seed=42)
+    my_input = ProbInput(marginals)
 
     # Generate sample points
     xx_1 = my_input.get_sample(1000)
@@ -224,6 +224,8 @@ def test_set_rng_seed(input_dimension):
     assert not np.allclose(xx_1, xx_2)
 
     # Reset the RNG and generate new sample points
+    my_input.rng_seed = 42
+    xx_1 = my_input.get_sample(1000)
     my_input.rng_seed = 42
     xx_2 = my_input.get_sample(1000)
 
