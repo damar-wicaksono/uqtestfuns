@@ -53,5 +53,87 @@ it a new test function, new reference values, or a better description.
 We hope UQTestFuns can be useful for the UQ community,
 just as the [VLSE] has been very useful to us.
 
+## About us
+
+UQTestFuns is developed and maintained by a small team at the Center for
+Advanced Systems Understanding ([CASUS][CASUS_]),
+an institute of the Helmholtz-Zentrum Dresden-Rossendorf ([HZDR](https://www.hzdr.de/)).
+
+::::{grid}
+:padding: 5
+
+:::{grid-item}
+[![CASUS](../assets/CASUS.png)](https://www.casus.science/)
+:::
+:::{grid-item}
+[![HZDR](../assets/HZDR.png)](https://www.hzdr.de/)
+:::
+
+::::
+
+### Project maintainers
+
+Project maintainers are the current main developers responsible for UQTestFuns
+and managing its development process.
+
+::::{grid}
+:padding: 1
+
+:::{grid-item}
+[![Wicaksono](https://de.gravatar.com/userimage/108859669/c1851123ff56c230cf2a67834ee1337b.jpeg?width=90)](https://www.github.com/damar-wicaksono)
+</br>
+Damar Wicaksono
+:::
+::::
+
+### Scientific direction and funding
+
+These individuals provide input on the scientific direction of the project
+or help attract and secure funding for the research.
+
+::::{grid}
+:padding: 1
+
+:::{grid-item}
+[![Hecht](https://gitlab.hzdr.de/uploads/-/system/user/avatar/454/avatar.png?width=90)](https://sites.google.com/view/prof-dr-michael-hecht/home)
+</br>
+Michael Hecht
+:::
+::::
+
+## Sponsors
+
+The Minterpy project is partly funded by the Center for Advanced Systems Understanding
+([CASUS][CASUS_]) which is financed by Germany's Federal Ministry of Education and Research
+([BMBF][BMBF_]) and by the Saxony Ministry for Science, Culture and Tourism
+([SMWK][SMWK_]).
+Funding is provided through tax funds based on the budget approved
+by the Saxony State Parliament.
+
+::::{grid}
+:gutter: 2
+
+:::{grid-item}
+```{image} ../assets/BMBF.png
+:alt: BMBF
+:width: 250px
+:align: left
+```
+:::
+:::{grid-item}
+:padding: 5 0 0 0
+```{image} ../assets/SWKT.png
+:alt: SWKT
+:width: 275px
+:align: left
+```
+:::
+
+::::
+
+
 [Virtual Library of Simulation Experiments: Test Functions and Datasets]: https://www.sfu.ca/~ssurjano/
 [VLSE]: https://www.sfu.ca/~ssurjano/
+[CASUS_]: https://www.casus.science/
+[BMBF_]: https://www.bmbf.de/bmbf/en/home/home_node.html
+[SMWK_]: https://www.smwk.sachsen.de
