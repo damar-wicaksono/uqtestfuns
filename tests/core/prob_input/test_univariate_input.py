@@ -26,13 +26,15 @@ def univariate_input(
     # to avoid awkward yet unrealistic values)
     name = create_random_alphanumeric(8)
     distribution = request.param
-    if request.param == "uniform":
+    if distribution == "uniform":
         parameters = np.sort(np.round(np.random.rand(2), decimals=5))
-    elif request.param == "beta":
+    elif distribution == "beta":
         parameters = np.sort(np.round(np.random.rand(4), decimals=5))
     elif distribution == "exponential":
         # Single parameter, must be strictly positive
-        parameters = 1 + np.round(np.random.rand(1), decimals=5)
+        parameters = (1 + np.round(np.random.rand(1), decimals=5)).astype(
+            np.float64
+        )
     elif distribution == "triangular":
         parameters = np.sort(1 + 2 * np.round(np.random.rand(2), decimals=5))
         # Append the mid point
@@ -49,9 +51,13 @@ def univariate_input(
         parameters = np.insert(parameters, 1, np.random.rand(1))
     elif distribution == "lognormal":
         # Limit the size of the parameters
-        parameters = 1 + np.round(np.random.rand(2), decimals=5)
+        parameters = (1 + np.round(np.random.rand(2), decimals=5)).astype(
+            np.float64
+        )
     else:
-        parameters = 5 * np.round(np.random.rand(2), decimals=5)
+        parameters = (5 * np.round(np.random.rand(2), decimals=5)).astype(
+            np.float64
+        )
         parameters[1] += 1.0
 
     specs = {

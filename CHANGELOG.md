@@ -52,6 +52,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for metamodeling exercise.
 - The 8-dimensional robot arm function for metamodeling exercises.
 
+## Fixed
+
+- The argument `input_dimension` to filter the output of `list_functions()`
+  is now effective and does not always return zero result.
+
 ## [0.5.0] - 2024-11-18
 
 ### Added

@@ -255,8 +255,9 @@ def _verify_input_args(
 def _filter_on_input_dim(data, input_dimension):
     """Filter the dictionary of test functions data based on the input dim."""
     if input_dimension is not None:
-        if isinstance(input_dimension, str):
-            input_dimension = input_dimension.upper()
+        # Make the input dimension a string and upper case;
+        # the result is either a numeric string or the string "M"
+        input_dimension = str(input_dimension).upper()
         data = {
             k: v for k, v in data.items() if v["input_dim"] == input_dimension
         }

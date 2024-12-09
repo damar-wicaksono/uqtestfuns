@@ -42,7 +42,7 @@ jobs:
         run: tox -e typecheck
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python:
@@ -54,6 +54,10 @@ jobs:
             toxenv: "py39"
           - version: "3.11"
             toxenv: "py311"
+          - version: "3.12"
+            toxenv: "py312"
+          - version: "3.13"
+            toxenv: "py313"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4.0.0
