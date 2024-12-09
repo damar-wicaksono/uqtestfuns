@@ -112,8 +112,8 @@ parts:
             title: Genz (Oscillatory)
           - file: test-functions/genz-product-peak
             title: Genz (Product Peak)
-          - file: test-functions/gramacy-1d-sine
-            title: Gramacy (2007) 1D Sine
+          - file: test-functions/gramacy-sine
+            title: Gramacy (2007) Sine
           - file: test-functions/higdon-sine
             title: Higdon (2002) Sine
           - file: test-functions/holsclaw-sine
