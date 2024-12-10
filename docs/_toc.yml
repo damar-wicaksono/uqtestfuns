@@ -158,6 +158,8 @@ parts:
             title: Simple Portfolio Model
           - file: test-functions/robot-arm
             title: Robot Arm
+          - file: test-functions/rosenbrock
+            title: Rosenbrock
           - file: test-functions/rs-circular-bar
             title: RS - Circular Bar
           - file: test-functions/rs-quadratic

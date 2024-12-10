@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- The M-dimensional Rosenbrock function for optimization and metamodeling
+  exercises.
 - An additional use case reference for the Ackley function (as a metamodeling
   test function).
 - The ten-dimensional inert function from Linkletter et al. (2006) with
