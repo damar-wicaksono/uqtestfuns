@@ -82,6 +82,7 @@ regardless of their typical applications.
 |                        {ref}`Piston Simulation <test-functions:piston>`                        |     7 / 20      |           `Piston()`            |
 |                  {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`                   |        3        |         `Portfolio3D()`         |
 |                          {ref}`Robot Arm <test-functions:robot-arm>`                           |        8        |          `RobotArm()`           |
+|                         {ref}`Rosenbrock <test-functions:rosenbrock>`                          |        M        |         `Rosenbrock()`          |
 |                   {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`                    |        2        |        `RSCircularBar()`        |
 |                      {ref}`RS - Quadratic <test-functions:rs-quadratic>`                       |        2        |         `RSQuadratic()`         |
 |                     {ref}`SaltelliLinear <test-functions:saltelli-linear>`                     |        M        |       `SaltelliLinear()`        |

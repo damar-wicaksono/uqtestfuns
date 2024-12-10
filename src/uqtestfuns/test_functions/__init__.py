@@ -49,6 +49,7 @@ from .morris2006 import Morris2006
 from .piston import Piston
 from .portfolio_3d import Portfolio3D
 from .robot_arm import RobotArm
+from .rosenbrock import Rosenbrock
 from .rs_circular_bar import RSCircularBar
 from .rs_quadratic import RSQuadratic
 from .saltelli_linear import SaltelliLinear
@@ -126,6 +127,7 @@ __all__ = [
     "Piston",
     "Portfolio3D",
     "RobotArm",
+    "Rosenbrock",
     "RSCircularBar",
     "RSQuadratic",
     "SaltelliLinear",

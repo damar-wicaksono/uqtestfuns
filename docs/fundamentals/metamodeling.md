@@ -60,6 +60,7 @@ in the comparison of metamodeling approaches.
 |                        {ref}`OTL Circuit <test-functions:otl-circuit>`                         |     6 / 20      |     `OTLCircuit()`      |
 |                        {ref}`Piston Simulation <test-functions:piston>`                        |     7 / 20      |       `Piston()`        |
 |                          {ref}`Robot Arm <test-functions:robot-arm>`                           |        8        |      `RobotArm()`       |
+|                         {ref}`Rosenbrock <test-functions:rosenbrock>`                          |        M        |     `Rosenbrock()`      |
 |                      {ref}`Solar Cell Model <test-functions:solar-cell>`                       |        5        |      `SolarCell()`      |
 |                             {ref}`Sulfur <test-functions:sulfur>`                              |        9        |       `Sulfur()`        |
 |                {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`                 |        6        | `UndampedOscillator()`  |
