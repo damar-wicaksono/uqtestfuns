@@ -23,7 +23,7 @@ import numpy as np
 from uqtestfuns.core.custom_typing import ProbInputSpecs
 from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
-__all__ = ["Gramacy1DSine"]
+__all__ = ["GramacySine"]
 
 
 AVAILABLE_INPUTS: ProbInputSpecs = {
@@ -76,7 +76,7 @@ def evaluate_1dsine(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Gramacy1DSine(UQTestFunFixDimABC):
+class GramacySine(UQTestFunFixDimABC):
     """A concrete implementation of the 1D Gramacy (2007) Sine function."""
 
     _tags = ["metamodeling"]

@@ -85,7 +85,7 @@ class ProbInput:
     @rng_seed.setter
     def rng_seed(self, value: Optional[int]):
         """Set/reset the seed for RNG."""
-        self.reset_rng(self._rng_seed)
+        self.reset_rng(value)
 
     def transform_sample(self, xx: np.ndarray, other: ProbInput):
         """Transform a sample from the distribution to another."""
@@ -214,6 +214,9 @@ class ProbInput:
             stralign="center",
             disable_numparse=True,
         )
+
+        if self.input_dimension == 1:
+            return table
 
         # Temporary solution for independence copula
         copulas = "Independence" if self.copulas is None else self.copulas

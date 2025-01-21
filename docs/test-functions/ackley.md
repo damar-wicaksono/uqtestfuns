@@ -15,11 +15,14 @@ kernelspec:
 (test-functions:ackley)=
 # Ackley Function
 
-The Ackley function  is an $M$-dimensional scalar-valued function.
-The function was first introduced by Ackley {cite}`Ackley1987`
-as a test function for optimization algorithms.
-Originally presented as a two-dimensional function,
-it was later generalized by Bäck and Schwefel {cite}`Baeck1993`.
+The Ackley function is an $M$-dimensional scalar-valued function.
+Introduced by Ackley {cite}`Ackley1987` as a benchmark function for
+global optimization algorithms, the function was originally presented in
+two dimensions.
+Bäck and Schwefel {cite}`Baeck1993` later generalized the function to higher
+dimensions.
+More recently, it was employed as a test function for a metamodeling method
+in {cite}`Kaintura2017`.
 
 ```{code-cell} ipython3
 import numpy as np

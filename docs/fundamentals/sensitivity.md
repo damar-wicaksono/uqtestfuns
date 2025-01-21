@@ -18,30 +18,36 @@ kernelspec:
 The table below listed the available test functions typically used
 in the comparison of sensitivity analysis methods.
 
-|                             Name                             | Input Dimension |     Constructor      |
-|:------------------------------------------------------------:|:---------------:|:--------------------:|
-|          {ref}`Borehole <test-functions:borehole>`           |        8        |     `Borehole()`     |
-| {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>` |        M        |   `Bratley1992a()`   |
-| {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>` |        M        |   `Bratley1992b()`   |
-| {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>` |        M        |   `Bratley1992c()`   |
-| {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>` |        M        |   `Bratley1992d()`   |
-| {ref}`Damped Oscillator <test-functions:damped-oscillator>`  |        7        | `DampedOscillator()` |
-|             {ref}`Flood <test-functions:flood>`              |        8        |      `Flood()`       |
-|      {ref}`Friedman (6D) <test-functions:friedman-6d>`       |        6        |    `Friedman6D()`    |
-|          {ref}`Ishigami <test-functions:ishigami>`           |        3        |     `Ishigami()`     |
-|        {ref}`Moon (2010) 3D <test-functions:moon3d>`         |        3        |      `Moon3D()`      |
-|   {ref}`Morris et al. (2006) <test-functions:morris2006>`    |        M        |    `Morris2006()`    |
-|       {ref}`OTL Circuit <test-functions:otl-circuit>`        |     6 / 20      |    `OTLCircuit()`    |
-|       {ref}`Piston Simulation <test-functions:piston>`       |     7 / 20      |      `Piston()`      |
-| {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`  |        3        |   `Portfolio3D()`    |
-|    {ref}`SaltelliLinear <test-functions:saltelli-linear>`    |        M        |  `SaltelliLinear()`  |
-|           {ref}`Sobol'-G <test-functions:sobol-g>`           |        M        |      `SobolG()`      |
-|        {ref}`Sobol'-G* <test-functions:sobol-g-star>`        |        M        |    `SobolGStar()`    |
-|     {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`     |        M        |   `SobolLevitan()`   |
-|     {ref}`Solar Cell Model <test-functions:solar-cell>`      |        5        |    `SolarCell()`     |
-|            {ref}`Sulfur <test-functions:sulfur>`             |        9        |      `Sulfur()`      |
-|    {ref}`Welch et al. (1992) <test-functions:welch1992>`     |       20        |    `Welch1992()`     |
-|       {ref}`Wing Weight <test-functions:wing-weight>`        |       10        |    `WingWeight()`    |
+|                                              Name                                              | Input Dimension |       Constructor       |
+|:----------------------------------------------------------------------------------------------:|:---------------:|:-----------------------:|
+|                           {ref}`Borehole <test-functions:borehole>`                            |        8        |      `Borehole()`       |
+|                  {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`                  |        M        |    `Bratley1992a()`     |
+|                  {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`                  |        M        |    `Bratley1992b()`     |
+|                  {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`                  |        M        |    `Bratley1992c()`     |
+|                  {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`                  |        M        |    `Bratley1992d()`     |
+|                  {ref}`Damped Oscillator <test-functions:damped-oscillator>`                   |        7        |  `DampedOscillator()`   |
+|                              {ref}`Flood <test-functions:flood>`                               |        8        |        `Flood()`        |
+|                       {ref}`Friedman (6D) <test-functions:friedman-6d>`                        |        6        |     `Friedman6D()`      |
+|                  {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`                   |        M        |   `GenzCornerPeak()`    |
+|                {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>`                 |        M        |  `GenzDiscontinuous()`  |
+|                           {ref}`Ishigami <test-functions:ishigami>`                            |        3        |      `Ishigami()`       |
+| {ref}`Linkletter et al. (2006) Decreasing Coefficients <test-functions:linkletter-dec-coeffs>` |       10        | `LinkletterDecCoeffs()` |
+|            {ref}`Linkletter et al. (2006) Inert <test-functions:linkletter-inert>`             |       10        |   `LinkletterInert()`   |
+|           {ref}`Linkletter et al. (2006) Linear <test-functions:linkletter-linear>`            |       10        |  `LinkletterLinear()`   |
+|             {ref}`Linkletter et al. (2006) Sine <test-functions:linkletter-sine>`              |       10        |   `LinkletterSine()`    |
+|                         {ref}`Moon (2010) 3D <test-functions:moon3d>`                          |        3        |       `Moon3D()`        |
+|                    {ref}`Morris et al. (2006) <test-functions:morris2006>`                     |        M        |     `Morris2006()`      |
+|                        {ref}`OTL Circuit <test-functions:otl-circuit>`                         |     6 / 20      |     `OTLCircuit()`      |
+|                        {ref}`Piston Simulation <test-functions:piston>`                        |     7 / 20      |       `Piston()`        |
+|                  {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`                   |        3        |     `Portfolio3D()`     |
+|                     {ref}`SaltelliLinear <test-functions:saltelli-linear>`                     |        M        |   `SaltelliLinear()`    |
+|                            {ref}`Sobol'-G <test-functions:sobol-g>`                            |        M        |       `SobolG()`        |
+|                         {ref}`Sobol'-G* <test-functions:sobol-g-star>`                         |        M        |     `SobolGStar()`      |
+|                      {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                      |        M        |    `SobolLevitan()`     |
+|                      {ref}`Solar Cell Model <test-functions:solar-cell>`                       |        5        |      `SolarCell()`      |
+|                             {ref}`Sulfur <test-functions:sulfur>`                              |        9        |       `Sulfur()`        |
+|                     {ref}`Welch et al. (1992) <test-functions:welch1992>`                      |       20        |      `Welch1992()`      |
+|                        {ref}`Wing Weight <test-functions:wing-weight>`                         |       10        |     `WingWeight()`      |
 
 In a Python terminal, you can list all the available functions relevant
 for metamodeling applications using ``list_functions()``

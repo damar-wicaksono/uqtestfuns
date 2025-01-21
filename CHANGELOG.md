@@ -7,6 +7,73 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2025-01-21
+
+UQTestFuns now includes 75 test functions.
+
+### Added
+
+- The M-dimensional Rosenbrock function for optimization and metamodeling
+  exercises.
+- An additional use case reference for the Ackley function (as a metamodeling
+  test function).
+- The ten-dimensional inert function from Linkletter et al. (2006) with
+  no active input variable whatsoever; the function was used in the context of
+  sensitivity analysis.
+- The ten-dimensional sine function from Linkletter et al. (2006) featuring
+  only two active input variables out of ten; the function was used in the
+  context of metamodeling and sensitivity analysis.
+- The ten-dimensional linear function with decreasing coefficients from
+  Linkletter et al. (2006) featuring only eight active input variables out of
+  ten; the function was used in the context of metamodeling and sensitivity
+  analysis.
+- The ten-dimensional linear function from Linkletter et al. (2006) featuring
+  only four active input variables out of ten; the function was used
+  in the context of metamodeling and sensitivity analysis.
+- The eight-dimensional function from Dette and Pepelyshev (2010) featuring
+  curved and logarithm terms for metamodeling exercises.
+- The three-dimensional highly-curved function from Dette and Pepelyshev (2010)
+  for metamodeling exercises.
+- The three-dimensional exponential function from Dette and Pepelyshev (2010)
+  for metamodeling exercises.
+- The one-dimensional sine function from Higdon (2002) featuring behaviors
+  that are different in two scales; for metamodeling (multi-resolution)
+  exercises.
+- The one-dimensional sine function from Holsclaw et al. (2013) for
+  metamodeling exercises.
+- The M-dimensional discontinuous function from Genz (1984) for integration and
+  sensitivity analysis exercises; one parameter set from the literature
+  is included.
+- The M-dimensional oscillatory function from Genz (1984) for integration
+  exercises; one parameter set from the literature is included.
+- The M-dimensional Gaussian function from Genz (1984) for integration
+  exercises; one parameter set from the literature is included.
+- The M-dimensional continuous function from Genz (1984) for integration
+  exercises; one parameter set from the literature is included.
+- The M-dimensional product peak function from Genz (1984) for integration
+  exercises; one parameter set from the literature is included.
+- The M-dimensional corner peak function from Genz (1984) for integration
+  and sensitivity analysis exercises.
+- The one-dimensional sine function from Currin et al. (1988) for metamodeling
+  exercise.
+- The two-dimensional, time-dependent (vector-valued) cooling cup model
+  for metamodeling exercise.
+- The 8-dimensional robot arm function for metamodeling exercises.
+
+## Changed
+
+- The function `Gramacy1DSine` has been renamed to `GramacySine` for
+  conciseness and consistency with the other sine-based functions.
+
+## Fixed
+
+- Assigning an integer value to `rng_seed` property of `ProbInput` now
+  correctly reset the RNG with the assigned seed number.
+- The fifth input variable of the Friedman is now active instead of the sixth.
+  Only the first five input variables of the Friedman functions are active.
+- The argument `input_dimension` to filter the output of `list_functions()`
+  is now effective and does not always return zero result.
+
 ## [0.5.0] - 2024-11-18
 
 ### Added
@@ -260,6 +327,7 @@ First public release of UQTestFuns.
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
 [Unreleased]: https://github.com/damar-wicaksono/uqtestfuns/compare/main...dev
+[0.6.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.3.0...v0.4.0

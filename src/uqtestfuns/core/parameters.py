@@ -252,7 +252,7 @@ class FunParams:
         # When a parameter is assigned, be more forgiving
         if not isinstance(value, type_):
             warnings.warn(
-                message="Expected {type_} but got {type(value)}",
+                message=f"Expected {type_} but got {type(value)}",
                 category=UserWarning,
                 stacklevel=2,
             )
@@ -312,7 +312,7 @@ def _get_values_as_list(
         if isinstance(value, np.ndarray):
             value = f"{value.shape} array"
         elif isinstance(value, int):
-            value = f"{value:1.0e}"
+            value = f"{value:1.5e}"
         elif isinstance(value, float):
             value = f"{value:1.5e}"
         else:

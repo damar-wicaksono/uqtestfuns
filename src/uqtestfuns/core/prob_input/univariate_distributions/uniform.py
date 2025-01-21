@@ -198,9 +198,9 @@ def icdf(
     xx[xx > 1.0] = np.nan
 
     # Compute the ICDF
-    yy = lower_bound + np.diff(parameters) * xx
+    yy = (lower_bound + np.diff(parameters) * xx).astype(np.float64)
 
     # Check if values are within the set bounds
-    yy = postprocess_icdf(yy, lower_bound, upper_bound)
+    yy_post = postprocess_icdf(yy, lower_bound, upper_bound)
 
-    return yy
+    return yy_post

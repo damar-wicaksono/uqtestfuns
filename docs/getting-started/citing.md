@@ -25,15 +25,15 @@ for the version you used at [Zenodo].
 The citation for the current public version is:
 
 ```bibtex
-@software{UQTestFuns_0_5_0,
+@software{UQTestFuns_0_6_0,
   author       = {Wicaksono, Damar and Hecht, Michael},
   title        = {{UQTestFuns: A Python3 Library of Uncertainty Quantification (UQ) Test Functions}},
-  month        = nov,
-  year         = 2024,
+  month        = jan,
+  year         = 2025,
   publisher    = {Zenodo},
-  version      = {v0.5.0},
-  doi          = {10.5281/zenodo.14181563},
-  url          = {https://doi.org/10.5281/zenodo.14181563}
+  version      = {v0.6.0},
+  doi          = {10.5281/zenodo.14710452},
+  url          = {https://doi.org/10.5281/zenodo.14710452}
 }
 ```
 

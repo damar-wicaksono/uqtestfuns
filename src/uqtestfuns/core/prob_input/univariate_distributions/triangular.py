@@ -6,7 +6,7 @@ by three parameters: a, b, and c.
 These are the lower bound, upper bound, and the mid-point (i.e., modal value),
 respectively.
 
-The density value at the modal value is computed such that the are under
+The density value at the modal value is computed such that the area under
 the distribution is 1.0.
 """
 
@@ -238,6 +238,6 @@ def icdf(
     yy[idx_nan] = np.nan
 
     # Check if values are within the set bounds
-    yy = postprocess_icdf(yy, lower_bound, upper_bound)
+    yy_post = postprocess_icdf(yy, lower_bound, upper_bound)
 
-    return yy
+    return yy_post

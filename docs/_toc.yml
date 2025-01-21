@@ -58,14 +58,24 @@ parts:
             title: Cheng and Sandu (2010) 2D
           - file: test-functions/circular-pipe-crack
             title: Circular Pipe Crack
+          - file: test-functions/coffee-cup
+            title: Coffee Cup
           - file: test-functions/convex-fail-domain
             title: Convex Failure Domain
+          - file: test-functions/currin-sine
+            title: Currin et al. (1988) Sine
           - file: test-functions/damped-cosine
             title: Damped Cosine
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
           - file: test-functions/damped-oscillator-reliability
             title: Damped Oscillator Reliability
+          - file: test-functions/dette-8d
+            title: Dette & Pepelyshev (2010) 8D
+          - file: test-functions/dette-curved
+            title: Dette & Pepelyshev (2010) Curved
+          - file: test-functions/dette-exp
+            title: Dette & Pepelyshev (2010) Exponential
           - file: test-functions/flood
             title: Flood
           - file: test-functions/forrester
@@ -90,8 +100,24 @@ parts:
             title: Friedman (10D)
           - file: test-functions/gayton-hat
             title: Gayton Hat
-          - file: test-functions/gramacy-1d-sine
-            title: Gramacy (2007) 1D Sine
+          - file: test-functions/genz-continuous
+            title: Genz (Continuous)
+          - file: test-functions/genz-corner-peak
+            title: Genz (Corner Peak)
+          - file: test-functions/genz-gaussian
+            title: Genz (Gaussian)
+          - file: test-functions/genz-discontinuous
+            title: Genz (Discontinuous)
+          - file: test-functions/genz-oscillatory
+            title: Genz (Oscillatory)
+          - file: test-functions/genz-product-peak
+            title: Genz (Product Peak)
+          - file: test-functions/gramacy-sine
+            title: Gramacy (2007) Sine
+          - file: test-functions/higdon-sine
+            title: Higdon (2002) Sine
+          - file: test-functions/holsclaw-sine
+            title: Holsclaw et al. (2013) Sine
           - file: test-functions/hyper-sphere
             title: Hyper-sphere Bound
           - file: test-functions/ishigami
@@ -100,6 +126,14 @@ parts:
             title: Lim et al. (2002) Non-Polynomial
           - file: test-functions/lim-poly
             title: Lim et al. (2002) Polynomial
+          - file: test-functions/linkletter-dec-coeffs
+            title: Linkletter et al. (2006) Dec. Coeffs.
+          - file: test-functions/linkletter-inert
+            title: Linkletter et al. (2006) Inert
+          - file: test-functions/linkletter-linear
+            title: Linkletter et al. (2006) Linear
+          - file: test-functions/linkletter-sine
+            title: Linkletter et al. (2006) Sine
           - file: test-functions/mclain-s1
             title: McLain S1
           - file: test-functions/mclain-s2
@@ -122,6 +156,10 @@ parts:
             title: Piston Simulation
           - file: test-functions/portfolio-3d
             title: Simple Portfolio Model
+          - file: test-functions/robot-arm
+            title: Robot Arm
+          - file: test-functions/rosenbrock
+            title: Rosenbrock
           - file: test-functions/rs-circular-bar
             title: RS - Circular Bar
           - file: test-functions/rs-quadratic
