@@ -31,19 +31,19 @@ MARGINALS_SALTELLI2004: MarginalSpecs = [
         "name": "Ps",
         "distribution": "normal",
         "parameters": [0.0, 4.0],
-        "description": "Hedged portfolio 's' [\N{euro sign}]",
+        "description": "Hedged portfolio 's' [\N{EURO SIGN}]",
     },
     {
         "name": "Pt",
         "distribution": "normal",
         "parameters": [0.0, 2.0],
-        "description": "Hedged portfolio 't' [\N{euro sign}]",
+        "description": "Hedged portfolio 't' [\N{EURO SIGN}]",
     },
     {
         "name": "Pj",
         "distribution": "normal",
         "parameters": [0.0, 1.0],
-        "description": "Hedged portfolio 'j' [\N{euro sign}]",
+        "description": "Hedged portfolio 'j' [\N{EURO SIGN}]",
     },
 ]
 

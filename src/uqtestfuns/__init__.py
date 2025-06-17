@@ -14,7 +14,7 @@ from .core import (
 )
 from .core import UQTestFun
 from .core import FunParams
-
+from .core import RealVariable
 
 from . import test_functions
 from .test_functions import *  # noqa
@@ -40,6 +40,7 @@ __all__ = [
     "UQTestFunFixDimABC",
     "UQTestFunVarDimABC",
     "UQTestFun",
+    "RealVariable",
     "test_functions",
     "UQMetaFunSpec",
     "UQMetaTestFun",
