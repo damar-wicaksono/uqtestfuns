@@ -459,7 +459,7 @@ class UQTestFunFixDimABC(UQTestFunABC, ABC):
 
         return ProbInput(**input_data)
 
-    def _create_fun_params(self, parameters_id: Optional[str]) -> FunParams:
+    def _create_fun_params(self, parameters_id: str) -> FunParams:
         """Create an instance of function parameters.
 
         Parameters
@@ -600,7 +600,7 @@ class UQTestFunVarDimABC(UQTestFunABC, ABC):
 
     def _create_fun_params(
         self,
-        parameters_id: Optional[str],
+        parameters_id: str,
         input_dim: int,
     ) -> FunParams:
         """Create an instance of function parameters.

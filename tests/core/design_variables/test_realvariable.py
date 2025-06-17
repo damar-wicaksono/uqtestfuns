@@ -1,6 +1,7 @@
 """
 Test module for RealVariable class.
 """
+
 import numpy as np
 import pytest
 import random
@@ -23,7 +24,7 @@ def realvar_fixture():
 class TestInit:
     """Collection of tests for initialization."""
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
+    @pytest.mark.parametrize("lower", [0.0, 1.0, 2.0])
     @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
     def test_init(self, lower, upper):
         """Test default construction."""
@@ -33,7 +34,7 @@ class TestInit:
         assert lb == lower
         assert ub == upper
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
+    @pytest.mark.parametrize("lower", [0.0, 1.0, 2.0])
     @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
     @pytest.mark.parametrize("name_desc", ["a", "b", "c"])
     def test_init_with_name_and_description(self, lower, upper, name_desc):
@@ -47,8 +48,8 @@ class TestInit:
         assert my_realvar.name == name_desc
         assert my_realvar.description == name_desc
 
-    @pytest.mark.parametrize("lower", [5., 6., 7.])
-    @pytest.mark.parametrize("upper", [4., 3., 5.])
+    @pytest.mark.parametrize("lower", [5.0, 6.0, 7.0])
+    @pytest.mark.parametrize("upper", [4.0, 3.0, 5.0])
     def test_init_invalid_bounds(self, lower, upper):
         """Test construction with invalid bounds."""
 
@@ -198,7 +199,7 @@ class TestGetSample:
         with pytest.raises(ValueError):
             _ = realvar_fixture.get_sample(-1)
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
+    @pytest.mark.parametrize("lower", [0.0, 1.0, 2.0])
     @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
     def test_different_seeds(self, lower, upper):
         """Test initialization with different seeds."""
@@ -215,7 +216,7 @@ class TestGetSample:
 class TestTransformTo:
     """Collection of tests for the transform_to() method."""
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
+    @pytest.mark.parametrize("lower", [0.0, 1.0, 2.0])
     @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
     def test_transform_to_scalar(self, realvar_fixture, lower, upper):
         """Test the transformation of a scalar value."""
@@ -229,7 +230,7 @@ class TestTransformTo:
         assert not np.all(realvar_2.is_valid(xx_ori))
         assert np.all(realvar_2.is_valid(xx_tra))
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
+    @pytest.mark.parametrize("lower", [0.0, 1.0, 2.0])
     @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
     def test_transform_to_array(self, realvar_fixture, lower, upper):
         """Test the transformation of an array of values."""
@@ -243,8 +244,8 @@ class TestTransformTo:
         assert not np.all(realvar_2.is_valid(xx_ori))
         assert np.all(realvar_2.is_valid(xx_tra))
 
-    @pytest.mark.parametrize("lower", [5., 6., 7.])
-    @pytest.mark.parametrize("upper", [4., 3., 5.])
+    @pytest.mark.parametrize("lower", [5.0, 6.0, 7.0])
+    @pytest.mark.parametrize("upper", [4.0, 3.0, 5.0])
     def test_invalid_bounds(self, realvar_fixture, lower, upper):
         """Test transformation with invalid bounds."""
         xx_ori = realvar_fixture.get_sample(100)
@@ -252,17 +253,16 @@ class TestTransformTo:
         with pytest.raises(ValueError):
             _ = realvar_fixture.transform_to(xx_ori, lower, upper)
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
-    @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
-    def test_invalid_sample(self, realvar_fixture, lower, upper):
-        """Test the failure of transformation with invalid sample."""
-        lower_ori, _ = realvar_fixture.bounds
+    def test_invalid_sample(self, realvar_fixture):
+        """Test the failure of transformation with an invalid sample."""
+        lower_ori, upper_ori = realvar_fixture.bounds
         xx_ori = np.random.uniform(lower_ori - 2, lower_ori - 1, size=(100,))
 
         with pytest.raises(ValueError):
-            _ = realvar_fixture.transform_to(xx_ori, lower, upper)
+            # Inconsistent bounds
+            _ = realvar_fixture.transform_to(xx_ori, lower_ori, upper_ori)
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
+    @pytest.mark.parametrize("lower", [0.0, 1.0, 2.0])
     @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
     def test_back_and_forth(self, realvar_fixture, lower, upper):
         """Test the back and forth transformation."""
@@ -278,7 +278,7 @@ class TestTransformTo:
 class TestTransformFrom:
     """Collection of tests for the transform_from() method."""
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
+    @pytest.mark.parametrize("lower", [0.0, 1.0, 2.0])
     @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
     def test_transform_from_scalar(self, realvar_fixture, lower, upper):
         """Test the transformation of a scalar value."""
@@ -292,7 +292,7 @@ class TestTransformFrom:
         assert not np.all(realvar_2.is_valid(xx_ori))
         assert np.all(realvar_2.is_valid(xx_tra))
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
+    @pytest.mark.parametrize("lower", [0.0, 1.0, 2.0])
     @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
     def test_transform_from_array(self, realvar_fixture, lower, upper):
         """Test the transformation of an array of values."""
@@ -306,8 +306,8 @@ class TestTransformFrom:
         assert not np.all(realvar_2.is_valid(xx_ori))
         assert np.all(realvar_2.is_valid(xx_tra))
 
-    @pytest.mark.parametrize("lower", [5., 6., 7.])
-    @pytest.mark.parametrize("upper", [4., 3., 5.])
+    @pytest.mark.parametrize("lower", [5.0, 6.0, 7.0])
+    @pytest.mark.parametrize("upper", [4.0, 3.0, 5.0])
     def test_invalid_bounds(self, realvar_fixture, lower, upper):
         """Test transformation with invalid bounds."""
         xx_target = realvar_fixture.get_sample(100)
@@ -315,11 +315,9 @@ class TestTransformFrom:
         with pytest.raises(ValueError):
             _ = realvar_fixture.transform_from(xx_target, lower, upper)
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
-    @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
-    def test_invalid_sample(self, realvar_fixture, lower, upper):
-        """Test the failure of transformation with invalid sample."""
-        lower_target, _ = realvar_fixture.bounds
+    def test_invalid_sample(self, realvar_fixture):
+        """Test the failure of transformation with an invalid sample."""
+        lower_target, upper_target = realvar_fixture.bounds
         xx_target = np.random.uniform(
             lower_target - 2,
             lower_target - 1,
@@ -327,9 +325,14 @@ class TestTransformFrom:
         )
 
         with pytest.raises(ValueError):
-            _ = realvar_fixture.transform_from(xx_target, lower, upper)
+            # Inconsistent bounds
+            _ = realvar_fixture.transform_from(
+                xx_target,
+                lower_target,
+                upper_target,
+            )
 
-    @pytest.mark.parametrize("lower", [0., 1.0, 2.0])
+    @pytest.mark.parametrize("lower", [0.0, 1.0, 2.0])
     @pytest.mark.parametrize("upper", [3.0, 4.0, 5.0])
     def test_back_and_forth(self, realvar_fixture, lower, upper):
         """Test the back and forth transformation."""

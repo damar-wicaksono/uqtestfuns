@@ -34,8 +34,8 @@ class RealVariable(DesignVariableABC):
         self,
         lower: float,
         upper: float,
-        name: str = None,
-        description: str = None,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
         rng_seed: Optional[int] = None,
     ) -> None:
 

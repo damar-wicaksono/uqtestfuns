@@ -19,17 +19,17 @@ class DesignVariableABC(ABC):
 
     @property
     @abstractmethod
-    def bounds(self):
+    def bounds(self):  # pragma: no cover
         """The bounds of the design variable."""
         pass
 
     @abstractmethod
-    def is_valid(self, xx):
+    def is_valid(self, xx):  # pragma: no cover
         """Verify if the given value is valid."""
         pass
 
     @abstractmethod
-    def get_sample(self, sample_size: int) -> np.ndarray:
+    def get_sample(self, sample_size: int) -> np.ndarray:  # pragma: no cover
         """Get a random sample of design variable values.
 
         Parameters
@@ -47,12 +47,17 @@ class DesignVariableABC(ABC):
         pass
 
     @abstractmethod
-    def transform_to(self, xx, lower: float, upper: float):
+    def transform_to(self, xx, lower: float, upper: float):  # pragma: no cover
         """Transform sample values from internal bounds to target bounds."""
         pass
 
     @abstractmethod
-    def transform_from(self, xx, lower: float, upper: float):
+    def transform_from(
+        self,
+        xx,
+        lower: float,
+        upper: float,
+    ):  # pragma: no cover
         """Transform sample values from a set of target bounds."""
         pass
 
