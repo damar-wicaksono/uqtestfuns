@@ -17,7 +17,6 @@ import numpy as np
 from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
 from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
-
 __all__ = ["RSCircularBar"]
 
 

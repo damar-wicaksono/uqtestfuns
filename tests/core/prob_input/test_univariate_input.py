@@ -12,7 +12,6 @@ from uqtestfuns.core.prob_input.marginal import Marginal
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 from conftest import create_random_alphanumeric
 
-
 MARGINALS = list(SUPPORTED_MARGINALS.keys())
 
 

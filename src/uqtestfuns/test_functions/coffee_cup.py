@@ -97,7 +97,7 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
 }
 
 
-def fun_ivp(t: float, temp: float, kappa: float, temp_amb: float) -> float:
+def fun_ivp(t: float, temp: float, kappa: float, temp_amb: float):
     """The right-hand side of the initial value problem.
 
     Parameters
@@ -111,7 +111,7 @@ def fun_ivp(t: float, temp: float, kappa: float, temp_amb: float) -> float:
     temp_amb : float
         Ambient temperature.
     """
-    return float(-1 * kappa * (temp - temp_amb))
+    return -1 * kappa * (temp - temp_amb)
 
 
 def evaluate(

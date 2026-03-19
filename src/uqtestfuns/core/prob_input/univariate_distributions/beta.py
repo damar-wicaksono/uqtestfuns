@@ -27,7 +27,6 @@ from scipy.stats import beta
 from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
-
 DISTRIBUTION_NAME = "beta"
 
 NUM_PARAMS = 4

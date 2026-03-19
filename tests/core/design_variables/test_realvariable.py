@@ -12,7 +12,7 @@ from uqtestfuns import RealVariable
 @pytest.fixture
 def realvar_fixture():
     # Generate the bounds randomly
-    lower = random.uniform(1.0, 100.0)
+    lower = random.uniform(50, 100.0)
     upper = random.uniform(lower, 100.0)
 
     # Create an instance

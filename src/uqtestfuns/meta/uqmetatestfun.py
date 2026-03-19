@@ -26,7 +26,6 @@ from .metaspec import UQMetaFunSpec, UQTestFunSpec
 from .basis_functions import BASIS_BY_ID
 from ..core import UQTestFun, ProbInput, Marginal
 
-
 __all__ = ["UQMetaTestFun", "default_coeffs_gen"]
 
 
