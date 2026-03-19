@@ -233,6 +233,35 @@ def test_set_rng_seed(input_dimension):
     assert np.allclose(xx_1, xx_2)
 
 
+@pytest.mark.parametrize("input_dimension", [1, 2, 10, 100])
+def test_replicate(input_dimension):
+    """Test creating a probabilistic input with replicated marginals."""
+    marginal = create_random_marginals(1)[0]
+
+    distribution = marginal.distribution
+    parameters = marginal.parameters
+
+    # Create a new probabilistic input with replicated marginals
+    prob_input = ProbInput.replicate(input_dimension, distribution, parameters)
+
+    # Assertions
+    assert prob_input.input_dimension == input_dimension
+    # Distributions are the same for all replicated marginals
+    assert np.all(
+        [distribution == mgl.distribution for mgl in prob_input.marginals]
+    )
+    # Parameters are the same for all replicated marginals
+    assert np.all(
+        [parameters == mgl.parameters for mgl in prob_input.marginals]
+    )
+    # Base name convention
+    assert np.all(
+        [f"X{i+1}" == mgl.name for i, mgl in enumerate(prob_input.marginals)]
+    )
+    # Description is None for replicated marginals
+    assert np.all([mgl.description is None for mgl in prob_input.marginals])
+
+
 # def test_get_cdf_values():
 #     """Test the CDF values from an instance of UnivariateInput."""
 #     name = create_random_alphanumeric(10)

@@ -27,7 +27,6 @@ import numpy as np
 from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
 from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
-
 MARGINALS_LINKLETTER2006: MarginalSpecs = [
     {
         "name": f"x_{i + 1}",

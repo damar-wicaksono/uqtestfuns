@@ -233,7 +233,7 @@ def compute_power_max(
         )
 
         pp_max[idx] = -1 * res.fun  # Negated back for the maximum value
-        vv_max[idx] = res.x
+        vv_max[idx] = res.x[0]
 
     return pp_max, vv_max
 
