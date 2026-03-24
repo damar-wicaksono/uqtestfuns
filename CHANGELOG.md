@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- A `Registry` class that auto-scans `test_functions/` at import time,
+  parsing YAML specification files into lightweight registry entries
+  for function discovery without importing any Python modules eagerly.
+- New `ProbInput.replicate()` classmethod for constructing probabilistic
+  inputs with identical marginals across all dimensions; used internally
+  by the YAML-driven factory for variable-dimension test functions.
+
 ## [0.6.0] - 2025-01-21
 
 UQTestFuns now includes 75 test functions.

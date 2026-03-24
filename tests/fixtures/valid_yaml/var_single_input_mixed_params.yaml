@@ -1,0 +1,35 @@
+name: VarSingleInputMixedParams
+description: "Variable-dimension function, single input, multiple Mixed parameters"
+tags:
+  - metamodeling
+  - reliability
+variable_dimension: true
+output_dimension: 1
+
+inputs:
+  DefaultInput:
+    marginals:
+      - name: X
+        distribution: uniform
+        parameters: [-1, 1.0]
+
+parameters:
+
+  keywords:
+      aa: "Coefficients of the Sobol-G function"
+      bb: "Shift parameter"
+
+  sets:
+    Kucherenko2011:
+      description: "Parameter set from Kucherenko et al. (2011)"
+      values:
+        aa: _get_aa_kucherenko2011()
+        bb: 1.5
+
+    Ishigami1991:
+      description: "Parameter set from Ishigami and Homma (1991)"
+      values:
+        aa: _get_aa_ishigami1991()
+        bb: 0.1
+
+  default_parameter_id: Kucherenko2011
