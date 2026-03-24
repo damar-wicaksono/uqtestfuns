@@ -24,6 +24,8 @@ from .meta import UQMetaTestFun
 
 from .helpers import list_functions
 
+from . import api
+
 if sys.version_info >= (3, 8):
     from importlib import metadata
 else:  # pragma: no cover
@@ -45,4 +47,5 @@ __all__ = [
     "UQMetaFunSpec",
     "UQMetaTestFun",
     "list_functions",
+    "api",
 ]
