@@ -186,7 +186,7 @@ def test_transform_sample() -> None:
         name=name_2, distribution=distribution_2, parameters=parameters_2
     )
 
-    xx_trans = my_univariate_input_1.transform_sample(
+    xx_trans = my_univariate_input_1.transform_to(
         xx, my_univariate_input_2
     )
 
@@ -209,7 +209,7 @@ def test_failed_transform_sample() -> None:
     xx = my_univariate_input.get_sample(sample_size)
 
     with pytest.raises(TypeError):
-        my_univariate_input.transform_sample(xx, [])  # type: ignore
+        my_univariate_input.transform_to(xx, [])  # type: ignore
 
 
 def test_cdf_monotonously_increasing(univariate_input: Any) -> None:
