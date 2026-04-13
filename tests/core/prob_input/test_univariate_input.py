@@ -186,9 +186,7 @@ def test_transform_sample() -> None:
         name=name_2, distribution=distribution_2, parameters=parameters_2
     )
 
-    xx_trans = my_univariate_input_1.transform_to(
-        xx, my_univariate_input_2
-    )
+    xx_trans = my_univariate_input_1.transform_to(xx, my_univariate_input_2)
 
     # Assertions
     assert np.min(xx_trans) >= my_univariate_input_2.lower
