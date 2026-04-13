@@ -162,7 +162,7 @@ class ProbInput:
             for idx_dim, (marginal_self, marginal_other) in enumerate(
                 zip(self.marginals, other.marginals)
             ):
-                xx_trans[:, idx_dim] = marginal_self.transform_sample(
+                xx_trans[:, idx_dim] = marginal_self.transform_to(
                     xx[:, idx_dim], marginal_other
                 )
         else:

@@ -1,4 +1,5 @@
 """
+Module with an implementation of ``Marginal`` class.
 
 This module provides the :class:`Marginal` class, which models a single random
 variable through a parametric probability distribution. It is intended as
@@ -277,10 +278,10 @@ class Marginal:
         # Return the transformed sample in the current distribution
         return self.icdf(xx)
 
-    def transform_sample(
+    def transform_to(
         self,
         xx: Union[float, np.ndarray],
-        other: Marginal,
+        target: Marginal,
     ) -> np.ndarray:
         """Transform a sample from this distribution to another.
 
@@ -288,7 +289,7 @@ class Marginal:
         ----------
         xx : Union[float, np.ndarray]
             The sample points to be transformed.
-        other : Marginal
+        target : Marginal
             The target distribution to which the sample should be transformed.
 
         Returns
@@ -297,14 +298,14 @@ class Marginal:
             The transformed sample points in the target distribution.
             The output is an array of at least one dimension.
         """
-        if not isinstance(other, Marginal):
+        if not isinstance(target, Marginal):
             raise TypeError("Other instance must be of Marginal type!")
 
-        # Transform the sample to [0, 1] domain
+        # Transform the sample to [0, 1]
         xx_trans = self.cdf(xx)
 
-        # Transform the sample in [0, 1] to the domain of the other
-        return other.icdf(xx_trans)
+        # Transform the sample in [0, 1] to the other distribution
+        return target.icdf(xx_trans)
 
     # --- Dunder methods
     def __eq__(self, other: object) -> bool:
