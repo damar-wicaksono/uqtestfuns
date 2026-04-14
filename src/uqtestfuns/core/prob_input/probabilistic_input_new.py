@@ -443,7 +443,7 @@ class ProbInput:
         return f"{class_name}({attrs_str})"
 
     def __str__(self):
-        """Return human-readable string representation of the instance."""
+        """Return a human-readable string representation of the instance."""
         if self.name is None or self.name == "":
             table = f"Dimension : {self.dimension}\n"
         else:
