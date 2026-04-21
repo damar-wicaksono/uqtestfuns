@@ -7,6 +7,7 @@ import pytest
 from uqtestfuns.core.registry.validation import (
     SpecValidationError,
     validate_marginal,
+    validate_callable_string,
 )
 
 
@@ -66,3 +67,18 @@ class TestMarginalValidation:
         """Test that an empty dictionary is not valid."""
         with pytest.raises(SpecValidationError):
             validate_marginal({})
+
+
+class TestCallableStringValidation:
+    """All tests related to callable string validation."""
+
+    @pytest.mark.parametrize("valid_str", ["foo", "_foo.bar", "_hello"])
+    def test_valid_string(self, valid_str):
+        """Test that a valid callable string is valid."""
+        validate_callable_string(valid_str)
+
+    @pytest.mark.parametrize("invalid_str", ["", "foo.bar.ba", "foo.", ".bar"])
+    def test_invalid_string(self, invalid_str):
+        """Test that an invalid callable string is invalid."""
+        with pytest.raises(SpecValidationError):
+            validate_callable_string(invalid_str)

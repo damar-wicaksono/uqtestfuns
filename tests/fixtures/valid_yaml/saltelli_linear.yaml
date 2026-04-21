@@ -1,0 +1,27 @@
+name: SaltelliLinear
+description: Linear function from Saltelli et al. (2000)
+tags:
+  - sensitivity
+
+dimensions:
+  input: variable
+  output: 1
+
+default_input: Saltelli2000_1
+
+evaluate: compute
+
+inputs:
+  Saltelli2000_1:
+    description: >-
+      Probabilistic input model for the linear function
+      from Saltelli et al. (2000)
+    marginals:
+      factory: create_marginals_1
+  Saltelli2000_2:
+    description: >-
+      Probabilistic input model for the linear function with factor
+      from Saltelli et al. (2000)
+    marginals:
+      factory: create_marginals_2
+      factor: 0.5
