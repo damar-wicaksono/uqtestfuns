@@ -14,3 +14,25 @@ class SpecValidationError(Exception):
     """
 
     pass
+
+
+def validate_marginal(marginal: dict) -> None:
+    """Validate a marginal specification."""
+    errors = []
+
+    # --- Mandatory keys
+    required_keys = {"distribution", "parameters"}
+    missing_keys = required_keys - marginal.keys()
+    if missing_keys:
+        errors.append(f"Missing mandatory keys: {missing_keys}")
+
+    # --- Extraneous keys
+    supported_keys = {"distribution", "parameters", "name", "description"}
+    extra_keys = marginal.keys() - supported_keys
+    if extra_keys:
+        errors.append(f"Unexpected keys: {extra_keys}")
+
+    if errors:
+        raise SpecValidationError(
+            f"Invalid marginal {marginal}: " + "; ".join(errors)
+        )

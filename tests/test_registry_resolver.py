@@ -61,3 +61,13 @@ class TestResolveValue:
         # Assertion
         with pytest.raises(SpecValidationError):
             _ = resolve_value(expr)
+
+    def test_empty_expression(self):
+        """Test resolving an empty expression."""
+
+        # Create an expression
+        expr = "$()"
+
+        # Assertion
+        with pytest.raises(SpecValidationError):
+            _ = resolve_value(expr)
