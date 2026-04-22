@@ -2,6 +2,7 @@ import yaml
 
 from pathlib import Path
 
+from uqtestfuns.core.registry.specs import CallableSpec
 
 def safe_load(yaml_file: Path) -> dict:
     """Load and parse a YAML file using safe loading.
@@ -44,9 +45,9 @@ converting them to their numeric equivalents.
 
 import math
 
-from typing import Union
+from typing import Union, Tuple
 
-from .validation import SpecValidationError
+from .validation import SpecValidationError, validate_callable_string
 
 NAMED_CONSTANTS = {
     "pi": math.pi,
@@ -197,3 +198,122 @@ def _resolve_expression(value: str) -> Union[float, int]:
         return -result if is_negative else result
 
     raise SpecValidationError(f"Unrecognized string value: {expression!r}")
+
+
+def parse_callable(
+    callable_: str,
+    yaml_file: Path,
+    pkg_root: Path,
+) -> Tuple[str, str]:
+    """Parse a callable spec string into the module path and the function name.
+
+    This helper function parses a callable specification string (typically from
+    a YAML file) and resolves it into a fully qualified Python module path and
+    a function name. It supports both explicit ``module.function`` notation and
+    implicit module resolution based on the YAML file name.
+
+    Parameters
+    ----------
+    callable_ : str
+        The callable specification string. The possible values are:
+
+        - A function name only (e.g., ``my_function``): Uses the specified
+          function name from a module with the same name as the YAML file
+        - A fully qualified path (e.g., ``my_module.my_function``): Uses the
+          specified module file and function name
+    yaml_file : Path
+        Path to the YAML specification file. Used to resolve relative module
+        paths when the value contains only a function name.
+    pkg_root : Path
+        Root path of the package, used to construct the absolute module path
+        relative to the package structure.
+
+    Returns
+    -------
+    Tuple[str, str]
+        A tuple of strings containing:
+
+        - ``module_path``: Fully qualified Python module path (dot-separated)
+        - ``callable_name``: Name of the callable within the module
+
+    Raises
+    ------
+    SpecValidationError
+        If the callable specification string is malformed (contains more than
+        one dot) or if the specified module file does not exist. Because import
+        is not carried out, the existence of the callable inside the module
+        cannot be verified.
+
+    Notes
+    -----
+    The function supports two specification formats:
+
+    1. **Function name only**: When a value contains no dots:
+
+       - Module: Same basename as the YAML file with .py extension
+       - Function: The specified name
+       - Example: ``value="my_func"`` with ``sobol_g.yaml`` means
+         module ``sobol_g.py``, function ``my_func``
+
+    2. **Fully qualified**: When a value contains exactly one dot:
+
+       - Module: Specified stem with .py extension in the same directory
+       - Function: Part after the dot
+       - Example: ``value="custom_module.my_func`` means
+         module ``custom_module.py``, function ``my_func``
+
+    The ``module_path`` is constructed relative to the parent of ``pkg_root``
+    to ensure proper Python import paths within the package structure.
+    """
+
+    # --- Validate the string is a valid callable specification
+    validate_callable_string(callable_)
+
+    # --- Split the callable string into module and function parts
+    # Validation ensures either 'name' or 'module.name' is present
+    parts = callable_.split(".")
+
+    if len(parts) == 2:
+        # Fully qualified module path
+        module_stem, callable_name = parts
+        module_file = yaml_file.parent / (module_stem + ".py")
+    else:
+        # The callable name
+        callable_name = parts[0]
+        # Assume that the Python module is named the same as the YAML file
+        module_file = yaml_file.with_suffix(".py")
+
+    # --- Check that the module file exists
+    if not module_file.exists():
+        raise SpecValidationError(f"Module file {module_file} does not exist!")
+
+    # --- Construct the module path relative to the package root
+    module_path = ".".join(
+        module_file.relative_to(pkg_root.parent.resolve())
+        .with_suffix("")
+        .parts
+    )
+
+    return module_path, callable_name
+
+
+def parse_factory(
+    factory_dict: dict,
+    yaml_file: Path,
+    pkg_root: Path,
+) -> CallableSpec:
+    """Parse a factory function specification for marginal distributions."""
+
+    factory_name = factory_dict["factory"]
+    module_path, callable_name = parse_callable(factory_name, yaml_file, pkg_root)
+
+    # Parse kwargs
+    kwargs = {k: resolve_generic(v) for k, v in factory_dict.items() if k != "factory"}
+    if not kwargs:
+        kwargs = None
+
+    return CallableSpec(
+        module_path=module_path,
+        function_name=callable_name,
+        kwargs=kwargs,
+    )
