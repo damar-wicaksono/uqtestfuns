@@ -1,54 +1,9 @@
-"""YAML specification parser for test function metadata.
-
-This module provides functionality to parse YAML specification files
-that define metadata for uncertainty quantification (UQ) test functions.
-It validates the structure and content of these specifications
-and converts them into structured UQTestFunInfo objects.
-"""
-
-import yaml
-
 from pathlib import Path
-from string import Template
-from typing import Optional, Tuple, List, Any, Dict
+from typing import Optional, Tuple
 
-from .specs import CallableSpec, MarginalSpec
-from .validation import (
-    SpecValidationError, validate_callable_string, validate_marginal
-)
-from .resolver import resolve_numeric_val
+from uqtestfuns.core.registry.specs import CallableSpec
 
-
-# --- Helper functions
-def safe_load(yaml_file: Path) -> dict:
-    """Load and parse a YAML file using safe loading.
-
-    This helper function reads a YAML specification file and parses it
-    into a Python dictionary using PyYAML's safe_load method, which
-    prevents arbitrary code execution and only constructs simple Python
-    objects (strings, lists, dicts, numbers, dates, etc.).
-
-    Parameters
-    ----------
-    yaml_file : Path
-        Path to the YAML file to be loaded.
-
-    Returns
-    -------
-    dict
-        Parsed YAML content as a Python dictionary containing the
-        specification data.
-
-    Notes
-    -----
-    - This function uses `yaml.safe_load()` rather than `yaml.load()` to
-      ensure security by preventing the execution of arbitrary Python code
-      that might be embedded in malicious YAML files.
-    """
-    with open(yaml_file, "r") as f:
-        data = yaml.safe_load(f)
-
-    return data
+from .validation import validate_callable_string, SpecValidationError
 
 
 def parse_evaluate(
@@ -211,6 +166,3 @@ def parse_callable(
     )
 
     return module_path, callable_name
-
-
-

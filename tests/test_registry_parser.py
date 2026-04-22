@@ -3,9 +3,10 @@ import yaml
 
 from pathlib import Path
 
-from uqtestfuns.core.registry.parser import parse_evaluate
-from uqtestfuns.core.registry.specs import CallableSpec
-from uqtestfuns.core.registry.validation import SpecValidationError
+from uqtestfuns.core.registry.parser.evaluate import parse_evaluate
+from uqtestfuns.core.registry.parser.inputs import parse_inputs
+from uqtestfuns.core.registry.specs import CallableSpec, UQInputSpec
+from uqtestfuns.core.registry.parser.validation import SpecValidationError
 
 FIXTURES_ROOT = Path(__file__).parent / "fixtures" / "valid_yaml"
 
@@ -62,6 +63,22 @@ class TestParseEvaluate:
         assert evaluate.module_path == "valid_yaml.dette"
         assert evaluate.kwargs is None
 
+    def test_fully_qualified_family(self):
+        """Test parsing a fully qualified function name."""
+        yaml_file = FIXTURES_ROOT / "franke" / "franke_1.yaml"
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        # Parse the evaluate section
+        evaluate_ = data.get("evaluate", None)
+        evaluate = parse_evaluate(evaluate_, yaml_file, FIXTURES_ROOT)
+
+        # Assertions
+        assert isinstance(evaluate, CallableSpec)
+        assert evaluate.function_name == "franke_1"
+        assert evaluate.module_path == "valid_yaml.franke.evaluate"
+        assert evaluate.kwargs is None
+
     def test_no_module_file(self):
         """Test parsing a YAML without the corresponding module file."""
         root = Path(__file__).parent / "fixtures" / "invalid_yaml"
@@ -74,4 +91,74 @@ class TestParseEvaluate:
 
         # Assertion
         with pytest.raises(SpecValidationError):
-            _ = parse_evaluate(evaluate_, yaml_file, FIXTURES_ROOT)
+            _ = parse_evaluate(evaluate_, yaml_file, root)
+
+
+class TestParseMarginalsList:
+    """All tests related to parsing the marginals list."""
+
+    def test_standard(self):
+        yaml_file = FIXTURES_ROOT / "otlcircuit.yaml"
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        # Parse the input section
+        inputs = parse_inputs(data["inputs"], yaml_file, FIXTURES_ROOT)
+
+        # Assertion
+        for input_id, input_spec in inputs.items():
+            assert isinstance(input_spec, UQInputSpec)
+            if isinstance(input_spec.marginals, list):
+                assert len(input_spec.marginals) == data["dimensions"]["input"]
+
+    def test_repeat(self):
+        yaml_file = FIXTURES_ROOT / "otlcircuit20d.yaml"
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        # Parse the input section
+        inputs = parse_inputs(data["inputs"], yaml_file, FIXTURES_ROOT)
+        for input_id, input_spec in inputs.items():
+            assert isinstance(input_spec, UQInputSpec)
+            if isinstance(input_spec.marginals, list):
+                assert len(input_spec.marginals) == data["dimensions"]["input"]
+
+    def test_factory(self):
+        yaml_file = FIXTURES_ROOT / "saltelli_linear.yaml"
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        # Parse the input section
+        inputs = parse_inputs(data["inputs"], yaml_file, FIXTURES_ROOT)
+        for input_id, input_spec in inputs.items():
+            assert isinstance(input_spec, UQInputSpec)
+
+    def test_template(self):
+        yaml_file = FIXTURES_ROOT / "sobol_g.yaml"
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        # Parse the input section
+        inputs = parse_inputs(data["inputs"], yaml_file, FIXTURES_ROOT)
+        for input_id, input_spec in inputs.items():
+            assert isinstance(input_spec, UQInputSpec)
+
+    def test_redirect(self):
+        yaml_file = FIXTURES_ROOT / "franke" / "franke_1.yaml"
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        # Parse the input section
+        inputs = parse_inputs(data["inputs"], yaml_file, FIXTURES_ROOT)
+        for input_id, input_spec in inputs.items():
+            assert isinstance(input_spec, UQInputSpec)
+
+    def test_invalid(self):
+        root = Path(__file__).parent / "fixtures" / "invalid_yaml"
+        yaml_file = root / "invalid_inputs.yaml"
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        # Parse the input section
+        with pytest.raises(SpecValidationError):
+            _ = parse_inputs(data["inputs"], yaml_file, root)

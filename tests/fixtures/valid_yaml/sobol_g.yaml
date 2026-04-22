@@ -1,0 +1,45 @@
+name: SobolG
+description: Sobol'-G function from Saltelli and Sobol' (1995)
+tags:
+  - sensitivity
+  - integration
+output_dimension: 1
+variable_dimension: true
+
+inputs:
+  Ishigami1991:
+    description: >-
+      Probabilistic input model for the Sobol'-G function
+      from Saltelli and Sobol' (1995)
+    marginals:
+      distribution: uniform
+      parameters: [ 0.0, 1.0 ]
+      name: X$idx
+
+parameters:
+
+  keyword:
+    aa: Input variable importance scaling
+
+  sets:
+    Saltelli1995_1:
+      aa:
+        factory: get_params_saltelli_1995_1
+      description: >- 
+        All variables are equally important (Example 1 in Saltelli and Sobol' (1995))
+    Saltelli1995_2:
+      aa:
+        factory: get_params_saltelli_1995_2
+      description: >-
+        The first two input variables are important, one is moderately
+        important, and the rest is non-influential
+        (Example 2 in Saltelli and Sobol' (1995))).
+    Saltelli1995_3:
+      aa:
+        factory: get_params_saltelli_1995_3
+      description: >-
+        The first input variable is the most important,
+        the importance of the remaining variables is decreasing
+        (Example 3 in Saltelli and Sobol' (1995))).
+
+  default_parameters_id: Saltelli1995_3

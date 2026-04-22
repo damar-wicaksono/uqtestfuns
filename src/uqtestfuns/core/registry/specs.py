@@ -105,18 +105,18 @@ class MarginalTemplate:
         List of distribution parameters. The number and meaning of parameters
         depend on the distribution type (e.g., [mean, std] for normal,
         [lower, upper] for uniform).
-    name_template : str, optional
-        An optional template string for the marginal distribution name that
+    name : str, optional
+        An optional string for the marginal distribution name that
         can contain placeholders for parameterization. Default is None.
-    description_template : str, optional
-        An optional template string for the marginal distribution description
+    description : str, optional
+        An optional string for the marginal distribution description
         that can contain placeholders for parameterization. Default is None.
     """
 
     distribution: str
     parameters: List[Union[float, int]]
-    name_template: Optional[str] = None
-    description_template: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -144,7 +144,7 @@ class UQInputSpec:
         is assumed. Default is None. This feature is not yet supported.
     """
 
-    marginals: Union[MarginalList, MarginalTemplate, CallableSpec]
+    marginals: Union[List[MarginalSpec], MarginalTemplate, CallableSpec]
     copulas: Optional[Any] = None
 
 

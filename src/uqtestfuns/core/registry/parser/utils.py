@@ -1,3 +1,39 @@
+import yaml
+
+from pathlib import Path
+
+
+def safe_load(yaml_file: Path) -> dict:
+    """Load and parse a YAML file using safe loading.
+
+    This helper function reads a YAML specification file and parses it
+    into a Python dictionary using PyYAML's safe_load method, which
+    prevents arbitrary code execution and only constructs simple Python
+    objects (strings, lists, dicts, numbers, dates, etc.).
+
+    Parameters
+    ----------
+    yaml_file : Path
+        Path to the YAML file to be loaded.
+
+    Returns
+    -------
+    dict
+        Parsed YAML content as a Python dictionary containing the
+        specification data.
+
+    Notes
+    -----
+    - This function uses `yaml.safe_load()` rather than `yaml.load()` to
+      ensure security by preventing the execution of arbitrary Python code
+      that might be embedded in malicious YAML files.
+    """
+    with open(yaml_file, "r") as f:
+        data = yaml.safe_load(f)
+
+    return data
+
+
 """
 Module for resolving YAML specification values with named constants.
 
@@ -18,8 +54,8 @@ NAMED_CONSTANTS = {
 }
 
 
-def resolve_yaml_val(value: Union[str, float, int]) -> Union[str, float, int]:
-    """Resolve YAML value to either numeric or string, evaluating expression.
+def resolve_generic(value: Union[str, float, int]) -> Union[str, float, int]:
+    """Resolve generic value to either numeric or string value.
 
     This function resolves values from YAML specifications by:
     - Returning numeric values (float, int) unchanged
@@ -73,7 +109,7 @@ def resolve_yaml_val(value: Union[str, float, int]) -> Union[str, float, int]:
     return value
 
 
-def resolve_numeric_val(value: Union[str, float, int]) -> Union[float, int]:
+def resolve_numeric(value: Union[str, float, int]) -> Union[float, int]:
     """Resolve a value to a numeric type.
 
     Parameters
