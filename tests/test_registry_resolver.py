@@ -6,7 +6,7 @@ import math
 import pytest
 
 from uqtestfuns.core.registry.validation import SpecValidationError
-from uqtestfuns.core.registry.resolver import resolve_value
+from uqtestfuns.core.registry.resolver import resolve_yaml_val
 
 SUPPORTED_CONSTANTS = ["pi", "e"]
 
@@ -19,7 +19,7 @@ class TestResolveValue:
         """Test resolving non-expression values; return as-is."""
 
         # Resolve value
-        value_ = resolve_value(value)
+        value_ = resolve_yaml_val(value)
 
         # Assertions
         assert value_ == value
@@ -33,7 +33,7 @@ class TestResolveValue:
         expr = f"$( {value} )"
 
         # Resolve value
-        value_ = resolve_value(expr)
+        value_ = resolve_yaml_val(expr)
 
         # Assertion
         assert value_ == getattr(math, value)
@@ -46,7 +46,7 @@ class TestResolveValue:
         expr = f"$( -{value} )"
 
         # Resolve value
-        value_ = resolve_value(expr)
+        value_ = resolve_yaml_val(expr)
 
         # Assertion
         assert value_ == -getattr(math, value)
@@ -60,7 +60,7 @@ class TestResolveValue:
 
         # Assertion
         with pytest.raises(SpecValidationError):
-            _ = resolve_value(expr)
+            _ = resolve_yaml_val(expr)
 
     def test_empty_expression(self):
         """Test resolving an empty expression."""
@@ -70,4 +70,4 @@ class TestResolveValue:
 
         # Assertion
         with pytest.raises(SpecValidationError):
-            _ = resolve_value(expr)
+            _ = resolve_yaml_val(expr)

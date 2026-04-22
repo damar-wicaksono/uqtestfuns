@@ -150,7 +150,7 @@ def parse_info(yaml_file: Path, pkg_root: Path) -> UQTestFunInfo:
     else:
         default_input_id = data["default_input_id"]
 
-    # --- Parameters specification (optional; None if not defined)
+    # --- Parameter specification (optional; None if not defined)
     parameters = data.get("parameters")
     if parameters is None:
         available_parameter_ids = None

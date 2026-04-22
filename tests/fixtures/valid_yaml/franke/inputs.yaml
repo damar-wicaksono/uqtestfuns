@@ -1,0 +1,9 @@
+Franke1979:
+  description: >-
+    Input specification for the test functions from Franke (1979)
+  marginals:
+    - name: X$idx
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      repeat: 2
+  copulas: null
