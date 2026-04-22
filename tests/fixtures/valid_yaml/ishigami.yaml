@@ -1,0 +1,34 @@
+name: Ishigami
+description: Ishigami function from Ishigami and Homma (1991)
+tags:
+  - sensitivity
+
+dimensions:
+  input: 3
+  output: 1
+
+inputs:
+  Ishigami1991:
+    description: >-
+      Probabilistic input model for the Ishigami function
+      from Ishigami and Homma (1991).
+    marginals:
+      distribution: uniform
+      parameters: [ -$(pi), $(pi)z ]
+      name: X$idx
+
+parameters:
+
+  keyword:
+    a: Nonlinear X2 influence
+    b: X1-X3 interaction strength
+
+  sets:
+    Ishigami1991:
+      a: 7.0
+      b: 0.1
+    Sobol1999:
+      a: 7.0
+      b: 0.05
+
+  default_parameters_id: Ishigami1991

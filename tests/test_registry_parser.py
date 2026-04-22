@@ -5,7 +5,8 @@ from pathlib import Path
 
 from uqtestfuns.core.registry.parser.evaluate import parse_evaluate
 from uqtestfuns.core.registry.parser.inputs import parse_inputs
-from uqtestfuns.core.registry.specs import CallableSpec, UQInputSpec
+from uqtestfuns.core.registry.parser.parameters import parse_parameters
+from uqtestfuns.core.registry.specs import CallableSpec, UQInputSpec, UQParametersSpec
 from uqtestfuns.core.registry.parser.validation import SpecValidationError
 
 FIXTURES_ROOT = Path(__file__).parent / "fixtures" / "valid_yaml"
@@ -162,3 +163,31 @@ class TestParseMarginalsList:
         # Parse the input section
         with pytest.raises(SpecValidationError):
             _ = parse_inputs(data["inputs"], yaml_file, root)
+
+
+class TestParseParameters:
+    """All tests related to parsing the parameters section."""
+
+    def test_simple(self):
+        yaml_file = FIXTURES_ROOT / "ishigami.yaml"
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        # Parse the parameters section
+        parameters = parse_parameters(data["parameters"], yaml_file, FIXTURES_ROOT)
+
+        # Assertions
+        for parameter_id, parameter_spec in parameters.items():
+            assert isinstance(parameter_spec, UQParametersSpec)
+
+    def test_callable(self):
+        yaml_file = FIXTURES_ROOT / "sobol_g.yaml"
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        # Parse the parameters section
+        parameters = parse_parameters(data["parameters"], yaml_file, FIXTURES_ROOT)
+
+        # Assertions
+        for parameter_id, parameter_spec in parameters.items():
+            assert isinstance(parameter_spec, UQParametersSpec)

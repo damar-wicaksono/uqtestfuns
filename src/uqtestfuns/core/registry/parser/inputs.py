@@ -4,10 +4,9 @@ from typing import Any, Dict, List, Optional, Union
 
 from uqtestfuns.core.registry.specs import MarginalSpec, MarginalTemplate, UQInputSpec, CallableSpec
 
-from .utils import safe_load, resolve_numeric, resolve_generic
+from .utils import safe_load, resolve_numeric, resolve_generic, parse_callable
 from .validation import SpecValidationError, validate_marginal
 
-from .evaluate import parse_callable
 
 def parse_inputs(
     inputs: Union[str, dict],
