@@ -1,0 +1,27 @@
+name: ClippedScaling3D
+description: Bounded scaling function with mixed parameter types
+tags:
+  - metamodeling
+
+dimensions:
+  input: 3
+  output: 1
+
+inputs:
+  Default:
+    description: Three independent uniform inputs
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      name: X$idx
+
+parameters:
+  sets:
+    Default:
+      scale: 2.0
+      coefficients:
+        factory: get_coefficients
+      bounds:
+        lower: -5.0
+        upper: 10.0
+      description: Default configuration with mixed parameter types

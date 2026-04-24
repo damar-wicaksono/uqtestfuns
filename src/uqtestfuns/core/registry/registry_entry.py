@@ -13,6 +13,9 @@ from pathlib import Path
 from typing_extensions import TypedDict
 
 
+from .specs import CallableSpec, UQInputSpec, UQParametersSpec
+
+
 class KeywordInfo(TypedDict):
     """Type definition for parameter keyword metadata.
 
@@ -84,8 +87,6 @@ class UQTestFunInfo:
 
     # File references
     spec_path: Path
-    module_path: str
-    evaluate_name: str
 
     # Input variant IDs
     available_input_ids: Dict[str, str]
@@ -95,3 +96,11 @@ class UQTestFunInfo:
     available_parameter_ids: Optional[Dict[str, str]] = None
     default_parameter_id: Optional[str] = None
     parameter_keywords: Optional[Dict[str, KeywordInfo]] = None
+
+
+@dataclass(frozen=True)
+class UQTestFunSpec:
+    name: str
+    evaluate: CallableSpec
+    inputs: Dict[str, UQInputSpec]
+    parameters: Optional[Dict[str, UQParametersSpec]]

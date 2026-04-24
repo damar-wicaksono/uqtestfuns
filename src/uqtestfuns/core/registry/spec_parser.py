@@ -87,7 +87,6 @@ def parse_info(yaml_file: Path, pkg_root: Path) -> UQTestFunInfo:
     name = data["name"]
     description = data["description"]
     tags = data["tags"]
-    variable_dimension = data["variable_dimension"]
     inputs = data["inputs"]
 
     # --- tags must be a list
@@ -98,46 +97,24 @@ def parse_info(yaml_file: Path, pkg_root: Path) -> UQTestFunInfo:
         )
 
     # --- Input dimension (conditionally optional)
-    if not variable_dimension:
-        input_dimension = data["input_dimension"]
+    dimensions = data["dimensions"]
+    input_dimension = dimensions["input"]
+    if input_dimension == "variable":
+        variable_dimension = True
+        input_dimension = None
+    else:
         if not isinstance(input_dimension, int) or input_dimension < 1:
             raise SpecValidationError(
                 f"'input_dimension' must be a positive integer, "
                 f"got {input_dimension!r} in {yaml_file}"
             )
-    else:
-        if "input_dimension" in data:
-            raise SpecValidationError(
-                f"'input_dimension' is specified for a variable-dimension "
-                f"test function in {yaml_file}"
-            )
-        input_dimension = None
+        variable_dimension = False
 
     # --- Output dimension (optional with default value)
-    output_dimension = data.get("output_dimension", 1)
+    output_dimension = dimensions.get("output_dimension", 1)
 
     # --- File references
     spec_path = yaml_file.resolve()
-    evaluate = data.get("evaluate")
-    if evaluate is None:
-        module_file = spec_path.with_suffix(".py")
-        if not module_file.exists():
-            raise SpecValidationError(
-                f"Module file {module_file} does not exist!"
-            )
-        evaluate_name = "evaluate"
-    else:
-        module_stem, evaluate_name = evaluate.rsplit(".", 1)
-        module_file = spec_path.parent / (module_stem + ".py")
-        if not module_file.exists():
-            raise SpecValidationError(
-                f"Module file {module_file} does not exist!"
-            )
-    module_path = ".".join(
-        module_file.relative_to(pkg_root.parent.resolve())
-        .with_suffix("")
-        .parts
-    )
 
     # --- Inputs specification
     if not inputs:
@@ -148,9 +125,9 @@ def parse_info(yaml_file: Path, pkg_root: Path) -> UQTestFunInfo:
     if len(inputs) == 1:
         default_input_id = next(iter(inputs))
     else:
-        default_input_id = data["default_input_id"]
+        default_input_id = data["default_input"]
 
-    # --- Parameters specification (optional; None if not defined)
+    # --- Parameter specification (optional; None if not defined)
     parameters = data.get("parameters")
     if parameters is None:
         available_parameter_ids = None
@@ -175,12 +152,15 @@ def parse_info(yaml_file: Path, pkg_root: Path) -> UQTestFunInfo:
         if len(available_sets) == 1:
             default_parameter_id = next(iter(available_sets))
         else:
-            default_parameter_id = parameters["default_parameter_id"]
+            default_parameter_id = parameters["default_parameters"]
 
         # -- Infer keyword types from the default parameter set
         default_set = available_sets[default_parameter_id]
+        default_set = {
+            k: v for k, v in default_set.items() if k != "description"
+        }
         parameter_keywords = {}
-        for k, v in default_set["values"].items():
+        for k, v in default_set.items():
             is_callable = isinstance(v, str) and v.endswith("()")
             parameter_keywords[k] = KeywordInfo(
                 type=Callable if is_callable else type(v),
@@ -195,8 +175,6 @@ def parse_info(yaml_file: Path, pkg_root: Path) -> UQTestFunInfo:
         input_dimension,
         output_dimension,
         spec_path,
-        module_path,
-        evaluate_name,
         available_input_ids,
         default_input_id,
         available_parameter_ids,

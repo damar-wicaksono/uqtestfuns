@@ -1,0 +1,35 @@
+name: WeightedProduct
+description: Weighted product function with dimension-dependent parameters
+tags:
+  - sensitivity
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs:
+  Default:
+    description: Independent uniform inputs on [0, 1]
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      name: X$idx
+      description: Independent variable
+
+parameters:
+
+  keyword_descriptions:
+    weights: Per-variable scaling weights
+
+  sets:
+    Equal:
+      weights:
+        factory: get_equal_weights
+      description: All variables equally weighted
+    Decaying:
+      weights:
+        factory: get_decaying_weights
+        rate: 2.0
+      description: Weights decay with variable index
+
+  default_parameters: Decaying

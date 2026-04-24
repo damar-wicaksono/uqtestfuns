@@ -1,0 +1,27 @@
+name: CircularBar2D
+description: Circular limit-state function
+tags:
+  - reliability
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Default:
+    description: Two standard normal inputs
+    marginals:
+      - name: X1
+        distribution: normal
+        parameters: [0.0, 1.0]
+        description: Load variable
+      - name: X2
+        distribution: normal
+        parameters: [0.0, 1.0]
+        description: Resistance variable
+
+parameters:
+  sets:
+    Default:
+      p: 5.0
+      description: Default threshold parameter
