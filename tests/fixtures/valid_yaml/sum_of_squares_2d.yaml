@@ -1,0 +1,21 @@
+name: SumOfSquares2D
+description: Sum of squared inputs (fake fixture function)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Default:
+    description: Two independent inputs
+    marginals:
+      - name: X1
+        distribution: uniform
+        parameters: [0.0, 1.0]
+        description: First input variable
+      - name: X2
+        distribution: normal
+        parameters: [0.0, 1.0]
+        description: Second input variable

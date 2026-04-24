@@ -1,16 +1,24 @@
+"""Parser for the 'evaluate' section of test function YAML specification files.
+
+This module provides functionality to parse and validate the 'evaluate' field
+from YAML specification files, constructing CallableSpec objects that identify
+the evaluation functions for UQ test functions.
+"""
+
 from pathlib import Path
 from typing import Optional
 
 from uqtestfuns.core.registry.specs import CallableSpec
+
 from .utils import parse_callable
 
 
 def parse_evaluate(
-    evaluate: Optional[str],
-    yaml_file: Path,
+    evaluate_value: Optional[str],
+    spec_file: Path,
     pkg_root: Path,
 ) -> CallableSpec:
-    """Parse the evaluate section of a YAML specification.
+    """Parse the 'evaluate' section of a YAML specification.
 
     This function parses the 'evaluate' field from a YAML specification file
     and constructs a CallableSpec object that identifies the evaluation
@@ -20,16 +28,17 @@ def parse_evaluate(
 
     Parameters
     ----------
-    evaluate : Optional[str]
-        The evaluate specification string from the YAML file. Can be:
+    evaluate_value : Optional[str]
+        The value of the "evaluate" specification from the YAML file.
+        This can be:
 
-        - None: Assumes a module file with the same name as the YAML file
+        - ``None``: Assumes a module file with the same name as the YAML file
           and a function named "evaluate"
-        - A function name only (e.g., "my_evaluate"): Uses the specified
+        - A function name only (e.g., ``"my_evaluate"``): Uses the specified
           function name from a module with the same name as the YAML file
-        - A fully qualified path (e.g., "my_module.my_evaluate"): Uses the
+        - A fully qualified path (e.g., ``"my_module.my_evaluate"``): Uses the
           specified module file and function name
-    yaml_file : Path
+    spec_file : Path
         Path to the YAML specification file being parsed. Used to resolve
         relative module paths when evaluate is None or partially specified.
     pkg_root : Path
@@ -39,29 +48,19 @@ def parse_evaluate(
     Returns
     -------
     CallableSpec
-        A specification object containing:
-
-        - module_path: Fully qualified Python module path (dot-separated)
-        - function_name: Name of the evaluation function within the module
-        - kwargs: None
-
-    Raises
-    ------
-    SpecValidationError
-        If the specified module file does not exist or if the evaluate
-        specification string is malformed (contains more than one dot).
+        A specification object for a callable object.
 
     Notes
     -----
     - The ``module_path`` is constructed relative to the parent of ``pkg_root``
       to ensure proper Python import paths within the package structure.
     """
-    if evaluate is None:
+    if evaluate_value is None:
         callable_ = "evaluate"
     else:
-        callable_ = evaluate
+        callable_ = evaluate_value
 
-    module_path, evaluate_name = parse_callable(callable_, yaml_file, pkg_root)
+    module_path, evaluate_name = parse_callable(callable_, spec_file, pkg_root)
 
     return CallableSpec(
         module_path=module_path,

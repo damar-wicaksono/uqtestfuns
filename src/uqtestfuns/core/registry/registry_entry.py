@@ -102,5 +102,5 @@ class UQTestFunInfo:
 class UQTestFunSpec:
     name: str
     evaluate: CallableSpec
-    input: UQInputSpec
-    parameters: Optional[UQParametersSpec]
+    inputs: Dict[str, UQInputSpec]
+    parameters: Optional[Dict[str, UQParametersSpec]]

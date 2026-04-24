@@ -1,5 +1,5 @@
-name: CommonEvalVarInputNoParams
-description: "Variable-dimension function, multiple inputs, no parameter"
+name: InvalidEvalNoFile
+description: Specification with no corresponding Python module
 tags: [metamodeling]
 
 dimensions:
