@@ -1,271 +1,365 @@
+"""Parser for the 'inputs' section in the YAML specifications.
+
+This module provides functionality to parse and validate probabilistic input
+specifications from YAML specification files. It processes marginal
+distributions defined as lists, templates, or factory references,
+and supports input redirection to external YAML files.
+"""
+
 from pathlib import Path
 from string import Template
 from typing import Any, Dict, List, Optional, Union
 
-from uqtestfuns.core.registry.specs import MarginalSpec, MarginalTemplate, UQInputSpec, CallableSpec
+from uqtestfuns.core.registry.specs import (
+    CallableSpec,
+    MarginalSpec,
+    MarginalTemplate,
+    UQInputSpec,
+)
 
-from .utils import safe_load, resolve_numeric, resolve_generic, parse_callable
-from .validation import SpecValidationError, validate_marginal
+from .utils import parse_factory, resolve_numeric, safe_load
+from .validation import (
+    SpecValidationError,
+    validate_marginal,
+    validate_required_keys,
+)
 
 
 def parse_inputs(
-    inputs: Union[str, dict],
-    yaml_file: Path,
+    inputs_value: Union[str, dict],
+    spec_file: Path,
     pkg_root: Path,
 ) -> Dict[str, UQInputSpec]:
-    """Parse the inputs section of a YAML specification.
-
-    This function parses the 'inputs' field from a YAML specification file
-    and constructs a dictionary of UQInputSpec objects that define the
-    probabilistic input model for a UQ test function. It supports
-    multiple input specification formats, including explicit marginal lists,
-    marginal templates, factory functions, and file redirections.
+    """Parse the 'inputs' section from a YAML specification.
 
     Parameters
     ----------
-    inputs : Union[str, dict]
-        The inputs specification from the YAML file. Can be:
+    inputs_value : Union[str, dict]
+        The raw 'inputs' value from the YAML specification.
 
-        - A string: Path to another YAML file containing the input
-          specification (enables input reuse across test functions)
-        - A dictionary: Direct specification of input sets, where each key
-          is an input set ID and each value contains marginal specifications
+        Accepted forms:
+        - ``dict``: A mapping of input-set names to input specifications.
+        - ``str`` ending in ``.yaml``: A relative path to another YAML file
+          whose ``inputs`` section should be loaded recursively.
 
-    yaml_file : Path
-        Path to the YAML specification file being parsed. Used to resolve
-        relative paths for file redirections and factory function modules.
+    spec_file : Path
+        Path to the YAML specification currently being parsed. Used to resolve
+        redirected input files relative to the specification directory.
+
     pkg_root : Path
-        Root path of the package, used to construct absolute module paths
-        for factory functions relative to the package structure.
+        Root path of the package. Used to resolve factory function references
+        relative to the package structure.
 
     Returns
     -------
     Dict[str, UQInputSpec]
-        A dictionary mapping input set IDs (strings) to UQInputSpec objects.
-        Each UQInputSpec contains:
+        A mapping from input-set name to :class:`UQInputSpec`.
 
-        - marginals: Specification of marginal distributions (can be a list,
-          template, or factory callable)
-        - copulas: Specification of dependence structure (currently None,
-          reserved for future use)
+        Each returned input specification contains:
+        - ``marginals``: Parsed marginal specification, produced from either a
+          list, a template dictionary, or a factory callable.
+        - ``copulas``: Always ``None`` in this parser.
+
+    Raises
+    ------
+    SpecValidationError
+        If 'inputs' has an unsupported shape, if a redirected file would
+        create a circular reference, or if any input entry is invalid.
 
     Notes
     -----
-    The function supports three marginal specification formats:
+    When 'inputs' is a string, it is treated as a filename relative to
+    ``spec_file`` and the referenced YAML file is loaded recursively.
 
-    1. **List of marginals**: An explicit list where each element defines
-       a single marginal distribution with its parameters:
+    For dictionary-based input specifications, each entry must define a
+    ``marginals`` field. The value of ``marginals`` may be one of:
 
-       .. code-block:: yaml
+    - a list of explicit marginal definitions
+    - a template dictionary defining a shared marginal pattern
+    - a factory dictionary containing a ``factory`` reference
 
-          marginals:
-            - distribution: "normal"
-              parameters: [0, 1]
-              name: "X1"
-            - distribution: "uniform"
-              parameters: [-1, 1]
-              name: "X2"
-
-    2. **Template specification**: A template that defines identical marginals
-       for all input dimensions (typically used with variable-dimension
-       functions):
-
-       .. code-block:: yaml
-
-          marginals:
-            distribution: uniform
-            parameters: [0, 1]
-            name_template: X_$idx
-            describe_template: Variable $idx
-
-    3. **Factory function**: A callable that programmatically generates
-       marginals, useful for complex input specifications (by default
-       the callable is located in the module with the same name as
-       the YAML file):
-
-       .. code-block:: yaml
-
-          marginals:
-            factory: create_marginals
-
-    **File Redirection**: When inputs is a string, it's treated as a filename
-    relative to the YAML file's directory. The function loads that file and
-    recursively parses its 'inputs' section, enabling input specification
-    reuse across multiple test functions.
-
-    The factory function specification follows the same resolution rules as
-    `parse_evaluate()`: if only a function name is given, the module is
-    assumed to have the same name as the YAML file; if a dot-separated path
-    is given (e.g., "module.function"), it's resolved relative to the YAML
-    file's directory.
+    The factory resolution follows the same callable-parsing rules used
+    elsewhere in the parser: a plain function name is resolved against the
+    YAML file's module context, while dotted references are resolved as
+    explicit module paths.
     """
 
-    input_specs = {}
+    input_specs: Dict[str, UQInputSpec] = {}
 
-    # --- Redirection to another file
-    if isinstance(inputs, str) and inputs.endswith(".yaml"):
-        inputs_ = safe_load(yaml_file.with_name(inputs))
+    if isinstance(inputs_value, str) and inputs_value.endswith(".yaml"):
+        # --- Redirection to another file
+        redirected_file = spec_file.with_name(inputs_value)
 
-        return parse_inputs(inputs_, yaml_file, pkg_root)
-
-    # --- Parse the marginals
-    for key, value in inputs.items():
-        marginals = value["marginals"]
-
-        if isinstance(marginals, list):
-            # List of marginals
-            marginals_spec = _parse_marginals_list(marginals)
-
-        elif isinstance(marginals, dict):
-            if "factory" in marginals.keys():
-                # Factory function
-                marginals_spec = _parse_marginals_factory(
-                    marginals, yaml_file, pkg_root
-                )
-            else:
-                marginals_spec = _parse_marginals_template(marginals)
-        else:
+        # Must not be identical with the main specification file
+        if redirected_file == spec_file:
             raise SpecValidationError(
-                f"Unsupported input specification: {value}"
+                f"Input redirection to {inputs_value} would create a circular "
+                f"dependency in {str(spec_file)}"
             )
 
-        input_specs[key] = UQInputSpec(
-            marginals=marginals_spec,
-            copulas=None,
+        inputs_ = safe_load(redirected_file)
+
+        return parse_inputs(inputs_, spec_file, pkg_root)
+
+    elif isinstance(inputs_value, dict):
+        # --- Parse each of the input specifications
+        for key, value in inputs_value.items():
+            # Check if required key is present
+            validate_required_keys(
+                value,
+                required_keys={"marginals"},
+                context=f"Input {key} of {str(spec_file)}",
+            )
+            # --- Parse the marginals
+            marginals_spec: Union[
+                List[MarginalSpec],
+                CallableSpec,
+                MarginalTemplate,
+            ]
+            marginals = value["marginals"]
+
+            if isinstance(marginals, list):
+                # List of marginals
+                marginals_spec = _parse_marginals_list(marginals)
+
+            elif isinstance(marginals, dict):
+                if "factory" in marginals:
+                    # Factory function
+                    marginals_spec = parse_factory(
+                        marginals,
+                        spec_file,
+                        pkg_root,
+                    )
+                else:
+                    marginals_spec = _parse_marginals_template(marginals)
+            else:
+                raise SpecValidationError(
+                    f"Input '{key}' in {spec_file} has unsupported "
+                    f"'marginals' value: {marginals!r}"
+                )
+
+            input_specs[key] = UQInputSpec(
+                name=key,
+                marginals=marginals_spec,
+                copulas=None,
+            )
+
+    else:
+        raise SpecValidationError(
+            f"Invalid input specification: {inputs_value}"
         )
 
     return input_specs
 
 
-def _parse_marginals_list(marginals: List[Dict[str, Any]]) -> List[MarginalSpec]:
-    """Parse a list of marginals specifications.
-    """
-    def _substitute_idx(tpl: Optional[str], idx_: int) -> Optional[str]:
-        if tpl is None:
-            return None
-
-        return Template(tpl).safe_substitute(idx=idx_)
-
-    parsed_marginals = []
-    for marginal in marginals:
-
-        # --- "repeat" as key is possible
-        if "repeat" in marginal:
-            filtered_marginal = {
-                k: v for k, v in marginal.items() if k != "repeat"
-            }
-            validate_marginal(filtered_marginal)
-            repeat_count = marginal["repeat"]
-            for idx in range(repeat_count):
-                name = _substitute_idx(
-                    filtered_marginal.get("name", None),
-                    idx+1,
-                )
-                description = _substitute_idx(
-                    filtered_marginal.get("description", None),
-                    idx+1,
-                )
-                parameters = filtered_marginal["parameters"]
-                parameters = [
-                    resolve_numeric(parameter) for parameter in parameters
-                ]
-                parsed_marginals.append(
-                    MarginalSpec(
-                        filtered_marginal["distribution"],
-                        parameters,
-                        name,
-                        description,
-                    )
-                )
-        else:
-
-            # --- Validate marginal dictionary
-            validate_marginal(marginal)
-
-            # --- Convert to marginal spec
-            distribution = marginal["distribution"]
-            parameters = marginal["parameters"]
-            parameters = [
-                resolve_numeric(parameter) for parameter in parameters
-            ]
-            name = marginal.get("name", None)
-            description = marginal.get("description", None)
-
-            parsed_marginals.append(
-                MarginalSpec(distribution, parameters, name, description)
-            )
-
-    return parsed_marginals
-
-
-def _parse_marginals_factory(
-    marginals: Dict[str, Any],
-    yaml_file: Path,
-    pkg_root: Path,
-) -> CallableSpec:
-    """Parse a factory function specification for marginal distributions."""
-
-    module_path, callable_name = parse_callable(marginals["factory"], yaml_file, pkg_root)
-
-    # Parse kwargs
-    kwargs = {k: resolve_generic(v) for k, v in marginals.items() if k != "factory"}
-    if not kwargs:
-        kwargs = None
-
-    return CallableSpec(
-        module_path=module_path,
-        function_name=callable_name,
-        kwargs=kwargs,
-    )
-
-
-def _parse_marginals_template(marginals: Dict[str, Any]) -> MarginalTemplate:
+# --- Helper functions
+def _parse_marginals_template(
+    base_marginal: Dict[str, Any],
+) -> MarginalTemplate:
     """Parse a template specification for marginal distributions.
 
-    This helper function processes a template-based marginal specification
-    where all marginal distributions share the same distribution type and
-    parameters. This format is particularly useful for variable-dimension
-    test functions where the input dimension can vary, but all marginals
-    follow the same pattern. The template supports optional name and
-    description templates that can include placeholders for dimension indices.
+    This helper validates and normalizes a single marginal template
+    specification. The template defines one shared distribution and parameter
+    set for all dimensions, while optional ``name`` and ``description`` fields
+    may contain ``$idx`` placeholders that are interpreted later by
+    ``MarginalTemplate`` when the the probabilistic input is instantiated.
 
     Parameters
     ----------
-    marginals : dict
-        A dictionary defining the marginal distribution template with the
-        following keys:
+    base_marginal : dict
+        Template specification with the following required keys:
 
-        - distribution (str, required): Name of the probability distribution
-          to be applied to all marginals (e.g., "normal", "uniform")
-        - parameters (list, required): Distribution parameters as a list
-          (e.g., [0, 1] for standard normal, [-1, 1] for uniform bounds)
-        - name_template (str, optional): Template string for generating
-          marginal names, can include $idx placeholder for dimension index
-          (e.g., "X$idx" generates "X1", "X2", etc.)
-        - description_template (str, optional): Template string for generating
-          marginal descriptions, can include $idx placeholder for dimension
-          index (e.g., "Variable $idx")
+        - ``distribution`` (str): Name of the distribution to apply to all
+          dimensions.
+        - ``parameters`` (list): Distribution parameters. Each entry is
+          resolved to a numeric value before constructing the template.
+
+        Optional keys:
+        - ``name`` (str): Template for the variable name, may include
+          ``$idx``.
+        - ``description`` (str): Template for the variable description, may
+          include ``$idx``.
 
     Returns
     -------
     MarginalTemplate
-        A MarginalTemplate object containing the distribution type, parameters,
-        and optional name and description templates. This template can be
-        instantiated for any number of dimensions at runtime.
+        A normalized marginal template with resolved numeric parameters.
 
     Raises
     ------
     SpecValidationError
-        If the required "distribution" or "parameters" field is missing from
-        the marginals' dictionary.
+        If the marginal specification is invalid.
     """
-    # Obligatory field must exist per entry
-    validate_marginal(marginals)
+    # Validate the marginal dictionary
+    validate_marginal(base_marginal)
 
-    parameters_ = [resolve_numeric(p) for p in marginals["parameters"]]
+    # Resolve the distribution parameter values to numeric values
+    resolved_parameters = [
+        resolve_numeric(p) for p in base_marginal["parameters"]
+    ]
+
     return MarginalTemplate(
-        distribution=marginals["distribution"],
-        parameters=parameters_,
-        name=marginals.get("name", None),
-        description=marginals.get("description", None),
+        distribution=base_marginal["distribution"],
+        parameters=resolved_parameters,
+        name=base_marginal.get("name"),
+        description=base_marginal.get("description"),
     )
+
+
+def _parse_marginals_list(marginals: list) -> List[MarginalSpec]:
+    """Parse a list of marginal distribution specifications.
+
+    This helper processes a list of marginal specifications, each defining
+    a single probabilistic input dimension. Each marginal can optionally
+    include a ``repeat`` key to duplicate the specification across multiple
+    dimensions with automatic index substitution in name and description.
+
+    Parameters
+    ----------
+    marginals : list
+        List of marginal specification dictionaries. Each dictionary must
+        contain:
+
+        - ``distribution`` (str): Name of the distribution.
+        - ``parameters`` (list): Distribution parameters.
+
+        Optional keys:
+        - ``name`` (str): Variable name, may contain ``$idx`` placeholder.
+        - ``description`` (str): Variable description, may contain ``$idx``
+          placeholder.
+        - ``repeat`` (int): Number of times to repeat this marginal with
+          automatic index substitution (starting from 1). The value must be
+          a positive integer.
+
+    Returns
+    -------
+    List[MarginalSpec]
+        List of parsed marginal specifications. If a marginal contains a
+        ``repeat`` key with value N, it will expand to N consecutive
+        MarginalSpec objects with index-substituted names and descriptions.
+
+    Notes
+    -----
+    When ``repeat`` is specified, the ``$idx`` placeholder in ``name`` and
+    ``description`` fields is replaced with sequential indices starting from 1.
+    The ``repeat`` keyword is filtered out before validation and construction.
+    """
+
+    parsed_marginals: List[MarginalSpec] = []
+
+    for marginal in marginals:
+
+        if "repeat" in marginal:
+            # Filter 'repeat' keyword
+            base_marginal = {
+                k: v for k, v in marginal.items() if k != "repeat"
+            }
+            # Validate the base marginal
+            validate_marginal(base_marginal)
+            # Repeat the marginal
+            repeat = marginal["repeat"]
+            _validate_repeat(repeat)
+            for i in range(repeat):
+                parsed_marginals.append(
+                    _build_marginal_spec(base_marginal, idx=i + 1)
+                )
+        else:
+            # Each marginal is a valid marginal
+            validate_marginal(marginal)
+
+            parsed_marginals.append(_build_marginal_spec(marginal))
+
+    return parsed_marginals
+
+
+def _build_marginal_spec(
+    marginal: Dict[str, Any],
+    idx: Optional[int] = None,
+) -> MarginalSpec:
+    """Build a MarginalSpec from a marginal dictionary.
+
+    This helper constructs a single marginal specification from a dictionary,
+    resolving numeric parameters and optionally substituting an index value
+    into templated name and description fields.
+
+    Parameters
+    ----------
+    marginal : Dict[str, Any]
+        Marginal specification dictionary with required keys:
+
+        - ``distribution`` (str): Name of the distribution.
+        - ``parameters`` (list): Distribution parameters to be resolved.
+
+        Optional keys:
+        - ``name`` (str): Variable name, may contain ``$idx`` placeholder.
+        - ``description`` (str): Variable description, may contain ``$idx``
+          placeholder.
+    idx : int, optional
+        Index value to substitute into ``$idx`` placeholders in the name
+        and description fields. If None, no substitution is performed.
+
+    Returns
+    -------
+    MarginalSpec
+        A normalized marginal specification with resolved parameters and
+        substituted name/description if an index was provided.
+    """
+    distribution = marginal["distribution"]
+    resolved_parameters = [resolve_numeric(p) for p in marginal["parameters"]]
+
+    name = marginal.get("name")
+    description = marginal.get("description")
+
+    if idx is not None:
+        name = _substitute_idx(name, idx)
+        description = _substitute_idx(description, idx)
+
+    return MarginalSpec(
+        distribution=distribution,
+        parameters=resolved_parameters,
+        name=name,
+        description=description,
+    )
+
+
+def _substitute_idx(template: Optional[str], idx: int) -> Optional[str]:
+    """Substitute the $idx placeholder in a template string.
+
+    Parameters
+    ----------
+    template : Optional[str]
+        Template string that may contain a ``$idx`` placeholder.
+        If None, the function returns None immediately.
+        Any other placeholders not provided are left unchanged.
+    idx : int
+        Integer value to substitute for the ``$idx`` placeholder.
+
+    Returns
+    -------
+    Optional[str]
+        The template string with ``$idx`` replaced by the given index value,
+        or None if the input template was None.
+    """
+    if template is None:
+        return None
+
+    return Template(template).safe_substitute(idx=idx)
+
+
+def _validate_repeat(repeat: int) -> None:
+    """Validate that repeat is a positive integer.
+
+    Parameters
+    ----------
+    repeat : int
+        The repeat count to validate.
+
+    Raises
+    ------
+    SpecValidationError
+        If repeat is not a positive integer.
+    """
+    if not isinstance(repeat, int) or repeat <= 0:
+        raise SpecValidationError(
+            f"Invalid repeat value {repeat!r}; expected a positive integer."
+        )

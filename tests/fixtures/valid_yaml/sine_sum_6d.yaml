@@ -1,0 +1,35 @@
+name: SineSum6D
+description: Weighted sum of sine functions (fake fixture function)
+tags:
+  - sensitivity
+
+dimensions:
+  input: 6
+  output: 1
+
+inputs:
+  Default:
+    description: Six independent uniform inputs on [-pi, pi]
+    marginals:
+      distribution: uniform
+      parameters: [$(-pi), $(pi)]
+      name: X$idx
+      description: Input variable $idx
+
+parameters:
+
+  keyword_descriptions:
+    a: Amplitude scaling factor
+    b: Frequency scaling factor
+
+  sets:
+    LowFreq:
+      a: 2.0
+      b: 1.0
+      description: Low frequency configuration
+    HighFreq:
+      a: 0.5
+      b: $(pi)
+      description: High frequency configuration
+
+  default_parameters: LowFreq

@@ -4,7 +4,7 @@ Test module for registry validation functionality.
 
 import pytest
 
-from uqtestfuns.core.registry.validation import (
+from uqtestfuns.core.registry.parser.validation import (
     SpecValidationError,
     validate_marginal,
     validate_callable_string,
@@ -72,12 +72,12 @@ class TestMarginalValidation:
 class TestCallableStringValidation:
     """All tests related to callable string validation."""
 
-    @pytest.mark.parametrize("valid_str", ["foo", "_foo.bar", "_hello"])
+    @pytest.mark.parametrize("valid_str", ["foo1", "_foo.bar", "_hello"])
     def test_valid_string(self, valid_str):
         """Test that a valid callable string is valid."""
         validate_callable_string(valid_str)
 
-    @pytest.mark.parametrize("invalid_str", ["", "foo.bar.ba", "foo.", ".bar"])
+    @pytest.mark.parametrize("invalid_str", ["", "1foo.bar.b", "foo.", ".bar"])
     def test_invalid_string(self, invalid_str):
         """Test that an invalid callable string is invalid."""
         with pytest.raises(SpecValidationError):

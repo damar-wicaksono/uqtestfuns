@@ -130,8 +130,12 @@ class UQInputSpec:
     in the registry system to specify the full probabilistic input model
     for uncertainty quantification test functions.
 
+    From a UQInputSpec, an instance of Input can be constructed.
+
     Parameters
     ----------
+    name : str, optional
+        The name of the input specification. Default is None.
     marginals : Union[MarginalSpec, MarginalList, MarginalTemplate]
         The marginal distribution specification(s) for the input dimensions.
         Can be a single MarginalSpec (for one-dimensional inputs), a
@@ -144,6 +148,7 @@ class UQInputSpec:
         is assumed. Default is None. This feature is not yet supported.
     """
 
+    name: Optional[str]
     marginals: Union[List[MarginalSpec], MarginalTemplate, CallableSpec]
     copulas: Optional[Any] = None
 
@@ -157,8 +162,12 @@ class UQParametersSpec:
     registry system to specify configurable parameters that affect the
     behavior of uncertainty quantification test functions.
 
+    From a UQParametersSpec, an instance of Parameters can be constructed.
+
     Parameters
     ----------
+    name : str, optional
+        The name of the parameters set. Default is None.
     descriptions : Dict[str, str], optional
         Optional dictionary mapping parameter names to their human-readable
         descriptions. This provides documentation for what each parameter
@@ -169,5 +178,6 @@ class UQParametersSpec:
         appropriate for the parameter (e.g., float, int, str, list).
     """
 
-    descriptions: Optional[Dict[str, str]]
+    name: Optional[str]
+    keyword_descriptions: Optional[Dict[str, str]]
     values: Dict[str, Any]

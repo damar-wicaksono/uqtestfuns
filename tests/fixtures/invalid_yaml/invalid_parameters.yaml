@@ -1,0 +1,27 @@
+name: InvalidParameters
+description: Invalid parameters specification
+tags:
+  - reliability
+
+dimensions:
+  input: 2
+  output: 1
+
+evaluate: common.evaluate
+
+inputs:
+  Default:
+    description: Two standard normal inputs
+    marginals:
+      - name: X1
+        distribution: normal
+        parameters: [0.0, 1.0]
+        description: Load variable
+      - name: X2
+        distribution: normal
+        parameters: [0.0, 1.0]
+        description: Resistance variable
+
+parameters:
+  sets:
+    Default: [0, 5]
