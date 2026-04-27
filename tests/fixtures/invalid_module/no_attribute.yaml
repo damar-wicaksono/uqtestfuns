@@ -1,0 +1,16 @@
+name: NoAttribute
+description: The evaluation function is not in the module
+tags: [metamodeling]
+
+dimensions:
+  input: variable
+  output: 1
+
+evaluate: common.evaluate
+
+inputs:
+  DefaultInput:
+    description: "Default input"
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]
