@@ -10,10 +10,13 @@ from uqtestfuns.core.registry.specs import (
 )
 from uqtestfuns.core.registry.parser import parse_spec, SpecValidationError
 from uqtestfuns.core.registry.registry_entry import UQTestFunSpec
+from uqtestfuns.core.registry.resolver import resolve_callable
 
 # Fixture roots
-VALID_ROOT = Path(__file__).parent / "fixtures" / "valid_yaml"
-INVALID_ROOT = Path(__file__).parent / "fixtures" / "invalid_yaml"
+FIXTURE_ROOT = Path(__file__).parent / "fixtures"
+VALID_ROOT = FIXTURE_ROOT / "valid_yaml"
+INVALID_ROOT = FIXTURE_ROOT / "invalid_yaml"
+INVALID_ROOT_MOD = FIXTURE_ROOT / "invalid_module"
 
 # NOTE: List[MarginalSpec] cannot be checked via isinstance(), use list instead
 MARGINALS_SPECS = (list, MarginalTemplate, CallableSpec)
@@ -62,6 +65,27 @@ def invalid_spec_file(request):
     return spec_file
 
 
+@pytest.fixture
+def tmp_module_path(monkeypatch):
+    monkeypatch.syspath_prepend(str(FIXTURE_ROOT))
+
+
+# Invalid Python module
+INVALID_PYTHON_MODULES = [
+    "cannot_import.yaml",
+    "no_attribute.yaml",
+    "not_callable.yaml",
+]
+
+
+@pytest.fixture(params=INVALID_PYTHON_MODULES)
+def invalid_python_module(request):
+    """Fixture to provide spec file with invalid python module for testing."""
+    spec_file = INVALID_ROOT_MOD / request.param
+
+    return spec_file
+
+
 def test_parse_spec_structural(valid_spec_file):
     """Test the specification structure of a valid YAML file."""
     # Parse the specification
@@ -106,3 +130,42 @@ def test_parse_spec_invalid(invalid_spec_file):
     """Test invalid YAML specification files."""
     with pytest.raises(SpecValidationError):
         _ = parse_spec(invalid_spec_file, INVALID_ROOT)
+
+
+class TestResolverCallableSpec:
+    """All tests related to the resolver of callable specifications."""
+
+    def test_valid_spec(self, valid_spec_file, tmp_module_path):
+        """Test the resolution of callable specifications."""
+        # Parse the specification
+        spec = parse_spec(valid_spec_file, VALID_ROOT)
+
+        # Resolve the callable specification
+        evaluate = resolve_callable(spec.evaluate)
+
+        # Assertions
+        assert callable(evaluate)
+
+        for input_spec in spec.inputs.values():
+            if isinstance(input_spec.marginals, CallableSpec):
+                marginal_factory = resolve_callable(input_spec.marginals)
+
+                assert callable(marginal_factory)
+
+        if spec.parameters is not None:
+            for parameters_spec in spec.parameters.values():
+                if isinstance(parameters_spec.values, CallableSpec):
+                    parameter_factory = resolve_callable(
+                        parameters_spec.values
+                    )
+
+                    assert callable(parameter_factory)
+
+    def test_invalid_spec(self, invalid_python_module, tmp_module_path):
+        """Test the resolution of invalid callable specifications.
+
+        Due to invalid python module, the resolution should fail.
+        """
+        spec = parse_spec(invalid_python_module, INVALID_ROOT_MOD)
+        with pytest.raises(SpecValidationError):
+            _ = resolve_callable(spec.evaluate)
