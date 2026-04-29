@@ -14,6 +14,12 @@ inputs:
       distribution: uniform
       parameters: [0.0, 1.0]
       name: X$idx
+  Fixed:
+    description: Fixed inputs
+    marginals:
+      factory: create_fixed_marginals
+
+default_input: Default
 
 parameters:
   sets:
@@ -21,6 +27,8 @@ parameters:
       scale: 2.0
       coefficients:
         factory: get_coefficients
+      factors:
+        factory: get_factors
       bounds:
         lower: -5.0
         upper: 10.0
