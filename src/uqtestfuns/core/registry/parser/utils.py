@@ -17,6 +17,7 @@ import math
 import yaml
 
 from pathlib import Path
+from string import Template
 from typing import Any, Dict, Optional, Tuple, Union
 
 from uqtestfuns.core.registry.specs import CallableSpec
@@ -367,3 +368,24 @@ def parse_callable(
     )
 
     return module_path, callable_name
+
+
+def substitute_idx(template_str, idx):
+    """Substitute the $idx placeholder in a template string.
+
+    Parameters
+    ----------
+    template_str : str or None
+        A string potentially containing ``$idx``.
+    idx : int
+        The index value to substitute.
+
+    Returns
+    -------
+    str or None
+        The substituted string, or None if the input is None.
+    """
+    if template_str is None:
+        return None
+
+    return Template(template_str).safe_substitute(idx=idx)

@@ -1,4 +1,6 @@
+import numpy as np
 import pytest
+import yaml
 
 from pathlib import Path
 
@@ -10,7 +12,13 @@ from uqtestfuns.core.registry.specs import (
 )
 from uqtestfuns.core.registry.parser import parse_spec, SpecValidationError
 from uqtestfuns.core.registry.registry_entry import UQTestFunSpec
-from uqtestfuns.core.registry.resolver import resolve_callable
+from uqtestfuns.core.registry.resolver import (
+    resolve_callable,
+    resolve_parameters,
+    resolve_prob_input,
+)
+from uqtestfuns.core.parameters import Parameters
+from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
 
 # Fixture roots
 FIXTURE_ROOT = Path(__file__).parent / "fixtures"
@@ -169,3 +177,78 @@ class TestResolverCallableSpec:
         spec = parse_spec(invalid_python_module, INVALID_ROOT_MOD)
         with pytest.raises(SpecValidationError):
             _ = resolve_callable(spec.evaluate)
+
+
+class TestResolveProbInput:
+    """All tests related to the resolution of ProbInput objects."""
+
+    def test_valid_spec(self, valid_spec_file, tmp_module_path):
+        """Test the resolution of ProbInput objects."""
+        # Parse the specification
+        spec = parse_spec(valid_spec_file, VALID_ROOT)
+
+        # Get the dimension of the function
+        yaml_file = VALID_ROOT / valid_spec_file
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+        input_dimension = data["dimensions"]["input"]
+        if input_dimension == "variable":
+            input_dimension = 5  # Arbitrary input dimension for testing
+
+        for input_spec in spec.inputs.values():
+            prob_input = resolve_prob_input(input_spec, input_dimension)
+            assert isinstance(prob_input, ProbInput)
+            assert prob_input.dimension == input_dimension
+
+    def test_invalid_dimension(self, tmp_module_path):
+        """Test the resolution of ProbInput objects with invalid dimension."""
+        # Parse a fixed specification file
+        spec_file = VALID_ROOT / "circular_bar_2d.yaml"
+        spec = parse_spec(spec_file, VALID_ROOT)
+
+        for input_spec in spec.inputs.values():
+            with pytest.raises(SpecValidationError):
+                # Dimension is 2, but input is 3
+                _ = resolve_prob_input(input_spec, input_dimension=3)
+
+    def test_invalid_spec(self):
+        """Test the resolution of invalid ProbInput objects."""
+        input_spec = UQInputSpec(
+            name="test",
+            marginals=None,  # type: ignore
+            copulas=None,
+        )
+
+        with pytest.raises(TypeError):
+            _ = resolve_prob_input(input_spec, 1)
+
+
+class TestResolveParameters:
+    """All tests related to the resolution of Parameters objects."""
+
+    def test_valid_spec(self, valid_spec_file, tmp_module_path):
+        """Test the resolution of Parameters objects."""
+        # Parse the specification
+        spec = parse_spec(valid_spec_file, VALID_ROOT)
+
+        # Get the dimension of the function
+        yaml_file = VALID_ROOT / valid_spec_file
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+        input_dimension = data["dimensions"]["input"]
+        if input_dimension == "variable":
+            input_dimension = 5  # Arbitrary input dimension for testing
+
+        # Parsed parameters (optional, may be None)
+        if spec.parameters is not None:
+            assert isinstance(spec.parameters, dict)
+            for parameters_spec in spec.parameters.values():
+                parameters = resolve_parameters(
+                    parameters_spec,
+                    input_dimension,
+                )
+
+                assert isinstance(parameters, Parameters)
+                for value in parameters_spec.values.values():
+                    if isinstance(value, np.ndarray):
+                        assert len(value) == input_dimension

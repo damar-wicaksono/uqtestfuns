@@ -7,7 +7,6 @@ and supports input redirection to external YAML files.
 """
 
 from pathlib import Path
-from string import Template
 from typing import Any, Dict, List, Optional, Union
 
 from uqtestfuns.core.registry.specs import (
@@ -17,7 +16,7 @@ from uqtestfuns.core.registry.specs import (
     UQInputSpec,
 )
 
-from .utils import parse_factory, resolve_numeric, safe_load
+from .utils import parse_factory, resolve_numeric, safe_load, substitute_idx
 from .validation import (
     SpecValidationError,
     validate_marginal,
@@ -311,8 +310,8 @@ def _build_marginal_spec(
     description = marginal.get("description")
 
     if idx is not None:
-        name = _substitute_idx(name, idx)
-        description = _substitute_idx(description, idx)
+        name = substitute_idx(name, idx)
+        description = substitute_idx(description, idx)
 
     return MarginalSpec(
         distribution=distribution,
@@ -320,30 +319,6 @@ def _build_marginal_spec(
         name=name,
         description=description,
     )
-
-
-def _substitute_idx(template: Optional[str], idx: int) -> Optional[str]:
-    """Substitute the $idx placeholder in a template string.
-
-    Parameters
-    ----------
-    template : Optional[str]
-        Template string that may contain a ``$idx`` placeholder.
-        If None, the function returns None immediately.
-        Any other placeholders not provided are left unchanged.
-    idx : int
-        Integer value to substitute for the ``$idx`` placeholder.
-
-    Returns
-    -------
-    Optional[str]
-        The template string with ``$idx`` replaced by the given index value,
-        or None if the input template was None.
-    """
-    if template is None:
-        return None
-
-    return Template(template).safe_substitute(idx=idx)
 
 
 def _validate_repeat(repeat: int) -> None:
