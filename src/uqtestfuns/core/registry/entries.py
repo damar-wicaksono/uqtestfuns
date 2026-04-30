@@ -12,7 +12,6 @@ from typing import List, Optional, Dict, Any
 from pathlib import Path
 from typing_extensions import TypedDict
 
-
 from .specs import CallableSpec, UQInputSpec, UQParametersSpec
 
 
@@ -57,11 +56,6 @@ class UQTestFunInfo:
     spec_path : Path
         Absolute path to the YAML specification file
         for the next targeted read.
-    module_path : str
-        Dotted import path to the Python module containing the evaluate
-        function
-    evaluate_name : str
-        The name of the evaluate function in the module.
     available_input_ids : Dict[str, str]
         Mapping of input IDs to their descriptions.
     default_input_id : str
@@ -100,6 +94,30 @@ class UQTestFunInfo:
 
 @dataclass(frozen=True)
 class UQTestFunSpec:
+    """Complete specification for a UQ test function.
+
+    This class represents the full specification of a UQ test function
+    parsed from a YAML specification file. It contains all the detailed
+    information needed to instantiate and execute the test function,
+    including the evaluation callable, input configurations, and optional
+    parameter configurations.
+
+    Parameters
+    ----------
+    name : str
+        Unique identifier for the test function.
+    evaluate : CallableSpec
+        Specification of the callable that evaluates the test function,
+        including module path and function name.
+    inputs : Dict[str, UQInputSpec]
+        Mapping of input IDs to their complete specifications, including
+        marginal distributions and other input-related metadata.
+    parameters : Optional[Dict[str, UQParametersSpec]], optional
+        Mapping of parameter IDs to their complete specifications
+        (default is None). Used for test functions that support
+        multiple parameter configurations.
+    """
+
     name: str
     evaluate: CallableSpec
     inputs: Dict[str, UQInputSpec]

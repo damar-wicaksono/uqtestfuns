@@ -11,7 +11,7 @@ from uqtestfuns.core.registry.specs import (
     UQParametersSpec,
 )
 from uqtestfuns.core.registry.parser import parse_spec, SpecValidationError
-from uqtestfuns.core.registry.registry_entry import UQTestFunSpec
+from uqtestfuns.core.registry.entries import UQTestFunSpec
 from uqtestfuns.core.registry.resolver import (
     resolve_callable,
     resolve_parameters,
