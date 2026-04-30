@@ -1,7 +1,7 @@
 import pytest
 
-from uqtestfuns.core.registry.registry import Registry
-from uqtestfuns.core.registry.spec_parser import SpecValidationError
+from uqtestfuns.core.registry.registry import Registry, is_inputs_yaml
+from uqtestfuns.core.registry.parser import SpecValidationError
 
 from pathlib import Path
 
@@ -15,15 +15,13 @@ class TestScan:
 
     def test_scan(self):
         """Test scanning for valid YAML files into the registry."""
-        registry = Registry()
-        registry.scan(VALID_YAML_DIR, PKG_ROOT)
+        registry = Registry(PKG_ROOT)
+        registry.scan(VALID_YAML_DIR)
 
         expected = sum(
             1
-            for f in VALID_YAML_DIR.iterdir()
-            if f.is_file()
-            and f.suffix == ".yaml"
-            and not f.name.endswith("_inputs.yaml")
+            for f in list(VALID_YAML_DIR.rglob("*.yaml"))
+            if f.is_file() and not is_inputs_yaml(f.name)
         )
 
         # Assertion
@@ -31,8 +29,8 @@ class TestScan:
 
     def test_getitem(self):
         """Test getting an entry from the registry."""
-        registry = Registry()
-        registry.scan(VALID_YAML_DIR, PKG_ROOT)
+        registry = Registry(PKG_ROOT)
+        registry.scan(VALID_YAML_DIR)
 
         # Assertion
         for key in registry.keys():
@@ -40,8 +38,8 @@ class TestScan:
 
     def test_item(self):
         """Test getting an item from the registry."""
-        registry = Registry()
-        registry.scan(VALID_YAML_DIR, PKG_ROOT)
+        registry = Registry(PKG_ROOT)
+        registry.scan(VALID_YAML_DIR)
 
         # Assertion
         for key, value in registry.items():
@@ -49,15 +47,16 @@ class TestScan:
 
     def test_getitem_invalid(self):
         """Test getting an invalid entry from the registry."""
-        registry = Registry()
+        registry = Registry(PKG_ROOT)
 
         with pytest.raises(KeyError):
             _ = registry["invalid_key"]
 
     def test_duplicate_keys(self):
         """Test that duplicate keys are not allowed."""
-        registry = Registry()
-        registry.scan(VALID_YAML_DIR, PKG_ROOT)
+        registry = Registry(PKG_ROOT)
+        registry.scan(VALID_YAML_DIR)
 
         with pytest.raises(SpecValidationError):
-            registry.scan(VALID_YAML_DIR, PKG_ROOT)
+            # Rescan the same directory
+            registry.scan(VALID_YAML_DIR)

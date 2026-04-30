@@ -4,7 +4,7 @@ from typing import Dict, List, Optional, Union
 
 from tabulate import tabulate as tbl
 
-from uqtestfuns.core.registry.registry_entry import UQTestFunInfo
+from uqtestfuns.core.registry.entries import UQTestFunInfo
 from uqtestfuns.core.registry import _registry
 
 SUPPORTED_TAGS = (

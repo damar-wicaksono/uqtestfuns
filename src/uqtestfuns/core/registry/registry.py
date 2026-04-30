@@ -17,8 +17,9 @@ The Registry class acts as a container that:
 from pathlib import Path
 from typing import Dict
 
-from .registry_entry import UQTestFunInfo
-from .spec_parser import parse_info, SpecValidationError
+from uqtestfuns.core.registry.entries import UQTestFunInfo
+from uqtestfuns.core.registry.parser import SpecValidationError
+from uqtestfuns.core.registry.parser.spec_file import parse_info
 
 DEFAULT_ROOT = Path(__file__).parent.parent.parent / "test_functions"
 
@@ -41,11 +42,12 @@ class Registry:
         Internal dictionary mapping function names to their metadata.
     """
 
-    def __init__(self):
+    def __init__(self, pkg_root: Path = PKG_ROOT):
         """Initialize an empty Registry."""
         self._entries: Dict[str, UQTestFunInfo] = {}
+        self._pkg_root = pkg_root
 
-    def scan(self, root: Path, pkg_root: Path):
+    def scan(self, root: Path):
         """Scan a directory for test function specification files.
 
         Loads all YAML files in the given directory (excluding files ending
@@ -62,10 +64,10 @@ class Registry:
         SpecValidationError
             If a duplicate function name is found or if YAML parsing fails.
         """
-        for yaml_file in root.glob("*.yaml"):
-            if yaml_file.name.endswith("_inputs.yaml"):
+        for yaml_file in root.rglob("*.yaml"):
+            if is_inputs_yaml(yaml_file.name):
                 continue
-            info = parse_info(yaml_file, pkg_root)
+            info = parse_info(yaml_file)
             if info.name in self._entries:
                 raise SpecValidationError(f"Duplicate entry for {info.name}")
             self._entries[info.name] = info
@@ -101,6 +103,16 @@ class Registry:
         """
         return self._entries.keys()
 
+    def values(self):
+        """Return an iterator over UQTestFunInfo objects.
+
+        Returns
+        -------
+        dict_values
+            An iterator over the metadata objects of registered test functions.
+        """
+        return self._entries.values()
+
     def __len__(self):
         """Return the number of registered test functions.
 
@@ -130,3 +142,30 @@ class Registry:
             If the function name is not found in the registry.
         """
         return self._entries[key]
+
+
+def is_inputs_yaml(filename: str) -> bool:
+    """Check if a filename matches input specification file patterns.
+
+    Input specification files follow naming conventions and should be
+    excluded from the main test function registry scan. This function
+    identifies files that match these patterns.
+
+    Parameters
+    ----------
+    filename : str
+        The filename to check (not the full path, just the name).
+
+    Returns
+    -------
+    bool
+        True if the filename matches any input specification pattern:
+        - Ends with '_inputs.yaml'
+        - Starts with 'inputs_' and ends with '.yaml'
+        - Equals 'inputs.yaml'
+    """
+    return (
+        filename.endswith("_inputs.yaml")
+        or (filename.startswith("inputs_") and filename.endswith(".yaml"))
+        or filename == "inputs.yaml"
+    )
