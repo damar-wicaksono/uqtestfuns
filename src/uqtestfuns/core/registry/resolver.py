@@ -219,7 +219,7 @@ def resolve_parameters(
 
     return Parameters(
         name=name,
-        descriptions=kw_descriptions,
+        keyword_descriptions=kw_descriptions,
         values=values,
     )
 

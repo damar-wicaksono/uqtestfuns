@@ -42,9 +42,7 @@ class TestConstruction:
 
         # Assertions
         assert len(params) == num_params
-        for description in params.descriptions.values():
-            assert description is None
-        assert params.values == values
+        assert dict(params) == values
         assert params.name is None
 
     def test_with_name_descriptions(self, num_params):
@@ -53,105 +51,22 @@ class TestConstruction:
 
         # Create an instance
         name = create_random_alphanumeric(4)
-        params = Parameters(values, name=name, descriptions=descriptions)
-
-        # Assertions
-        assert len(params) == num_params
-        assert params.descriptions == descriptions
-        assert params.values == values
-        assert params.name == name
-
-    def test_with_factory_function(self, dimension):
-        """Test the construction of Parameters using a factory function."""
-
-        def factory_function(dimension_: int):
-            return np.random.rand(dimension_)
-
-        # Create an instance
-        value = {"a": factory_function}
-        params = Parameters(value, dimension=dimension)
-
-        # Assertions
-        assert len(params) == 1
-        assert params["a"].shape == (dimension,)
-
-    def test_with_factory_function_with_kwargs(self, dimension):
-        """Test the construction using a factory function with kwargs."""
-
-        def factory_function(dimension_: int, shift_: float = 0.0):
-            return shift_ + np.random.rand(dimension_)
-
-        # Create an instance
-        value = {"a": factory_function}
-        shift = 5.0
         params = Parameters(
-            value,
-            dimension=dimension,
-            factory_kwargs={"a": {"shift_": shift}},
+            values,
+            name=name,
+            keyword_descriptions=descriptions,
         )
 
         # Assertions
-        assert len(params) == 1
-        assert params["a"].shape == (dimension,)
-        assert np.unique(np.floor(params["a"])) == shift
+        assert len(params) == num_params
+        assert dict(params) == values
+        assert params.name == name
 
-    @pytest.mark.parametrize(
-        "valid_dimension",
-        [1, 2.0, np.array([1])],
-    )
-    def test_valid_dimension(self, valid_dimension):
-        """Test the construction of Parameters with a valid dimension."""
-
-        def factory_function(dimension: int):
-            return np.random.rand(dimension)
-
-        # Create an instance
-        value = {"a": factory_function}
-        params = Parameters(value, dimension=valid_dimension)
-
-        # Assertion
-        assert len(params["a"]) == valid_dimension
-
-    def test_with_factory_function_no_dimension(self):
-        """Test the construction using a factory function without dimension."""
-
-        def factory_function(dimension_: int):
-            return np.random.rand(dimension_)
-
-        # Create an instance
-        value = {"a": factory_function}
-
-        with pytest.raises(ValueError):
-            _ = Parameters(value)
-
-    @pytest.mark.parametrize(
-        "invalid_dimension",
-        [1.1, -1, np.array([1, 2]), True, "a"],
-    )
-    def test_invalid_dimension(self, num_params, invalid_dimension):
-        """Test the construction of Parameters with an invalid dimension."""
-        values, _ = create_values(num_params)
-
-        # Create an instance
-        with pytest.raises(ValueError):
-            _ = Parameters(values, dimension=invalid_dimension)
-
-    def test_with_factory_function_invalid_kwargs(self, dimension):
-        """Test the construction of Parameters using a factory function."""
-
-        def factory_function(dimension_: int, shift: float = 0.0):
-            return shift + np.random.rand(dimension_)
-
-        # Create an instance
-        value = {"a": factory_function}
-
-        # Assertion
-        with pytest.raises(KeyError):
-            _ = Parameters(
-                value,
-                dimension=dimension,
-                factory_kwargs={"b": {"shift": 1.0}},
-            )
+    def test_empty(self):
+        """Test the construction of an empty Parameters instance."""
+        params = Parameters({})
+        assert len(params) == 0
+        assert not params
 
 
 class TestDescribe:
@@ -162,10 +77,10 @@ class TestDescribe:
         values, descriptions = create_values(num_params)
 
         # Create an instance
-        params = Parameters(values, descriptions=descriptions)
+        params = Parameters(values, keyword_descriptions=descriptions)
 
         # Assertions
-        for key in params.values.keys():
+        for key in params.keys():
             assert params.describe(key) == descriptions[key]
 
     def test_invalid_key(self, num_params):
@@ -173,7 +88,7 @@ class TestDescribe:
         values, descriptions = create_values(num_params)
 
         # Create an instance
-        params = Parameters(values, descriptions=descriptions)
+        params = Parameters(values, keyword_descriptions=descriptions)
 
         # Assertion
         with pytest.raises(KeyError):
@@ -187,7 +102,7 @@ class TestPrint:
         """Test __repr__ method of an instance of ProbInput."""
         # Create a test instance
         values, descriptions = create_values(num_params)
-        params = Parameters(values, descriptions=descriptions)
+        params = Parameters(values, keyword_descriptions=descriptions)
 
         # Create a repr string
         my_repr = repr(params)
@@ -199,7 +114,7 @@ class TestPrint:
         """Test __str__ method of an instance of ProbInput."""
         # Create a test instance
         values, descriptions = create_values(num_params)
-        params = Parameters(values, descriptions=descriptions)
+        params = Parameters(values, keyword_descriptions=descriptions)
 
         # Create a str string
         my_str = str(params)
@@ -212,7 +127,11 @@ class TestPrint:
         # Create a test instance
         values, descriptions = create_values(num_params)
         name = create_random_alphanumeric(4)
-        params = Parameters(values, name=name, descriptions=descriptions)
+        params = Parameters(
+            values,
+            name=name,
+            keyword_descriptions=descriptions,
+        )
 
         # Create a str string
         my_str = str(params)
@@ -225,7 +144,7 @@ class TestPrint:
         """Test that __repr__ method includes class name."""
         # Create a test instance
         values, descriptions = create_values(num_params)
-        params = Parameters(values, descriptions=descriptions)
+        params = Parameters(values, keyword_descriptions=descriptions)
 
         # Assertion
         assert f"{Parameters.__name__}(" in repr(params)
@@ -234,7 +153,7 @@ class TestPrint:
         """Test that __str__ omits the name line if no name is provided."""
         # Create a test instance
         values, descriptions = create_values(num_params)
-        params = Parameters(values, descriptions=descriptions)
+        params = Parameters(values, keyword_descriptions=descriptions)
 
         # Assertion
         assert "Name   :" not in str(params)

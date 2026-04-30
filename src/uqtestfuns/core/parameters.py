@@ -3,12 +3,13 @@ This module contains the implementation of FunParams a class that stores
 UQ Test function parameters.
 """
 
-import numbers
+from __future__ import annotations
+
 import numpy as np
 import textwrap
 import warnings
 
-from copy import copy
+from collections.abc import Mapping, Iterator
 from tabulate import tabulate
 from typing import Any, Dict, List, Optional
 
@@ -344,8 +345,8 @@ def _get_values_as_list(
     return list_values
 
 
-class Parameters:
-    """A class to represent a set of parameters of a UQ test function.
+class Parameters(Mapping):
+    """A named, immutable bundle of parameter values for a UQ test function.
 
     The Parameters class is designed to store and manage named parameters
     with values and optional descriptions. It supports resolution of
@@ -353,98 +354,40 @@ class Parameters:
 
     Parameters
     ----------
-    values : Dict[str, Any]
-        The parameter values or factory functions to resolve them.
-        The keys are the parameter names, and the values are either
-        literal values or callable factory functions.
+    values : Mapping[str, Any]
+        The parameter values, keyed by parameter name. Values must be
+        fully resolved at construction time.
     name : str, optional
-        The name of the parameter set. If not provided, the name
-        is set to None.
-    descriptions : Dict[str, str], optional
-        The descriptions of the parameters. The keys are the parameter
-        names, and the values are the corresponding descriptions.
-    dimension : int, optional
-        The input dimension passed to factory functions for resolving
-        dimension-dependent parameter values. Required if any value
-        in ``values`` is callable. This parameter is keyword-only.
-    factory_kwargs : Dict[str, Dict[str, Any]], optional
-        A mapping from parameter names to dictionaries of keyword
-        arguments passed to the corresponding factory functions.
-        This parameter is keyword-only.
-
-    Notes
-    -----
-    Factory functions must accept ``dimension`` as their first positional
-    argument. Additional keyword arguments can be supplied via
-    ``factory_kwargs``::
-
-        def my_factory(dimension: int, *, decay: float = 1.0) -> np.ndarray:
-            ...
-
-    The corresponding ``factory_kwargs`` entry would be::
-
-        factory_kwargs = {"my_param": {"decay": 0.5}}
-
-    The class is immutable after construction: parameter values cannot be
-    modified once resolved.
+        The name of the parameter set (e.g., "Ishigami1991"). Defaults
+        to None.
+    keyword_descriptions : Mapping[str, str], optional
+        Per-keyword descriptions. Keys must be a subset of the keys in
+        `values`; otherwise a ValueError is raised.
     """
 
     def __init__(
         self,
-        values: Dict[str, Any],
+        values: Mapping[str, Any],
         name: Optional[str] = None,
-        descriptions: Optional[Dict[str, str]] = None,
-        *,
-        dimension: Optional[int] = None,
-        factory_kwargs: Optional[Dict[str, Dict[str, Any]]] = None,
+        keyword_descriptions: Optional[Mapping[str, str]] = None,
     ):
-        # --- Resolve and assign values
-        resolved = {}
-        if factory_kwargs is None:
-            factory_kwargs_ = {}
-        else:
-            factory_kwargs_ = factory_kwargs
-        if not factory_kwargs_.keys() <= values.keys():
-            raise KeyError(
-                "factory_kwargs keys must be a subset of values keys"
-            )
-        if dimension is not None:
-            dimension = _verify_dimension(dimension)
-        for key, val in values.items():
-            if callable(val):
-                # Factory function
-                if dimension is None:
-                    raise ValueError(
-                        f"callable value for '{key}' requires dimension"
-                    )
-                kwargs = factory_kwargs_.get(key, {})
-                resolved[key] = val(dimension, **kwargs)
-            else:
-                resolved[key] = val
-        self._values = resolved
-
-        # --- Assign other properties
+        # --- Assign values
+        self._values = dict(values)
         self._name = name
-        self._descriptions: Dict[str, Optional[str]] = {}
-        for key in self._values.keys():
-            if descriptions is not None and key in descriptions:
-                self._descriptions[key] = descriptions[key]
-            else:
-                self._descriptions[key] = None
+
+        # --- Process the keyword descriptions
+        kw_desc = dict(keyword_descriptions or {})
+        stray = set(kw_desc) - set(self._values.keys())
+        if stray:
+            raise ValueError(
+                f"Keyword descriptions for unknown parameters: {stray}"
+            )
+
+        self._keyword_descriptions = {
+            key: kw_desc.get(key) for key in self._values
+        }
 
     # --- Properties
-    @property
-    def values(self) -> Dict[str, Any]:
-        """The values of the parameters.
-
-        Returns
-        -------
-        Dict[str, Any]
-            The fully resolved parameter values. When access,
-            a shallow copy is returned.
-        """
-        return copy(self._values)
-
     @property
     def name(self) -> Optional[str]:
         """The name of the parameter set.
@@ -455,18 +398,6 @@ class Parameters:
             The name of the parameter set.
         """
         return self._name
-
-    @property
-    def descriptions(self) -> Dict[str, Optional[str]]:
-        """The descriptions of the parameters.
-
-        Returns
-        -------
-        Dict[str, Optional[str]]
-            The descriptions of the parameters. The keys are the parameter
-            names, and the values are the corresponding descriptions.
-        """
-        return copy(self._descriptions)
 
     # --- Public methods
     def describe(self, key: str) -> Optional[str]:
@@ -484,7 +415,7 @@ class Parameters:
             None is returned.
         """
         try:
-            return self._descriptions[key]
+            return self._keyword_descriptions[key]
         except KeyError as exc:
             raise KeyError(f"Unknown parameter '{key}'") from exc
 
@@ -504,6 +435,9 @@ class Parameters:
         """
         return self._values[key]
 
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._values)
+
     def __len__(self) -> int:
         """Return the number of parameters.
 
@@ -518,13 +452,14 @@ class Parameters:
         """Return the unambiguous string representation of the instance."""
         class_name = self.__class__.__name__
         # Get the value of the constructor arguments
+        kw_descriptions = self._keyword_descriptions
         descriptions = {
-            k: v for k, v in self.descriptions.items() if v is not None
+            k: v for k, v in kw_descriptions.items() if v is not None
         }
         attrs = {
             "values": self._values,  # Avoid returning a copy
             "name": self.name,
-            "descriptions": descriptions,
+            "keyword_descriptions": descriptions,
         }
         attrs_str = ", ".join(f"{k}={v!r}" for k, v in attrs.items())
 
@@ -544,7 +479,7 @@ class Parameters:
         header_names.insert(0, "No.")
 
         # Get the values for each field as a list
-        rows = _create_list(self._values, self._descriptions)
+        rows = _create_list(self._values, self._keyword_descriptions)
 
         table += tabulate(
             rows,
@@ -595,77 +530,3 @@ def _create_list(
         )
 
     return list_values
-
-
-def _verify_dimension(dimension: Any) -> int:
-    """Validates the dimension to ensure that it is a positive integer.
-
-    Parameters
-    ----------
-    dimension : Any
-        The dimension to verify. It can be a value of any type as long
-        it can be intepreted as a positive integer without ambiguity.
-
-    Returns
-    -------
-    int
-        The verified dimension in integer.
-
-    Raises
-    ------
-    ValueError
-        If the input dimension is not a positive integer
-        or cannot be interpreted as such.
-    """
-    if not _is_integer_like(dimension):
-        raise ValueError(
-            "Dimension must be a positive integer; "
-            f"got {dimension} instead."
-        )
-
-    if isinstance(dimension, np.ndarray):
-        dimension = dimension.item()
-
-    if dimension < 0:
-        raise ValueError(
-            "Dimension must be a positive integer; "
-            f"got {dimension} instead."
-        )
-
-    return int(dimension)
-
-
-def _is_integer_like(value: Any) -> bool:
-    """Determines whether the provided value may be interpreted as integer.
-
-    A value is considered "integer-like" if it can be interpreted
-    as an integer without fractional components.
-
-    This function excludes boolean types from being considered integer-like
-    even though booleans are instances of `int` to avoid the ambiguity.
-
-    Parameters
-    ----------
-    value : Any
-        The value to be checked.
-
-    Returns
-    -------
-    bool
-        ``True`` if the input value satisfies the criteria for being
-        "integer-like"; otherwise, ``False``.
-    """
-    if isinstance(value, bool):
-        return False
-
-    # Handle NumPy arrays with exactly one element
-    if isinstance(value, np.ndarray):
-        if value.size != 1:
-            return False
-        value = value.item()
-
-    # Handle NumPy scalars and Python numeric types
-    if isinstance(value, numbers.Real):
-        return float(value).is_integer()
-
-    return False
