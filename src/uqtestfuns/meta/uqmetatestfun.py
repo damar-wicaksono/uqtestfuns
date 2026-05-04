@@ -21,10 +21,11 @@ from dataclasses import dataclass
 from numpy.typing import ArrayLike
 from typing import Optional, Union, List
 
-from uqtestfuns.core.parameters import FunParams
 from .metaspec import UQMetaFunSpec, UQTestFunSpec
 from .basis_functions import BASIS_BY_ID
-from ..core import UQTestFun, ProbInput, Marginal
+from ..core.prob_input.probabilistic_input_new import ProbInput, Marginal
+from ..core.uqtestfun import UQTestFun
+from ..core.parameters import Parameters
 
 __all__ = ["UQMetaTestFun", "default_coeffs_gen"]
 
@@ -146,22 +147,23 @@ class UQMetaTestFun:
             # Create an instance of inputs
             prob_input = ProbInput(testfun_specs.inputs)
             # Assign the realized spec as a parameter
-            parameters = FunParams(
-                declared_parameters=[
-                    {
-                        "keyword": "spec",
-                        "value": testfun_specs,
-                        "type": UQTestFunSpec,
-                        "description": None,
-                    },
-                ],
-            )
+            parameters = Parameters({"spec": testfun_specs})
+            # parameters = FunParams(
+            #     declared_parameters=[
+            #         {
+            #             "keyword": "spec",
+            #             "value": testfun_specs,
+            #             "type": UQTestFunSpec,
+            #             "description": None,
+            #         },
+            #     ],
+            # )
 
             return UQTestFun(
                 evaluate=evaluate,
                 prob_input=prob_input,
                 parameters=parameters,
-                function_id=name,
+                name=name,
             )
 
         sample = []
@@ -170,23 +172,24 @@ class UQMetaTestFun:
             assert isinstance(testfun_specs, list)
             prob_input = ProbInput(testfun_specs[i].inputs)
             # Assign the realized spec as a parameter
-            parameters = FunParams(
-                declared_parameters=[
-                    {
-                        "keyword": "spec",
-                        "value": testfun_specs[i],
-                        "type": UQTestFunSpec,
-                        "description": None,
-                    },
-                ],
-            )
+            parameters = Parameters({"spec": testfun_specs[i]})
+            # parameters = FunParams(
+            #     declared_parameters=[
+            #         {
+            #             "keyword": "spec",
+            #             "value": testfun_specs[i],
+            #             "type": UQTestFunSpec,
+            #             "description": None,
+            #         },
+            #     ],
+            # )
 
             sample.append(
                 UQTestFun(
                     evaluate=evaluate,
                     prob_input=prob_input,
                     parameters=parameters,
-                    function_id=name,
+                    name=name,
                 )
             )
 

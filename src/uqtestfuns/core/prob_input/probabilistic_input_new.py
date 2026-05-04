@@ -391,6 +391,44 @@ class ProbInput:
 
         return np.exp(log_cdf)
 
+    def is_valid_shape(self, xx: np.ndarray) -> bool:
+        """Check if the input array has the correct shape.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            Input array to check.
+
+        Returns
+        -------
+        bool
+            ``True`` if the array is 2D and has ``input_dimension`` columns,
+            ``False`` otherwise.
+        """
+        return xx.ndim == 2 and xx.shape[1] == self.dimension
+
+    def is_valid_domain(self, xx: np.ndarray) -> np.ndarray:
+        """Check which input values fall within the valid domain.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            Input array of shape ``(sample_size, input_dimension)``.
+
+        Returns
+        -------
+        np.ndarray
+            Boolean array of shape ``(sample_size, input_dimension)`` where
+            ``True`` indicates the value is within the domain
+            ``[lower, upper]`` of the corresponding marginal.
+        """
+        result = np.ones(xx.shape, dtype=bool)
+        for i, marginal in enumerate(self.marginals):
+            lower, upper = marginal.lower, marginal.upper
+            result[:, i] = (xx[:, i] >= lower) & (xx[:, i] <= upper)
+
+        return result
+
     # --- Dunder methods
     def __eq__(self, other: Any) -> bool:
         """Check if two ProbInput instances are equal in value.

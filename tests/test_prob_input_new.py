@@ -690,3 +690,66 @@ class TestPrint:
 
         # Assertion
         assert str(prob_input).count("   -") == dimension
+
+
+class TestValidation:
+    """All tests related to array validation."""
+
+    def test_valid_shape(self, dimension):
+        """Test a valid shape."""
+        marginals = create_random_marginals(dimension)
+
+        # Create an instance
+        prob_input = ProbInput(marginals)
+
+        # Generate sample points
+        sample_size = 100
+        xx = prob_input.get_sample(sample_size)
+
+        # Assertion
+        assert prob_input.is_valid_shape(xx)
+
+    def test_invalid_shape(self, dimension):
+        """Test an invalid shape."""
+        marginals = create_random_marginals(dimension)
+
+        # Create an instance
+        prob_input = ProbInput(marginals)
+
+        # Generate sample points of higher dimension
+        sample_size = 100
+        rng = np.random.default_rng()
+        xx = rng.random((sample_size, prob_input.dimension + 1))
+
+        # Assertion
+        assert not prob_input.is_valid_shape(xx)
+
+    def test_valid_domain(self, dimension):
+        """Test an array of valid domain."""
+        marginals = create_random_marginals(dimension)
+
+        # Create an instance
+        prob_input = ProbInput(marginals)
+
+        # Generate sample points
+        sample_size = 100
+        xx = prob_input.get_sample(sample_size)
+
+        # Assertions
+        assert prob_input.is_valid_shape(xx)
+        assert np.all(prob_input.is_valid_domain(xx))
+
+    def test_invalid_domain(self, dimension):
+        """Test an array of invalid domain."""
+        marginals = create_random_marginals(dimension)
+
+        # Create an instance
+        prob_input = ProbInput(marginals)
+
+        # Array of an invalid domain
+        sample_size = 100
+        xx = np.full((sample_size, prob_input.dimension), np.inf)
+
+        # Assertions
+        assert prob_input.is_valid_shape(xx)
+        assert not np.any(prob_input.is_valid_domain(xx))
