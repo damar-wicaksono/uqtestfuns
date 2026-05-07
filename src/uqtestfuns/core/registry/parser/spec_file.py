@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Dict
 
 import yaml
 
@@ -83,7 +83,6 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
     dimensions = data["dimensions"]
     input_dimension = dimensions["input"]
     if input_dimension == "variable":
-        variable_dimension = True
         input_dimension = None
     else:
         if not isinstance(input_dimension, int) or input_dimension < 1:
@@ -91,7 +90,6 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
                 f"'input_dimension' must be a positive integer, "
                 f"got {input_dimension!r} in {yaml_file}"
             )
-        variable_dimension = False
 
     # --- Output dimension (optional with default value)
     output_dimension = dimensions.get("output_dimension", 1)
@@ -119,9 +117,9 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
     # --- Parameter specification (optional; None if not defined)
     parameters = data.get("parameters")
     if parameters is None:
-        available_parameter_ids = None
+        available_parameter_ids = {}
         default_parameter_id = None
-        parameter_keywords = None
+        parameter_keywords: Dict[str, KeywordInfo] = {}
     else:
         # -- Validate that 'sets' sub-block is present and non-empty
         available_sets = parameters.get("sets")
@@ -160,7 +158,6 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
         name,
         description,
         tags,
-        variable_dimension,
         input_dimension,
         output_dimension,
         spec_path,

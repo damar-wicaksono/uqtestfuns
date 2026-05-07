@@ -189,10 +189,16 @@ class UQTestFun:
 
     def __str__(self) -> str:
         """Return a human-readable summary of the UQ test function."""
-        table = f"Name        : {self.name}\n"
-        table += f"Description : {self.description}\n"
-        table += f"Input dim.  : {self.input_dimension}\n"
-        table += f"Output dim. : {self.output_dimension}"
+        table = f"Name          : {self.name or 'N/A'}\n"
+        table += f"Description   : {self.description or 'N/A'}\n"
+        table += f"Input dim.    : {self.input_dimension}\n"
+        table += f"Output dim.   : {self.output_dimension}\n"
+
+        if self._parameters is not None:
+            _params = True
+        else:
+            _params = False
+        table += f"Parameterized : {_params}"
 
         return table
 
@@ -203,9 +209,13 @@ class UQTestFun:
         equivalent instance, provided the function is a built-in registered
         function.
         """
-        parameters_id = (
-            self._parameters.name if self._parameters is not None else None
-        )
+
+        parameters = self.parameters
+        if parameters is not None:
+            parameters_id = parameters.name
+        else:
+            parameters_id = None
+
         return (
             f"<UQTestFun "
             f"name={self.name!r}, "

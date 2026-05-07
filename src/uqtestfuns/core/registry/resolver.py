@@ -162,13 +162,13 @@ def resolve_prob_input(
             raw_marginals = func(input_dimension)
         else:
             raw_marginals = func()
-        for marginal in raw_marginals:
+        for raw_marginal in raw_marginals:
             marginals.append(
                 Marginal(
-                    name=marginal["name"],
-                    description=marginal["description"],
-                    distribution=marginal["distribution"],
-                    parameters=marginal["parameters"],
+                    name=raw_marginal["name"],
+                    description=raw_marginal["description"],
+                    distribution=raw_marginal["distribution"],
+                    parameters=raw_marginal["parameters"],
                 )
             )
 

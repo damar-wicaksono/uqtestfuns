@@ -60,9 +60,9 @@ class UQTestFunInfo:
         Mapping of input IDs to their descriptions.
     default_input_id : str
         Identifier for the default input configuration.
-    available_parameter_ids : Optional[Dict[str, str]], optional
+    available_parameters_ids : Optional[Dict[str, str]], optional
         Mapping of parameter IDs to their descriptions (default is None).
-    default_parameter_id : Optional[str], optional
+    default_parameters_id : Optional[str], optional
         Identifier for the default parameter configuration (default is None).
     parameter_keywords : Optional[Dict[str, KeywordInfo]], optional
         Mapping of parameter keywords to their type and description
@@ -75,7 +75,6 @@ class UQTestFunInfo:
     tags: List[str]
 
     # Dimension info
-    variable_dimension: bool
     input_dimension: Optional[int]
     output_dimension: int
 
@@ -87,9 +86,14 @@ class UQTestFunInfo:
     default_input_id: str
 
     # Parameter variant IDs
-    available_parameter_ids: Optional[Dict[str, str]] = None
-    default_parameter_id: Optional[str] = None
-    parameter_keywords: Optional[Dict[str, KeywordInfo]] = None
+    available_parameters_ids: Dict[str, str]
+    default_parameters_id: Optional[str]
+    parameter_keywords: Dict[str, KeywordInfo]
+
+    @property
+    def variable_dimension(self) -> bool:
+        """Indicates if the test function has a variable input dimension."""
+        return self.input_dimension is None
 
 
 @dataclass(frozen=True)
