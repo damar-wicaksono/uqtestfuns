@@ -15,6 +15,7 @@ from .core import (
 from .core import UQTestFun
 from .core import FunParams
 from .core import RealVariable
+from .core.registry import get_registry
 
 from . import test_functions
 from .test_functions import *  # noqa
@@ -49,3 +50,19 @@ __all__ = [
     "list_functions",
     "api",
 ]
+
+
+# Lazy attribute access: registered test function names are resolved
+# to factory callables via the registry on first access.
+def __getattr__(name: str):
+    registry = get_registry()
+    if name in registry:
+        return registry.get_factory(name)
+    raise AttributeError(f"module 'uqtestfuns' has no attribute {name!r}")
+
+
+# Include registered test function names in dir() so that
+# tab-completion and introspection tools can discover them.
+def __dir__():
+    registry = get_registry()
+    return sorted(list(globals()) + list(registry))

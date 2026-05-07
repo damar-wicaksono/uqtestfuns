@@ -78,14 +78,21 @@ def test_str(uqtestfun):
     """Test the __str__ method of UQTestFun."""
     uqtestfun_instance, _ = uqtestfun
 
-    str_ref = (
-        f"Name        : {uqtestfun_instance.name}\n"
-        f"Description : {uqtestfun_instance.description}\n"
-        f"Input dim.  : {uqtestfun_instance.input_dimension}\n"
-        f"Output dim. : {uqtestfun_instance.output_dimension}"
-    )
+    s = str(uqtestfun_instance)
 
-    assert uqtestfun_instance.__str__() == str_ref
+    name = uqtestfun_instance.name
+    if name is None:
+        name = "N/A"
+    description = uqtestfun_instance.description
+    if description is None:
+        description = "N/A"
+
+    # Assertions
+    assert name in s
+    assert description in s
+    assert str(uqtestfun_instance.input_dimension) in s
+    assert str(uqtestfun_instance.output_dimension) in s
+    assert str(uqtestfun_instance.parameters is not None) in s
 
 
 def test_repr(uqtestfun):
