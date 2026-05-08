@@ -121,3 +121,27 @@ def franke_4(xx: np.ndarray):
     )
 
     return yy
+
+
+def franke_5(xx: np.ndarray):
+    """Evaluate the (5th) Franke function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the (5th) Franke function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = (
+        np.exp(-81.0 / 4.0 * ((xx[:, 0] - 0.5) ** 2 + (xx[:, 1] - 0.5) ** 2))
+        / 3.0
+    )
+
+    return yy
