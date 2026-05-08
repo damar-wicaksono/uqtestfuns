@@ -1,0 +1,21 @@
+name: HyperSphere
+description: Hyper-sphere bound reliability problem from Li et al. (2018)
+tags:
+  - reliability
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Li2018:
+    description: >-
+      Two independent normal random variables from Li et al. (2018)
+    marginals:
+      - name: X1
+        distribution: normal
+        parameters: [0.5, 0.2]
+      - name: X2
+        distribution: normal
+        parameters: [0.5, 0.2]
+    copulas: null

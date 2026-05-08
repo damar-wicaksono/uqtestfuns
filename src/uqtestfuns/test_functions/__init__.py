@@ -25,7 +25,6 @@ from .genz import (
 )
 from .higdon_sine import HigdonSine
 from .holsclaw_sine import HolsclawSine
-from .hyper_sphere import HyperSphere
 from .ishigami import Ishigami
 from .lim import LimPoly, LimNonPoly
 from .linkletter import (
@@ -84,7 +83,6 @@ __all__ = [
     "GenzProductPeak",
     "HigdonSine",
     "HolsclawSine",
-    "HyperSphere",
     "Ishigami",
     "LimNonPoly",
     "LimPoly",
