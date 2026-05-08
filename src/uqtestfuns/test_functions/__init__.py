@@ -34,7 +34,6 @@ from .linkletter import (
     LinkletterLinear,
     LinkletterSine,
 )
-from .oakley2002 import Oakley1D
 from .otl_circuit import OTLCircuit
 from .mclain import McLainS1, McLainS2, McLainS3, McLainS4, McLainS5
 from .moon3d import Moon3D
@@ -95,7 +94,6 @@ __all__ = [
     "LinkletterInert",
     "LinkletterLinear",
     "LinkletterSine",
-    "Oakley1D",
     "OTLCircuit",
     "McLainS1",
     "McLainS2",

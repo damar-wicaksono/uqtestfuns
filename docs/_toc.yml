@@ -149,7 +149,7 @@ parts:
           - file: test-functions/morris2006
             title: Morris et al. (2006)
           - file: test-functions/oakley-1d
-            title: Oakley & O'Hagan (2002) 1D
+            title: Oakley and O'Hagan (2002) 1D
           - file: test-functions/otl-circuit
             title: OTL Circuit
           - file: test-functions/piston

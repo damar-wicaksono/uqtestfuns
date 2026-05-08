@@ -1,0 +1,19 @@
+name: Oakley1D
+description: Linear-cosine function from Oakley and O'Hagan (2002)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 1
+  output: 1
+
+inputs:
+  Oakley2002:
+    description: >-
+      Probabilistic input model for the one-dimensional function
+      from Oakley and O'Hagan (2002)
+    marginals:
+      - name: x
+        distribution: normal
+        parameters: [0.0, 4.0]
+    copulas: null
