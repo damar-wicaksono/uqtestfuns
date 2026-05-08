@@ -399,7 +399,7 @@ class ProbInput:
         # Temporary solution for independence copula
         copulas = "Independence" if self.copulas is None else self.copulas
 
-        table += f"\n\nCopulas         : {copulas}"
+        table += f"\n\nCopulas   : {copulas}"
 
         return table
 
