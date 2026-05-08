@@ -1,0 +1,24 @@
+name: Webster2D
+description: >-
+  2D polynomial function from Webster et al. (1996)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Webster1996:
+    description: >-
+      Input specification for the 2D function from Webster et al. (1996)
+    marginals:
+      - name: A
+        distribution: uniform
+        parameters: [1.0, 10.0]
+        description: null
+      - name: B
+        distribution: normal
+        parameters: [2.0, 1.0]
+        description: null
+    copulas: null
