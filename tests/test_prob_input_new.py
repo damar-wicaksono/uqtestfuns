@@ -4,7 +4,6 @@ import numpy as np
 from uqtestfuns import Marginal
 from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
 from conftest import create_random_marginals, create_random_marginal_dicts
-from functools import partial
 
 # Dimension (`m`)
 DIMENSIONS = [1, 2, 10, 100]
@@ -37,74 +36,6 @@ class TestConstructor:
         assert prob_input.copulas is None
         for i in range(dimension):
             assert marginals[i] == prob_input.marginals[i]
-
-    def test_replicate(self, dimension):
-        """Test creating a probabilistic input with replicated marginals."""
-        # Create a single marginal
-        marginal = create_random_marginals(1)[0]
-        distribution = marginal.distribution
-        parameters = marginal.parameters
-
-        marginal_dicts = []
-        for i in range(1, dimension + 1):
-            marginal_dicts.append(
-                {
-                    "distribution": distribution,
-                    "parameters": parameters,
-                    "name": f"X{i}",
-                }
-            )
-
-        # Create new probabilistic input with replicated marginals
-        prob_input_1 = ProbInput.replicate(dimension, distribution, parameters)
-        prob_input_2 = ProbInput.from_dicts(marginal_dicts)
-
-        # Assertions
-        assert prob_input_1 == prob_input_2
-
-    def test_from_dicts(self, dimension):
-        """Test the creation of a ProbInput from a list of dictionaries."""
-        marginal_dicts = create_random_marginal_dicts(dimension)
-        marginals = [
-            Marginal(**marginal_dict) for marginal_dict in marginal_dicts
-        ]
-
-        # Create instances
-        prob_input_1 = ProbInput(marginals)
-        prob_input_2 = ProbInput.from_dicts(marginal_dicts)
-
-        # Assertion
-        assert prob_input_1 == prob_input_2
-
-    def test_from_factory(self, dimension):
-        """Test the creation of a ProbInput from a factory function."""
-        rng_seed = 42
-        marginal_dicts = create_random_marginal_dicts(dimension, rng_seed)
-
-        factory = partial(create_random_marginal_dicts, rng=rng_seed)
-
-        # Create instances
-        prob_input_1 = ProbInput.from_factory(factory, dimension)
-        prob_input_2 = ProbInput.from_dicts(marginal_dicts)
-
-        # Assertion
-        assert prob_input_1 == prob_input_2
-
-    def test_from_factory_with_kwargs(self, dimension):
-        """Test the creation from a factory function with args."""
-        rng_seed = 42
-        marginal_dicts = create_random_marginal_dicts(dimension, rng_seed)
-
-        # Create instances
-        prob_input_1 = ProbInput.from_factory(
-            create_random_marginal_dicts,
-            dimension,
-            factory_kwargs={"rng": rng_seed},
-        )
-        prob_input_2 = ProbInput.from_dicts(marginal_dicts)
-
-        # Assertion
-        assert prob_input_1 == prob_input_2
 
 
 class TestGetSample:
@@ -275,10 +206,10 @@ class TestPDF:
     def test_known_value(self):
         """Test PDF against known analytical value."""
         # Create an instance
-        prob_input = ProbInput.from_dicts(
+        prob_input = ProbInput(
             [
-                {"distribution": "uniform", "parameters": [0.0, 2.0]},
-                {"distribution": "uniform", "parameters": [0.0, 5.0]},
+                Marginal(distribution="uniform", parameters=[0.0, 2.0]),
+                Marginal(distribution="uniform", parameters=[0.0, 5.0]),
             ]
         )
 
@@ -359,10 +290,10 @@ class TestCDF:
     def test_known_value(self):
         """Test PDF against known analytical value."""
         # Create an instance
-        prob_input = ProbInput.from_dicts(
+        prob_input = ProbInput(
             [
-                {"distribution": "uniform", "parameters": [0.0, 2.0]},
-                {"distribution": "uniform", "parameters": [0.0, 5.0]},
+                Marginal(distribution="uniform", parameters=[0.0, 2.0]),
+                Marginal(distribution="uniform", parameters=[0.0, 5.0]),
             ]
         )
 
@@ -546,7 +477,7 @@ class TestEquality:
 
         # Create instances
         prob_input_1 = ProbInput(marginals)
-        prob_input_2 = ProbInput.from_dicts(marginal_dicts)
+        prob_input_2 = ProbInput(marginals)
 
         # Assertions
         assert prob_input_1 is not prob_input_2
@@ -686,7 +617,16 @@ class TestPrint:
     def test_str_no_marginal_description(self, dimension):
         """Test __str__ method when the marginals have no description."""
         # Create a test instance
-        prob_input = ProbInput.replicate(dimension, "uniform", [0.0, 1.0])
+        marginals = []
+        for i in range(dimension):
+            marginals.append(
+                Marginal(
+                    name=f"X{i+1}",
+                    distribution="uniform",
+                    parameters=[0.0, 1.0],
+                )
+            )
+        prob_input = ProbInput(marginals)
 
         # Assertion
         assert str(prob_input).count("   -") == dimension

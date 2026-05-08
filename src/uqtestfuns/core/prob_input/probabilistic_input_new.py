@@ -12,9 +12,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from numpy.typing import ArrayLike
 from tabulate import tabulate
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, List, Optional, Sequence, Tuple, Union
 
 from uqtestfuns.core.prob_input.marginal import FIELD_NAMES, Marginal
 
@@ -51,124 +50,6 @@ class ProbInput:
         self._marginals = tuple(marginals)
         self._copulas = copulas
         self._name = name
-
-    # --- Factory methods
-    @classmethod
-    def replicate(
-        cls,
-        dimension: int,
-        distribution: str,
-        parameters: ArrayLike,
-        base_name: str = "X",
-        *,
-        copulas: Any = None,
-        name: Optional[str] = None,
-    ):
-        """Create a probabilistic input model with replicated marginals.
-
-        Parameters
-        ----------
-        dimension : int
-            The dimension of the probabilistic input.
-        distribution : str
-            The type of the probability distribution.
-        parameters :  array_like
-            The parameters of the chose probability distribution.
-        base_name : str, optional
-            The base name for the random variables. Default is "X" and will
-            be replicated as "X1", "X2", etc.
-        copulas : Any, optional
-            Copulas to model the dependence structure between the variables.
-            Currently, it is not used.
-        name : str, optional
-            The name of the probabilistic input model.
-
-        Returns
-        -------
-        ProbInput
-            An instance of `ProbInput` class with replicated marginals.
-        """
-        marginals = []
-        for i in range(1, dimension + 1):
-            marginal_name = f"{base_name}{i}"
-            marginal = Marginal(distribution, parameters, marginal_name)
-            marginals.append(marginal)
-
-        return cls(marginals, copulas, name)
-
-    @classmethod
-    def from_dicts(
-        cls,
-        marginals: Sequence[Dict[str, Any]],
-        copulas: Any = None,
-        name: Optional[str] = None,
-    ):
-        """Create a probabilistic input model from dictionaries.
-
-        Parameters
-        ----------
-        marginals : Sequence[Dict[str, Any]]
-            A sequence of dictionaries with the marginal specifications. Each
-            element consists of the distribution type, parameters,
-            name (optional), and description (optional) of the marginal.
-        copulas : Any, optional
-            Copulas to model the dependence structure between the variables.
-            Currently, it is not used.
-        name : str, optional
-            The name of the probabilistic input model.
-
-        Returns
-        -------
-        ProbInput
-            An instance of `ProbInput` class with the specified marginals
-            given as a sequence of dictionaries.
-        """
-        marginals_objects = tuple(
-            [Marginal(**marginal) for marginal in marginals]
-        )
-
-        return cls(marginals_objects, copulas, name)
-
-    @classmethod
-    def from_factory(
-        cls,
-        factory_function: Callable,
-        dimension: int,
-        factory_kwargs: Optional[Dict[str, Any]] = None,
-        *,
-        copulas: Any = None,
-        name: Optional[str] = None,
-    ):
-        """Create a probabilistic input model from a factory function.
-
-        Parameters
-        ----------
-        factory_function : Callable
-            The factory function that generates the marginal specifications.
-            The function should take the dimension of input as the first
-            positional argument and return a sequence of dictionaries.
-        dimension : int
-            The dimension of the probabilistic input model.
-        factory_kwargs : Optional[Dict[str, Any]], optional
-            Keyword arguments to pass to the factory function, by default None.
-        copulas : Any, optional
-            The copula specification for the probabilistic input model,
-            by default None.
-        name : Optional[str], optional
-            The name of the probabilistic input model, by default None.
-
-        Returns
-        -------
-        ProbInput
-            An instance of `ProbInput` class with the marginals created by
-            the factory function.
-        """
-        if factory_kwargs is None:
-            marginals = factory_function(dimension)
-        else:
-            marginals = factory_function(dimension, **factory_kwargs)
-
-        return cls.from_dicts(marginals, copulas, name)
 
     # --- Properties
     @property
@@ -545,11 +426,12 @@ class ProbInput:
             The prepared ProbInput instance for transformation.
         """
         if not isinstance(other, ProbInput):
-            other_ = ProbInput.replicate(
-                self.dimension,
-                distribution="uniform",
-                parameters=other,
-            )
+            marginals = []
+            for _ in range(self.dimension):
+                marginals.append(
+                    Marginal(distribution="uniform", parameters=other)
+                )
+            other_ = ProbInput(marginals)
         else:
             other_ = other
 
