@@ -7,7 +7,6 @@ from .bratley1992 import Bratley1992a, Bratley1992b, Bratley1992c, Bratley1992d
 from .cantilever_beam_2d import CantileverBeam2D
 from .circular_pipe_crack import CircularPipeCrack
 from .coffee_cup import CoffeeCup
-from .currin_sine import CurrinSine
 from .damped_cosine import DampedCosine
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
 from .dette import Dette8D, DetteCurved, DetteExp
@@ -70,7 +69,6 @@ __all__ = [
     "CantileverBeam2D",
     "CircularPipeCrack",
     "CoffeeCup",
-    "CurrinSine",
     "DampedCosine",
     "DampedOscillator",
     "DampedOscillatorReliability",
