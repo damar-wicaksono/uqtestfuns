@@ -5,7 +5,6 @@ The init for the 'test_functions' subpackage of UQTestFuns.
 from .ackley import Ackley
 from .bratley1992 import Bratley1992a, Bratley1992b, Bratley1992c, Bratley1992d
 from .cantilever_beam_2d import CantileverBeam2D
-from .cheng2010 import Cheng2D
 from .circular_pipe_crack import CircularPipeCrack
 from .coffee_cup import CoffeeCup
 from .convex_fail_domain import ConvexFailDomain
@@ -70,7 +69,6 @@ __all__ = [
     "Bratley1992c",
     "Bratley1992d",
     "CantileverBeam2D",
-    "Cheng2D",
     "CircularPipeCrack",
     "CoffeeCup",
     "ConvexFailDomain",

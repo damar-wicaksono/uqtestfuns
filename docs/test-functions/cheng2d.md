@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:cheng2d)=
-# Two-dimensional Function from Cheng and Sandu (2010)
+# Two-dimensional Trigonometric-Exponential Function from Cheng and Sandu (2010)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,9 +21,9 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The two-dimensional test function from Cheng and Sandu (2002) (or
-`Cheng2D` for short) is used in a metamodeling exercise via polynomial
-chaos expansion in {cite}`Cheng2010`.
+The test function from {cite}`Cheng2010` (`Cheng2D` for short) is a
+two-dimensional trigonometric-exponential function used as a benchmark
+for polynomial chaos expansion metamodeling.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
@@ -101,8 +101,8 @@ is the two-dimensional vector of input variables further defined below.
 
 ## Probabilistic input
 
-The input consists of two uniformly distributed random variables as shown
-below.
+The probabilistic input model consists of two independent uniform random
+variables as shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -122,13 +122,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
