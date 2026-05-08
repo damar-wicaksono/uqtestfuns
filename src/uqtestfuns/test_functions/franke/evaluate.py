@@ -52,3 +52,24 @@ def franke_1(xx: np.ndarray) -> np.ndarray:
     term_4 = 0.20 * np.exp(-1.00 * ((xx0 - 4) ** 2 + (xx1 - 7) ** 2))
 
     return term_1 + term_2 + term_3 - term_4
+
+
+def franke_2(xx: np.ndarray) -> np.ndarray:
+    """Evaluate the (2nd) Franke function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the (2nd) Franke function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    yy = (np.tanh(9 * (xx[:, 1] - xx[:, 0])) + 1) / 9.0
+
+    return yy

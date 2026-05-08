@@ -13,7 +13,7 @@ from .dette import Dette8D, DetteCurved, DetteExp
 from .flood import Flood
 from .forrester import Forrester2008
 from .four_branch import FourBranch
-#from .franke import Franke2, Franke3, Franke4, Franke5, Franke6
+#from .franke import Franke3, Franke4, Franke5, Franke6
 from .friedman import Friedman6D, Friedman10D
 from .gayton_hat import GaytonHat
 from .genz import (
@@ -77,7 +77,6 @@ __all__ = [
     "Flood",
     "Forrester2008",
     "FourBranch",
-    # "Franke2",
     # "Franke3",
     # "Franke4",
     # "Franke5",

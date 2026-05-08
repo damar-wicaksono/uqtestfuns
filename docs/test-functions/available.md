@@ -45,7 +45,7 @@ regardless of their typical applications.
 |                   {ref}`Forrester et al. (2008) <test-functions:forrester>`                    |        1        |        `Forrester2008()`        |
 |                        {ref}`Four-branch <test-functions:four-branch>`                         |        2        |         `FourBranch()`          |
 |                       {ref}`Franke (1979) 1st <test-functions:franke-1>`                       |        2        |           `Franke1()`           |
-|                         {ref}`(2nd) Franke <test-functions:franke-2>`                          |        2        |           `Franke2()`           |
+|                       {ref}`Franke (1979) 2nd <test-functions:franke-2>`                       |        2        |           `Franke2()`           |
 |                         {ref}`(3rd) Franke <test-functions:franke-3>`                          |        2        |           `Franke3()`           |
 |                         {ref}`(4th) Franke <test-functions:franke-4>`                          |        2        |           `Franke4()`           |
 |                         {ref}`(5th) Franke <test-functions:franke-5>`                          |        2        |           `Franke5()`           |

@@ -9,31 +9,30 @@ Notes
 
 import numpy as np
 
-# from uqtestfuns.test_functions import Franke2, Franke4, Franke5, Franke6
-#
-#
-# def test_franke2():
-#     """Test the (2nd) Franke function."""
-#     my_fun = Franke2()
-#
-#     yy_ref = 0.0
-#     xx = np.array([[1.0, 0.0]])
-#
-#     # Assertion: The minimum is known
-#     assert np.isclose(yy_ref, my_fun(xx))
-#
-#     yy_ref = 2.0 / 9.0
-#     xx = np.array([[0.0, 1.0]])
-#
-#     # Assertion: The maximum is known
-#     assert np.isclose(yy_ref, my_fun(xx))
-#
-#     xx_test = my_fun.prob_input.get_sample(100000)
-#     yy_test = my_fun(xx_test)
-#
-#     # Assertion: The maximum is indeed a maximum
-#     assert np.all(yy_test <= yy_ref)
-#
+from uqtestfuns import Franke2 #, Franke4, Franke5, Franke6
+
+
+def test_franke2():
+    """Test the (2nd) Franke function."""
+    my_fun = Franke2()
+
+    yy_ref = 0.0
+    xx = np.array([[1.0, 0.0]])
+
+    # Assertion: The minimum is known
+    assert np.isclose(yy_ref, my_fun(xx))
+
+    yy_ref = 2.0 / 9.0
+    xx = np.array([[0.0, 1.0]])
+
+    # Assertion: The maximum is known
+    assert np.isclose(yy_ref, my_fun(xx))
+
+    yy_test = my_fun.get_sample(100000)
+
+    # Assertion: The maximum is indeed a maximum
+    assert np.all(yy_test <= yy_ref)
+
 #
 # def test_franke4():
 #     """Test the (4th) Franke function"""
