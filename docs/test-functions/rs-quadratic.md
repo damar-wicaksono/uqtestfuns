@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Quadratic RS reliability problem is a variant of the classic RS problem
-with one quadratic term {cite}`Waarts2000`.
+The Quadratic RS reliability problem is a variant of the classic
+resistance-stress (RS) problem with one quadratic term {cite}`Waarts2000`.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour
@@ -34,8 +34,7 @@ overlaid.
 :tags: [remove-input]
 
 my_fun = uqtf.RSQuadratic()
-my_fun.prob_input.reset_rng(237324)
-xx = my_fun.prob_input.get_sample(1000000)
+xx = my_fun.prob_input.get_sample(1000000, 237324)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
 idx_pos = yy > 0.0
@@ -103,7 +102,7 @@ axs_2.scatter(
     color="#ca0020",
     marker=".",
     s=30,
-    label="$g(x) \leq 0$"
+    label=r"$g(x) \leq 0$"
 )
 axs_2.scatter(
     xx[idx_pos, 0],
@@ -158,7 +157,7 @@ and $\mathbb{P}[g(\boldsymbol{X}) \leq 0]$, respectively.
 ## Probabilistic input
 
 Based on {cite}`Waarts2000`, the probabilistic input model for
-the test function consists of two independent standard normal random variables
+the test function consists of two independent normal random variables
 (see the table below).
 
 ```{code-cell} ipython3
@@ -215,8 +214,7 @@ def is_outlier(points, thresh=3.5):
 
     return modified_z_score > thresh
 
-xx_test = my_testfun.prob_input.get_sample(1000000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(1000000)
 yy_test = yy_test[~is_outlier(yy_test, thresh=10)]
 idx_pos = yy_test > 0
 idx_neg = yy_test <= 0
@@ -227,7 +225,7 @@ plt.axvline(0, linewidth=1.0, color="#ca0020")
 
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 
@@ -247,5 +245,3 @@ are summarized in the table below.
 :style: unsrtalpha
 :filter: docname in docnames
 ```
-
-[^location]: see Annex E.3, p.151 in {cite}`Waarts2000`.

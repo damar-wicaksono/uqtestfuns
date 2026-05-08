@@ -43,7 +43,6 @@ from .portfolio_3d import Portfolio3D
 from .robot_arm import RobotArm
 from .rosenbrock import Rosenbrock
 from .rs_circular_bar import RSCircularBar
-from .rs_quadratic import RSQuadratic
 from .saltelli_linear import SaltelliLinear
 from .sobol_g import SobolG
 from .sobol_g_star import SobolGStar
@@ -106,7 +105,6 @@ __all__ = [
     "RobotArm",
     "Rosenbrock",
     "RSCircularBar",
-    "RSQuadratic",
     "SaltelliLinear",
     "SobolG",
     "SobolGStar",
