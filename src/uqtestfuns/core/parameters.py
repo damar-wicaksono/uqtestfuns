@@ -3,18 +3,20 @@ This module contains the implementation of FunParams a class that stores
 UQ Test function parameters.
 """
 
-import textwrap
-
-from tabulate import tabulate
-from typing import Any, List, Optional
-
-import warnings
-
-__all__ = ["FunParams"]
+from __future__ import annotations
 
 import numpy as np
+import textwrap
+import warnings
+
+from collections.abc import Mapping, Iterator
+from tabulate import tabulate
+from typing import Any, Dict, List, Optional
 
 from uqtestfuns.core.custom_typing import DeclaredParameters
+
+__all__ = ["FunParams", "Parameters"]
+
 
 FIELD_NAMES = ["Keyword", "Value", "Type", "Description"]
 
@@ -339,5 +341,192 @@ def _get_values_as_list(
         ]
 
         list_values.append(entry)
+
+    return list_values
+
+
+class Parameters(Mapping):
+    """A named, immutable bundle of parameter values for a UQ test function.
+
+    The Parameters class is designed to store and manage named parameters
+    with values and optional descriptions. It supports resolution of
+    dimension-dependent parameter values through factory functions.
+
+    Parameters
+    ----------
+    values : Mapping[str, Any]
+        The parameter values, keyed by parameter name. Values must be
+        fully resolved at construction time.
+    name : str, optional
+        The name of the parameter set (e.g., "Ishigami1991"). Defaults
+        to None.
+    keyword_descriptions : Mapping[str, str], optional
+        Per-keyword descriptions. Keys must be a subset of the keys in
+        `values`; otherwise a ValueError is raised.
+    """
+
+    def __init__(
+        self,
+        values: Mapping[str, Any],
+        name: Optional[str] = None,
+        keyword_descriptions: Optional[Mapping[str, str]] = None,
+    ):
+        # --- Assign values
+        self._values = dict(values)
+        self._name = name
+
+        # --- Process the keyword descriptions
+        kw_desc = dict(keyword_descriptions or {})
+        stray = set(kw_desc) - set(self._values.keys())
+        if stray:
+            raise ValueError(
+                f"Keyword descriptions for unknown parameters: {stray}"
+            )
+
+        self._keyword_descriptions = {
+            key: kw_desc.get(key) for key in self._values
+        }
+
+    # --- Properties
+    @property
+    def name(self) -> Optional[str]:
+        """The name of the parameter set.
+
+        Returns
+        -------
+        str, optional
+            The name of the parameter set.
+        """
+        return self._name
+
+    # --- Public methods
+    def describe(self, key: str) -> Optional[str]:
+        """Get the description of a parameter.
+
+        Parameters
+        ----------
+        key : str
+            The name of the parameter.
+
+        Returns
+        -------
+        str, optional
+            The description of the parameter. If not provided,
+            None is returned.
+        """
+        try:
+            return self._keyword_descriptions[key]
+        except KeyError as exc:
+            raise KeyError(f"Unknown parameter '{key}'") from exc
+
+    # --- Dunder methods
+    def __getitem__(self, key: str) -> Any:
+        """Get the value of a parameter by name.
+
+        Parameters
+        ----------
+        key : str
+            The name of the parameter.
+
+        Returns
+        -------
+        Any
+            The value of the parameter.
+        """
+        return self._values[key]
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._values)
+
+    def __len__(self) -> int:
+        """Return the number of parameters.
+
+        Returns
+        -------
+        int
+            The number of parameters.
+        """
+        return len(self._values)
+
+    def __repr__(self):
+        """Return the unambiguous string representation of the instance."""
+        class_name = self.__class__.__name__
+        # Get the value of the constructor arguments
+        kw_descriptions = self._keyword_descriptions
+        descriptions = {
+            k: v for k, v in kw_descriptions.items() if v is not None
+        }
+        attrs = {
+            "values": self._values,  # Avoid returning a copy
+            "name": self.name,
+            "keyword_descriptions": descriptions,
+        }
+        attrs_str = ", ".join(f"{k}={v!r}" for k, v in attrs.items())
+
+        return f"{class_name}({attrs_str})"
+
+    def __str__(self):
+        """Return a human-readable string representation of the instance."""
+        if self.name is None or self.name == "":
+            table = "Values :\n\n"
+        else:
+            table = f"Name   : {self.name}\n"
+            table += "Values :\n\n"
+
+        # Get the header names
+        field_names = ["Keyword", "Value", "Description"]
+        header_names = [name.capitalize() for name in field_names]
+        header_names.insert(0, "No.")
+
+        # Get the values for each field as a list
+        rows = _create_list(self._values, self._keyword_descriptions)
+
+        table += tabulate(
+            rows,
+            headers=header_names,
+            stralign="center",
+            disable_numparse=True,
+        )
+
+        return table
+
+
+def _create_list(
+    values: Dict[str, Any],
+    descriptions: Dict[str, Optional[str]],
+) -> List[List[str]]:
+    """Build table rows from parameter values and descriptions.
+
+    Parameters
+    ----------
+    values : Dict[str, Any]
+        Dictionary of parameter names and their values.
+    descriptions : Dict[str, str]
+        Dictionary mapping parameter names to descriptions.
+
+    Returns
+    -------
+    List[List[str]]
+        List of rows containing the row number, parameter name,
+        formatted value, and description.
+    """
+
+    def format_value(val) -> str:
+        if isinstance(val, np.ndarray):
+            return f"{val.shape} array"
+        if isinstance(val, float):
+            return f"{val:g}"
+        return str(val)
+
+    list_values = []
+    for i, (parameter, value) in enumerate(values.items(), start=1):
+        list_values.append(
+            [
+                str(i),
+                parameter,
+                format_value(value),
+                descriptions.get(parameter) or "-",
+            ]
+        )
 
     return list_values

@@ -1,0 +1,29 @@
+name: ActiveInert10D
+description: Sum of active inputs with inert padding
+tags:
+  - sensitivity
+
+dimensions:
+  input: 10
+  output: 1
+
+inputs:
+  Default:
+    description: Three active inputs and seven inert inputs
+    marginals:
+      - name: A1
+        distribution: uniform
+        parameters: [0.0, 5.0]
+        description: First active variable
+      - name: A2
+        distribution: normal
+        parameters: [0.0, 1.0]
+        description: Second active variable
+      - name: A3
+        distribution: lognormal
+        parameters: [0.0, 0.5]
+        description: Third active variable
+      - name: Inert$idx
+        distribution: uniform
+        parameters: [0.0, 1.0]
+        repeat: 7

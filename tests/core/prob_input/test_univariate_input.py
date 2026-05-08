@@ -11,7 +11,7 @@ from numpy.typing import ArrayLike
 from uqtestfuns.core.prob_input.marginal import Marginal
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 from conftest import create_random_alphanumeric
-
+from copy import copy
 
 MARGINALS = list(SUPPORTED_MARGINALS.keys())
 
@@ -25,13 +25,14 @@ def univariate_input(
     # All random values (distribution parameters are limited to 5 digits
     # to avoid awkward yet unrealistic values)
     name = create_random_alphanumeric(8)
+    description = create_random_alphanumeric(10)
     distribution = request.param
     if distribution == "uniform":
         parameters = np.sort(np.round(np.random.rand(2), decimals=5))
     elif distribution == "beta":
         parameters = np.sort(np.round(np.random.rand(4), decimals=5))
     elif distribution == "exponential":
-        # Single parameter, must be strictly positive
+        # Single parameter must be strictly positive
         parameters = (1 + np.round(np.random.rand(1), decimals=5)).astype(
             np.float64
         )
@@ -64,6 +65,7 @@ def univariate_input(
         "name": name,
         "distribution": distribution,
         "parameters": parameters,
+        "description": description,
     }
 
     my_univariate_input = Marginal(**specs)
@@ -184,9 +186,7 @@ def test_transform_sample() -> None:
         name=name_2, distribution=distribution_2, parameters=parameters_2
     )
 
-    xx_trans = my_univariate_input_1.transform_sample(
-        xx, my_univariate_input_2
-    )
+    xx_trans = my_univariate_input_1.transform_to(xx, my_univariate_input_2)
 
     # Assertions
     assert np.min(xx_trans) >= my_univariate_input_2.lower
@@ -207,7 +207,7 @@ def test_failed_transform_sample() -> None:
     xx = my_univariate_input.get_sample(sample_size)
 
     with pytest.raises(TypeError):
-        my_univariate_input.transform_sample(xx, [])  # type: ignore
+        my_univariate_input.transform_to(xx, [])  # type: ignore
 
 
 def test_cdf_monotonously_increasing(univariate_input: Any) -> None:
@@ -233,39 +233,125 @@ def test_cdf_monotonously_increasing(univariate_input: Any) -> None:
     assert np.all(yy_diff >= 0.0)
 
 
-def test_pass_random_seed():
-    """Test passing random seed to the constructor."""
+def test_pass_rng_seed(univariate_input):
+    """Test passing random seed to generate sample."""
 
-    # Create two instances with an identical seed number
-    rng_seed = 42
-    my_input_1 = Marginal("uniform", [0, 1], rng_seed=rng_seed)
-    my_input_2 = Marginal("uniform", [0, 1], rng_seed=rng_seed)
+    marginal, _ = univariate_input
 
     # Generate sample points
-    xx_1 = my_input_1.get_sample(1000)
-    xx_2 = my_input_2.get_sample(1000)
+    rng_seed = 42
+    xx_1 = marginal.get_sample(1000, rng_seed)
+    xx_2 = marginal.get_sample(1000, rng_seed)
 
     # Assertion: Both samples are equal because the seed is identical
-    assert np.allclose(xx_1, xx_2)
+    assert np.all(xx_1 == xx_2)
 
 
-def test_reset_rng():
-    """Test resetting the RNG once an instance has been created."""
+def test_pass_rng(univariate_input):
+    """Test passing random number generator to generate sample."""
+    marginal, _ = univariate_input
 
-    # Create two instances with an identical seed number
-    rng_seed = 42
-    my_input = Marginal("uniform", [0, 1], rng_seed=rng_seed)
+    # Generate sample points with the same random number generators
+    rng_1 = np.random.default_rng(42)
+    xx_1 = marginal.get_sample(1000, rng_1)
+    rng_2 = np.random.default_rng(42)
+    xx_2 = marginal.get_sample(1000, rng_2)
 
-    # Generate sample points
-    xx_1 = my_input.get_sample(1000)
-    xx_2 = my_input.get_sample(1000)
+    # Assertion: Both samples are equal because the seed is identical
+    assert np.all(xx_1 == xx_2)
 
-    # Assertion: Both samples should not be equal
-    assert not np.allclose(xx_1, xx_2)
 
-    # Reset the RNG and generate new sample
-    my_input.reset_rng(rng_seed)
-    xx_2 = my_input.get_sample(1000)
+class TestEquality:
+    """All tests related to checking the equality in value of two instances."""
 
-    # Assertion: Both samples should now be equal
-    assert np.allclose(xx_1, xx_2)
+    def test_equal_identical(self, univariate_input):
+        """Test the equality in value of two identical instances."""
+        marginal, _ = univariate_input
+
+        # Assertions
+        assert marginal == marginal
+        assert marginal is marginal
+
+    def test_equal_unidentical(self, univariate_input):
+        """Test the equality in value of two unidentical instances."""
+        marginal_1, _ = univariate_input
+
+        marginal_2 = copy(marginal_1)
+
+        # Assertions
+        assert marginal_1 == marginal_2
+        assert marginal_1 is not marginal_2
+
+    def test_inequal_name(self, univariate_input):
+        """Test the inequality in name of two instances."""
+        marginal_1, _ = univariate_input
+
+        marginal_2 = Marginal(
+            marginal_1.distribution,
+            marginal_1.parameters,
+            marginal_1.name + "_2",
+            marginal_1.description,
+        )
+
+        # Assertion
+        assert marginal_1 != marginal_2
+
+    def test_inequal_description(self, univariate_input):
+        """Test the inequality in description of two instances."""
+        marginal_1, _ = univariate_input
+
+        marginal_2 = Marginal(
+            marginal_1.distribution,
+            marginal_1.parameters,
+            marginal_1.name,
+            marginal_1.description + "_2",
+        )
+
+        # Assertion
+        assert marginal_1 != marginal_2
+
+    def test_inequal_parameters(self, univariate_input):
+        """Test the inequality in parameters of two instances."""
+        marginal_1, _ = univariate_input
+
+        marginal_2 = Marginal(
+            marginal_1.distribution,
+            marginal_1.parameters * (1 + 1e-4),
+            marginal_1.name,
+            marginal_1.description,
+        )
+
+        # Assertion
+        assert marginal_1 != marginal_2
+
+    @pytest.mark.parametrize("other_instance", [None, 1, "string"])
+    def test_inequal_instance(self, univariate_input, other_instance):
+        """Test the inequality in type of two instances."""
+        marginal_1, _ = univariate_input
+
+        # Assertion
+        assert marginal_1 != other_instance
+
+    def test_inequal_type(self, univariate_input):
+        """Test the inequality in type of two instances."""
+        marginal_1, _ = univariate_input
+
+        if marginal_1.distribution == "uniform":
+            parameters = np.sort(np.round(np.random.rand(4), decimals=5))
+            marginal_2 = Marginal(
+                "beta",
+                parameters,
+                marginal_1.name,
+                marginal_1.description,
+            )
+        else:
+            parameters = np.sort(np.round(np.random.rand(2), decimals=5))
+            marginal_2 = Marginal(
+                "uniform",
+                parameters,
+                marginal_1.name,
+                marginal_1.description,
+            )
+
+        # Assertion
+        assert marginal_1 != marginal_2

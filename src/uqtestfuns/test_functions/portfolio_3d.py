@@ -22,7 +22,6 @@ from uqtestfuns.core.custom_typing import (
 )
 from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
-
 __all__ = ["Portfolio3D"]
 
 

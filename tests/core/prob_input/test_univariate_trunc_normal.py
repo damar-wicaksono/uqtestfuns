@@ -11,7 +11,6 @@ from uqtestfuns.core.prob_input.marginal import Marginal
 from uqtestfuns.global_settings import ARRAY_FLOAT
 from conftest import create_random_alphanumeric
 
-
 DISTRIBUTION_NAME = "trunc-normal"
 
 

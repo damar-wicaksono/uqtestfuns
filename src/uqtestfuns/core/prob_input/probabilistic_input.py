@@ -12,6 +12,7 @@ import numpy as np
 import textwrap
 
 from numpy.random._generator import Generator
+from numpy.typing import ArrayLike
 from tabulate import tabulate
 from typing import Any, List, Optional, Sequence
 
@@ -62,6 +63,66 @@ class ProbInput:
         self._rng_seed = rng_seed
         self._rng: Optional[Generator] = None
 
+    # Factory methods
+    @classmethod
+    def replicate(
+        cls,
+        input_dimension: int,
+        distribution: str,
+        parameters: ArrayLike,
+        base_name: str = "X",
+        *,
+        copulas: Any = None,
+        input_id: Optional[str] = None,
+        function_id: Optional[str] = None,
+        description: Optional[str] = None,
+        rng_seed: Optional[int] = None,
+    ) -> "ProbInput":
+        """Create a probabilistic input model with replicated marginals.
+
+        Parameters
+        -----------
+        input_dimension : int
+            The dimension of the probabilistic input.
+        distribution : str
+            The type of the probability distribution.
+        parameters : array_like
+           The parameters of the chosen probability distribution
+        base_name : str, optional
+            The base name of all the marginals. It will be spawned as
+            ``{base_name}{i + 1}`` where ``i`` is the index of the marginal
+            (1-indexed). If not specified, the value is "X".
+        copulas : Any
+            Copulas between univariate inputs that define dependence structure
+            (currently not used).
+        input_id: str, optional
+            The ID of the probabilistic input. If not specified,
+            the value is None.
+        function_id: str, optional
+            The ID of the function associated with the input. If not specified,
+            the value is None.
+        description: str, optional
+            The short description regarding the input model. If not specified,
+            the value is None.
+        rng_seed : int, optional.
+            The seed used to initialize the pseudo-random number generator.
+            If not specified, the value is taken from the system entropy.
+        """
+        marginals = []
+        for i in range(input_dimension):
+            name = f"{base_name}{i + 1}"
+            marginal = Marginal(distribution, parameters, name)
+            marginals.append(marginal)
+
+        return cls(
+            marginals,
+            copulas,
+            input_id,
+            function_id,
+            description,
+            rng_seed,
+        )
+
     @property
     def input_dimension(self) -> int:
         """Return the number of constituents (random) input variables."""
@@ -101,7 +162,7 @@ class ProbInput:
             for idx_dim, (marginal_self, marginal_other) in enumerate(
                 zip(self.marginals, other.marginals)
             ):
-                xx_trans[:, idx_dim] = marginal_self.transform_sample(
+                xx_trans[:, idx_dim] = marginal_self.transform_to(
                     xx[:, idx_dim], marginal_other
                 )
         else:

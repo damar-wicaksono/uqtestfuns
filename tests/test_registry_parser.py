@@ -1,0 +1,271 @@
+import numpy as np
+import pytest
+import yaml
+
+from pathlib import Path
+
+from uqtestfuns.core.registry.specs import (
+    CallableSpec,
+    MarginalTemplate,
+    UQInputSpec,
+    UQParametersSpec,
+)
+from uqtestfuns.core.registry.parser import parse_spec, SpecValidationError
+from uqtestfuns.core.registry.entries import UQTestFunSpec
+from uqtestfuns.core.registry.resolver import (
+    resolve_callable,
+    resolve_parameters,
+    resolve_prob_input,
+)
+from uqtestfuns.core.parameters import Parameters
+from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
+
+# Fixture roots
+FIXTURE_ROOT = Path(__file__).parent / "fixtures"
+VALID_ROOT = FIXTURE_ROOT / "valid_yaml"
+INVALID_ROOT = FIXTURE_ROOT / "invalid_yaml"
+INVALID_ROOT_MOD = FIXTURE_ROOT / "invalid_module"
+
+# NOTE: List[MarginalSpec] cannot be checked via isinstance(), use list instead
+MARGINALS_SPECS = (list, MarginalTemplate, CallableSpec)
+
+VALID_SPEC_FILES = [
+    "sum_of_squares_2d.yaml",
+    "sine_sum_6d.yaml",
+    "active_inert_10d.yaml",
+    "weighted_product.yaml",
+    "linear_sum.yaml",
+    "circular_bar_2d.yaml",
+    "clipped_scaling_3d.yaml",
+    "simple_series/variant_sum.yaml",
+    "simple_series/variant_prod.yaml",
+    "simple_series/variant_max.yaml",
+]
+
+
+@pytest.fixture(params=VALID_SPEC_FILES)
+def valid_spec_file(request):
+    """Fixture to provide valid YAML specification files for testing."""
+    spec_file = VALID_ROOT / request.param
+
+    return spec_file
+
+
+INVALID_SPEC_FILES = [
+    "empty.yaml",
+    "invalid_eval.yaml",
+    "invalid_eval_no_file.yaml",
+    "invalid_expression.yaml",
+    "invalid_inputs_literal.yaml",
+    "invalid_inputs_recursive.yaml",
+    "invalid_marginals_literal.yaml",
+    "invalid_marginals_parameters.yaml",
+    "invalid_marginals_repeat.yaml",
+    "invalid_parameters.yaml",
+]
+
+
+@pytest.fixture(params=INVALID_SPEC_FILES)
+def invalid_spec_file(request):
+    """Fixture to provide invalid YAML specification files for testing."""
+    spec_file = INVALID_ROOT / request.param
+
+    return spec_file
+
+
+@pytest.fixture
+def tmp_module_path(monkeypatch):
+    monkeypatch.syspath_prepend(str(FIXTURE_ROOT))
+
+
+# Invalid Python module
+INVALID_PYTHON_MODULES = [
+    "cannot_import.yaml",
+    "no_attribute.yaml",
+    "not_callable.yaml",
+]
+
+
+@pytest.fixture(params=INVALID_PYTHON_MODULES)
+def invalid_python_module(request):
+    """Fixture to provide spec file with invalid python module for testing."""
+    spec_file = INVALID_ROOT_MOD / request.param
+
+    return spec_file
+
+
+def test_parse_spec_structural(valid_spec_file):
+    """Test the specification structure of a valid YAML file."""
+    # Parse the specification
+    spec = parse_spec(valid_spec_file, VALID_ROOT)
+
+    # Assertions
+    assert isinstance(spec, UQTestFunSpec)
+    assert spec.name is not None
+
+    # Parsed evaluate
+    assert isinstance(spec.evaluate, CallableSpec)
+
+    # Parsed inputs
+    assert isinstance(spec.inputs, dict)
+    for input_id, input_spec in spec.inputs.items():
+        assert isinstance(input_id, str)
+        assert isinstance(input_spec, UQInputSpec)
+        assert isinstance(input_spec.marginals, MARGINALS_SPECS)
+
+    # Parsed parameters (optional, may be None)
+    if spec.parameters is not None:
+        assert isinstance(spec.parameters, dict)
+        for parameters_id, parameters_spec in spec.parameters.items():
+            assert isinstance(parameters_id, str)
+            assert isinstance(parameters_spec, UQParametersSpec)
+            assert isinstance(parameters_spec.name, str)
+            assert isinstance(parameters_spec.values, dict)
+            # Keys are always strings
+            assert all(
+                isinstance(key, str) for key in parameters_spec.values.keys()
+            )
+            # Descriptions are optional, may be None
+            if parameters_spec.keyword_descriptions is not None:
+                assert isinstance(parameters_spec.keyword_descriptions, dict)
+                for key, value in parameters_spec.keyword_descriptions.items():
+                    # Dict[str, str]
+                    assert isinstance(key, str)
+                    assert isinstance(value, str)
+
+
+def test_parse_spec_invalid(invalid_spec_file):
+    """Test invalid YAML specification files."""
+    with pytest.raises(SpecValidationError):
+        _ = parse_spec(invalid_spec_file, INVALID_ROOT)
+
+
+class TestResolverCallableSpec:
+    """All tests related to the resolver of callable specifications."""
+
+    def test_valid_spec(self, valid_spec_file, tmp_module_path):
+        """Test the resolution of callable specifications."""
+        # Parse the specification
+        spec = parse_spec(valid_spec_file, VALID_ROOT)
+
+        # Resolve the callable specification
+        evaluate = resolve_callable(spec.evaluate)
+
+        # Assertions
+        assert callable(evaluate)
+
+        for input_spec in spec.inputs.values():
+            if isinstance(input_spec.marginals, CallableSpec):
+                marginal_factory = resolve_callable(input_spec.marginals)
+
+                assert callable(marginal_factory)
+
+        if spec.parameters is not None:
+            for parameters_spec in spec.parameters.values():
+                if isinstance(parameters_spec.values, CallableSpec):
+                    parameter_factory = resolve_callable(
+                        parameters_spec.values
+                    )
+
+                    assert callable(parameter_factory)
+
+    def test_invalid_spec(self, invalid_python_module, tmp_module_path):
+        """Test the resolution of invalid callable specifications.
+
+        Due to invalid python module, the resolution should fail.
+        """
+        spec = parse_spec(invalid_python_module, INVALID_ROOT_MOD)
+        with pytest.raises(SpecValidationError):
+            _ = resolve_callable(spec.evaluate)
+
+
+class TestResolveProbInput:
+    """All tests related to the resolution of ProbInput objects."""
+
+    def test_valid_spec(self, valid_spec_file, tmp_module_path):
+        """Test the resolution of ProbInput objects."""
+        # Parse the specification
+        spec = parse_spec(valid_spec_file, VALID_ROOT)
+
+        # Get the dimension of the function
+        yaml_file = VALID_ROOT / valid_spec_file
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+        input_dimension = data["dimensions"]["input"]
+        if input_dimension == "variable":
+            input_dimension = 5  # Arbitrary input dimension for testing
+
+        for input_spec in spec.inputs.values():
+            prob_input = resolve_prob_input(input_spec, input_dimension)
+            assert isinstance(prob_input, ProbInput)
+            assert prob_input.dimension == input_dimension
+
+    def test_invalid_dimension(self, tmp_module_path):
+        """Test the resolution of ProbInput objects with invalid dimension."""
+        # Parse a fixed specification file
+        spec_file = VALID_ROOT / "circular_bar_2d.yaml"
+        spec = parse_spec(spec_file, VALID_ROOT)
+
+        for input_spec in spec.inputs.values():
+            with pytest.raises(SpecValidationError):
+                # Dimension is 2, but input is 3
+                _ = resolve_prob_input(input_spec, input_dimension=3)
+
+    def test_invalid_spec(self):
+        """Test the resolution of invalid ProbInput objects."""
+        input_spec = UQInputSpec(
+            name="test",
+            marginals=None,  # type: ignore
+            copulas=None,
+        )
+
+        with pytest.raises(TypeError):
+            _ = resolve_prob_input(input_spec, 1)
+
+
+class TestResolveParameters:
+    """All tests related to the resolution of Parameters objects."""
+
+    def test_valid_spec(self, valid_spec_file, tmp_module_path):
+        """Test the resolution of Parameters objects."""
+        # Parse the specification
+        spec = parse_spec(valid_spec_file, VALID_ROOT)
+
+        # Get the dimension of the function
+        yaml_file = VALID_ROOT / valid_spec_file
+        with open(yaml_file, "r") as f:
+            data = yaml.safe_load(f)
+        input_dimension = data["dimensions"]["input"]
+        if input_dimension == "variable":
+            input_dimension = 5  # Arbitrary input dimension for testing
+
+        # Parsed parameters (optional, may be None)
+        if spec.parameters is not None:
+            assert isinstance(spec.parameters, dict)
+            for parameters_spec in spec.parameters.values():
+                parameters = resolve_parameters(
+                    parameters_spec,
+                    input_dimension,
+                )
+
+                assert isinstance(parameters, Parameters)
+                for value in parameters_spec.values.values():
+                    if isinstance(value, np.ndarray):
+                        assert len(value) == input_dimension
+
+    def test_invalid_factory(self, tmp_module_path):
+        """Test the resolution of Parameters with invalid factory function."""
+        spec_file = INVALID_ROOT / "invalid_parameters_factory.yaml"
+
+        # Parse the specification
+        spec = parse_spec(spec_file, INVALID_ROOT)
+
+        # Get the dimension of the function
+        with open(spec_file, "r") as f:
+            data = yaml.safe_load(f)
+        input_dimension = data["dimensions"]["input"]
+
+        assert spec.parameters is not None
+        with pytest.raises(SpecValidationError):
+            for parameters_spec in spec.parameters.values():
+                _ = resolve_parameters(parameters_spec, input_dimension)

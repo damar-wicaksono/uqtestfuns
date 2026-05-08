@@ -7,7 +7,8 @@ import pytest
 
 from scipy.special import comb
 
-from uqtestfuns import UQMetaTestFun, UQTestFun, UQMetaFunSpec, Marginal
+from uqtestfuns import UQMetaTestFun, UQMetaFunSpec, Marginal
+from uqtestfuns.core.uqtestfun import UQTestFun
 from uqtestfuns.meta.metaspec import UQTestFunSpec
 from uqtestfuns.meta.basis_functions import BASIS_BY_ID
 from conftest import create_random_marginals, assert_call
@@ -177,7 +178,7 @@ def test_get_sample(input_dimension):
     # Assertion
     assert isinstance(my_testfun, UQTestFun)
     assert my_testfun.input_dimension == input_dimension
-    assert my_testfun.prob_input.input_dimension == input_dimension
+    assert my_testfun.prob_input.dimension == input_dimension
     assert isinstance(my_testfun.parameters["spec"], UQTestFunSpec)
     assert_call(my_testfun, my_testfun.prob_input.get_sample(100))
 
@@ -224,7 +225,9 @@ def test_evaluate_sample(input_dimension):
     xx = my_testfun.prob_input.get_sample(sample_size)
     yy = my_testfun(xx)
 
-    yy_ref = _create_reference_evaluate(xx, **my_testfun.parameters.as_dict())
+    params = my_testfun.parameters
+    assert params is not None
+    yy_ref = _create_reference_evaluate(xx, **params)
 
     # Assertion
     assert np.allclose(yy, yy_ref)
