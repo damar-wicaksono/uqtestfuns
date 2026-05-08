@@ -252,3 +252,20 @@ class TestResolveParameters:
                 for value in parameters_spec.values.values():
                     if isinstance(value, np.ndarray):
                         assert len(value) == input_dimension
+
+    def test_invalid_factory(self, tmp_module_path):
+        """Test the resolution of Parameters with invalid factory function."""
+        spec_file = INVALID_ROOT / "invalid_parameters_factory.yaml"
+
+        # Parse the specification
+        spec = parse_spec(spec_file, INVALID_ROOT)
+
+        # Get the dimension of the function
+        with open(spec_file, "r") as f:
+            data = yaml.safe_load(f)
+        input_dimension = data["dimensions"]["input"]
+
+        assert spec.parameters is not None
+        with pytest.raises(SpecValidationError):
+            for parameters_spec in spec.parameters.values():
+                _ = resolve_parameters(parameters_spec, input_dimension)

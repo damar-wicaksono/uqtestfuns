@@ -47,8 +47,6 @@ class UQTestFunInfo:
         Human-readable description of the test function.
     tags : List[str]
         List of categorical tags for classification and search.
-    variable_dimension : bool
-        Whether the function supports variable input dimensions.
     input_dimension : Optional[int]
         Number of input dimensions (None if variable_dimension is True).
     output_dimension : int
@@ -64,7 +62,7 @@ class UQTestFunInfo:
         Mapping of parameter IDs to their descriptions (default is None).
     default_parameters_id : Optional[str], optional
         Identifier for the default parameter configuration (default is None).
-    parameter_keywords : Optional[Dict[str, KeywordInfo]], optional
+    parameters_keywords : Optional[Dict[str, KeywordInfo]], optional
         Mapping of parameter keywords to their type and description
         (default is None).
     """
@@ -88,7 +86,7 @@ class UQTestFunInfo:
     # Parameter variant IDs
     available_parameters_ids: Dict[str, str]
     default_parameters_id: Optional[str]
-    parameter_keywords: Dict[str, KeywordInfo]
+    parameters_keywords: Dict[str, Dict[str, KeywordInfo]]
 
     @property
     def variable_dimension(self) -> bool:

@@ -116,10 +116,10 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
 
     # --- Parameter specification (optional; None if not defined)
     parameters = data.get("parameters")
+    parameters_keywords: Dict[str, Dict[str, KeywordInfo]] = {}
     if parameters is None:
         available_parameter_ids = {}
         default_parameter_id = None
-        parameter_keywords: Dict[str, KeywordInfo] = {}
     else:
         # -- Validate that 'sets' sub-block is present and non-empty
         available_sets = parameters.get("sets")
@@ -141,18 +141,19 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
         else:
             default_parameter_id = parameters["default_parameters"]
 
-        # -- Infer keyword types from the default parameter set
-        default_set = available_sets[default_parameter_id]
-        default_set = {
-            k: v for k, v in default_set.items() if k != "description"
-        }
-        parameter_keywords = {}
-        for k, v in default_set.items():
-            is_callable = isinstance(v, str) and v.endswith("()")
-            parameter_keywords[k] = KeywordInfo(
-                type=Callable if is_callable else type(v),
-                description=keyword_descriptions.get(k),
-            )
+        # -- Infer keyword types from each of the available sets
+        for set_name, available_set in available_sets.items():
+            # Filter it
+            available_set = {
+                k: v for k, v in available_set.items() if k != "description"
+            }
+            parameters_keywords[set_name] = {}
+            for k, v in available_set.items():
+                is_callable = isinstance(v, dict) and "factory" in v
+                parameters_keywords[set_name][k] = KeywordInfo(
+                    type=Callable if is_callable else type(v),
+                    description=keyword_descriptions.get(k),
+                )
 
     return UQTestFunInfo(
         name,
@@ -165,7 +166,7 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
         default_input_id,
         available_parameter_ids,
         default_parameter_id,
-        parameter_keywords,
+        parameters_keywords,
     )
 
 
