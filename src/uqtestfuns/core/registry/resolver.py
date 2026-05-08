@@ -11,7 +11,7 @@ import importlib
 import inspect
 
 from functools import partial
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Optional
 
 from .specs import (
     CallableSpec,
@@ -26,63 +26,56 @@ from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
 from uqtestfuns.core.registry.parser.utils import substitute_idx
 
 
-def resolve_callable(callable_spec: CallableSpec) -> Callable:
-    """Resolve a CallableSpec to a callable object.
+def resolve_evaluate(
+    evaluate_spec: CallableSpec,
+    parameters: Optional[Parameters],
+) -> Callable:
+    """Resolve an evaluate CallableSpec to a callable evaluation function.
 
-    Dynamically imports the module specified in the CallableSpec, retrieves
-    the named function, and optionally wraps it with ``functools.partial``
-    if kwargs are provided.
+    Resolves the callable from the specification and validates that its
+    signature matches the provided parameters. The function assumes the
+    first argument of the resolved callable is named 'xx' (the input array)
+    and verifies that all remaining keyword arguments match the parameter
+    keys exactly.
 
     Parameters
     ----------
-    callable_spec : CallableSpec
-        A specification object containing ``module_path``,
-        ``function_name``, and optional ``kwargs``.
+    evaluate_spec : CallableSpec
+        A specification object containing the module path, function name,
+        and optional kwargs for the evaluation function.
+    parameters : Parameters, optional
+        The parameters object containing keyword arguments that will be
+        passed to the evaluation function. If None, no signature validation
+        is performed.
 
     Returns
     -------
     Callable
-        The resolved callable. If kwargs are provided in the spec,
-        a ``functools.partial`` with those kwargs bound; otherwise,
-        the original function object.
+        The resolved evaluation function, ready to be called with input
+        arrays and parameter keyword arguments.
 
     Raises
     ------
     SpecValidationError
-        If the module cannot be imported, the named attribute does not
-        exist in the module, or the attribute is not callable.
+        If the function signature does not match the provided parameters,
+        or if the callable cannot be resolved from the specification.
     """
-    # Fetch the relevant fields
-    module_path = callable_spec.module_path
-    function_name = callable_spec.function_name
-    kwargs = callable_spec.kwargs
+    evaluate = resolve_callable(evaluate_spec)
 
-    # Import the module
-    try:
-        mod = importlib.import_module(module_path)
-    except Exception as exc:
-        # Any exceptions raised are channeled to a single exception
-        raise SpecValidationError(
-            f"Cannot import module '{module_path}': {exc}"
-        ) from exc
+    # --- Validate the keyword arguments in the 'evaluate' function
+    if parameters is not None:
+        sig = inspect.signature(evaluate)
+        # Assume "xx" is always the first argument of 'evaluate'
+        sig_params = set(sig.parameters) - {"xx"}
+        # Extra keyword arguments as specified in the parameters
+        param_keys = set(parameters.keys())
+        if sig_params != param_keys:
+            raise SpecValidationError(
+                f"{_fullname(evaluate)}: The specified keyword arguments "
+                f"{param_keys} do not match function signature {sig_params}"
+            )
 
-    # Get the function from the module
-    func = getattr(mod, function_name, None)
-    if func is None:
-        raise SpecValidationError(
-            f"Module '{module_path}' has no attribute '{function_name}'"
-        )
-    if not callable(func):
-        raise SpecValidationError(
-            f"Attribute '{function_name}' in module '{module_path}' "
-            "is not callable"
-        )
-
-    # Resolve the kwargs
-    if kwargs:
-        func = partial(func, **kwargs)
-
-    return func
+    return evaluate
 
 
 def resolve_prob_input(
@@ -158,10 +151,7 @@ def resolve_prob_input(
 
     elif isinstance(marginals_spec, CallableSpec):
         func = resolve_callable(marginals_spec)
-        if _needs_input_dimension(func):
-            raw_marginals = func(input_dimension)
-        else:
-            raw_marginals = func()
+        raw_marginals = _invoke_factory(func, input_dimension)
         for raw_marginal in raw_marginals:
             marginals.append(
                 Marginal(
@@ -210,10 +200,7 @@ def resolve_parameters(
     for keyword, value in parameters_spec.values.items():
         if isinstance(value, CallableSpec):
             func = resolve_callable(value)
-            if _needs_input_dimension(func):
-                values[keyword] = func(input_dimension)
-            else:
-                values[keyword] = func()
+            values[keyword] = _invoke_factory(func, input_dimension)
         else:
             values[keyword] = value
 
@@ -224,9 +211,163 @@ def resolve_parameters(
     )
 
 
+def resolve_callable(callable_spec: CallableSpec) -> Callable:
+    """Resolve a CallableSpec to a callable object.
+
+    Dynamically imports the module specified in the CallableSpec, retrieves
+    the named function, and optionally wraps it with ``functools.partial``
+    if kwargs are provided.
+
+    Parameters
+    ----------
+    callable_spec : CallableSpec
+        A specification object containing ``module_path``,
+        ``function_name``, and optional ``kwargs``.
+
+    Returns
+    -------
+    Callable
+        The resolved callable. If kwargs are provided in the spec,
+        a ``functools.partial`` with those kwargs bound; otherwise,
+        the original function object.
+
+    Raises
+    ------
+    SpecValidationError
+        If the module cannot be imported, the named attribute does not
+        exist in the module, or the attribute is not callable.
+    """
+    # Fetch the relevant fields
+    module_path = callable_spec.module_path
+    function_name = callable_spec.function_name
+    kwargs = callable_spec.kwargs
+
+    # Import the module
+    try:
+        mod = importlib.import_module(module_path)
+    except Exception as exc:
+        # Any exceptions raised are channeled to a single exception
+        raise SpecValidationError(
+            f"Cannot import module '{module_path}': {exc}"
+        ) from exc
+
+    # Get the function from the module
+    func = getattr(mod, function_name, None)
+    if func is None:
+        raise SpecValidationError(
+            f"Module '{module_path}' has no attribute '{function_name}'"
+        )
+    if not callable(func):
+        raise SpecValidationError(
+            f"Attribute '{function_name}' in module '{module_path}' "
+            "is not callable"
+        )
+
+    # Resolve the kwargs
+    if kwargs:
+        func = partial(func, **kwargs)
+
+    return func
+
+
+# --- Internal helpers
+
+
+def _fullname(func: Callable[..., Any]) -> str:
+    """Return the fully qualified name of a callable.
+
+    Parameters
+    ----------
+    func : Callable
+        The callable whose full name to retrieve.
+
+    Returns
+    -------
+    str
+        The fully qualified name in the form 'module.qualname',
+        or repr(func) if either attribute is unavailable.
+    """
+    module = getattr(func, "__module__", None)
+    qualname = getattr(func, "__qualname__", None)
+
+    if module is None or qualname is None:
+        return repr(func)
+
+    return f"{module}.{qualname}"
+
+
 def _needs_input_dimension(func: Callable) -> bool:
-    """Check if the first parameter of func is 'input_dimension'."""
+    """Check if a callable expects 'input_dimension' as its first parameter.
+
+    Parameters
+    ----------
+    func : Callable
+        The callable to inspect.
+
+    Returns
+    -------
+    bool
+        True if the callable's first parameter is named 'input_dimension',
+        False otherwise.
+    """
     sig = inspect.signature(func)
     params = list(sig.parameters)
 
     return len(params) > 0 and params[0] == "input_dimension"
+
+
+def _invoke_factory(func: Callable, input_dimension: int) -> Any:
+    """Invoke a factory callable with optional ``input_dimension``  injection.
+
+    Inspects the factory signature to determine whether it expects
+    ``input_dimension`` as its first argument and calls it accordingly.
+    Used for factory callables that generate marginals lists or parameter
+    values, which may or may not depend on the problem dimensionality.
+
+    Parameters
+    ----------
+    func : Callable
+        The factory callable to invoke. May be a plain function or a
+        ``functools.partial`` object with pre-bound kwargs.
+    input_dimension : int
+        The number of input dimensions. Passed to the factory only if
+        its signature expects ``input_dimension`` as its first argument.
+
+    Returns
+    -------
+    Any
+        The value returned by the factory. For marginals factories,
+        typically a list of marginal dicts. For parameter factories,
+        typically a scalar or array literal.
+
+    Raises
+    ------
+    SpecValidationError
+        If the keyword arguments bound to the factory do not match
+        its signature.
+    """
+
+    try:
+        if _needs_input_dimension(func):
+            return func(input_dimension)
+        else:
+            return func()
+
+    except ValueError as exc:
+        # Factory may already be bundled with the kwargs as a partial
+        func_ = func.func if isinstance(func, partial) else func
+        # Get the signature of the factory function
+        sig = inspect.signature(func_)
+        # Exclude (optional) 'input_dimension' from the signature parameters
+        expected_params = set(sig.parameters) - {"input_dimension"}
+        if isinstance(func, partial):
+            specified_params = set(func.keywords.keys())
+        else:
+            specified_params = set()
+        # Get the full qualified path of the factory
+        fname = _fullname(func_)
+
+        raise SpecValidationError(
+            f"Factory '{fname}' has unexpected keyword arguments. "
+            f"Expected: {expected_params}, got: {specified_params}"
+        ) from exc

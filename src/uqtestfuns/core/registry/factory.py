@@ -12,7 +12,7 @@ from typing import Callable, Optional
 from uqtestfuns.core.uqtestfun import UQTestFun
 from uqtestfuns.core.registry.entries import UQTestFunInfo, UQTestFunSpec
 from uqtestfuns.core.registry.resolver import (
-    resolve_callable,
+    resolve_evaluate,
     resolve_prob_input,
     resolve_parameters,
 )
@@ -61,7 +61,7 @@ def make_factory(spec: UQTestFunSpec, info: UQTestFunInfo) -> Callable:
             if input_dimension is None:
                 raise ValueError(
                     f"'{info.name}' is a variable-dimension function; "
-                    f"input_dimension must be provided."
+                    f"input_dimension must be provided"
                 )
             input_dim = input_dimension
         else:
@@ -74,7 +74,7 @@ def make_factory(spec: UQTestFunSpec, info: UQTestFunInfo) -> Callable:
             if input_dim != default_input_dim:
                 raise ValueError(
                     f"'{info.name}' has fixed input dimension "
-                    f"{default_input_dim}, got {input_dim}."
+                    f"{default_input_dim}, got {input_dim}"
                 )
 
         return _instantiate(spec, info, input_dim, input_id, parameters_id)
@@ -127,9 +127,6 @@ def _instantiate(
         function.
     """
 
-    # Resolve evaluate
-    evaluate = resolve_callable(spec.evaluate)
-
     # Resolve probabilistic input
     if input_id not in info.available_input_ids:
         raise ValueError(
@@ -154,6 +151,9 @@ def _instantiate(
             )
         parameters_spec = spec.parameters[parameters_id]
         parameters = resolve_parameters(parameters_spec, input_dimension)
+
+    # Resolve evaluate
+    evaluate = resolve_evaluate(spec.evaluate, parameters)
 
     # Create an instance of UQTestFun
     return UQTestFun(
