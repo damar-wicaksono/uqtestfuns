@@ -83,7 +83,7 @@ parts:
           - file: test-functions/four-branch
             title: Four-branch
           - file: test-functions/franke-1
-            title: (1st) Franke
+            title: Franke (1979) 1st
           - file: test-functions/franke-2
             title: (2nd) Franke
           - file: test-functions/franke-3
