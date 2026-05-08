@@ -1,0 +1,19 @@
+name: GramacySine
+description: >-
+  One-dimensional two-regime sine function from Gramacy (2007)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 1
+  output: 1
+
+inputs:
+  Gramacy2007:
+    description: >-
+      Probabilistic input model from Gramacy (2007)
+    marginals:
+      - name: x
+        distribution: uniform
+        parameters: [0.0, 20.0]
+    copulas: null

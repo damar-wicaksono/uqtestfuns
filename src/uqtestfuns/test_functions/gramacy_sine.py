@@ -2,12 +2,13 @@
 Module with an implementation of the 1D Gramacy (2007) test function.
 
 The Gramacy (2007) one-dimensional sine function is a scalar-valued function
-that features two regimes: one part is a mixture of sines and cosines and
+that features two regimes: one part is a mixture of sine and cosine and
 another part is a linear function. The function was introduced in [1]
 as a test function for non-stationary Gaussian process metamodeling
 by partitioning the input parameter space.
 
-In its original usage, the response is disturbed by an i.i.d Gaussian noise.
+In the original paper the response is disturbed
+by i.i.d. Gaussian noise eps ~ N(0, 0.1).
 
 References
 ----------
@@ -20,33 +21,8 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 
-__all__ = ["GramacySine"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Gramacy2007": {
-        "function_id": "Gramacy1DSine",
-        "description": (
-            "Input model for the one-dimensional function "
-            "from Gramacy (2007)"
-        ),
-        "marginals": [
-            {
-                "name": "x",
-                "distribution": "uniform",
-                "parameters": [0.0, 20.0],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
-
-
-def evaluate_1dsine(xx: np.ndarray) -> np.ndarray:
+def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the 1D Gramacy (2007) Sine function on a set of input values.
 
     Parameters
@@ -54,7 +30,6 @@ def evaluate_1dsine(xx: np.ndarray) -> np.ndarray:
     xx : np.ndarray
         1-Dimensional input values given by an N-by-1 array
         where N is the number of input values.
-
     parameters : Generator, optional
         A random number generator to generate the noise.
 
@@ -74,14 +49,3 @@ def evaluate_1dsine(xx: np.ndarray) -> np.ndarray:
     yy[idx_2] = -1 + 0.1 * xx[idx_2, 0]
 
     return yy
-
-
-class GramacySine(UQTestFunFixDimABC):
-    """A concrete implementation of the 1D Gramacy (2007) Sine function."""
-
-    _tags = ["metamodeling"]
-    _description = "One-dimensional sine function from Gramacy (2007)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-
-    evaluate = staticmethod(evaluate_1dsine)  # type: ignore
