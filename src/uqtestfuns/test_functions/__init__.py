@@ -3,7 +3,6 @@ The init for the 'test_functions' subpackage of UQTestFuns.
 """
 
 from .ackley import Ackley
-from .borehole import Borehole
 from .bratley1992 import Bratley1992a, Bratley1992b, Bratley1992c, Bratley1992d
 from .cantilever_beam_2d import CantileverBeam2D
 from .cheng2010 import Cheng2D
@@ -66,7 +65,6 @@ from .wing_weight import WingWeight
 # NOTE: Import the new test function implementation class from its respective
 __all__ = [
     "Ackley",
-    "Borehole",
     "Bratley1992a",
     "Bratley1992b",
     "Bratley1992c",
