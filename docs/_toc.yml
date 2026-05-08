@@ -89,7 +89,7 @@ parts:
           - file: test-functions/franke-3
             title: Franke (1979) 3rd
           - file: test-functions/franke-4
-            title: (4th) Franke
+            title: Franke (1979) 4th
           - file: test-functions/franke-5
             title: (5th) Franke
           - file: test-functions/franke-6

@@ -47,7 +47,7 @@ regardless of their typical applications.
 |                       {ref}`Franke (1979) 1st <test-functions:franke-1>`                       |        2        |           `Franke1()`           |
 |                       {ref}`Franke (1979) 2nd <test-functions:franke-2>`                       |        2        |           `Franke2()`           |
 |                       {ref}`Franke (1979) 3rd <test-functions:franke-3>`                       |        2        |           `Franke3()`           |
-|                         {ref}`(4th) Franke <test-functions:franke-4>`                          |        2        |           `Franke4()`           |
+|                       {ref}`Franke (1979) 4th <test-functions:franke-4>`                       |        2        |           `Franke4()`           |
 |                         {ref}`(5th) Franke <test-functions:franke-5>`                          |        2        |           `Franke5()`           |
 |                         {ref}`(6th) Franke <test-functions:franke-6>`                          |        2        |           `Franke6()`           |
 |                       {ref}`Friedman (6D) <test-functions:friedman-6d>`                        |        6        |         `Friedman6D()`          |

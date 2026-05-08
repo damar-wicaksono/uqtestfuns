@@ -1,0 +1,13 @@
+name: Franke4
+description: >-
+  (4th) Franke function with a gentle Gaussian hill from Franke (1979)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+evaluate: evaluate.franke_4
+
+inputs: inputs.yaml
