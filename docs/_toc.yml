@@ -93,7 +93,7 @@ parts:
           - file: test-functions/franke-5
             title: Franke (1979) 5th
           - file: test-functions/franke-6
-            title: (6th) Franke
+            title: Franke (1979) 6th
           - file: test-functions/friedman-6d
             title: Friedman (6D)
           - file: test-functions/friedman-10d

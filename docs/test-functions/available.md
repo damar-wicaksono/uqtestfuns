@@ -49,7 +49,7 @@ regardless of their typical applications.
 |                       {ref}`Franke (1979) 3rd <test-functions:franke-3>`                       |        2        |           `Franke3()`           |
 |                       {ref}`Franke (1979) 4th <test-functions:franke-4>`                       |        2        |           `Franke4()`           |
 |                       {ref}`Franke (1979) 5th <test-functions:franke-5>`                       |        2        |           `Franke5()`           |
-|                         {ref}`(6th) Franke <test-functions:franke-6>`                          |        2        |           `Franke6()`           |
+|                       {ref}`Franke (1979) 6th <test-functions:franke-6>`                       |        2        |           `Franke6()`           |
 |                       {ref}`Friedman (6D) <test-functions:friedman-6d>`                        |        6        |         `Friedman6D()`          |
 |                      {ref}`Friedman (10D) <test-functions:friedman-10d>`                       |       10        |         `Friedman10D()`         |
 |                         {ref}`Gayton Hat <test-functions:gayton-hat>`                          |        2        |          `GaytonHat()`          |
