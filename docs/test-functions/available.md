@@ -46,7 +46,7 @@ regardless of their typical applications.
 |                        {ref}`Four-branch <test-functions:four-branch>`                         |        2        |         `FourBranch()`          |
 |                       {ref}`Franke (1979) 1st <test-functions:franke-1>`                       |        2        |           `Franke1()`           |
 |                       {ref}`Franke (1979) 2nd <test-functions:franke-2>`                       |        2        |           `Franke2()`           |
-|                         {ref}`(3rd) Franke <test-functions:franke-3>`                          |        2        |           `Franke3()`           |
+|                       {ref}`Franke (1979) 3rd <test-functions:franke-3>`                       |        2        |           `Franke3()`           |
 |                         {ref}`(4th) Franke <test-functions:franke-4>`                          |        2        |           `Franke4()`           |
 |                         {ref}`(5th) Franke <test-functions:franke-5>`                          |        2        |           `Franke5()`           |
 |                         {ref}`(6th) Franke <test-functions:franke-6>`                          |        2        |           `Franke6()`           |

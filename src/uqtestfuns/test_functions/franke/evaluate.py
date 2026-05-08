@@ -73,3 +73,27 @@ def franke_2(xx: np.ndarray) -> np.ndarray:
     yy = (np.tanh(9 * (xx[:, 1] - xx[:, 0])) + 1) / 9.0
 
     return yy
+
+
+def franke_3(xx: np.ndarray):
+    """Evaluate the (3rd) Franke function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        Two-Dimensional input values given by N-by-2 arrays where
+        N is the number of input values.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the (3rd) Franke function evaluated
+        on the input values.
+        The output is a 1-dimensional array of length N.
+    """
+    term_1 = 1.25 + np.cos(5.4 * xx[:, 1])
+    term_2 = 6 * (1 + (3 * xx[:, 0] - 1) ** 2)
+
+    yy = term_1 / term_2
+
+    return yy
