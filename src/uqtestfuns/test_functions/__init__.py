@@ -14,7 +14,6 @@ from .flood import Flood
 from .forrester import Forrester2008
 from .four_branch import FourBranch
 from .friedman import Friedman6D, Friedman10D
-from .gayton_hat import GaytonHat
 from .genz import (
     GenzDiscontinuous,
     GenzContinuous,
@@ -73,7 +72,6 @@ __all__ = [
     "FourBranch",
     "Friedman6D",
     "Friedman10D",
-    "GaytonHat",
     "GenzContinuous",
     "GenzCornerPeak",
     "GenzDiscontinuous",

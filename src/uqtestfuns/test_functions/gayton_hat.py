@@ -16,37 +16,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["GaytonHat"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Echard2013": {
-        "function_id": "GaytonHat",
-        "description": (
-            "Input model for the Gayton Hat function "
-            "from Echard et al. (2013)"
-        ),
-        "marginals": [
-            {
-                "name": "U1",
-                "distribution": "normal",
-                "parameters": [0, 1],
-                "description": None,
-            },
-            {
-                "name": "U2",
-                "distribution": "normal",
-                "parameters": [0, 1],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the Gayton Hat function on a set of input values.
@@ -66,17 +35,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     yy = 0.5 * (xx[:, 0] - 2) ** 2 - 1.5 * (xx[:, 1] - 5) ** 3 - 3
 
     return yy
-
-
-class GaytonHat(UQTestFunFixDimABC):
-    """A concrete implementation of the Gayton Hat test function."""
-
-    _tags = ["reliability"]
-    _description = (
-        "Two-Dimensional Gayton Hat function from Echard et al. (2013)"
-    )
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-    _default_input_dimension = 2
-
-    evaluate = staticmethod(evaluate)  # type: ignore
