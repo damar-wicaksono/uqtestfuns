@@ -12,13 +12,12 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:forrester)=
-# One-dimensional (1D) Forrester et al. (2008) Function
+(test-functions:forrester-1d)=
+# One-dimensional Multimodal Function from Forrester et al. (2008)
 
-The 1D Forrester et al. (2008) function (or `Forrester2008` function for short)
-is a one-dimensional scalar-valued function.
-It was used in {cite}`Forrester2008` as a test function for illustrating
-optimization using metamodels.
+The `Forrester1D` function is a one-dimensional multimodal function
+introduced in {cite}`Forrester2008` as a test function
+for optimization using metamodels.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -31,15 +30,15 @@ A plot of the function is shown below for $x \in [0, 1]$.
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_testfun = uqtf.Forrester2008()
+my_testfun = uqtf.Forrester1D()
 xx = np.linspace(0, 1, 1000)[:, np.newaxis]
 yy = my_testfun(xx)
 
 # --- Create the plot
 plt.plot(xx, yy, color="#8da0cb")
 plt.grid()
-plt.xlabel("$x$")
-plt.ylabel("$\mathcal{M}(x)$")
+plt.xlabel(r"$x$")
+plt.ylabel(r"$\mathcal{M}(x)$")
 plt.ylim([-10, 15])
 plt.scatter(
     np.array([0.14258919, 0.75724876, 0.5240772]),
@@ -54,15 +53,16 @@ plt.gcf().set_dpi(150);
 
 As can be seen in the plot above, the function features a multimodal shape
 with one global minimum ($\approx -6.02074006$ at $x = 0.75724876$),
-one global maximum ($\approx -0.98632541$ at $x = 014258919$),
-and an inflection point with zero gradient ($\approx -6.02074006$ at $x = 0.5240772$).
+one global maximum ($\approx -0.98632541$ at $x = 0.14258919$),
+and an inflection point with zero gradient
+($\approx -6.02074006$ at $x = 0.5240772$).
 
 ## Test function instance
 
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Forrester2008()
+my_testfun = uqtf.Forrester1D()
 ```
 
 Check if it has been correctly instantiated:
@@ -105,14 +105,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(X)$");
+plt.xlabel(r"$\mathcal{M}(X)$");
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```

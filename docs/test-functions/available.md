@@ -42,7 +42,7 @@ regardless of their typical applications.
 |         ``DetteCurved``         |        3        |             {ref}`Dette & Pepelyshev (2010) Curved <test-functions:dette-curved>`              |
 |          ``DetteExp``           |        3        |            {ref}`Dette & Pepelyshev (2010) Exponential <test-functions:dette-exp>`             |
 |            ``Flood``            |        8        |                              {ref}`Flood <test-functions:flood>`                               |
-|        ``Forrester2008``        |        1        |                   {ref}`Forrester et al. (2008) <test-functions:forrester>`                    |
+|         ``Forrester1D``         |        1        |                {ref}`Forrester et al. (2008) 1D <test-functions:forrester-1d>`                 |
 |         ``FourBranch``          |        2        |                        {ref}`Four-branch <test-functions:four-branch>`                         |
 |           ``Franke1``           |        2        |                       {ref}`Franke (1979) 1st <test-functions:franke-1>`                       |
 |           ``Franke2``           |        2        |                       {ref}`Franke (1979) 2nd <test-functions:franke-2>`                       |

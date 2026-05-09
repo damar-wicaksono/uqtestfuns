@@ -33,7 +33,7 @@ in the comparison of metamodeling approaches.
 |             {ref}`Dette & Pepelyshev (2010) Curved <test-functions:dette-curved>`              |        3        |     `DetteCurved()`     |
 |            {ref}`Dette & Pepelyshev (2010) Exponential <test-functions:dette-exp>`             |        3        |      `DetteExp()`       |
 |                              {ref}`Flood <test-functions:flood>`                               |        8        |        `Flood()`        |
-|                   {ref}`Forrester et al. (2008) <test-functions:forrester>`                    |        1        |    `Forrester2008()`    |
+|                {ref}`Forrester et al. (2008) 1D <test-functions:forrester-1d>`                 |        1        |    `Forrester2008()`    |
 |                         {ref}`(1st) Franke <test-functions:franke-1>`                          |        2        |       `Franke1()`       |
 |                         {ref}`(2nd) Franke <test-functions:franke-2>`                          |        2        |       `Franke2()`       |
 |                         {ref}`(3rd) Franke <test-functions:franke-3>`                          |        2        |       `Franke3()`       |

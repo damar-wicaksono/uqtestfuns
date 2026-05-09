@@ -78,8 +78,8 @@ parts:
             title: Dette & Pepelyshev (2010) Exponential
           - file: test-functions/flood
             title: Flood
-          - file: test-functions/forrester
-            title: Forrester et al. (2008)
+          - file: test-functions/forrester-1d
+            title: Forrester et al. (2008) 1D
           - file: test-functions/four-branch
             title: Four-branch
           - file: test-functions/franke-1

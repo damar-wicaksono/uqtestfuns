@@ -11,7 +11,6 @@ from .damped_cosine import DampedCosine
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
 from .dette import Dette8D, DetteCurved, DetteExp
 from .flood import Flood
-from .forrester import Forrester2008
 from .four_branch import FourBranch
 from .friedman import Friedman6D, Friedman10D
 from .genz import (
@@ -68,7 +67,6 @@ __all__ = [
     "DetteCurved",
     "DetteExp",
     "Flood",
-    "Forrester2008",
     "FourBranch",
     "Friedman6D",
     "Friedman10D",
