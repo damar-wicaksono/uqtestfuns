@@ -32,7 +32,6 @@ from .linkletter import (
     LinkletterSine,
 )
 from .otl_circuit import OTLCircuit
-from .moon3d import Moon3D
 from .morris2006 import Morris2006
 from .piston import Piston
 from .portfolio_3d import Portfolio3D
@@ -86,7 +85,6 @@ __all__ = [
     "LinkletterLinear",
     "LinkletterSine",
     "OTLCircuit",
-    "Moon3D",
     "Morris2006",
     "Piston",
     "Portfolio3D",

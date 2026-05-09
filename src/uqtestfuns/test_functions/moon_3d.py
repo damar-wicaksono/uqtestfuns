@@ -14,43 +14,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["Moon3D"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Moon2010": {
-        "function_id": "Moon3D",
-        "description": (
-            "Probabilistic input model for the 3D test function "
-            "from Moon (2010)"
-        ),
-        "marginals": [
-            {
-                "name": "X1",
-                "distribution": "uniform",
-                "parameters": [0, 1],
-                "description": None,
-            },
-            {
-                "name": "X2",
-                "distribution": "uniform",
-                "parameters": [0, 1],
-                "description": None,
-            },
-            {
-                "name": "X3",
-                "distribution": "uniform",
-                "parameters": [0, 1],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """The evaluation function for the Moon (2010) 3D function.
@@ -70,14 +33,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     yy = xx[:, 0] + xx[:, 1] + 3 * xx[:, 0] * xx[:, 2]
 
     return yy
-
-
-class Moon3D(UQTestFunFixDimABC):
-    """An implementation of the 3D function of Moon (2010)."""
-
-    _tags = ["sensitivity"]
-    _description = "Three-dimensional function from Moon (2010)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-
-    evaluate = staticmethod(evaluate)  # type: ignore
