@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:mclain-s1)=
-# McLain S1 Function
+# Part-of-a-sphere Surface Function from McLain (1974)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,9 +21,9 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The McLain S1 function is a two-dimensional scalar-valued function.
-The function was introduced in {cite}`McLain1974` as a test function for
-procedures to construct contours from a given set of points.
+The McLain S1 function is a two-dimensional function introduced
+in {cite}`McLain1974` in the context of drawing contours from scattered data.
+The resulting surface models a part of a sphere.
 
 ```{note}
 The McLain's test functions are a set of five two-dimensional functions 
@@ -63,9 +63,9 @@ axs_1.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_1.set_xlabel("$x_1$", fontsize=14)
-axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_xlabel(r"$x_1$", fontsize=14)
+axs_1.set_ylabel(r"$x_2$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_1.set_title("Surface plot of McLain S1", fontsize=14)
 
 # Contour
@@ -85,9 +85,7 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the resulting surface is a part of a sphere.
-The center of the sphere is at $(5.5, 5.5)$ and the maximum height is
-$8.0$.
+The center of the sphere is at $(5.5, 5.5)$ with a maximum height of $8.0$.
 
 ```{note}
 The McLain S1 function appeared in a modified form in the report 
@@ -145,13 +143,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

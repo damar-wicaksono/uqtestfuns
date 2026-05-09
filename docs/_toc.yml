@@ -135,15 +135,15 @@ parts:
           - file: test-functions/linkletter-sine
             title: Linkletter et al. (2006) Sine
           - file: test-functions/mclain-s1
-            title: McLain S1
+            title: McLain (1974) S1
           - file: test-functions/mclain-s2
-            title: McLain S2
+            title: McLain (1974) S2
           - file: test-functions/mclain-s3
-            title: McLain S3
+            title: McLain (1974) S3
           - file: test-functions/mclain-s4
-            title: McLain S4
+            title: McLain (1974) S4
           - file: test-functions/mclain-s5
-            title: McLain S5
+            title: McLain (1974) S5
           - file: test-functions/moon3d
             title: Moon (2010) 3D
           - file: test-functions/morris2006

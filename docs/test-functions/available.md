@@ -70,11 +70,11 @@ regardless of their typical applications.
 |            {ref}`Linkletter et al. (2006) Inert <test-functions:linkletter-inert>`             |       10        |       `LinkletterInert()`       |
 |           {ref}`Linkletter et al. (2006) Linear <test-functions:linkletter-linear>`            |       10        |      `LinkletterLinear()`       |
 |             {ref}`Linkletter et al. (2006) Sine <test-functions:linkletter-sine>`              |       10        |       `LinkletterSine()`        |
-|                          {ref}`McLain S1 <test-functions:mclain-s1>`                           |        2        |          `McLainS1()`           |
-|                          {ref}`McLain S2 <test-functions:mclain-s2>`                           |        2        |          `McLainS2()`           |
-|                          {ref}`McLain S3 <test-functions:mclain-s3>`                           |        2        |          `McLainS3()`           |
-|                          {ref}`McLain S4 <test-functions:mclain-s4>`                           |        2        |          `McLainS4()`           |
-|                          {ref}`McLain S5 <test-functions:mclain-s5>`                           |        2        |          `McLainS5()`           |
+|                       {ref}`McLain (1974) S1 <test-functions:mclain-s1>`                       |        2        |          `McLainS1()`           |
+|                       {ref}`McLain (1974) S2 <test-functions:mclain-s2>`                       |        2        |          `McLainS2()`           |
+|                       {ref}`McLain (1974) S3 <test-functions:mclain-s3>`                       |        2        |          `McLainS3()`           |
+|                       {ref}`McLain (1974) S4 <test-functions:mclain-s4>`                       |        2        |          `McLainS4()`           |
+|                       {ref}`McLain (1974) S5 <test-functions:mclain-s5>`                       |        2        |          `McLainS5()`           |
 |                         {ref}`Moon (2010) 3D <test-functions:moon3d>`                          |        3        |           `Moon3D()`            |
 |                    {ref}`Morris et al. (2006) <test-functions:morris2006>`                     |        M        |         `Morris2006()`          |
 |                 {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`                 |        1        |          `Oakley1D()`           |

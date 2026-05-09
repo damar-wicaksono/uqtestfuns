@@ -1,0 +1,12 @@
+name: McLainS4
+description: Long narrow-hill surface function from McLain (1974)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+evaluate: evaluate.mclain_s4
+
+inputs: inputs.yaml
