@@ -35,7 +35,7 @@ regardless of their typical applications.
 |          ``CoffeeCup``          |        2        |                      {ref}`Coffee Cup Model <test-functions:coffee-cup>`                       |
 |      ``ConvexFailDomain``       |        2        |                {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`                |
 |         ``CurrinSine``          |        1        |                 {ref}`Currin et al. (1988) Sine <test-functions:currin-sine>`                  |
-|        ``DampedCosine``         |        1        |                      {ref}`Damped Cosine <test-functions:damped-cosine>`                       |
+|        ``DampedCosine``         |        1        |           {ref}`Santner et al. (2018) Damped Cosine <test-functions:damped-cosine>`            |
 |      ``DampedOscillator``       |        7        |                  {ref}`Damped Oscillator <test-functions:damped-oscillator>`                   |
 | ``DampedOscillatorReliability`` |        8        |      {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>`       |
 |           ``Dette8D``           |        3        |                 {ref}`Dette & Pepelyshev (2010) 8D <test-functions:dette-8d>`                  |
