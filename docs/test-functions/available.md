@@ -92,7 +92,7 @@ regardless of their typical applications.
 |          ``SolarCell``          |        5        |                      {ref}`Solar Cell Model <test-functions:solar-cell>`                       |
 |      ``SpeedReducerShaft``      |        5        |                {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`                 |
 |           ``Sulfur``            |        9        |                             {ref}`Sulfur <test-functions:sulfur>`                              |
-|     ``UndampedOscillator``      |        6        |                {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`                 |
+|     ``UndampedOscillator``      |        6        |      {ref}`Gayton et al. (2003) Undamped Oscillator <test-functions:undamped-oscillator>`      |
 |          ``Webster2D``          |        2        |                  {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`                   |
 |          ``Welch1992``          |       20        |                     {ref}`Welch et al. (1992) <test-functions:welch1992>`                      |
 |         ``WingWeight``          |       10        |                        {ref}`Wing Weight <test-functions:wing-weight>`                         |

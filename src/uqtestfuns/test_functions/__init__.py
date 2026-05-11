@@ -44,7 +44,7 @@ from .sobol_levitan import SobolLevitan
 from .solar_cell import SolarCell
 from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
-from .undamped_oscillator import UndampedOscillator
+#from .undamped_oscillator import UndampedOscillator
 from .welch1992 import Welch1992
 from .wing_weight import WingWeight
 
@@ -96,7 +96,7 @@ __all__ = [
     "SolarCell",
     "SpeedReducerShaft",
     "Sulfur",
-    "UndampedOscillator",
+#    "UndampedOscillator",
     "Welch1992",
     "WingWeight",
 ]

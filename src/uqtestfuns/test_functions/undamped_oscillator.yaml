@@ -1,0 +1,99 @@
+name: UndampedOscillator
+description: Undamped oscillator reliability problem
+tags:
+  - reliability
+  - metamodeling
+
+dimensions:
+  input: 6
+  output: 1
+
+default_input: Gayton2003
+
+inputs:
+  Gayton2003:
+    description: Input model from Gayton et al. (2003), Table 9
+    marginals:
+      - name: m
+        distribution: normal
+        parameters: [1.0, 0.05]
+        description: Mass
+      - name: c1
+        distribution: normal
+        parameters: [1.0, 0.10]
+        description: Spring (1) constant
+      - name: c2
+        distribution: normal
+        parameters: [0.1, 0.01]
+        description: Spring (2) constant
+      - name: r
+        distribution: normal
+        parameters: [0.5, 0.05]
+        description: Length of restoring force
+      - name: F1
+        distribution: normal
+        parameters: [1.0, 0.2]
+        description: Pulse load
+      - name: t1
+        distribution: normal
+        parameters: [1.0, 0.2]
+        description: Duration of the pulse load
+    copulas: null
+  Echard2013-1:
+    description: >-
+      Input model from Echard et al. (2013), Table 4; reduced pulse load (mean F1 = 0.6)
+    marginals:
+      - name: m
+        distribution: normal
+        parameters: [1.0, 0.05]
+        description: Mass
+      - name: c1
+        distribution: normal
+        parameters: [1.0, 0.10]
+        description: Spring (1) constant
+      - name: c2
+        distribution: normal
+        parameters: [0.1, 0.01]
+        description: Spring (2) constant
+      - name: r
+        distribution: normal
+        parameters: [0.5, 0.05]
+        description: Length of restoring force
+      - name: F1
+        distribution: normal
+        parameters: [0.6, 0.1]
+        description: Pulse load
+      - name: t1
+        distribution: normal
+        parameters: [1.0, 0.2]
+        description: Duration of the pulse load
+    copulas: null
+  Echard2013-2:
+    description: >-
+      Input model from Echard et al. (2013), Table 4; further reduced pulse load (mean F1 = 0.45)
+    marginals:
+      - name: m
+        distribution: normal
+        parameters: [1.0, 0.05]
+        description: Mass
+      - name: c1
+        distribution: normal
+        parameters: [1.0, 0.10]
+        description: Spring (1) constant
+      - name: c2
+        distribution: normal
+        parameters: [0.1, 0.01]
+        description: Spring (2) constant
+      - name: r
+        distribution: normal
+        parameters: [0.5, 0.05]
+        description: Length of restoring force
+      - name: F1
+        distribution: normal
+        parameters: [0.45, 0.075]
+        description: Pulse load
+      - name: t1
+        distribution: normal
+        parameters: [1.0, 0.2]
+        description: Duration of the pulse load
+    copulas: null
