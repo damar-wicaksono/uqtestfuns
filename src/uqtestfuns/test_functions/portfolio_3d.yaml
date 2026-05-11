@@ -1,0 +1,49 @@
+name: Portfolio3D
+description: Simple portfolio model from Saltelli et al. (2004)
+tags:
+  - sensitivity
+
+dimensions:
+  input: 3
+  output: 1
+
+inputs:
+  Saltelli2004:
+    description: Three independent normal random variables from Saltelli et al. (2004)
+    marginals:
+      - name: Ps
+        distribution: normal
+        parameters: [0.0, 4.0]
+        description: "Hedged portfolio 's' [EUR]"
+      - name: Pt
+        distribution: normal
+        parameters: [0.0, 2.0]
+        description: "Hedged portfolio 't' [EUR]"
+      - name: Pj
+        distribution: normal
+        parameters: [0.0, 1.0]
+        description: "Hedged portfolio 'j' [EUR]"
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    cs: Quantities of the portfolio 's'
+    ct: Quantities of the portfolio 't'
+    cj: Quantities of the portfolio 'j'
+  sets:
+    Saltelli2004-1:
+      cs: 100.0
+      ct: 500.0
+      cj: 1000.0
+      description: "Least volatile portfolio holds the largest quantity (Table 1.1, Saltelli et al. (2004))"
+    Saltelli2004-2:
+      cs: 300.0
+      ct: 300.0
+      cj: 300.0
+      description: "Equal quantities across all portfolios (Table 1.1, Saltelli et al. (2004))"
+    Saltelli2004-3:
+      cs: 500.0
+      ct: 400.0
+      cj: 100.0
+      description: "Most volatile portfolio holds the largest quantity (Table 1.1, Saltelli et al. (2004))"
+  default_parameters: Saltelli2004-1

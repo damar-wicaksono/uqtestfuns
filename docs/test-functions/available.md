@@ -83,7 +83,7 @@ regardless of their typical applications.
 |        ``OTLCircuit20D``        |       20        |              {ref}`Moon (2010) OTL Circuit 20D <test-functions:otl-circuit-20d>`               |
 |           ``Piston``            |        7        |               {ref}`Ben-Ari and Steinberg (2007) Piston <test-functions:piston>`               |
 |          ``Piston20D``          |       20        |                     {ref}`Moon (2010) Piston 20D <test-functions:piston>`                      |
-|         ``Portfolio3D``         |        3        |                  {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`                   |
+|         ``Portfolio3D``         |        3        |            {ref}`Saltelli et al. (2004) Portfolio 3D <test-functions:portfolio-3d>`            |
 |          ``RobotArm``           |        8        |                          {ref}`Robot Arm <test-functions:robot-arm>`                           |
 |         ``Rosenbrock``          |        M        |                         {ref}`Rosenbrock <test-functions:rosenbrock>`                          |
 |        ``RSCircularBar``        |        2        |                   {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`                    |

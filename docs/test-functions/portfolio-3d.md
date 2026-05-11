@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:portfolio-3d)=
-# Simple Portfolio Model
+# Simple Three-Dimensional Portfolio Model from Saltelli et al. (2004)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,10 +21,9 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The simple portfolio model (or `Portfolio3D` for short ) is a three-dimensional
-scalar-valued test function.
-The function was introduced in {cite}`Saltelli2004` as an example for
-illustrating some elementary sensitivity measures.
+The simple portfolio model (`Portfolio3D`) is a three-dimensional
+scalar-valued function introduced in {cite}`Saltelli2004`
+to illustrate elementary sensitivity measures.
 
 ## Test function instance
 
@@ -113,8 +112,8 @@ for the simple portfolio model with three different sets of parameters.
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
+rng = np.random.default_rng(42)
+xx_test = my_testfun.prob_input.get_sample(100000, rng)
 yy_test_1 = my_testfun(xx_test)
 my_testfun_2 = uqtf.Portfolio3D(parameters_id="Saltelli2004-2")
 yy_test_2 = my_testfun_2(xx_test)
@@ -126,7 +125,7 @@ plt.hist(yy_test_1, bins="auto", color="#8da0cb", label="Saltelli2004-1")
 plt.hist(yy_test_2, bins="auto", color="#66c2a5", label="Saltelli2004-2")
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$")
 plt.legend();
 
 plt.gcf().set_dpi(150);
@@ -144,7 +143,7 @@ $$
 \bar{Y} = C_s \bar{p}_s + C_t \bar{p}_t + C_j \bar{p}_j,
 $$
 
-where $\bar{p}_s$,  $\bar{p}_t$, and $\bar{p}_j$ are the means of
+where $\bar{p}_s$, $\bar{p}_t$, and $\bar{p}_j$ are the means of
 the three hedged portfolios, respectively.
 
 The standard deviation reads:

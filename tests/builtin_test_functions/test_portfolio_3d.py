@@ -3,17 +3,18 @@ Test module for the simple portfolio model.
 
 Notes
 -----
-- The tests defined in this module deals with
-  the correctness of the evaluation.
+- The tests defined in this module deal with the correctness of the evaluation.
 """
 
 import numpy as np
 import pytest
 
-from uqtestfuns import Portfolio3D
+from uqtestfuns import Portfolio3D, get_registry
 
 # Test for different sets of parameters of the simple portfolio model
-available_parameters = list(Portfolio3D.available_parameters.keys())
+available_parameters = list(
+    get_registry()["Portfolio3D"].available_parameters_ids.keys()
+)
 
 
 @pytest.fixture(params=available_parameters)
@@ -83,5 +84,5 @@ def test_different_parameters(param_selection):
 
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
-    with pytest.raises(KeyError):
+    with pytest.raises(ValueError):
         Portfolio3D(parameters_id="marelli1")

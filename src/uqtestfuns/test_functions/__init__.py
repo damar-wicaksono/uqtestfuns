@@ -19,7 +19,6 @@ from .genz import (
 )
 from .ishigami import Ishigami
 from .morris2006 import Morris2006
-from .portfolio_3d import Portfolio3D
 from .robot_arm import RobotArm
 from .rosenbrock import Rosenbrock
 from .rs_circular_bar import RSCircularBar
@@ -52,7 +51,6 @@ __all__ = [
     "GenzProductPeak",
     "Ishigami",
     "Morris2006",
-    "Portfolio3D",
     "RobotArm",
     "Rosenbrock",
     "RSCircularBar",

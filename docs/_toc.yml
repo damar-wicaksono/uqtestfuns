@@ -159,7 +159,7 @@ parts:
           - file: test-functions/piston-20d
             title: Piston (20D)
           - file: test-functions/portfolio-3d
-            title: Simple Portfolio Model
+            title: Portfolio 3D
           - file: test-functions/robot-arm
             title: Robot Arm
           - file: test-functions/rosenbrock
