@@ -98,7 +98,7 @@ regardless of their typical applications.
 |     ``UndampedOscillator``      |        6        |      {ref}`Gayton et al. (2003) Undamped Oscillator <test-functions:undamped-oscillator>`      |
 |          ``Webster2D``          |        2        |                  {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`                   |
 |           ``Welch2D``           |       20        |                   {ref}`Welch et al. (1992) 20D <test-functions:welch1992>`                    |
-|         ``WingWeight``          |       10        |                        {ref}`Wing Weight <test-functions:wing-weight>`                         |
+|         ``WingWeight``          |       10        |            {ref}`Forrester et al. (2008) Wing Weight <test-functions:wing-weight>`             |
 
 In a Python terminal, you can list all the available functions
 along with the corresponding constructor using ``list_functions()``
