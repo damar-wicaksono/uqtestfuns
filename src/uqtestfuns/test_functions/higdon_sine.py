@@ -17,30 +17,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["HigdonSine"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Higdon2002": {
-        "function_id": "HigdonSine",
-        "description": (
-            "Input model for the sine function from Higdon (2002)"
-        ),
-        "marginals": [
-            {
-                "name": "x",
-                "distribution": "uniform",
-                "parameters": [1.0, 10.0],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the Higdon sine function on a set of input values.
@@ -48,26 +24,16 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        1-Dimensional input values given by an N-by-1 array
-        where N is the number of input values.
+        An ``(N, 1)`` array of input values,
+        where ``N`` is the number of input values.
 
     Returns
     -------
     np.ndarray
         The output of the test function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
+        The output is a 1-dimensional array of length ``N``.
     """
-    yy = np.sin(2 * np.pi * xx / 10) + 0.2 * np.sin(2 * np.pi * xx / 2.5)
+    xx_ = xx[:, 0]
+    yy = np.sin(2 * np.pi * xx_ / 10) + 0.2 * np.sin(2 * np.pi * xx_ / 2.5)
 
     return yy
-
-
-class HigdonSine(UQTestFunFixDimABC):
-    """A concrete implementation of the Higdon sine function."""
-
-    _tags = ["metamodeling"]
-    _description = "Sine function from Higdon (2002)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-
-    evaluate = staticmethod(evaluate)  # type: ignore

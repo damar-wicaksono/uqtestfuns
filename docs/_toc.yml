@@ -115,7 +115,7 @@ parts:
           - file: test-functions/gramacy-sine
             title: Gramacy (2007) Sine
           - file: test-functions/higdon-sine
-            title: Higdon (2002) Sine
+            title: Higdon Sine
           - file: test-functions/holsclaw-sine
             title: Holsclaw et al. (2013) Sine
           - file: test-functions/hyper-sphere
