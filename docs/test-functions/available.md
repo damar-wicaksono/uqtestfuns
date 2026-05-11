@@ -31,7 +31,7 @@ regardless of their typical applications.
 |        ``Bratley1992d``         |        M        |                  {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`                  |
 |      ``CantileverBeam2D``       |        2        |                {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`                 |
 |           ``Cheng2D``           |        2        |                   {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`                    |
-|      ``CircularPipeCrack``      |        2        |                {ref}`Circular Pipe Crack <test-functions:circular-pipe-crack>`                 |
+|      ``CircularPipeCrack``      |        2        |      {ref}`Verma et al. (2015) Circular Pipe Crack <test-functions:circular-pipe-crack>`       |
 |          ``CoffeeCup``          |        2        |                      {ref}`Coffee Cup Model <test-functions:coffee-cup>`                       |
 |      ``ConvexFailDomain``       |        2        |                {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`                |
 |         ``CurrinSine``          |        1        |                 {ref}`Currin et al. (1988) Sine <test-functions:currin-sine>`                  |

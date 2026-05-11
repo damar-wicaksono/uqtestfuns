@@ -13,13 +13,15 @@ kernelspec:
 ---
 
 (test-functions:circular-pipe-crack)=
-# Circular Pipe Crack
+# Circular Pipe Crack Reliability Problem from Verma et al. (2015)
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
+
+The circular pipe crack reliability problem (CircularPipeCrack) is a two-dimensional scalar-valued function introduced in {cite}Verma2015 and used, for instance, in {cite}Li2018. The system under consideration is a circular pipe with a circumferential through-wall crack under a bending moment.
 
 The two-dimensional circular pipe crack reliability problem
 was introduced in {cite}`Verma2015` and used, for instance, in {cite}`Li2018`.
@@ -34,8 +36,7 @@ overlaid.
 :tags: [remove-input]
 
 my_fun = uqtf.CircularPipeCrack()
-my_fun.prob_input.reset_rng(237324)
-xx = my_fun.prob_input.get_sample(1000000)
+xx = my_fun.prob_input.get_sample(1000000, 237324)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
 idx_pos = yy > 0.0
@@ -67,9 +68,9 @@ axs_0.plot_surface(
     alpha=0.5
 )
 #axs_0.view_init(30, 135)
-axs_0.set_xlabel("$x_1$", fontsize=18)
-axs_0.set_ylabel("$x_2$", fontsize=18)
-axs_0.set_zlabel("$g$", fontsize=18)
+axs_0.set_xlabel(r"$x_1$", fontsize=18)
+axs_0.set_ylabel(r"$x_2$", fontsize=18)
+axs_0.set_zlabel(r"$g$", fontsize=18)
 
 # Contour plot
 axs_1 = plt.subplot(132)
@@ -83,8 +84,8 @@ cf = axs_1.contour(
 )
 axs_1.set_xlim([lb_1, ub_1])
 axs_1.set_ylim([lb_2, ub_2])
-axs_1.set_xlabel("$x_1$", fontsize=18)
-axs_1.set_ylabel("$x_2$", fontsize=18)
+axs_1.set_xlabel(r"$x_1$", fontsize=18)
+axs_1.set_ylabel(r"$x_2$", fontsize=18)
 axs_1.tick_params(labelsize=16)
 axs_1.clabel(cf, inline=True, fontsize=18)
 
@@ -104,7 +105,7 @@ axs_2.scatter(
     color="#ca0020",
     marker=".",
     s=30,
-    label="$g(x) \leq 0$"
+    label=r"$g(x) \leq 0$"
 )
 axs_2.scatter(
     xx[idx_pos, 0],
@@ -112,12 +113,12 @@ axs_2.scatter(
     color="#0571b0",
     marker=".",
     s=30,
-    label="$g(x) > 0$"
+    label=r"$g(x) > 0$"
 )
 axs_2.set_xlim([lb_1, ub_1])
 axs_2.set_ylim([lb_2, ub_2])
-axs_2.set_xlabel("$x_1$", fontsize=18)
-axs_2.set_ylabel("$x_2$", fontsize=18)
+axs_2.set_xlabel(r"$x_1$", fontsize=18)
+axs_2.set_ylabel(r"$x_2$", fontsize=18)
 axs_2.tick_params(labelsize=16)
 axs_2.clabel(cf, inline=True, fontsize=18)
 axs_2.legend(fontsize=18, loc="lower right");
@@ -172,18 +173,18 @@ print(my_testfun.prob_input)
 
 ## Parameters
 
-From {cite}`Verma2015`, the values of the parameters are as follows:
+The parameters of the function and their values are as follows:
 
-| Parameter |         Value          | Description                             |
-|:---------:|:----------------------:|-----------------------------------------|
-|    $t$    | $3.377 \times 10^{-1}$ | Radius of the pipe $[\mathrm{m}]$       |
-|    $R$    | $3.377 \times 10^{-2}$ | Thickness of the pipe $[\mathrm{m}]$    |
-|    $M$    |         $3.0$          | Applied bending moment $[\mathrm{MNm}]$ |
+```{code-cell} ipython3
+:tags: [hide-input]
+
+print(my_testfun.parameters)
+```
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -192,8 +193,7 @@ Shown below is the histogram of the output based on $10^6$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(1000000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(1000000)
 idx_pos = yy_test > 0
 idx_neg = yy_test <= 0
 
@@ -203,7 +203,7 @@ plt.axvline(0, linewidth=1.0, color="#ca0020")
 
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$g(\mathbf{X})$")
+plt.xlabel(r"$g(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 
