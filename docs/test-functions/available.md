@@ -54,6 +54,7 @@ regardless of their typical applications.
 |         ``Friedman10D``         |       10        |                      {ref}`Friedman (10D) <test-functions:friedman-10d>`                       |
 |          ``GaytonHat``          |        2        |               {ref}`Echard et al. (2013) Gayton Hat <test-functions:gayton-hat>`               |
 |       ``GenzContinuous``        |        M        |                   {ref}`Genz (Continuous) <test-functions:genz-continuous>`                    |
+|       ``GenzContinuous``        |        M        |                   {ref}`Genz (Continuous) <test-functions:genz-continuous>`                    |
 |       ``GenzCornerPeak``        |        M        |                  {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`                   |
 |      ``GenzDiscontinuous``      |        M        |                {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>`                 |
 |        ``GenzGaussian``         |        M        |                     {ref}`Genz (Gaussian) <test-functions:genz-gaussian>`                      |
@@ -94,7 +95,7 @@ regardless of their typical applications.
 |           ``Sulfur``            |        9        |                             {ref}`Sulfur <test-functions:sulfur>`                              |
 |     ``UndampedOscillator``      |        6        |      {ref}`Gayton et al. (2003) Undamped Oscillator <test-functions:undamped-oscillator>`      |
 |          ``Webster2D``          |        2        |                  {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`                   |
-|          ``Welch1992``          |       20        |                     {ref}`Welch et al. (1992) <test-functions:welch1992>`                      |
+|           ``Welch2D``           |       20        |                   {ref}`Welch et al. (1992) 20D <test-functions:welch1992>`                    |
 |         ``WingWeight``          |       10        |                        {ref}`Wing Weight <test-functions:wing-weight>`                         |
 
 In a Python terminal, you can list all the available functions

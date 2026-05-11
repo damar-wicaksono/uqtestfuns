@@ -21,37 +21,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["Welch1992"]
-
-
-MARGINALS_WELCH1992: MarginalSpecs = [
-    {
-        "name": f"x{i}",
-        "distribution": "uniform",
-        "parameters": [-0.5, 0.5],
-        "description": None,
-    }
-    for i in range(1, 20 + 1)
-]
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Welch1992": {
-        "function_id": "Welch1992",
-        "description": (
-            "Input specification for the test function "
-            "from Welch et al. (1992)"
-        ),
-        "marginals": MARGINALS_WELCH1992,
-        "copulas": None,
-    },
-}
-
-
-DEFAULT_INPUT_SELECTION = "Welch1992"
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the Welch et al. (1992) function on a set of input values.
@@ -59,7 +28,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        1-Dimensional input values given by an N-by-1 array
+        An ``(N, 20)`` array of input values,
         where N is the number of input values.
 
     Returns
@@ -71,7 +40,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Notes
     -----
     - The input variables xx[:, 7] (x8) and xx[:, 15] (x16) are inert and
-      therefore, does not appear in the computation below.
+      therefore, do not appear in the computation below.
     """
     yy = (
         (5 * xx[:, 11]) / (1 + xx[:, 0])
@@ -94,14 +63,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     )
 
     return yy
-
-
-class Welch1992(UQTestFunFixDimABC):
-    """A concrete implementation of the Welch et al. (1992) test function."""
-
-    _tags = ["metamodeling", "sensitivity", "integration"]
-    _description = "20-Dimensional function from Welch et al. (1992)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-
-    evaluate = staticmethod(evaluate)  # type: ignore

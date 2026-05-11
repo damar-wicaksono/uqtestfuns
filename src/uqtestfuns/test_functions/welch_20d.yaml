@@ -1,0 +1,19 @@
+name: Welch20D
+description: Twenty-dimensional screening function from Welch et al. (1992)
+tags:
+  - metamodeling
+  - sensitivity
+  - integration
+
+dimensions:
+  input: 20
+  output: 1
+
+inputs:
+  Welch1992:
+    description: Input domain from Welch et al. (1992)
+    marginals:
+      distribution: uniform
+      parameters: [-0.5, 0.5]
+      name: x$idx
+    copulas: null

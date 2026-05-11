@@ -44,8 +44,6 @@ from .sobol_levitan import SobolLevitan
 from .solar_cell import SolarCell
 from .speed_reducer_shaft import SpeedReducerShaft
 from .sulfur import Sulfur
-#from .undamped_oscillator import UndampedOscillator
-from .welch1992 import Welch1992
 from .wing_weight import WingWeight
 
 # NOTE: Import the new test function implementation class from its respective
@@ -96,8 +94,6 @@ __all__ = [
     "SolarCell",
     "SpeedReducerShaft",
     "Sulfur",
-#    "UndampedOscillator",
-    "Welch1992",
     "WingWeight",
 ]
 # module manually here and update the list below.

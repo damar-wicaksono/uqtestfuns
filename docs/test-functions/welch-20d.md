@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:welch1992)=
-# Welch et al. (1992) Function
+# Twenty-dimensional Screening Function from Welch et al. (1992)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,23 +21,18 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Welch et al. (1992) test function (or the `Welch1992` function for short)
-is a 20-dimensional scalar-valued function.
-The function features some strong non-linearities as well as some
-pair interaction effects. Furthermore, a couple of two input variables
-are set to be inert.
-
-The function was introduced in Welch et al. (1992) {cite}`Welch1992`
-as a test function for metamodeling and sensitivity analysis purposes.
-The function is also suitable for testing multi-dimensional integration
-algorithms.
+The `Welch20D` function is a 20-dimensional function introduced
+in {cite}`Welch1992` for metamodeling and sensitivity analysis.
+It features strong nonlinearities, pair interaction effects,
+and two inert input variables.
+It is also suitable for testing multidimensional integration algorithms.
 
 ## Test function instance
 
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Welch1992()
+my_testfun = uqtf.Welch20D()
 ```
 
 Check if it has been correctly instantiated:
@@ -48,7 +43,7 @@ print(my_testfun)
 
 ## Description
 
-The `Welch1992` function is defined as follows[^location]:
+The `Welch20D` function is defined as follows[^location]:
 
 $$
 \begin{aligned}
@@ -78,7 +73,7 @@ shown in the table below.
 print(my_testfun.prob_input)
 ```
 
-## Reference Results
+## Reference results
 
 This section provides several reference results of typical analyses involving
 the test function.
@@ -90,14 +85,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000, 42)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -117,7 +110,7 @@ The moments of the test function may be derived analytically; the first two
 
 #### Expected value
 
-Due to the fact that the function domain is a hypercube
+Since the function domain is a hypercube
 and the input variables are uniformly distributed,
 the expected value of the function is the same as the integral value
 over the domain:
