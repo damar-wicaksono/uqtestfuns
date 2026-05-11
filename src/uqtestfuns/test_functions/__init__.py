@@ -18,7 +18,6 @@ from .genz import (
     GenzOscillatory,
     GenzProductPeak,
 )
-from .holsclaw_sine import HolsclawSine
 from .ishigami import Ishigami
 from .morris2006 import Morris2006
 from .portfolio_3d import Portfolio3D
@@ -54,7 +53,6 @@ __all__ = [
     "GenzGaussian",
     "GenzOscillatory",
     "GenzProductPeak",
-    "HolsclawSine",
     "Ishigami",
     "Morris2006",
     "Portfolio3D",

@@ -1,0 +1,17 @@
+name: HolsclawSine
+description: One-dimensional sine function from Holsclaw et al. (2013)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 1
+  output: 1
+
+inputs:
+  Holsclaw2013:
+    description: Input domain from Holsclaw et al. (2013)
+    marginals:
+      - name: x
+        distribution: uniform
+        parameters: [0.0, 10.0]
+    copulas: null

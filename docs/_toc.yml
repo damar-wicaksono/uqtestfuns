@@ -113,13 +113,13 @@ parts:
           - file: test-functions/genz-product-peak
             title: Genz (Product Peak)
           - file: test-functions/gramacy-sine
-            title: Gramacy (2007) Sine
+            title: Gramacy Sine
           - file: test-functions/higdon-sine
             title: Higdon Sine
           - file: test-functions/holsclaw-sine
-            title: Holsclaw et al. (2013) Sine
+            title: Holsclaw Sine
           - file: test-functions/hyper-sphere
-            title: Hyper-sphere Bound
+            title: Hyper-sphere
           - file: test-functions/ishigami
             title: Ishigami
           - file: test-functions/lim-non-poly
@@ -135,21 +135,21 @@ parts:
           - file: test-functions/linkletter-sine
             title: Linkletter Sine
           - file: test-functions/mclain-s1
-            title: McLain (1974) S1
+            title: McLain S1
           - file: test-functions/mclain-s2
-            title: McLain (1974) S2
+            title: McLain S2
           - file: test-functions/mclain-s3
-            title: McLain (1974) S3
+            title: McLain S3
           - file: test-functions/mclain-s4
-            title: McLain (1974) S4
+            title: McLain S4
           - file: test-functions/mclain-s5
-            title: McLain (1974) S5
+            title: McLain S5
           - file: test-functions/moon-3d
-            title: Moon (2010) 3D
+            title: Moon 3D
           - file: test-functions/morris2006
             title: Morris et al. (2006)
           - file: test-functions/oakley-1d
-            title: Oakley and O'Hagan (2002) 1D
+            title: Oakley 1D
           - file: test-functions/otl-circuit
             title: OTL Circuit (6D)
           - file: test-functions/otl-circuit-20d
@@ -183,9 +183,9 @@ parts:
           - file: test-functions/sulfur
             title: Sulfur
           - file: test-functions/undamped-oscillator
-            title: UndampedOscillator
+            title: Undamped Oscillator
           - file: test-functions/webster-2d
-            title: Webster et al. (1996) 2D
+            title: Webster 2D
           - file: test-functions/welch-20d
             title: Welch 20D
           - file: test-functions/wing-weight

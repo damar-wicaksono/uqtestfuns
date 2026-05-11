@@ -21,11 +21,11 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The function is a simple one-dimensional, scalar-valued test function.
-It was featured in {cite}`Holsclaw2013` as an example for computing
-the derivative of a curve using Gaussian process.
+The `HolsclawSine` function is a one-dimensional function
+introduced in {cite}`Holsclaw2013` as an example
+for computing the derivative of a curve using Gaussian process metamodeling.
 
-A plot of the function is shown below..
+A plot of the function is shown below.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
@@ -37,21 +37,21 @@ xx = np.linspace(0, 10.0, 100)[:, np.newaxis]
 yy = my_testfun(xx)
 
 xx_train = np.linspace(0, 10, 100)[:, np.newaxis]
-yy_train = my_testfun(xx_train) + rng.normal(0, 0.3, size=(100,1))
+yy_train = my_testfun(xx_train) + rng.normal(0, 0.3, size=(100,))
 
 # --- Create the plot
 plt.plot(xx, yy, color="#8da0cb")
-plt.scatter(xx_train, yy_train, color="#8da0cb")
+plt.scatter(xx_train.reshape(-1), yy_train, color="#8da0cb")
 plt.grid()
-plt.xlabel("$x$")
-plt.ylabel("$\mathcal{M}(x)$")
+plt.xlabel(r"$x$")
+plt.ylabel(r"$\mathcal{M}(x)$")
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
 
 ```{note}
 In the original paper, the function was evaluated at 100 equispaced points
-in $[0, 10.0]$ with added i.i.d noise from $\mathcal{N} \sim (0, 0.3)$;
+in $[0, 10.0]$ with added i.i.d noise from $\mathcal{N}(0, 0.3)$;
 these points are shown in the above plot.
 ```
 
@@ -101,14 +101,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-my_testfun.prob_input.reset_rng(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000, 42)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(X)$");
+plt.xlabel(r"$\mathcal{M}(X)$");
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
