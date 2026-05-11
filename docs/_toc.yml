@@ -123,9 +123,9 @@ parts:
           - file: test-functions/ishigami
             title: Ishigami
           - file: test-functions/lim-non-poly
-            title: Lim et al. (2002) Non-Polynomial
+            title: Lim Non Poly
           - file: test-functions/lim-poly
-            title: Lim et al. (2002) Polynomial
+            title: Lim Poly
           - file: test-functions/linkletter-dec-coeffs
             title: Linkletter et al. (2006) Dec. Coeffs.
           - file: test-functions/linkletter-inert

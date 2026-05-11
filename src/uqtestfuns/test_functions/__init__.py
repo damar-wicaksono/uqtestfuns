@@ -23,7 +23,6 @@ from .genz import (
 from .higdon_sine import HigdonSine
 from .holsclaw_sine import HolsclawSine
 from .ishigami import Ishigami
-from .lim import LimPoly, LimNonPoly
 from .linkletter import (
     LinkletterDecCoeffs,
     LinkletterInert,
@@ -74,8 +73,6 @@ __all__ = [
     "HigdonSine",
     "HolsclawSine",
     "Ishigami",
-    "LimNonPoly",
-    "LimPoly",
     "LinkletterDecCoeffs",
     "LinkletterInert",
     "LinkletterLinear",

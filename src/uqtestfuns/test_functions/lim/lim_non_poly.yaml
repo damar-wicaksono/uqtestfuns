@@ -1,0 +1,12 @@
+name: LimNonPoly
+description: Two-dimensional non-polynomial function from Lim et al. (2002)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+evaluate: evaluate.non_poly
+
+inputs: inputs.yaml

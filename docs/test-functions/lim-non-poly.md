@@ -21,10 +21,9 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The non-polynomial test function from Lim et al. (2002) (or `LimNonPoly` for
-short) is a two-dimensional scalar-valued function.
-The function was used in {cite}`Lim2002` in the context of establishing the
-connection between Gaussian process metamodel and polynomials.
+The `LimNonPoly` function is a two-dimensional non-polynomial function
+introduced in {cite}`Lim2002` to illustrate the connection
+between Gaussian process metamodels and polynomials.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
@@ -53,19 +52,19 @@ axs_1.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_1.set_xlabel("$x_1$", fontsize=14)
-axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_1.set_title("Surface plot of LimPoly", fontsize=14)
+axs_1.set_xlabel(r"$x_1$", fontsize=14)
+axs_1.set_ylabel(r"$x_2$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_title("Surface plot of LimNonPoly", fontsize=14)
 
 # Contour
 axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma", levels=10,
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_title("Contour plot of LimPoly", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_title("Contour plot of LimNonPoly", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -130,13 +129,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
