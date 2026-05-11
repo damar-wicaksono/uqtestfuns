@@ -1,0 +1,13 @@
+name: LinkletterDecCoeffs
+description: Linear function with decreasing coefficients from Linkletter et al. (2006)
+tags:
+  - metamodeling
+  - sensitivity
+
+dimensions:
+  input: 10
+  output: 1
+
+evaluate: evaluate.dec_coeffs
+
+inputs: inputs.yaml

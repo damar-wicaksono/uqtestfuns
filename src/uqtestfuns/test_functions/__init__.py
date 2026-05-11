@@ -23,12 +23,6 @@ from .genz import (
 from .higdon_sine import HigdonSine
 from .holsclaw_sine import HolsclawSine
 from .ishigami import Ishigami
-from .linkletter import (
-    LinkletterDecCoeffs,
-    LinkletterInert,
-    LinkletterLinear,
-    LinkletterSine,
-)
 from .otl_circuit import OTLCircuit
 from .morris2006 import Morris2006
 from .piston import Piston
@@ -73,10 +67,6 @@ __all__ = [
     "HigdonSine",
     "HolsclawSine",
     "Ishigami",
-    "LinkletterDecCoeffs",
-    "LinkletterInert",
-    "LinkletterLinear",
-    "LinkletterSine",
     "OTLCircuit",
     "Morris2006",
     "Piston",

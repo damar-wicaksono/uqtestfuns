@@ -127,13 +127,13 @@ parts:
           - file: test-functions/lim-poly
             title: Lim Poly
           - file: test-functions/linkletter-dec-coeffs
-            title: Linkletter et al. (2006) Dec. Coeffs.
+            title: Linkletter Dec. Coeffs.
           - file: test-functions/linkletter-inert
-            title: Linkletter et al. (2006) Inert
+            title: Linkletter Inert
           - file: test-functions/linkletter-linear
-            title: Linkletter et al. (2006) Linear
+            title: Linkletter Linear
           - file: test-functions/linkletter-sine
-            title: Linkletter et al. (2006) Sine
+            title: Linkletter Sine
           - file: test-functions/mclain-s1
             title: McLain (1974) S1
           - file: test-functions/mclain-s2
