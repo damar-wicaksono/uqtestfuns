@@ -25,14 +25,14 @@ def poly(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        An (``N``, 2) array of input values,
-        where ``N`` is the number of input values.
+        An ``(N, M)`` array of input values where ``M >= 7``
+        and ``N`` is the number of input values.
 
     Returns
     -------
     np.ndarray
         The output of the test function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
+        The output is a 1-dimensional array of length ``N``.
     """
 
     trm_1 = 5.0 / 2.0 * xx[:, 0]

@@ -81,7 +81,8 @@ regardless of their typical applications.
 |          ``Oakley1D``           |        1        |                 {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`                 |
 |         ``OTLCircuit``          |        6        |          {ref}`Ben-Ari and Steinberg (2007) OTL Circuit <test-functions:otl-circuit>`          |
 |        ``OTLCircuit20D``        |       20        |              {ref}`Moon (2010) OTL Circuit 20D <test-functions:otl-circuit-20d>`               |
-|           ``Piston``            |     7 / 20      |                        {ref}`Piston Simulation <test-functions:piston>`                        |
+|           ``Piston``            |        7        |               {ref}`Ben-Ari and Steinberg (2007) Piston <test-functions:piston>`               |
+|          ``Piston20D``          |       20        |                     {ref}`Moon (2010) Piston 20D <test-functions:piston>`                      |
 |         ``Portfolio3D``         |        3        |                  {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`                   |
 |          ``RobotArm``           |        8        |                          {ref}`Robot Arm <test-functions:robot-arm>`                           |
 |         ``Rosenbrock``          |        M        |                         {ref}`Rosenbrock <test-functions:rosenbrock>`                          |

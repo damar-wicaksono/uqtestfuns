@@ -22,7 +22,6 @@ from .higdon_sine import HigdonSine
 from .holsclaw_sine import HolsclawSine
 from .ishigami import Ishigami
 from .morris2006 import Morris2006
-from .piston import Piston
 from .portfolio_3d import Portfolio3D
 from .robot_arm import RobotArm
 from .rosenbrock import Rosenbrock
@@ -60,7 +59,6 @@ __all__ = [
     "HolsclawSine",
     "Ishigami",
     "Morris2006",
-    "Piston",
     "Portfolio3D",
     "RobotArm",
     "Rosenbrock",

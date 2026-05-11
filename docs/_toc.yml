@@ -155,7 +155,9 @@ parts:
           - file: test-functions/otl-circuit-20d
             title: OTL Circuit (20D)
           - file: test-functions/piston
-            title: Piston Simulation
+            title: Piston (7D)
+          - file: test-functions/piston-20d
+            title: Piston (20D)
           - file: test-functions/portfolio-3d
             title: Simple Portfolio Model
           - file: test-functions/robot-arm
