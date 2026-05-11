@@ -21,7 +21,6 @@ from .genz import (
 from .higdon_sine import HigdonSine
 from .holsclaw_sine import HolsclawSine
 from .ishigami import Ishigami
-from .otl_circuit import OTLCircuit
 from .morris2006 import Morris2006
 from .piston import Piston
 from .portfolio_3d import Portfolio3D
@@ -60,7 +59,6 @@ __all__ = [
     "HigdonSine",
     "HolsclawSine",
     "Ishigami",
-    "OTLCircuit",
     "Morris2006",
     "Piston",
     "Portfolio3D",

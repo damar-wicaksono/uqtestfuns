@@ -9,13 +9,13 @@ Notes
 
 import numpy as np
 
-from uqtestfuns.test_functions import OTLCircuit
+from uqtestfuns import OTLCircuit, OTLCircuit20D
 
 
 def test_inert_inputs():
     """Test whether the inputs from 'Moon' specification are indeed inert."""
-    otl_ben_ari = OTLCircuit(input_id="BenAri2007")
-    otl_moon = OTLCircuit(input_id="Moon2010")
+    otl_ben_ari = OTLCircuit()
+    otl_moon = OTLCircuit20D()
 
     # Assertions: ProbInput is assigned
     assert otl_ben_ari.prob_input is not None

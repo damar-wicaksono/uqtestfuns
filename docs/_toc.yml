@@ -151,7 +151,9 @@ parts:
           - file: test-functions/oakley-1d
             title: Oakley and O'Hagan (2002) 1D
           - file: test-functions/otl-circuit
-            title: OTL Circuit
+            title: OTL Circuit (6D)
+          - file: test-functions/otl-circuit-20d
+            title: OTL Circuit (20D)
           - file: test-functions/piston
             title: Piston Simulation
           - file: test-functions/portfolio-3d
