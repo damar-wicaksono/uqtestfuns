@@ -8,7 +8,6 @@ from .cantilever_beam_2d import CantileverBeam2D
 from .circular_pipe_crack import CircularPipeCrack
 from .coffee_cup import CoffeeCup
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
-from .dette import Dette8D, DetteCurved, DetteExp
 from .flood import Flood
 from .four_branch import FourBranch
 from .genz import (
@@ -50,9 +49,6 @@ __all__ = [
     "CoffeeCup",
     "DampedOscillator",
     "DampedOscillatorReliability",
-    "Dette8D",
-    "DetteCurved",
-    "DetteExp",
     "Flood",
     "FourBranch",
     "GenzContinuous",

@@ -38,9 +38,9 @@ regardless of their typical applications.
 |        ``DampedCosine``         |        1        |           {ref}`Santner et al. (2018) Damped Cosine <test-functions:damped-cosine>`            |
 |      ``DampedOscillator``       |        7        |                  {ref}`Damped Oscillator <test-functions:damped-oscillator>`                   |
 | ``DampedOscillatorReliability`` |        8        |      {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>`       |
-|           ``Dette8D``           |        3        |                 {ref}`Dette & Pepelyshev (2010) 8D <test-functions:dette-8d>`                  |
-|         ``DetteCurved``         |        3        |             {ref}`Dette & Pepelyshev (2010) Curved <test-functions:dette-curved>`              |
-|          ``DetteExp``           |        3        |            {ref}`Dette & Pepelyshev (2010) Exponential <test-functions:dette-exp>`             |
+|           ``Dette8D``           |        3        |                {ref}`Dette and Pepelyshev (2010) 8D <test-functions:dette-8d>`                 |
+|         ``DetteCurved``         |        3        |            {ref}`Dette and Pepelyshev (2010) Curved <test-functions:dette-curved>`             |
+|          ``DetteExp``           |        3        |           {ref}`Dette and Pepelyshev (2010) Exponential <test-functions:dette-exp>`            |
 |            ``Flood``            |        8        |                              {ref}`Flood <test-functions:flood>`                               |
 |         ``Forrester1D``         |        1        |                {ref}`Forrester et al. (2008) 1D <test-functions:forrester-1d>`                 |
 |         ``FourBranch``          |        2        |                        {ref}`Four-branch <test-functions:four-branch>`                         |
