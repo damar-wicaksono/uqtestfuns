@@ -95,9 +95,9 @@ parts:
           - file: test-functions/franke-6
             title: Franke (1979) 6th
           - file: test-functions/friedman-6d
-            title: Friedman (6D)
+            title: Friedman 6D
           - file: test-functions/friedman-10d
-            title: Friedman (10D)
+            title: Friedman 10D
           - file: test-functions/gayton-hat
             title: Gayton Hat
           - file: test-functions/genz-continuous

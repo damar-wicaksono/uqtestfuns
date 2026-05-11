@@ -11,7 +11,6 @@ from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
 from .dette import Dette8D, DetteCurved, DetteExp
 from .flood import Flood
 from .four_branch import FourBranch
-from .friedman import Friedman6D, Friedman10D
 from .genz import (
     GenzDiscontinuous,
     GenzContinuous,
@@ -56,8 +55,6 @@ __all__ = [
     "DetteExp",
     "Flood",
     "FourBranch",
-    "Friedman6D",
-    "Friedman10D",
     "GenzContinuous",
     "GenzCornerPeak",
     "GenzDiscontinuous",

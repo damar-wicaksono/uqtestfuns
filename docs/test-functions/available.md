@@ -50,8 +50,8 @@ regardless of their typical applications.
 |           ``Franke4``           |        2        |                       {ref}`Franke (1979) 4th <test-functions:franke-4>`                       |
 |           ``Franke5``           |        2        |                       {ref}`Franke (1979) 5th <test-functions:franke-5>`                       |
 |           ``Franke6``           |        2        |                       {ref}`Franke (1979) 6th <test-functions:franke-6>`                       |
-|         ``Friedman6D``          |        6        |                       {ref}`Friedman (6D) <test-functions:friedman-6d>`                        |
-|         ``Friedman10D``         |       10        |                      {ref}`Friedman (10D) <test-functions:friedman-10d>`                       |
+|         ``Friedman6D``          |        6        |                 {ref}`Friedman et al. (1983) 6D <test-functions:friedman-6d>`                  |
+|         ``Friedman10D``         |       10        |                    {ref}`Friedman (1991) 10D <test-functions:friedman-10d>`                    |
 |          ``GaytonHat``          |        2        |               {ref}`Echard et al. (2013) Gayton Hat <test-functions:gayton-hat>`               |
 |       ``GenzContinuous``        |        M        |                   {ref}`Genz (Continuous) <test-functions:genz-continuous>`                    |
 |       ``GenzContinuous``        |        M        |                   {ref}`Genz (Continuous) <test-functions:genz-continuous>`                    |
