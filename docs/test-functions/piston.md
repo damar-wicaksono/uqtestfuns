@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:piston)=
-# Piston Simulation Function
+# Piston Simulation Model from Ben-Ari and Steinberg (2007)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,13 +21,15 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Piston simulation test function is a seven-dimensional scalar-valued 
-function.
-The function computes the cycle time of a piston system.
+The `Piston` function is a seven-dimensional function
+introduced in {cite}`BenAri2007` as a test function for metamodeling exercises.
+It computes the cycle time of a piston moving inside a cylinder.
 
-This function has been used as a test function in metamodeling exercises {cite}`BenAri2007`.
-A 20-dimensional variant was used in the context of sensitivity analysis {cite}`Moon2010`
-by introducing 13 additional _inert_ input variables.
+```{note}
+A 20-dimensional variant with 13 additional inert input variables was
+introduced in {cite}`Moon2010` for sensitivity analysis. It is available
+in UQTestFuns as {ref}`Piston20D <test-functions:piston-20d>`.
+```
 
 ## Test function instance
 
@@ -51,7 +53,7 @@ inside a cylinder using the following analytical expression:
 $$
 \begin{align}
   \mathcal{M}(\boldsymbol{x}) & = 2 \pi \left( \frac{M}{k + S^2 \frac{P_0 V_0}{T_0} \frac{T_a}{V^2}} \right)^{0.5}, \\
-  V & = \frac{S}{2 k} \left[ \left(A^2 + 4 k \frac{P_0 V_0}{T_0} T_a \right)^{0.5} - A \right]^{0.5}, \\
+  V & = \frac{S}{2 k} \left[ \left(A^2 + 4 k \frac{P_0 V_0}{T_0} T_a \right)^{0.5} - A \right], \\
   A & = P_0 S + 19.62 M - \frac{k V_0}{S},
 \end{align}
 $$
@@ -60,44 +62,19 @@ is the seven-dimensional vector of input variables further defined below.
 
 ## Probabilistic input
 
-Two probabilistic input model specifications for the OTL circuit function are
-available as shown in the table below.
-
-|  No.   |         Keyword         |       Source       |
-|:------:|:-----------------------:|:------------------:|
-|   1.   | `BenAri2007` (default)  | {cite}`BenAri2007` |
-|   2.   |       `Moon2010`        |  {cite}`Moon2010`  |
-
-The default selection, based on {cite}`BenAri2007`,
-contains seven input variables given as independent uniform random variables
-with specified ranges shown in the table below.
+The default input specification contains six independent
+uniform random variables with ranges shown in the table below.
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+:tags: [hide-input, output_scroll]
 
 print(my_testfun.prob_input)
 ```
 
-````{note}
-In {cite}`Moon2010`,
-13 additional _inert_ independent input variables are introduced (totaling 20
-input variables);
-these input variables, being inert, do not affect the output of the function.
-
-To create an instance of the piston simulation test function
-with the probabilistic input specified in {cite}`Moon2010`,
-pass the corresponding keyword (`"Moon2010"`)
-to the parameter `input_id`):
-
-```python
-my_testfun = uqtf.Piston(input_id="Moon2010")
-```
-````
-
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -106,14 +83,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000, 42)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -126,14 +101,13 @@ the output mean and variance with increasing sample sizes.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], dtype=int)
 mean_estimates = np.empty(len(sample_sizes))
 var_estimates = np.empty(len(sample_sizes))
 
 for i, sample_size in enumerate(sample_sizes):
-    xx_test = my_testfun.prob_input.get_sample(sample_size)
-    yy_test = my_testfun(xx_test)
+    yy_test = my_testfun.get_sample(sample_size, rng)
     mean_estimates[i] = np.mean(yy_test)
     var_estimates[i] = np.var(yy_test)
 

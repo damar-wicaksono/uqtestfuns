@@ -21,9 +21,11 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Borehole test function is an eight-dimensional scalar-valued function.
-The function has been used in the context of sensitivity analysis
-{cite}`Harper1983, Worley1987` and metamodeling {cite}`Morris1993`.
+The Borehole test function {cite}`Harper1983` models the flow rate of water
+through a borehole drilled from the ground surface through two aquifers.
+It is an eight-dimensional scalar-valued function commonly used in
+sensitivity analysis {cite}`Harper1983, Worley1987`
+and metamodeling {cite}`Morris1993`.
 
 ## Test function instance
 
@@ -50,7 +52,7 @@ The function computes the water flow rate through the borehole
 using the following analytical formula:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \frac{2 \, \pi \, T_u \, (H_u - H_l)}{\ln{(r/rw)} \left[1 + \frac{2 \, L \, Tu}{\ln{(r/rw)} \, r_w^2 K_w} + \frac{T_u}{T_l} \right]} 
+\mathcal{M}(\boldsymbol{x}) = \frac{2 \, \pi \, T_u \, (H_u - H_l)}{\ln{(r/r_w)} \left[1 + \frac{2 \, L \, T_u}{\ln{(r/r_w)} \, r_w^2 K_w} + \frac{T_u}{T_l} \right]} 
 $$
 
 where $\boldsymbol{x} = \{ r_w, r, T_u, H_u, T_l, H_l, L, K_w\}$
@@ -78,9 +80,8 @@ print(my_testfun.prob_input)
 ```
 
 ```{note}
-In {cite}`Morris1993`,
-the non-uniform distributions ($r_w$ and $r$) are replaced
-with uniform distributions.
+In {cite}`Morris1993`, the normal distribution for $r_w$ and the lognormal
+distribution for $r$ are replaced with uniform distributions.
 ```
 
 For example, to create a Borehole test function using
@@ -102,14 +103,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -122,14 +121,13 @@ the output mean and variance with increasing sample sizes.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
-sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], dtype=int)
+rng = np.random.default_rng(42)
+sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6], dtype=int)
 mean_estimates = np.empty(len(sample_sizes))
 var_estimates = np.empty(len(sample_sizes))
 
 for i, sample_size in enumerate(sample_sizes):
-    xx_test = my_testfun.prob_input.get_sample(sample_size)
-    yy_test = my_testfun(xx_test)
+    yy_test = my_testfun.get_sample(sample_size, rng)
     mean_estimates[i] = np.mean(yy_test)
     var_estimates[i] = np.var(yy_test)
 

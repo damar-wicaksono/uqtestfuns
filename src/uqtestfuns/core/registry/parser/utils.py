@@ -27,6 +27,7 @@ from .validation import SpecValidationError, validate_callable_string
 NAMED_CONSTANTS = {
     "pi": math.pi,
     "e": math.e,
+    "inf": math.inf,
 }
 
 

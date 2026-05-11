@@ -21,17 +21,19 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The (1st) Franke function is a two-dimensional scalar-valued function.
-The function was first introduced in {cite}`Franke1979` in the context of
-interpolation problem and was used in {cite}`Haaland2011` in the context of
-metamodeling.
+The (1st) Franke function (`Franke1` for short) is a two-dimensional
+scalar-valued function introduced in {cite}`Franke1979` for scattered
+data interpolation and later used in {cite}`Haaland2011` for metamodeling.
+
+Among the six Franke functions, this is the one most commonly referred to
+simply as "the Franke function".
 
 ```{note}
 The Franke's original report {cite}`Franke1979` contains in total
 six two-dimensional test functions:
 
 - {ref}`(1st) Franke function <test-functions:franke-1>`: Two Gaussian peaks
-  and a Gaussian dip on a surface slopping down the upper right boundary
+  and a Gaussian dip on a surface sloping down the upper right boundary
   (_this function_)
 - {ref}`(2nd) Franke function <test-functions:franke-2>`: Two nearly flat
   regions joined by a sharp rise running diagonally
@@ -75,7 +77,7 @@ axs_1.plot_surface(
 )
 axs_1.set_xlabel("$x_1$", fontsize=14)
 axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_1.set_title("Surface plot of (1st) Franke", fontsize=14)
 
 # Contour
@@ -83,8 +85,8 @@ axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
 axs_2.set_title("Contour plot of (1st) Franke", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -119,10 +121,10 @@ The Franke function is defined as follows:
 
 $$
 \begin{align}
-	\mathcal{M}(\boldsymbol{x}) = & 0.75 \exp{\left( -0.25 \left( (x_1 - 2)^2 + (x_2 - 2)^2 \right) \right) } \\
-                                  & + 0.75 \exp{\left( -1.00 \left( \frac{(x_1 + 1)^2}{49} + \frac{(x_2 + 1)^2}{10} \right) \right)} \\
-								  & + 0.50 \exp{\left( -0.25 \left( (x_1 - 7)^2 + (x_2 - 3)^2 \right) \right)} \\
-								  & - 0.20 \exp{\left( -1.00 \left( (x_1 - 4)^2 + (x_2 - 7)^2 \right) \right)} \\
+	\mathcal{M}(\boldsymbol{x}) = & 0.75 \exp{\left( -0.25 \left( (9 x_1 - 2)^2 + (9 x_2 - 2)^2 \right) \right) } \\
+                                  & + 0.75 \exp{\left( -1.00 \left( \frac{(9 x_1 + 1)^2}{49} + \frac{(9 x_2 + 1)^2}{10} \right) \right)} \\
+								  & + 0.50 \exp{\left( -0.25 \left( (9 x_1 - 7)^2 + (9 x_2 - 3)^2 \right) \right)} \\
+								  & - 0.20 \exp{\left( -1.00 \left( (9 x_1 - 4)^2 + (9 x_2 - 7)^2 \right) \right)} \\
 \end{align}
 $$
 where $\boldsymbol{x} = \{ x_1, x_2 \}$
@@ -151,13 +153,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

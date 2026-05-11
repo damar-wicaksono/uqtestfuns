@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:flood)=
-# Flood Model
+# Flood Model from Iooss and Lemaître (2015)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,9 +21,10 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The flood model is an eight-dimensional scalar valued function.
-The model was used in the context of sensitivity analysis in {cite}`Iooss2015, Lamboni2013`
+The `Flood` function is an eight-dimensional function
+used in the context of sensitivity analysis in {cite}`Iooss2015, Lamboni2013`,
 and has become a canonical example of the OpenTURNS package {cite}`Baudin2017`.
+It computes the maximum annual underflow of a river.
 
 ## Test function instance
 
@@ -88,14 +89,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000, 42)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -108,14 +107,13 @@ the output mean and variance with increasing sample sizes.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], dtype=int)
 mean_estimates = np.empty(len(sample_sizes))
 var_estimates = np.empty(len(sample_sizes))
 
 for i, sample_size in enumerate(sample_sizes):
-    xx_test = my_testfun.prob_input.get_sample(sample_size)
-    yy_test = my_testfun(xx_test)
+    yy_test = my_testfun.get_sample(sample_size, rng)
     mean_estimates[i] = np.mean(yy_test)
     var_estimates[i] = np.var(yy_test)
 

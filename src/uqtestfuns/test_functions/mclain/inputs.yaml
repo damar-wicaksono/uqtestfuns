@@ -1,0 +1,10 @@
+McLain1974:
+  description: Input domain from McLain (1974)
+  marginals:
+    - name: X1
+      distribution: uniform
+      parameters: [1.0, 10.0]
+    - name: X2
+      distribution: uniform
+      parameters: [1.0, 10.0]
+  copulas: null

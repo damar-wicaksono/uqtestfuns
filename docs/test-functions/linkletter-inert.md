@@ -21,15 +21,15 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The function is a ten-dimensional, scalar-valued function.
-None of the input variables are active, while the rest is inert.
-The function was used in {cite}`Linkletter2006` to demonstrate a variable
-selection method (i.e., sensitivity analysis)
+The `LinkletterInert` function is a nominally ten-dimensional function
+introduced in {cite}`Linkletter2006` to demonstrate variable selection
 in the context of Gaussian process metamodeling.
+None of the input variables are active; the function always returns zero.
 
 ```{note}
-Linkletter et al. {cite}`Linkletter2006` introduced four ten-dimensional
-analytical test functions with some of the input variables inert.
+Linkletter et al. {cite}`Linkletter2006` introduced four _nominally_
+ten-dimensional analytical test functions
+with some of the input variables inert.
 They are used to demonstrate a variable selection method (i.e., screening)
 in the context of Gaussian process metamodeling:
 
@@ -51,7 +51,7 @@ in the context of Gaussian process metamodeling:
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.LinkletterSine()
+my_testfun = uqtf.LinkletterInert()
 ```
 
 Check if it has been correctly instantiated:

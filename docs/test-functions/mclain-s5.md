@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:mclain-s5)=
-# McLain S5 Function
+# Plateau-and-cliff Surface Function from McLain (1974)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,9 +21,10 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The McLain S5 function is a two-dimensional scalar-valued function.
-The function was introduced in {cite}`McLain1974` as a test function for
-procedures to construct contours from a given set of points.
+The McLain S5 function is a two-dimensional function introduced
+in {cite}`McLain1974` in the context of drawing contours from scattered data.
+The resulting surface models two flat regions
+separated by a steep diagonal cliff.
 
 ```{note}
 The McLain's test functions are a set of five two-dimensional functions 
@@ -63,9 +64,9 @@ axs_1.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_1.set_xlabel("$x_1$", fontsize=14)
-axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_xlabel(r"$x_1$", fontsize=14)
+axs_1.set_ylabel(r"$x_2$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_1.set_title("Surface plot of McLain S5", fontsize=14)
 
 # Contour
@@ -73,8 +74,8 @@ axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
 axs_2.set_title("Contour plot of McLain S5", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -85,10 +86,8 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the function features two nearly flat regions 
-of height $0.0$ and (approximately) $1.0$.
-The two regions are joined by a sharp rise that runs diagonally from
-$(0.0, 10.0)$ to $(10.0, 0.0)$.
+The two flat regions have heights of approximately $0.0$ and $1.0$,
+joined by a sharp rise running diagonally from $(0.0,10.0)$ to $(0.0, 10.0)$.
 
 ```{note}
 The McLain S5 function appeared in a modified form in the report 
@@ -147,13 +146,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

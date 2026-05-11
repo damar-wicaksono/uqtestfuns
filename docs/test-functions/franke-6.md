@@ -21,16 +21,18 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The (6th) Franke function is a two-dimensional scalar-valued function.
-The function was first introduced in {cite}`Franke1979` in the context of
-interpolation problem.
+The (6th) Franke function (`Franke6` for short) is a two-dimensional
+scalar-valued function introduced in {cite}`Franke1979` for scattered
+data interpolation. It is a modified form of the
+{ref}`McLain S1 function <test-functions:mclain-s1>` {cite}`McLain1974`,
+featuring a portion of a spherical surface.
 
 ```{note}
 The Franke's original report {cite}`Franke1979` contains in total
 six two-dimensional test functions:
 
 - {ref}`(1st) Franke function <test-functions:franke-1>`: Two Gaussian peaks
-  and a Gaussian dip on a surface slopping down the upper right boundary
+  and a Gaussian dip on a surface sloping down the upper right boundary
 - {ref}`(2nd) Franke function <test-functions:franke-2>`: Two nearly flat
   regions joined by a sharp rise running diagonally
 - {ref}`(3rd) Franke function <test-functions:franke-3>`: A saddle shaped
@@ -72,9 +74,9 @@ axs_1.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_1.set_xlabel("$x_1$", fontsize=14)
-axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_xlabel(r"$x_1$", fontsize=14)
+axs_1.set_ylabel(r"$x_2$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_1.set_title("Surface plot of (6th) Franke", fontsize=14)
 
 # Contour
@@ -82,8 +84,8 @@ axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
 axs_2.set_title("Contour plot of (6th) Franke", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -94,13 +96,12 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the function features a part of a sphere
-with a radius of $\frac{8}{9}$
-and a center at $(\frac{1}{2}, \frac{1}{2}, -\frac{1}{2})$.
+The function represents a portion of a sphere with radius $\frac{8}{9}$
+centered at $\left(\frac{1}{2}, \frac{1}{2}, -\frac{1}{2}\right)$.
 
 ```{note}
-The (6th) Franke function is a modified form of the {ref}`McLain S1 function <test-functions:mclain-s1>`
-{cite}`McLain1974`.
+The (6th) Franke function is a modified form
+of the {ref}`McLain S1 function <test-functions:mclain-s1>` {cite}`McLain1974`.
 
 Specifically, the domain of the function is translated from $[1.0, 10.0]^2$
 to $[0.0, 1.0]^2$ with some additional slight modifications to "enhance the
@@ -123,7 +124,7 @@ print(my_testfun)
 
 ## Description
 
-The (4th) Franke function is defined as follows:
+The (6th) Franke function is defined as follows:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \left( 64 - 81 \left( (x_1 - 0.5)^2 + (x_2 - 0.5)^2 \right) \right)^{0.5} - 0.5
@@ -144,8 +145,8 @@ print(my_testfun.prob_input)
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results
+of typical UQ analyses involving the test function.
 
 ### Sample histogram
 
@@ -154,13 +155,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

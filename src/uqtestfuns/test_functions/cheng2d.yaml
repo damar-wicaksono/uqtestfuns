@@ -1,0 +1,22 @@
+name: Cheng2D
+description: >-
+  Two-dimensional trigonometric-exponential function from Cheng and Sandu (2010)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Cheng2010:
+    description: >-
+      Probabilistic input model from Cheng and Sandu (2010)
+    marginals:
+      - name: X1
+        distribution: uniform
+        parameters: [0.0, 1.0]
+      - name: X2
+        distribution: uniform
+        parameters: [0.0, 1.0]
+    copulas: null

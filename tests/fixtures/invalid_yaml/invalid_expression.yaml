@@ -14,7 +14,7 @@ inputs:
     marginals:
       - name: A1
         distribution: uniform
-        parameters: [$(inf), 1.0]
+        parameters: [$(euler), 1.0]
         description: First active variable
       - name: A2
         distribution: normal

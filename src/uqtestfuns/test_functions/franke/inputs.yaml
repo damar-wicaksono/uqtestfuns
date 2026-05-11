@@ -1,0 +1,11 @@
+Franke1979:
+  description: >-
+    Probabilistic input model from Franke (1979)
+  marginals:
+    - name: X1
+      distribution: uniform
+      parameters: [0.0, 1.0]
+    - name: X2
+      distribution: uniform
+      parameters: [0.0, 1.0]
+  copulas: null

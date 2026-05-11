@@ -21,16 +21,16 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The function is a ten-dimensional, scalar-valued function whose
-coefficients are decreasing. Only the first eight input variables are active,
-while the rest is inert.
-The function was used in {cite}`Linkletter2006` to demonstrate a variable
-selection method (i.e., sensitivity analysis)
+The `LinkletterDecCoeffs` function is a nominally ten-dimensional function
+introduced in {cite}`Linkletter2006` to demonstrate variable selection
 in the context of Gaussian process metamodeling.
+Only the first eight input variables are active with decreasing coefficients;
+the remaining two are inert.
 
 ```{note}
-Linkletter et al. {cite}`Linkletter2006` introduced four ten-dimensional
-analytical test functions with some of the input variables inert.
+Linkletter et al. {cite}`Linkletter2006` introduced four _nominally_
+ten-dimensional analytical test functions
+with some of the input variables inert.
 They are used to demonstrate a variable selection method (i.e., screening)
 in the context of Gaussian process metamodeling:
 
@@ -109,14 +109,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-my_testfun.prob_input.reset_rng(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000, 42)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(X)$");
+plt.xlabel(r"$\mathcal{M}(X)$");
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```

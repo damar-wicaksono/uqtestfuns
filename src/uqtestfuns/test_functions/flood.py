@@ -33,75 +33,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["Flood"]
-
-
-MARGINALS_IOOSS2015: MarginalSpecs = [  # From Ref. [1]
-    {
-        "name": "Q",
-        "distribution": "trunc-gumbel",
-        "parameters": [1013.0, 558.0, 500.0, 3000.0],
-        "description": "Maximum annual flow rate [m^3/s]",
-    },
-    {
-        "name": "Ks",
-        "distribution": "trunc-normal",
-        "parameters": [30.0, 8.0, 15.0, np.inf],
-        "description": "Strickler coefficient [m^(1/3)/s]",
-    },
-    {
-        "name": "Zv",
-        "distribution": "triangular",
-        "parameters": [49.0, 51.0, 50.0],
-        "description": "River downstream level [m]",
-    },
-    {
-        "name": "Zm",
-        "distribution": "triangular",
-        "parameters": [54.0, 56.0, 55.0],
-        "description": "River upstream level [m]",
-    },
-    {
-        "name": "Hd",
-        "distribution": "uniform",
-        "parameters": [7.0, 9.0],
-        "description": "Dyke height [m]",
-    },
-    {
-        "name": "Cb",
-        "distribution": "triangular",
-        "parameters": [55.0, 56.0, 55.5],
-        "description": "Bank level [m]",
-    },
-    {
-        "name": "L",
-        "distribution": "triangular",
-        "parameters": [4990.0, 5010.0, 5000.0],
-        "description": "Length of the river stretch [m]",
-    },
-    {
-        "name": "B",
-        "distribution": "triangular",
-        "parameters": [295.0, 305.0, 300.0],
-        "description": "River width [m]",
-    },
-]
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Iooss2015": {
-        "function_id": "Flood",
-        "description": (
-            "Probabilistic input model for the Flood model "
-            "from Iooss and Lemaître (2015)"
-        ),
-        "marginals": MARGINALS_IOOSS2015,
-        "copulas": None,
-    },
-}
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the flood model test function on a set of input values.
@@ -109,8 +40,8 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        A six-dimensional input values given by an N-by-8 array
-        where N is the number of input values.
+        An ``(N, 8)`` array of input values,
+        where ``N`` is the number of input values.
 
     Returns
     -------
@@ -137,14 +68,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     ss = cc_b + hh_d - zz_v - hh_w
 
     return ss
-
-
-class Flood(UQTestFunFixDimABC):
-    """Concrete implementation of the Flood model test function."""
-
-    _tags = ["metamodeling", "sensitivity"]
-    _description = "Flood model from Iooss and Lemaître (2015)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-
-    evaluate = staticmethod(evaluate)  # type: ignore

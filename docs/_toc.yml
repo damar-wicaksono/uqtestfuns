@@ -65,39 +65,39 @@ parts:
           - file: test-functions/currin-sine
             title: Currin et al. (1988) Sine
           - file: test-functions/damped-cosine
-            title: Damped Cosine
+            title: Santner et al. (2018) Damped Cosine
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
           - file: test-functions/damped-oscillator-reliability
             title: Damped Oscillator Reliability
           - file: test-functions/dette-8d
-            title: Dette & Pepelyshev (2010) 8D
+            title: Dette 8D
           - file: test-functions/dette-curved
-            title: Dette & Pepelyshev (2010) Curved
+            title: Dette Curved
           - file: test-functions/dette-exp
-            title: Dette & Pepelyshev (2010) Exponential
+            title: Dette Exp.
           - file: test-functions/flood
             title: Flood
-          - file: test-functions/forrester
-            title: Forrester et al. (2008)
+          - file: test-functions/forrester-1d
+            title: Forrester et al. (2008) 1D
           - file: test-functions/four-branch
             title: Four-branch
           - file: test-functions/franke-1
-            title: (1st) Franke
+            title: Franke (1979) 1st
           - file: test-functions/franke-2
-            title: (2nd) Franke
+            title: Franke (1979) 2nd
           - file: test-functions/franke-3
-            title: (3rd) Franke
+            title: Franke (1979) 3rd
           - file: test-functions/franke-4
-            title: (4th) Franke
+            title: Franke (1979) 4th
           - file: test-functions/franke-5
-            title: (5th) Franke
+            title: Franke (1979) 5th
           - file: test-functions/franke-6
-            title: (6th) Franke
+            title: Franke (1979) 6th
           - file: test-functions/friedman-6d
-            title: Friedman (6D)
+            title: Friedman 6D
           - file: test-functions/friedman-10d
-            title: Friedman (10D)
+            title: Friedman 10D
           - file: test-functions/gayton-hat
             title: Gayton Hat
           - file: test-functions/genz-continuous
@@ -113,27 +113,27 @@ parts:
           - file: test-functions/genz-product-peak
             title: Genz (Product Peak)
           - file: test-functions/gramacy-sine
-            title: Gramacy (2007) Sine
+            title: Gramacy Sine
           - file: test-functions/higdon-sine
-            title: Higdon (2002) Sine
+            title: Higdon Sine
           - file: test-functions/holsclaw-sine
-            title: Holsclaw et al. (2013) Sine
+            title: Holsclaw Sine
           - file: test-functions/hyper-sphere
-            title: Hyper-sphere Bound
+            title: Hyper-sphere
           - file: test-functions/ishigami
             title: Ishigami
           - file: test-functions/lim-non-poly
-            title: Lim et al. (2002) Non-Polynomial
+            title: Lim Non Poly
           - file: test-functions/lim-poly
-            title: Lim et al. (2002) Polynomial
+            title: Lim Poly
           - file: test-functions/linkletter-dec-coeffs
-            title: Linkletter et al. (2006) Dec. Coeffs.
+            title: Linkletter Dec. Coeffs.
           - file: test-functions/linkletter-inert
-            title: Linkletter et al. (2006) Inert
+            title: Linkletter Inert
           - file: test-functions/linkletter-linear
-            title: Linkletter et al. (2006) Linear
+            title: Linkletter Linear
           - file: test-functions/linkletter-sine
-            title: Linkletter et al. (2006) Sine
+            title: Linkletter Sine
           - file: test-functions/mclain-s1
             title: McLain S1
           - file: test-functions/mclain-s2
@@ -144,16 +144,20 @@ parts:
             title: McLain S4
           - file: test-functions/mclain-s5
             title: McLain S5
-          - file: test-functions/moon3d
-            title: Moon (2010) 3D
+          - file: test-functions/moon-3d
+            title: Moon 3D
           - file: test-functions/morris2006
             title: Morris et al. (2006)
           - file: test-functions/oakley-1d
-            title: Oakley & O'Hagan (2002) 1D
+            title: Oakley 1D
           - file: test-functions/otl-circuit
-            title: OTL Circuit
+            title: OTL Circuit (6D)
+          - file: test-functions/otl-circuit-20d
+            title: OTL Circuit (20D)
           - file: test-functions/piston
-            title: Piston Simulation
+            title: Piston (7D)
+          - file: test-functions/piston-20d
+            title: Piston (20D)
           - file: test-functions/portfolio-3d
             title: Simple Portfolio Model
           - file: test-functions/robot-arm
@@ -181,9 +185,9 @@ parts:
           - file: test-functions/undamped-oscillator
             title: Undamped Oscillator
           - file: test-functions/webster-2d
-            title: Webster et al. (1996) 2D
-          - file: test-functions/welch1992
-            title: Welch et al. (1992)
+            title: Webster 2D
+          - file: test-functions/welch-20d
+            title: Welch 20D
           - file: test-functions/wing-weight
             title: Wing Weight
   - caption: Probabilistic Input

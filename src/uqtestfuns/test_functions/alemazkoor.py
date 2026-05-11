@@ -19,57 +19,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["Alemazkoor2D", "Alemazkoor20D"]
-
-
-AVAILABLE_INPUTS_2D: ProbInputSpecs = {
-    "Alemazkoor2018": {
-        "function_id": "Alemazkoor2D",
-        "description": (
-            "Input specification for the 2D test function "
-            "from Alemazkoor & Meidani (2018)"
-        ),
-        "marginals": [
-            {
-                "name": "X1",
-                "distribution": "uniform",
-                "parameters": [-1.0, 1.0],
-                "description": None,
-            },
-            {
-                "name": "X2",
-                "distribution": "uniform",
-                "parameters": [-1.0, 1.0],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
-
-AVAILABLE_INPUTS_20D: ProbInputSpecs = {
-    "Alemazkoor2018": {
-        "function_id": "Alemazkoor20D",
-        "description": (
-            "Input specification for the 20D test function "
-            "from Alemazkoor & Meidani (2018)"
-        ),
-        "marginals": [
-            {
-                "name": f"X{i + 1}",
-                "distribution": "uniform",
-                "parameters": [-1, 1],
-                "description": None,
-            }
-            for i in range(20)
-        ],
-        "copulas": None,
-    },
-}
-
 
 def evaluate_2d(xx: np.ndarray) -> np.ndarray:
     """Evaluate the 2D test function from Alemazkoor & Meidani (2018).
@@ -94,21 +43,6 @@ def evaluate_2d(xx: np.ndarray) -> np.ndarray:
     return yy
 
 
-class Alemazkoor2D(UQTestFunFixDimABC):
-    """An implementation of the 2D function of Alemazkoor & Meidani (2018)."""
-
-    _tags = ["metamodeling"]
-    _description = (
-        "Low-dimensional high-degree polynomial from Alemazkoor "
-        "& Meidani (2018)"
-    )
-    _available_inputs = AVAILABLE_INPUTS_2D
-    _available_parameters = None
-    _default_input_dimension = 2
-
-    evaluate = staticmethod(evaluate_2d)  # type: ignore
-
-
 def evaluate_20d(xx: np.ndarray) -> np.ndarray:
     """Evaluate the 20D test function from Alemazkoor & Meidani (2018).
 
@@ -127,18 +61,3 @@ def evaluate_20d(xx: np.ndarray) -> np.ndarray:
     yy = np.sum(xx[:, :-1] * xx[:, 1:], axis=1)
 
     return yy
-
-
-class Alemazkoor20D(UQTestFunFixDimABC):
-    """An implementation of the 20D function of Alemazkoor & Meidani (2018)."""
-
-    _tags = ["metamodeling"]
-    _description = (
-        "High-dimensional low-degree polynomial from Alemazkoor "
-        "& Meidani (2018)"
-    )
-    _available_inputs = AVAILABLE_INPUTS_20D
-    _available_parameters = None
-    _default_input_dimension = 20
-
-    evaluate = staticmethod(evaluate_20d)  # type: ignore

@@ -1,0 +1,13 @@
+name: LinkletterSine
+description: Sine function with 2 active inputs from Linkletter et al. (2006)
+tags:
+  - metamodeling
+  - sensitivity
+
+dimensions:
+  input: 10
+  output: 1
+
+evaluate: evaluate.sine
+
+inputs: inputs.yaml

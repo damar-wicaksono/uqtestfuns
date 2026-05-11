@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:gramacy-sine)=
-# Gramacy (2007) Sine Function
+# Sine Function from Gramacy (2007)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,13 +21,10 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Gramacy (2007) sine function 
-(or `GramacySine` function for short)
-is a one-dimensional, scalar-valued function that features two regimes:
-one part is a mixture of sines and cosines,
-and another part is a linear function.
-The function was introduced in {cite}`Gramacy2007` in the context of 
-metamodeling with non-stationary Gaussian processes.
+The `GramacySine` function from {cite}`Gramacy2007` is a one-dimensional
+scalar-valued function featuring two regimes: a mixture of sines and cosines
+for $x \leq 9.6$, and a linear function for $x > 9.6$. It was introduced
+as a benchmark for non-stationary Gaussian process metamodeling.
 
 A plot of the function is shown below for $x \in [0, 20]$.
 
@@ -46,17 +43,17 @@ plt.plot(xx, yy, color="#8da0cb")
 plt.scatter(xx, yy_train, color="#8da0cb")
 plt.grid()
 plt.xlabel("$x$")
-plt.ylabel("$\mathcal{M}(x)$")
+plt.ylabel(r"$\mathcal{M}(x)$")
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
 
-Note that the function is discontinuous at $x = 9.6%$ which also pinpoints
+Note that the function is discontinuous at $x = 9.6$ which also pinpoints
 the change of regime.
 
 ```{note}
 In the original paper, the response of the function is disturbed by an 
-independent identically distributed (i.i.d) Gaussian noise 
+independent identically distributed (i.i.d.) Gaussian noise 
 $\varepsilon \sim \mathcal{N}(0, \sigma_n=0.1)$.
 The training data is generated from 100 equispaced points in $[0., 20.]$;
 these points are shown in the above plot.
@@ -106,5 +103,4 @@ print(my_testfun.prob_input)
 :filter: docname in docnames
 ```
 
-[^location]: see Section 4.2, p. 17, Eq. (16) in {cite}`Gramacy2007`;
-also the actual implementation as an R code not far below that.
+[^location]: see Eq. (16), Section 4.2, p. 17 in {cite}`Gramacy2007`.

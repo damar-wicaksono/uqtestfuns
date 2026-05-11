@@ -21,9 +21,11 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The (5th) Franke function is a two-dimensional scalar-valued function.
-The function was first introduced in {cite}`Franke1979` in the context of
-interpolation problem.
+The (5th) Franke function (`Franke5` for short) is a two-dimensional
+scalar-valued function introduced in {cite}`Franke1979` for scattered
+data interpolation. It is a modified form of the
+{ref}`McLain S2 function <test-functions:mclain-s2>` {cite}`McLain1974`,
+featuring a steep Gaussian hill centered at $(0.5, 0.5)$.
 
 ```{note}
 The Franke's original report {cite}`Franke1979` contains in total
@@ -71,9 +73,9 @@ axs_1.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_1.set_xlabel("$x_1$", fontsize=14)
-axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_xlabel(r"$x_1$", fontsize=14)
+axs_1.set_ylabel(r"$x_2$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_1.set_title("Surface plot of (5th) Franke", fontsize=14)
 
 # Contour
@@ -81,8 +83,8 @@ axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
 axs_2.set_title("Contour plot of (5th) Franke", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -93,13 +95,13 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the function features a Gaussian hill that slopes
-in a steeper fashion as compared to the {ref}`(4th) Franke function <test-functions:franke-4>`.
-The maximum of the function is located at $(0.5, 0.5)$ with a height of $\frac{1}{3}$.
+The function attains its maximum of $\frac{1}{3}$ at $(0.5, 0.5)$,
+with a steeper decay than the
+{ref}`(4th) Franke function <test-functions:franke-4>`.
 
 ```{note}
-The (5th) Franke function is a modified form of the {ref}`McLain S2 function <test-functions:mclain-s2>`
-{cite}`McLain1974`.
+The (5th) Franke function is a modified form
+of the {ref}`McLain S2 function <test-functions:mclain-s2>` {cite}`McLain1974`.
 
 Specifically, the domain of the function is translated from $[1.0, 10.0]^2$
 to $[0.0, 1.0]^2$ with some additional slight modifications to "enhance the
@@ -122,7 +124,7 @@ print(my_testfun)
 
 ## Description
 
-The (4th) Franke function is defined as follows:
+The (5th) Franke function is defined as follows:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \frac{1}{3} \exp{\left[ -\frac{81}{4} \left( (x_1 - 0.5)^2 + (x_2 - 0.5)^2 \right) \right]}
@@ -153,13 +155,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

@@ -1,0 +1,21 @@
+name: GaytonHat
+description: Gayton hat reliability problem from Echard et al. (2013)
+tags:
+  - reliability
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Echard2013:
+    description: >-
+      Two independent standard normal random variables from Echard et al. (2013)
+    marginals:
+      - name: U1
+        distribution: normal
+        parameters: [0.0, 1.0]
+      - name: U2
+        distribution: normal
+        parameters: [0.0, 1.0]
+    copulas: null
