@@ -92,7 +92,7 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
             )
 
     # --- Output dimension (optional with default value)
-    output_dimension = dimensions.get("output_dimension", 1)
+    output_dimension = dimensions.get("output", 1)
 
     # --- File references
     spec_path = yaml_file.resolve()
