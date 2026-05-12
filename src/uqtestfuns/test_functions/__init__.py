@@ -16,7 +16,6 @@ from .genz import (
 )
 from .morris2006 import Morris2006
 from .robot_arm import RobotArm
-from .rosenbrock import Rosenbrock
 from .sobol_g import SobolG
 from .sobol_g_star import SobolGStar
 from .sobol_levitan import SobolLevitan
@@ -42,7 +41,6 @@ __all__ = [
     "GenzProductPeak",
     "Morris2006",
     "RobotArm",
-    "Rosenbrock",
     "SobolG",
     "SobolGStar",
     "SobolLevitan",

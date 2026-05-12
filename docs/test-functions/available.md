@@ -85,7 +85,7 @@ regardless of their typical applications.
 |          ``Piston20D``          |       20        |                      {ref}`Moon (2010) Piston 20D <test-functions:piston>`                       |
 |         ``Portfolio3D``         |        3        |             {ref}`Saltelli et al. (2004) Portfolio 3D <test-functions:portfolio-3d>`             |
 |          ``RobotArm``           |        8        |                           {ref}`Robot Arm <test-functions:robot-arm>`                            |
-|         ``Rosenbrock``          |        M        |                          {ref}`Rosenbrock <test-functions:rosenbrock>`                           |
+|         ``Rosenbrock``          |        M        |                       {ref}`Rosenbrock (1960) <test-functions:rosenbrock>`                       |
 |        ``RSCircularBar``        |        2        |           {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`            |
 |         ``RSQuadratic``         |        2        |                 {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                  |
 |       ``SaltelliLinear``        |        M        |              {ref}`Saltelli et al. (2008) Linear <test-functions:saltelli-linear>`               |
