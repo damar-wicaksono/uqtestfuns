@@ -3,15 +3,15 @@ Test module for the Coffee Cup model.
 
 Notes
 -----
-- The tests defined in this module deals with
-  the correctness of the evaluation.
+- The tests defined in this module deal with the correctness of the evaluation.
 """
 
 import numpy as np
 import pytest
 
 from conftest import assert_call
-from uqtestfuns.test_functions import CoffeeCup
+from uqtestfuns import CoffeeCup
+from uqtestfuns.core.parameters import Parameters
 
 
 @pytest.mark.parametrize(
@@ -24,7 +24,15 @@ def test_solve_ivp_kwargs(solve_ivp_kwargs):
     fun = CoffeeCup()
 
     # Add the new parameter
-    fun.parameters.add("solve_ivp", solve_ivp_kwargs)
+    params = Parameters(
+        {
+            "temp_0": fun.parameters["temp_0"],
+            "solve_ivp_kwargs": solve_ivp_kwargs,
+        }
+    )
+
+    # TODO: This is a temporary solution, should be better accessed
+    fun._parameters = params
 
     # Generate test points
     xx = fun.prob_input.get_sample(10)
@@ -33,32 +41,21 @@ def test_solve_ivp_kwargs(solve_ivp_kwargs):
     assert_call(fun, xx)
 
 
-@pytest.mark.parametrize("n_ts", [10, 20, 50])
-def test_parameter_nts(n_ts):
-    # Create an instance
-    fun = CoffeeCup()
-
-    # Modify the parameters
-    fun.parameters["n_ts"] = n_ts
-
-    # Generate test points
-    xx = fun.prob_input.get_sample(10)
-
-    # Evaluate the function
-    yy = fun(xx)
-
-    # Assertions
-    assert yy.shape[1] == n_ts
-    assert fun.output_dimension == n_ts
-
-
 @pytest.mark.parametrize("temp_0", [50.0, 60.0, 70.0])
 def test_parameter_temp0(temp_0):
     # Create an instance
     fun = CoffeeCup()
 
-    # Modify the parameter
-    fun.parameters["temp_0"] = temp_0
+    # Add the new parameter
+    params = Parameters(
+        {
+            "temp_0": temp_0,
+            "solve_ivp_kwargs": None,
+        }
+    )
+
+    # TODO: This is a temporary solution, should be better accessed
+    fun._parameters = params
 
     # Generate test points
     xx = fun.prob_input.get_sample(10)

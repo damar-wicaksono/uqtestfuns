@@ -23,67 +23,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["CircularPipeCrack"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Verma2015": {
-        "function_id": "CircularPipeCrack",
-        "description": (
-            "Input model for the circular pipe crack problem "
-            "from Verma et al. (2015)"
-        ),
-        "marginals": [
-            {
-                "name": "sigma_f",
-                "distribution": "normal",
-                "parameters": [301.079, 14.78],
-                "description": "flow stress [MNm]",
-            },
-            {
-                "name": "theta",
-                "distribution": "normal",
-                "parameters": [0.503, 0.049],
-                "description": "half crack angle [-]",
-            },
-        ],
-        "copulas": None,
-    },
-}
-
-AVAILABLE_PARAMETERS: FunParamSpecs = {
-    "Verman2016": {
-        "function_id": "CircularPipeCrack",
-        "description": (
-            "Parameter set for the circular pipe crack reliability problem "
-            "from Verma et al. (2016)"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "pipe_radius",
-                "value": 3.377e-1,
-                "type": float,
-                "description": "Radius of the pipe [m]",
-            },
-            {
-                "keyword": "pipe_thickness",
-                "value": 3.377e-2,
-                "type": float,
-                "description": "Thickness of the pipe [m]",
-            },
-            {
-                "keyword": "bending_moment",
-                "value": 3.0,
-                "type": float,
-                "description": "Applied bending moment [Nm]",
-            },
-        ],
-    },
-}
-
 
 def evaluate(
     xx: np.ndarray,
@@ -91,28 +30,25 @@ def evaluate(
     pipe_thickness: float,
     bending_moment: float,
 ) -> np.ndarray:
-    """Evaluate the circular pipe crack reliability on a set of input values.
+    """Evaluate the circular pipe crack problem on a set of input values.
 
     Parameters
     ----------
     xx : np.ndarray
-        A two-dimensional input values given by N-by-2 arrays
-        where N is the number of input values.
+        An ``(N, 2)`` array of input values,
+         where ``N`` is the number of input values.
     pipe_radius : float
-        The radius of the pipe in [m].
+        The radius of the pipe [m].
     pipe_thickness : float
-        The thickness of the pipe in [m].
+        The thickness of the pipe [m].
     bending_moment : float
-        The applied bending moment in [Nm].
+        The applied bending moment [MNm].
 
     Returns
     -------
     np.ndarray
-        The performance evaluation of the circular pipe reliability.
-        If negative, then the system is in failed state.
-        The output is a one-dimensional array of length N.
+        A one-dimensional array of length ``N``.
     """
-    # NOTE: Convert the flow stress from [MNm] to [Nm]
     yy = (
         4
         * pipe_thickness
@@ -123,16 +59,3 @@ def evaluate(
     )
 
     return yy
-
-
-class CircularPipeCrack(UQTestFunFixDimABC):
-    """A concrete implementation of the circular pipe crack problem."""
-
-    _tags = ["reliability"]
-    _description = (
-        "Circular pipe under bending moment from Verma et al. (2015)"
-    )
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = AVAILABLE_PARAMETERS
-
-    evaluate = staticmethod(evaluate)  # type: ignore

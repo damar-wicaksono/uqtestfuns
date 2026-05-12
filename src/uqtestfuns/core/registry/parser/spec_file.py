@@ -92,7 +92,7 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
             )
 
     # --- Output dimension (optional with default value)
-    output_dimension = dimensions.get("output_dimension", 1)
+    output_dimension = dimensions.get("output", 1)
 
     # --- File references
     spec_path = yaml_file.resolve()
@@ -130,7 +130,7 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
             )
 
         # -- Collect available parameter set IDs and their descriptions
-        keyword_descriptions = parameters.get("keywords", {})
+        keyword_descriptions = parameters.get("keyword_descriptions", {})
         available_parameter_ids = {
             k: v.get("description") for k, v in available_sets.items()
         }

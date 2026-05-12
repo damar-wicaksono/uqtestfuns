@@ -1,14 +1,11 @@
 """
-This module implements the cooling coffee cup model described in Tennøe (2018).
+Module with an implementation of the cooling coffee cup model.
 
 The cooling coffee cup model simulates the temperature evolution of a coffee
 cup as it cools to an ambient temperature by solving an initial value problem
-(using `solve_ivp()` from SciPy).
-As a UQ test function, the model is expressed as a two-dimensional,
-vector-valued function.
-
-The model was featured in [1] and [2] as an introductory example
-for metamodeling.
+using `solve_ivp()` from SciPy. As a UQ test function, the model is expressed
+as a two-dimensional, vector-valued function introduced in [1]
+as an introductory example for metamodeling (see also [2]).
 
 References
 ----------
@@ -26,75 +23,17 @@ References
 """
 
 import numpy as np
+
 from scipy.integrate import solve_ivp
+from typing import Any, Dict, Optional
 
-from uqtestfuns.core.custom_typing import (
-    MarginalSpecs,
-    FunParamSpecs,
-    ProbInputSpecs,
-)
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["CoffeeCup"]
-
-
-MARGINALS_TENNOEE2018: MarginalSpecs = [
-    {
-        "name": "kappa",
-        "distribution": "uniform",
-        "parameters": [0.025, 0.075],
-        "description": "Thermal conductivity of the cup",
-    },
-    {
-        "name": "temp_amb",
-        "distribution": "uniform",
-        "parameters": [15.0, 25.0],
-        "description": "Ambient temperature [degC]",
-    },
-]
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Tennoee2018": {
-        "function_id": "CoffeeCup",
-        "description": (
-            "Probabilistic input model for the cooling coffee cup model "
-            "from Tennøe et al. (2018)"
-        ),
-        "marginals": MARGINALS_TENNOEE2018,
-        "copulas": None,
-    },
-}
-
-
-AVAILABLE_PARAMETERS: FunParamSpecs = {
-    "Tennoee2018": {
-        "function_id": "CoffeeCup",
-        "description": (
-            "Parameter set for the cooling cup coffee cup model "
-            "Tennøe et al. (2018)"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "temp_0",
-                "value": 95.0,
-                "type": float,
-                "description": "Initial temperature [degC]",
-            },
-            {
-                "keyword": "t_e",
-                "value": 200.0,
-                "type": float,
-                "description": "End of transient [s]",
-            },
-            {
-                "keyword": "n_ts",
-                "value": 150,
-                "type": int,
-                "description": "Number of time steps",
-            },
-        ],
-    },
-}
+# --- Time grid parameters: fixed to ensure unambiguous output dimension
+# end of transient [s]
+_T_END = 200.0
+# number of time steps
+_N_TS = 150
+# evaluation time points
+_T_EVAL = np.linspace(0.0, _T_END, _N_TS)
 
 
 def fun_ivp(t: float, temp: float, kappa: float, temp_amb: float):
@@ -115,36 +54,36 @@ def fun_ivp(t: float, temp: float, kappa: float, temp_amb: float):
 
 
 def evaluate(
-    xx: np.ndarray, temp_0: float, t_e: float, n_ts: int, **kwargs
+    xx: np.ndarray,
+    temp_0: float,
+    solve_ivp_kwargs: Optional[Dict[str, Any]],
 ) -> np.ndarray:
     """Compute the temperature evolution of the cooling coffee cup.
 
     Parameters
     ----------
     xx : np.ndarray
-        A two-dimensional input values given by an N-by-2 array
-        where N is the number of input values.
+        An ``(N, 2)`` array of input values.
     temp_0 : float
-        The initial temperature of the coffee cup in degC.
-    t_e : float
-        The end of the transient in seconds.
-    n_ts : int
-        The number of time steps in the IVP solution.
-    kwargs : dict
-        The additional parameters as dictionary to be passed to `solve_ivp()`.
+        The initial temperature of the coffee cup [degC].
+    solve_ivp_kwargs : dict, optional
+        Additional keyword arguments passed to ``solve_ivp()``.
+        If ``None``, default solver settings are used.
 
     Returns
     -------
     np.ndarray
-        The output of the test function evaluated on the input values.
-        The output is a 2-dimensional array of shape (N, n_ts).
+        A two-dimensional array of shape ``(N, 150)`` containing the
+        temperature evolution at 150 evenly spaced time points over
+        200 seconds.
     """
 
     # Initialize the output
-    yy = np.empty((len(xx), n_ts))
+    yy = np.empty((len(xx), _N_TS))
 
     # Get solve_ivp kwargs
-    solve_ivp_kwargs = kwargs.get("solve_ivp", {})
+    if solve_ivp_kwargs is None:
+        solve_ivp_kwargs = {}
 
     for i in range(len(xx)):
 
@@ -155,9 +94,9 @@ def evaluate(
         # Solve the IVP
         sol = solve_ivp(
             fun_ivp,
-            t_span=(0.0, t_e),
+            t_span=(0.0, _T_END),
             y0=[temp_0],
-            t_eval=np.linspace(0.0, t_e, n_ts),
+            t_eval=_T_EVAL,
             args=(kappa, temp_amb),
             **solve_ivp_kwargs,
         )
@@ -165,14 +104,3 @@ def evaluate(
         yy[i, :] = sol.y[0]
 
     return yy
-
-
-class CoffeeCup(UQTestFunFixDimABC):
-    """Concrete implementation of the cooling coffee cup model."""
-
-    _tags = ["metamodeling"]
-    _description = "Cooling coffee cup model from Tennøe et al. (2018)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = AVAILABLE_PARAMETERS
-
-    evaluate = staticmethod(evaluate)  # type: ignore

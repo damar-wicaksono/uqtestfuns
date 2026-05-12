@@ -1,0 +1,32 @@
+name: CoffeeCup
+description: Cooling coffee cup model from Tennøe et al. (2018)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 150
+
+inputs:
+  Tennoee2018:
+    description: Probabilistic input model from Tennøe et al. (2018)
+    marginals:
+      - name: kappa
+        distribution: uniform
+        parameters: [0.025, 0.075]
+        description: Thermal conductivity of the cup
+      - name: temp_amb
+        distribution: uniform
+        parameters: [15.0, 25.0]
+        description: Ambient temperature [degC]
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    temp_0: Initial temperature [degC]
+    solve_ivp_kwargs: Additional keyword arguments passed to solve_ivp()
+  sets:
+    Tennoee2018:
+      temp_0: 95.0
+      solve_ivp_kwargs: null
+      description: Parameter set from Tennøe et al. (2018)

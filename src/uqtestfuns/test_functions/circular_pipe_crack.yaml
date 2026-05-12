@@ -1,0 +1,34 @@
+name: CircularPipeCrack
+description: Circular pipe crack reliability problem from Verma et al. (2015)
+tags:
+  - reliability
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Verma2015:
+    description: Probabilistic input model from Verma et al. (2015)
+    marginals:
+      - name: sigma_f
+        distribution: normal
+        parameters: [301.079, 14.78]
+        description: Flow stress [MPa]
+      - name: theta
+        distribution: normal
+        parameters: [0.503, 0.049]
+        description: Half crack angle [-]
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    pipe_radius: Radius of the pipe [m]
+    pipe_thickness: Thickness of the pipe [m]
+    bending_moment: Applied bending moment [MNm]
+  sets:
+    Verma2015:
+      pipe_radius: 0.3377
+      pipe_thickness: 0.03377
+      bending_moment: 3.0
+      description: Parameter set from Verma et al. (2015)

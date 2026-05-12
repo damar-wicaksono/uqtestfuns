@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:cantilever-beam-2d)=
-# Two-dimensional (2D) Cantilever Beam Reliability Problem
+# Two-Dimensional Cantilever Beam Reliability Problem from Rajashekhar and Ellingwood (1993)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,11 +21,13 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-
-The 2D cantilever beam problem is a reliability test function from
-{cite}`Rajashekhar1993`.
-This is an often revisited problem in reliability analysis
-(see, for instance, {cite}`Li2018`).
+The two-dimensional cantilever beam reliability problem (`CantileverBeam2D`)
+was introduced in {cite}`Rajashekhar1993`
+and has since been revisited in reliability analysis
+(see, for instance, {cite}`Schueremans2005, Li2018`).
+The problem consists of a cantilever beam with a rectangular cross-section
+subjected to a uniformly distributed loading,
+with the maximum deflection at the free end taken as the performance criterion.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour
@@ -37,8 +39,7 @@ overlaid.
 :tags: [remove-input]
 
 my_fun = uqtf.CantileverBeam2D()
-my_fun.prob_input.reset_rng(237324)
-xx = my_fun.prob_input.get_sample(1000000)
+xx = my_fun.prob_input.get_sample(1000000, 237324)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
 idx_pos = yy > 0.0
@@ -70,9 +71,9 @@ axs_0.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_0.set_xlabel("$X_1$", fontsize=18)
-axs_0.set_ylabel("$X_2$", fontsize=18)
-axs_0.set_zlabel("$g$", fontsize=18)
+axs_0.set_xlabel(r"$X_1$", fontsize=18)
+axs_0.set_ylabel(r"$X_2$", fontsize=18)
+axs_0.set_zlabel(r"$g$", fontsize=18)
 
 # Contour plot
 axs_1 = plt.subplot(132)
@@ -86,8 +87,8 @@ cf = axs_1.contour(
 )
 axs_1.set_xlim([lb_1, ub_1])
 axs_1.set_ylim([lb_2, ub_2])
-axs_1.set_xlabel("$x_1$", fontsize=18)
-axs_1.set_ylabel("$x_2$", fontsize=18)
+axs_1.set_xlabel(r"$x_1$", fontsize=18)
+axs_1.set_ylabel(r"$x_2$", fontsize=18)
 axs_1.tick_params(labelsize=16)
 axs_1.clabel(cf, inline=True, fontsize=18)
 
@@ -107,7 +108,7 @@ axs_2.scatter(
     color="#ca0020",
     marker=".",
     s=30,
-    label="$g(x) \leq 0$"
+    label=r"$g(x) \leq 0$"
 )
 axs_2.scatter(
     xx[idx_pos, 0],
@@ -115,12 +116,12 @@ axs_2.scatter(
     color="#0571b0",
     marker=".",
     s=30,
-    label="$g(x) > 0$"
+    label=r"$g(x) > 0$"
 )
 axs_2.set_xlim([lb_1, ub_1])
 axs_2.set_ylim([lb_2, ub_2])
-axs_2.set_xlabel("$x_1$", fontsize=18)
-axs_2.set_ylabel("$x_2$", fontsize=18)
+axs_2.set_xlabel(r"$x_1$", fontsize=18)
+axs_2.set_ylabel(r"$x_2$", fontsize=18)
 axs_2.tick_params(labelsize=16)
 axs_2.clabel(cf, inline=True, fontsize=18)
 axs_2.legend(fontsize=18, loc="upper right");
@@ -185,7 +186,7 @@ respectively.
 ## Probabilistic input
 
 Based on {cite}`Rajashekhar1993`, the probabilistic input model for
-the test function consists of two independent standard normal random variables
+the test function consists of two independent normal random variables
 (see the table below).
 
 ```{code-cell} ipython3
@@ -206,8 +207,8 @@ print(my_testfun.parameters)
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -264,7 +265,7 @@ plt.axvline(0, linewidth=1.0, color="#ca0020")
 
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 

@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:rs-quadratic)=
-# Quadratic RS Reliability Problem
+# Quadratic RS Reliability Problem from Waarts (2000)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,8 +21,9 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Quadratic RS reliability problem is a variant of the classic
-resistance-stress (RS) problem with one quadratic term {cite}`Waarts2000`.
+The quadratic RS reliability problem (`RSQuadratic`) is a variant
+of the classic resistance-stress (RS) reliability problem
+with one quadratic term, introduced in {cite}`Waarts2000`.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour

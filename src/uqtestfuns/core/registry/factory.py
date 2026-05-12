@@ -162,4 +162,5 @@ def _instantiate(
         parameters=parameters,
         name=info.name,
         description=info.description,
+        output_dimension=info.output_dimension,
     )
