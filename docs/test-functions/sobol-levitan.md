@@ -15,11 +15,13 @@ kernelspec:
 (test-functions:sobol-levitan)=
 # Sobol'-Levitan Function
 
-The Sobol'-Levitan function is an M-dimensional, scalar-valued function
-commonly used as a benchmark for sensitivity analysis.
-The function was introduced in {cite}`Sobol1999` (as a six- and 20-dimensional
-functions) and revisited in, for example, {cite}`Moon2012` (as a 20-dimensional
-function) and {cite}`Sun2022` (as a seven- and 15-dimensional functions).
+The `SobolLevitan` function is an $M$-dimensional scalar-valued function
+introduced in {cite}`Sobol1999` as six- and 20-dimensional benchmarks
+for sensitivity analysis, and later revisited in {cite}`Moon2012`
+and {cite}`Sun2022`.
+
+Its Sobol' sensitivity indices can be derived analytically as functions
+of the underlying parameter.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -53,8 +55,8 @@ fig = plt.figure(figsize=(15, 5))
 axs_1 = plt.subplot(131)
 axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
-axs_1.set_xlabel("$x$", fontsize=14)
-axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
+axs_1.set_xlabel(r"$x$", fontsize=14)
+axs_1.set_ylabel(r"$\mathcal{M}(x)$", fontsize=14)
 axs_1.set_title("1D Sobol'-Levitan")
 
 # Surface
@@ -68,9 +70,9 @@ axs_2.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_2.set_title("Surface plot of 2D Sobol'-Levitan", fontsize=14)
 
 # Contour
@@ -78,8 +80,8 @@ axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_3.set_xlabel("$x_1$", fontsize=14)
-axs_3.set_ylabel("$x_2$", fontsize=14)
+axs_3.set_xlabel(r"$x_1$", fontsize=14)
+axs_3.set_ylabel(r"$x_2$", fontsize=14)
 axs_3.set_title("Contour plot of 2D Sobol'-Levitan", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -92,10 +94,11 @@ plt.gcf().set_dpi(150);
 
 ## Test function instance
 
-To create a default instance of the Sobol'-Levitan function, type:
+To create an instance of the test function with, for example,
+six input dimensions, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolLevitan()
+my_testfun = uqtf.SobolLevitan(input_dimension=6)
 ```
 
 Check if it has been correctly instantiated:
@@ -104,18 +107,9 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the input dimension is set to $2$[^default_dimension].
-To create an instance with another value of input dimension,
-pass an integer to the parameter `input_dimension` (the first parameter).
-For example, to create an instance of the Sobol'-Levitan function
-in six dimensions, type:
-
-```{code-cell} ipython3
-my_testfun = uqtf.SobolLevitan(input_dimension=6)
-```
-
-In the subsequent section, the function will be illustrated
-using six dimensions as it originally appeared in {cite}`Sobol1999`.
+In the later sections, 
+the function will be illustrated using this six-dimensional instance
+as it appeared in {cite}`Sobol1999`.
 
 ## Description
 
@@ -138,24 +132,28 @@ defined below.
 
 ## Probabilistic input
 
-The probabilistic input model for the Sobol'-Levitan function consists of $M$
-independent uniform random variables in $[0.0, 1.0]^M$.
+Based on {cite}`Sobol1999`, the probabilistic input model for the function
+consists of $M$ independent uniform random variables over $[0,1]$:
 
-For the selected input dimension, the input model is shown below.
+$$
+X_m \sim \mathcal{U}(0,1), \quad m = 1, \ldots, M
+$$
+
+which for the current instance is shown below:
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+:tags: [hide-input, output_scroll]
 
 print(my_testfun.prob_input)
 ```
 
 ## Parameters
 
-The parameters of the Sobol'-Levitan function consists of the coefficients
+The parameters of the Sobol'-Levitan function consist of the coefficients
 $\boldsymbol{b}$ and the constant term $c_0$.
-The coefficients determine the importance of each input variables.
-The constant term, while influences the mean value of the function, does not
-alter the global sensitivity analysis.
+The coefficients determine the importance of each input variable.
+The constant term, while influences the mean value of the function,
+does not alter the global sensitivity analysis.
 
 The available parameters for the Sobol'-Levitan function are shown in the table
 below.
@@ -196,8 +194,8 @@ is reduced to $1.0$.
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -206,14 +204,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -265,12 +261,12 @@ of the estimates obtained from $50$ replications.
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5], dtype=int)
 mean_estimates = np.empty((len(sample_sizes), 50))
 var_estimates = np.empty((len(sample_sizes), 50))
-my_testfun.prob_input.reset_rng(42)
+
+rng = np.random.default_rng(42)
 
 for i, sample_size in enumerate(sample_sizes):
     for j in range(50):
-        xx_test = my_testfun.prob_input.get_sample(sample_size)
-        yy_test = my_testfun(xx_test)
+        yy_test = my_testfun.get_sample(sample_size, rng)
         mean_estimates[i, j] = np.mean(yy_test)
         var_estimates[i, j] = np.var(yy_test)
 
@@ -403,12 +399,12 @@ the original dimension as appeared in the corresponding literature.
 :::{tab-item} Sobol1999-1
 |  Input   |           $S_i$           |          $ST_i$          |
 |:--------:|:-------------------------:|:------------------------:|
-|  $X_1$   | $2.86993e \times 10^{-1}$ | $3.96179 \times 10^{-1}$ | 
-|  $X_2$   | $1.05712e \times 10^{-1}$ | $1.61558 \times 10^{-1}$ | 
-|  $X_3$   | $1.05712e \times 10^{-1}$ | $1.61558 \times 10^{-1}$ | 
-|  $X_4$   | $1.05712e \times 10^{-1}$ | $1.61558 \times 10^{-1}$ | 
-|  $X_5$   | $1.05712e \times 10^{-1}$ | $1.61558 \times 10^{-1}$ | 
-|  $X_6$   | $1.05712e \times 10^{-1}$ | $1.61558 \times 10^{-1}$ | 
+|  $X_1$   | $2.86993 \times 10^{-1}$  | $3.96179 \times 10^{-1}$ | 
+|  $X_2$   | $1.05712 \times 10^{-1}$  | $1.61558 \times 10^{-1}$ | 
+|  $X_3$   | $1.05712 \times 10^{-1}$  | $1.61558 \times 10^{-1}$ | 
+|  $X_4$   | $1.05712 \times 10^{-1}$  | $1.61558 \times 10^{-1}$ | 
+|  $X_5$   | $1.05712 \times 10^{-1}$  | $1.61558 \times 10^{-1}$ | 
+|  $X_6$   | $1.05712 \times 10^{-1}$  | $1.61558 \times 10^{-1}$ | 
 :::
 
 :::{tab-item} Sobol1999-2
@@ -479,6 +475,3 @@ $\boldsymbol{b}_{16 - 20} = \left( 0.0161, 0.0068, 0.0021, 0.0004, 0.0000 \right
 
 [^integral]: The expected value is the same as the integral over the domain
 because the input is uniform in a unit hypercube.
-
-[^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `input_dimension` argument is not given.

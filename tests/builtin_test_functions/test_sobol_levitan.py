@@ -10,15 +10,17 @@ Notes
 import numpy as np
 import pytest
 
-from uqtestfuns.test_functions import SobolLevitan
+from uqtestfuns import SobolLevitan, get_registry
 
-available_parameters = list(SobolLevitan.available_parameters.keys())
+available_parameters = list(
+    get_registry()["SobolLevitan"].available_parameters_ids.keys()
+)
 
 
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
-    with pytest.raises(KeyError):
-        SobolLevitan(parameters_id="marelli1")
+    with pytest.raises(ValueError):
+        _ = SobolLevitan(input_dimension=5, parameters_id="marelli1")
 
 
 @pytest.mark.parametrize("input_dimension", [1, 2, 3, 10, 21])
