@@ -14,7 +14,6 @@ from .genz import (
     GenzOscillatory,
     GenzProductPeak,
 )
-from .ishigami import Ishigami
 from .morris2006 import Morris2006
 from .robot_arm import RobotArm
 from .rosenbrock import Rosenbrock
@@ -42,7 +41,6 @@ __all__ = [
     "GenzGaussian",
     "GenzOscillatory",
     "GenzProductPeak",
-    "Ishigami",
     "Morris2006",
     "RobotArm",
     "Rosenbrock",
