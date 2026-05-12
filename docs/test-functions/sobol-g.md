@@ -15,17 +15,15 @@ kernelspec:
 (test-functions:sobol-g)=
 # Sobol'-G Function
 
-The Sobol'-G function is an $M$-dimensional scalar-valued function.
-It was introduced in {cite}`Bratley1992` for testing numerical integration
-algorithms (e.g., quasi-Monte-Carlo; see, for instance,
-{cite}`Radovic1996, Sobol1998`).
+The `SobolG` function is an $M$-dimensional scalar-valued function.
+It first appeared in {cite}`Bratley1992`
+for testing numerical integration algorithms using low-discrepancy sequences.
+Its current form and name come from {cite}`Saltelli1995`,
+where it was generalized by introducing a set of importance coefficients
+that control the relative influence of each input variable.
 
-The current form (and name) was from {cite}`Saltelli1995` and used in
-the context of global sensitivity analysis.
-There, the function was generalized by introducing a set of parameters
-that determines the importance of each input variable.
-Later on, it becomes a popular testing function for global sensitivity analysis
-methods; see, for instance, {cite}`Marrel2008, Marrel2009, Kucherenko2011, Sun2022`.
+It has since become a widely used benchmark for global sensitivity analysis
+{cite}`Marrel2008, Marrel2009, Kucherenko2011, Sun2022`.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -59,8 +57,8 @@ fig = plt.figure(figsize=(15, 5))
 axs_1 = plt.subplot(131)
 axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
-axs_1.set_xlabel("$x$", fontsize=14)
-axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
+axs_1.set_xlabel(r"$x$", fontsize=14)
+axs_1.set_ylabel(r"$\mathcal{M}(x)$", fontsize=14)
 axs_1.set_title("1D Sobol'-G")
 
 # Surface
@@ -74,9 +72,9 @@ axs_2.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_2.set_title("Surface plot of 2D Sobol'-G", fontsize=14)
 
 # Contour
@@ -84,8 +82,8 @@ axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_3.set_xlabel("$x_1$", fontsize=14)
-axs_3.set_ylabel("$x_2$", fontsize=14)
+axs_3.set_xlabel(r"$x_1$", fontsize=14)
+axs_3.set_ylabel(r"$x_2$", fontsize=14)
 axs_3.set_title("Contour plot of 2D Sobol'-G", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -98,10 +96,11 @@ plt.gcf().set_dpi(150);
 
 ## Test function instance
 
-To create a default instance of the Sobol'-G test function, type:
+To create an instance of the test function with, for example,
+six input dimensions, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolG()
+my_testfun = uqtf.SobolG(input_dimension=6)
 ```
 
 Check if it has been correctly instantiated:
@@ -110,18 +109,8 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the input dimension is set to $2$[^default_dimension].
-To create an instance with another value of input dimension,
-pass an integer to the parameter `input_dimension` (the first parameter).
-For example, to create an instance of the Sobol'-G function in six dimensions,
-type:
-
-```{code-cell} ipython3
-my_testfun = uqtf.SobolG(input_dimension=6)
-```
-
-In the subsequent section, the function will be illustrated
-using six dimensions.
+In the later sections, 
+the function will be illustrated using this six-dimensional instance.
 
 ## Description
 
@@ -136,12 +125,17 @@ and $\boldsymbol{a} = \{ a_1, \ldots, a_M \}$ are parameters of the function.
 
 ## Probabilistic input
 
-Based on {cite}`Sobol1998` the probabilistic input model for the Sobol'-G
-function consists of $M$ independent uniform random variables with the ranges
-shown in the table below.
+Based on {cite}`Sobol1998`, the probabilistic input model for the function
+consists of $M$ independent uniform random variables over $[0,1]$:
+
+$$
+X_m \sim \mathcal{U}(0,1), \quad m = 1, \ldots, M
+$$
+
+which for the current instance is shown below:
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+:tags: [hide-input, output_scroll]
 
 print(my_testfun.prob_input)
 ```
@@ -159,7 +153,7 @@ as shown in the table below.
 | No. |                             Value                             |          Keyword           |                             Source                             |                                             Remark                                             |  
 |:---:|:-------------------------------------------------------------:|:--------------------------:|:--------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|  
 |  1  |                   $a_1 = \ldots = a_M = 0$                    |      `Saltelli1995-1`      |  {cite}`Saltelli1995` (Example 1) (also {cite}`Bratley1992`)   |                           All input variables are equally important                            |  
-|  2  |  $a_1 = a_2 = 0$<br> $a_3 = 3$<br> $a_3 = \ldots = a_M = 9$   |      `Saltelli1995-2`      |                {cite}`Saltelli1995` (Example 2)                | The first two are important, the next is moderately important, and the rest is non-influential |  
+|  2  |  $a_1 = a_2 = 0$<br> $a_3 = 3$<br> $a_4 = \ldots = a_M = 9$   |      `Saltelli1995-2`      |                {cite}`Saltelli1995` (Example 2)                | The first two are important, the next is moderately important, and the rest is non-influential |  
 |  3  |        $a_m = \frac{m - 1}{2.0}$<br> $1 \leq m \leq M$        | `Saltelli1995-3` (default) | {cite}`Saltelli1995` (Example 3) (also {cite}`Crestaux2007`  ) |              The most important input is the first one, the least is the last one              |
 |  4  |                  $a_1 = \ldots = a_M = 0.01$                  |       `Sobol1998-1`        |                  {cite}`Sobol1998` (choice 1)                  |                   The supremum of the function grows exponentially at $2^M$                    |  
 |  5  |                  $a_1 = \ldots = a_M = 1.0$                   |       `Sobol1998-2`        |                  {cite}`Sobol1998` (choice 2)                  |                  The supremum of the function grows exponentially at  $1.5^M$                  |  
@@ -207,14 +201,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -240,22 +232,21 @@ Notice that the value of the variance depends on the choice of the parameter val
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes compared with the
 analytical values.
-The error bars corresponds to twice the standard deviation
+The error bars correspond to twice the standard deviation
 of the estimates obtained from $50$ replications.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6], dtype=int)
 mean_estimates = np.empty((len(sample_sizes), 50))
 var_estimates = np.empty((len(sample_sizes), 50))
 
 for i, sample_size in enumerate(sample_sizes):
     for j in range(50):
-        xx_test = my_testfun.prob_input.get_sample(sample_size)
-        yy_test = my_testfun(xx_test)
+        yy_test = my_testfun.get_sample(sample_size, rng)
         mean_estimates[i, j] = np.mean(yy_test)
         var_estimates[i, j] = np.var(yy_test)
 
@@ -324,7 +315,7 @@ plt.grid()
 fig.set_dpi(150)
 ```
 
-The tabulated results for each sample size is shown below.
+The tabulated results for each sample size are shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -397,6 +388,3 @@ tabulate(
 
 [^integral]: The expected value is the same as the integral over the domain
 because the input is uniform in a unit hypercube.
-
-[^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `input_dimension` argument is not given.

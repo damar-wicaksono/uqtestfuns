@@ -14,7 +14,6 @@ from .genz import (
     GenzProductPeak,
 )
 from .robot_arm import RobotArm
-from .sobol_g import SobolG
 from .sobol_g_star import SobolGStar
 from .sobol_levitan import SobolLevitan
 from .solar_cell import SolarCell
@@ -34,7 +33,6 @@ __all__ = [
     "GenzOscillatory",
     "GenzProductPeak",
     "RobotArm",
-    "SobolG",
     "SobolGStar",
     "SobolLevitan",
     "SolarCell",

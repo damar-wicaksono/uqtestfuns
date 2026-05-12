@@ -32,7 +32,14 @@ def assert_equal(f1: UQTestFun, f2: UQTestFun) -> None:
     assert f1.description == f2.description
     assert f1._evaluate == f2._evaluate
     assert f1.prob_input == f2.prob_input
-    assert f1.parameters == f2.parameters
+    f1_params = f1.parameters
+    f2_params = f2.parameters
+    if f1_params is not None and f2_params is not None:
+        for v_1, v_2 in zip(f1_params.values(), f2_params.values()):
+            if isinstance(v_1, np.ndarray) and isinstance(v_2, np.ndarray):
+                assert np.array_equal(v_1, v_2)
+            else:
+                assert v_1 == v_2
 
 
 @pytest.fixture(params=list(get_registry()))

@@ -10,15 +10,17 @@ Notes
 import numpy as np
 import pytest
 
-from uqtestfuns.test_functions import SobolG
+from uqtestfuns import SobolG, get_registry
 
-available_parameters = list(SobolG.available_parameters.keys())
+available_parameters = list(
+    get_registry()["SobolG"].available_parameters_ids.keys()
+)
 
 
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
-    with pytest.raises(KeyError):
-        SobolG(parameters_id="marelli1")
+    with pytest.raises(ValueError):
+        _ = SobolG(input_dimension=2, parameters_id="marelli1")
 
 
 # ATTENTION: some parameters choice (e.g., "sobol-1")
