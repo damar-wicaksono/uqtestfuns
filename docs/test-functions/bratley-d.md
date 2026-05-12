@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:bratley1992d)=
-# Bratley et al. (1992) D function
+(test-functions:bratley-d)=
+# Sum-of-Products Function from Bratley et al. (1992)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,24 +21,24 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Bratley et al. (1992) D function (or `Bratley1992d` function for short),
-is an $M$-dimensional scalar-valued function.
-The function was introduced in {cite}`Bratley1992` as a test function
-for multi-dimensional numerical integration using low discrepancy sequences.
-It was used in {cite}`Kucherenko2009` and {cite}`Saltelli2010` in the context
-of global sensitivity analysis; there the function is more commonly known as
-the $K$-function.
+The `BratleyD` function is an $M$-dimensional scalar-valued function
+defined as an alternating sum of nested products of its inputs.
+It was introduced in {cite}`Bratley1992` as a test function
+for multidimensional numerical integration using low-discrepancy sequences,
+and later used in {cite}`Kucherenko2009` and {cite}`Saltelli2010`
+for global sensitivity analysis,
+where it is more commonly known as the $K$-function.
 
 ```{note}
-There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
+There are three other test functions used in Bratley et al. {cite}`Bratley1992`:
 
-- {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`:
-  A product of an absolute function 
-- {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`:
-  A product of a trigonometric function
-- {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`:
+- {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`:
+  A product of an absolute function
+- {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`:
+  A product of cosines
+- {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`:
   A product of the Chebyshev polynomial of the first kind
-- {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`:
+- {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`:
   A sum of product (_this function_)
   
 This function was reintroduced by {cite}`Kucherenko2009` as a test function
@@ -55,15 +55,15 @@ are shown below.
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # --- Create 1D data
-my_bratley1992d_1d = uqtf.Bratley1992d(input_dimension=1)
+my_bratley_d_1d = uqtf.BratleyD(input_dimension=1)
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
-yy_1d = my_bratley1992d_1d(xx_1d)
+yy_1d = my_bratley_d_1d(xx_1d)
 
 # --- Create 2D data
-my_bratley1992d_2d = uqtf.Bratley1992d(input_dimension=2)
+my_bratley_d_2d = uqtf.BratleyD(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
-yy_2d = my_bratley1992d_2d(xx_2d)
+yy_2d = my_bratley_d_2d(xx_2d)
 
 # --- Create a series of plots
 fig = plt.figure(figsize=(15, 5))
@@ -72,9 +72,9 @@ fig = plt.figure(figsize=(15, 5))
 axs_1 = plt.subplot(131)
 axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
-axs_1.set_xlabel("$x$", fontsize=14)
-axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
-axs_1.set_title("1D Bratley1992d")
+axs_1.set_xlabel(r"$x$", fontsize=14)
+axs_1.set_ylabel(r"$\mathcal{M}(x)$", fontsize=14)
+axs_1.set_title("1D BratleyD")
 
 # Surface
 axs_2 = plt.subplot(132, projection='3d')
@@ -87,19 +87,19 @@ axs_2.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_2.set_title("Surface plot of 2D Bratley1992d", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_2.set_title("Surface plot of 2D BratleyD", fontsize=14)
 
 # Contour
 axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_3.set_xlabel("$x_1$", fontsize=14)
-axs_3.set_ylabel("$x_2$", fontsize=14)
-axs_3.set_title("Contour plot of 2D Bratley1992d", fontsize=14)
+axs_3.set_xlabel(r"$x_1$", fontsize=14)
+axs_3.set_ylabel(r"$x_2$", fontsize=14)
+axs_3.set_title("Contour plot of 2D BratleyD", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -108,13 +108,13 @@ axs_3.axis('scaled')
 fig.tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
-
 ## Test function instance
 
-To create a default instance of the test function:
+To create an instance of the test function with, for example,
+six input dimensions, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Bratley1992d()
+my_testfun = uqtf.BratleyD(input_dimension=6)
 ```
 
 Check if it has been correctly instantiated:
@@ -123,22 +123,15 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the input dimension is set to $2$[^default_dimension].
-To create an instance with another value of input dimension,
-pass an integer to the parameter `input_dimension` (keyword only).
-For example, to create an instance of 10-dimensional `Bratley1992d` function,
-type:
-
-```{code-cell} ipython3
-my_testfun = uqtf.Bratley1992d(input_dimension=10)
-```
+In the later sections, 
+the function will be illustrated using this six-dimensional instance.
 
 ## Description
 
-The `Bratley1992d` function is defined as follows[^location]:
+The `BratleyD` function is defined as follows[^location]:
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \sum_{m = 1}^{M} (-1)^m \prod_{i = 1}^{m} x_m,
+\mathcal{M}(\boldsymbol{x}) = \sum_{m = 1}^{M} (-1)^m \prod_{i = 1}^{m} x_i,
 $$
 
 where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$
@@ -146,25 +139,25 @@ is the $M$-dimensional vector of input variables further defined below.
 
 ## Probabilistic input
 
-Based on {cite}`Bratley1992`, the test function is integrated over the 
-hypercube domain of $[0, 1]^M$. This specification was adopted in
-the application of the function as global sensitivity analysis test functions
-(see {cite}`Kucherenko2009, Saltelli2010`).
+Based on {cite}`Bratley1992`, the probabilistic input model for the function
+consists of $M$ independent uniform random variables over $[0,1]$:
 
-Such an input specification can be modeled using an $M$ independent uniform
-random variables as shown in the table below.
+$$
+X_m \sim \mathcal{U}(0,1), \quad m = 1, \ldots, M
+$$
 
-| No.       |  Name    |  Distribution | Parameters | Description |
-|:---------:|:--------:|:-------------:|:----------:|:-----------:|
-|  1        | $x_1$    | uniform       | [0.0 1.0]  |     N/A     |
-|  $\vdots$ | $\vdots$ | $\vdots$      | $\vdots$   |  $\vdots$   |
-|  M        | $x_M$    | uniform       | [0.0 1.0]  |     N/A     |
+which for the current instance is shown below:
 
+```{code-cell} ipython3
+:tags: [hide-input, output_scroll]
+
+print(my_testfun.prob_input)
+```
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Definite integration
 
@@ -231,6 +224,3 @@ where:
 
 [^location]: see Section 5.1, p. 207 (test function no. 4)
 in {cite}`Bratley1992`.
-
-[^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `input_dimension` argument is not given.

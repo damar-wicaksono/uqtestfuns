@@ -25,10 +25,10 @@ regardless of their typical applications.
 |        ``Alemazkoor2D``         |        2        |              {ref}`Alemazkoor and Meidani (2018) 2D <test-functions:alemazkoor-2d>`              |
 |        ``Alemazkoor20D``        |       20        |             {ref}`Alemazkoor and Meidani (2018) 20D <test-functions:alemazkoor-20d>`             |
 |          ``Borehole``           |        8        |                            {ref}`Borehole <test-functions:borehole>`                             |
-|        ``Bratley1992a``         |        M        |                   {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`                   |
-|        ``Bratley1992b``         |        M        |                   {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`                   |
-|        ``Bratley1992c``         |        M        |                   {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`                   |
-|        ``Bratley1992d``         |        M        |                   {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`                   |
+|        ``Bratley1992a``         |        M        |                    {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`                     |
+|        ``Bratley1992b``         |        M        |                    {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`                     |
+|        ``Bratley1992c``         |        M        |                    {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`                     |
+|        ``Bratley1992d``         |        M        |                    {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`                     |
 |      ``CantileverBeam2D``       |        2        | {ref}` Rajashekhar and Ellingwood (1993) Cantilever Beam 2D <test-functions:cantilever-beam-2d>` |
 |           ``Cheng2D``           |        2        |                    {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`                     |
 |      ``CircularPipeCrack``      |        2        |       {ref}`Verma et al. (2015) Circular Pipe Crack <test-functions:circular-pipe-crack>`        |
@@ -77,7 +77,7 @@ regardless of their typical applications.
 |          ``McLainS4``           |        2        |                        {ref}`McLain (1974) S4 <test-functions:mclain-s4>`                        |
 |          ``McLainS5``           |        2        |                        {ref}`McLain (1974) S5 <test-functions:mclain-s5>`                        |
 |           ``Moon3D``            |        3        |                          {ref}`Moon (2010) 3D <test-functions:moon3d>`                           |
-|         ``Morris2006``          |        M        |                     {ref}`Morris et al. (2006) <test-functions:morris2006>`                      |
+|           ``MorrisM``           |        M        |                    {ref}`Morris et al. (2006) M <test-functions:morris2006>`                     |
 |          ``Oakley1D``           |        1        |                  {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`                  |
 |         ``OTLCircuit``          |        6        |           {ref}`Ben-Ari and Steinberg (2007) OTL Circuit <test-functions:otl-circuit>`           |
 |        ``OTLCircuit20D``        |       20        |               {ref}`Moon (2010) OTL Circuit 20D <test-functions:otl-circuit-20d>`                |
@@ -85,10 +85,10 @@ regardless of their typical applications.
 |          ``Piston20D``          |       20        |                      {ref}`Moon (2010) Piston 20D <test-functions:piston>`                       |
 |         ``Portfolio3D``         |        3        |             {ref}`Saltelli et al. (2004) Portfolio 3D <test-functions:portfolio-3d>`             |
 |          ``RobotArm``           |        8        |                           {ref}`Robot Arm <test-functions:robot-arm>`                            |
-|         ``Rosenbrock``          |        M        |                          {ref}`Rosenbrock <test-functions:rosenbrock>`                           |
+|         ``Rosenbrock``          |        M        |                       {ref}`Rosenbrock (1960) <test-functions:rosenbrock>`                       |
 |        ``RSCircularBar``        |        2        |           {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`            |
 |         ``RSQuadratic``         |        2        |                 {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                  |
-|       ``SaltelliLinear``        |        M        |                      {ref}`SaltelliLinear <test-functions:saltelli-linear>`                      |
+|       ``SaltelliLinear``        |        M        |              {ref}`Saltelli et al. (2008) Linear <test-functions:saltelli-linear>`               |
 |           ``SobolG``            |        M        |                             {ref}`Sobol'-G <test-functions:sobol-g>`                             |
 |         ``SobolGStar``          |        M        |                          {ref}`Sobol'-G* <test-functions:sobol-g-star>`                          |
 |        ``SobolLevitan``         |        M        |                       {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                       |

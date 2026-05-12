@@ -44,14 +44,14 @@ parts:
             title: Alemazkoor & Meidani (2018) 20D
           - file: test-functions/borehole
             title: Borehole
-          - file: test-functions/bratley1992a
-            title: Bratley et al. (1992) A
-          - file: test-functions/bratley1992b
-            title: Bratley et al. (1992) B
-          - file: test-functions/bratley1992c
-            title: Bratley et al. (1992) C
-          - file: test-functions/bratley1992d
-            title: Bratley et al. (1992) D
+          - file: test-functions/bratley-a
+            title: Bratley A
+          - file: test-functions/bratley-b
+            title: Bratley B
+          - file: test-functions/bratley-c
+            title: Bratley C
+          - file: test-functions/bratley-d
+            title: Bratley D
           - file: test-functions/cantilever-beam-2d
             title: Cantilever Beam 2D
           - file: test-functions/cheng2d
@@ -146,8 +146,8 @@ parts:
             title: McLain S5
           - file: test-functions/moon-3d
             title: Moon 3D
-          - file: test-functions/morris2006
-            title: Morris et al. (2006)
+          - file: test-functions/morris-m
+            title: Morris M
           - file: test-functions/oakley-1d
             title: Oakley 1D
           - file: test-functions/otl-circuit

@@ -3,7 +3,6 @@ The init for the 'test_functions' subpackage of UQTestFuns.
 """
 
 from .ackley import Ackley
-from .bratley1992 import Bratley1992a, Bratley1992b, Bratley1992c, Bratley1992d
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
 from .four_branch import FourBranch
 from .genz import (
@@ -14,10 +13,7 @@ from .genz import (
     GenzOscillatory,
     GenzProductPeak,
 )
-from .morris2006 import Morris2006
 from .robot_arm import RobotArm
-from .rosenbrock import Rosenbrock
-from .saltelli_linear import SaltelliLinear
 from .sobol_g import SobolG
 from .sobol_g_star import SobolGStar
 from .sobol_levitan import SobolLevitan
@@ -28,10 +24,6 @@ from .sulfur import Sulfur
 # NOTE: Import the new test function implementation class from its respective
 __all__ = [
     "Ackley",
-    "Bratley1992a",
-    "Bratley1992b",
-    "Bratley1992c",
-    "Bratley1992d",
     "DampedOscillator",
     "DampedOscillatorReliability",
     "FourBranch",
@@ -41,10 +33,7 @@ __all__ = [
     "GenzGaussian",
     "GenzOscillatory",
     "GenzProductPeak",
-    "Morris2006",
     "RobotArm",
-    "Rosenbrock",
-    "SaltelliLinear",
     "SobolG",
     "SobolGStar",
     "SobolLevitan",

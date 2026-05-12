@@ -13,16 +13,22 @@ kernelspec:
 ---
 
 (test-functions:saltelli-linear)=
-# Saltelli Linear Function
+# Linear Function from Saltelli et al. (2008)
 
-The Saltelli Linear function is an $M$-dimensional scalar-valued function.
-It was introduced in {cite}`Saltelli2008` for illustrating sensitivity
-analysis methods.
-It is later used in {cite}`Sun2022` for benchmarking various sensitivity
-analysis methods.
+The Saltelli linear function (`SaltelliLinear`) is an $M$-dimensional
+scalar-valued function defined as the unweighted sum of its inputs.
+Due to its simple structure, its moments and Sobol' sensitivity indices
+can be computed analytically.
 
-Due to its simple form, the moments and Sobol' sensitivity indices may be
-computed analytically.
+Its probabilistic input model assigns each variable
+an index-scaled uniform range, i.e., the higher the index,
+the wider the spread.
+The resulting Sobol' sensitivity indices are therefore
+distinct across variables. 
+
+The function was introduced in {cite}`Saltelli2008`
+to illustrate sensitivity analysis methods
+and later used in {cite}`Sun2022` for benchmarking.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -30,8 +36,8 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The plots for one-dimensional and two-dimensional Sobol'-G function can be seen
-below.
+The plots for one-dimensional and two-dimensional Saltelli linear function
+can be seen below.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
@@ -64,8 +70,8 @@ fig = plt.figure(figsize=(15, 5))
 axs_1 = plt.subplot(131)
 axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
-axs_1.set_xlabel("$x$", fontsize=14)
-axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
+axs_1.set_xlabel(r"$x$", fontsize=14)
+axs_1.set_ylabel(r"$\mathcal{M}(x)$", fontsize=14)
 axs_1.set_title("1D Saltelli Linear")
 
 # Surface
@@ -79,9 +85,9 @@ axs_2.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_2.set_title("Surface plot of 2D Saltelli Linear", fontsize=14)
 
 # Contour
@@ -102,10 +108,11 @@ plt.gcf().set_dpi(150);
 
 ## Test function instance
 
-To create a default instance of the test function, type:
+To create an instance of the test function with, for example,
+six input dimensions, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SaltelliLinear()
+my_testfun = uqtf.SaltelliLinear(input_dimension=6)
 ```
 
 Check if it has been correctly instantiated:
@@ -114,18 +121,8 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the input dimension is set to $2$[^default_dimension].
-To create an instance with another value of input dimension,
-pass an integer to the parameter `input_dimension` (the first parameter).
-For example, to create an instance of the Saltelli Linear function
-in six dimensions, type:
-
-```{code-cell} ipython3
-my_testfun = uqtf.SaltelliLinear(input_dimension=6)
-```
-
-In the subsequent section, the function will be illustrated
-using six dimensions.
+In the later sections, 
+the function will be illustrated using this six-dimensional instance.
 
 ## Description
 
@@ -145,12 +142,12 @@ consists of $M$ independent uniform random variables with the following ranges:
 $$
 X_i \sim \mathcal{U}[x_{o, i} - \sigma_{o, i}, x_{o, i} + \sigma_{o, i}], \; i = 1, \ldots, M,
 $$
-where $x_{o, i} = 3^{i - 1}$ and $\sigma_{o, i} = 0.5 * x_{o, i}$.
+where $x_{o, i} = 3^{i - 1}$ and $\sigma_{o, i} = 0.5 x_{o, i}$.
 Notice that the higher the variable index, the larger its uncertainty both
 in absolute sense (i.e., the standard deviation is larger)
 and in relative sense (i.e., the coefficient of variation is larger).
 
-For the six-variable model, the ranges are shown below.
+For the current instance, the ranges are shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -158,11 +155,10 @@ For the six-variable model, the ranges are shown below.
 print(my_testfun.prob_input)
 ```
 
-
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -171,27 +167,26 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-my_testfun.prob_input.reset_rng(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
 ### Moments estimation
 
-The mean and variance of the Sobol'-G function can be computed analytically.
+The mean and variance of the Saltelli linear function can be computed
+analytically.
 
 The mean is given as follows:
 
 $$
 \mathbb{E}[Y] = \sum_{i = 1}^M \mathbb{E}[X_i] = \sum_{i = 1}^M x_{o, i},
 $$
-where $x_{o, i} = 3^{i - 1}, i = 1, \ldots, M$.
+where $x_{o, i} = 3^{i - 1}, i = 1, \ldots, M$[^integral].
 
 The variance is given as follows:
 
@@ -234,9 +229,9 @@ tabulate(
 )
 ```
 
-Shown below is the convergence of a direct Monte-Carlo estimation of
-the output mean and variance with increasing sample sizes compared with the
-analytical values.
+The figure below shows how the Monte Carlo estimates of the output mean
+and variance converge toward their analytical values
+as the sample size increases.
 The error bars correspond to twice the standard deviation
 of the estimates obtained from $50$ replications.
 
@@ -244,15 +239,14 @@ of the estimates obtained from $50$ replications.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-my_testfun.prob_input.reset_rng(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6], dtype=int)
 mean_estimates = np.empty((len(sample_sizes), 50))
 var_estimates = np.empty((len(sample_sizes), 50))
 
 for i, sample_size in enumerate(sample_sizes):
     for j in range(50):
-        xx_test = my_testfun.prob_input.get_sample(sample_size)
-        yy_test = my_testfun(xx_test)
+        yy_test = my_testfun.prob_input.get_sample(sample_size, rng=rng)
         mean_estimates[i, j] = np.mean(yy_test)
         var_estimates[i, j] = np.var(yy_test)
 
@@ -396,7 +390,7 @@ Since there is no interaction effect present in the model, the total-effect
 indices are equal to the main-effect indices.
 
 Some example values of the main-effect indices for the linear function 
-up to dimension $6$ is shown in the table below.
+up to dimension $6$ are shown in the table below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -450,6 +444,3 @@ tabulate(
 
 [^integral]: The expected value is the same as the integral over the domain
 because the input is uniform in a unit hypercube.
-
-[^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `input_dimension` argument is not given.
