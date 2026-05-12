@@ -146,8 +146,8 @@ parts:
             title: McLain S5
           - file: test-functions/moon-3d
             title: Moon 3D
-          - file: test-functions/morris2006
-            title: Morris et al. (2006)
+          - file: test-functions/morris-m
+            title: Morris M
           - file: test-functions/oakley-1d
             title: Oakley 1D
           - file: test-functions/otl-circuit

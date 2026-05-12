@@ -77,7 +77,7 @@ regardless of their typical applications.
 |          ``McLainS4``           |        2        |                        {ref}`McLain (1974) S4 <test-functions:mclain-s4>`                        |
 |          ``McLainS5``           |        2        |                        {ref}`McLain (1974) S5 <test-functions:mclain-s5>`                        |
 |           ``Moon3D``            |        3        |                          {ref}`Moon (2010) 3D <test-functions:moon3d>`                           |
-|         ``Morris2006``          |        M        |                     {ref}`Morris et al. (2006) <test-functions:morris2006>`                      |
+|           ``MorrisM``           |        M        |                    {ref}`Morris et al. (2006) M <test-functions:morris2006>`                     |
 |          ``Oakley1D``           |        1        |                  {ref}`Oakley and O'Hagan (2002) 1D <test-functions:oakley-1d>`                  |
 |         ``OTLCircuit``          |        6        |           {ref}`Ben-Ari and Steinberg (2007) OTL Circuit <test-functions:otl-circuit>`           |
 |        ``OTLCircuit20D``        |       20        |               {ref}`Moon (2010) OTL Circuit 20D <test-functions:otl-circuit-20d>`                |

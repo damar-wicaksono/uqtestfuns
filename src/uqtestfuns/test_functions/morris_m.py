@@ -3,8 +3,8 @@ This module implements the Morris function from Morris et al. (2006).
 
 The Morris function is an M-dimensional, scalar-valued function commonly used
 as a test function for sensitivity analysis.
-It was first appeared in [1] and it has been revisited multiple times in the
-literature in similar contexts, e.g., [2], [3].
+It first appeared in [1], and has been revisited multiple times
+in the literature in similar contexts, e.g., [2], [3].
 
 The function features a parameter that dictates the number of important
 input variables. The remaining input variables are inert. Furthermore,
@@ -79,22 +79,21 @@ AVAILABLE_PARAMETERS: FunParamSpecs = {
 
 
 def evaluate(xx: np.ndarray, p: int) -> np.ndarray:
-    """Evaluate the Morris2006 test function.
+    """Evaluate the Morris et al. (2006) function on a set of input values.
 
     Parameters
     ----------
     xx : np.ndarray
-        M-Dimensional input values given by an N-by-M array where
-        N is the number of input values.
+        An ``(N, M)`` array of input values where ``N`` is the number of
+        evaluation points and ``M`` is the input dimension.
     p : int
-        The number of important input variables. If p > M then p is set
-        equal to M.
+        The number of important input variables. If ``p > M``, all input
+        variables are treated as important.
 
     Returns
     -------
     np.ndarray
-        The output of the test function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
+        A one-dimensional array of length ``N`` containing the function output.
     """
     input_dim = xx.shape[1]
     if p > input_dim:

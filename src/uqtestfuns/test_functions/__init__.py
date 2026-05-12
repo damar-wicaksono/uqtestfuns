@@ -13,7 +13,6 @@ from .genz import (
     GenzOscillatory,
     GenzProductPeak,
 )
-from .morris2006 import Morris2006
 from .robot_arm import RobotArm
 from .sobol_g import SobolG
 from .sobol_g_star import SobolGStar
@@ -34,7 +33,6 @@ __all__ = [
     "GenzGaussian",
     "GenzOscillatory",
     "GenzProductPeak",
-    "Morris2006",
     "RobotArm",
     "SobolG",
     "SobolGStar",
