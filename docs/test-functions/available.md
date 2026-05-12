@@ -86,8 +86,8 @@ regardless of their typical applications.
 |         ``Portfolio3D``         |        3        |             {ref}`Saltelli et al. (2004) Portfolio 3D <test-functions:portfolio-3d>`             |
 |          ``RobotArm``           |        8        |                           {ref}`Robot Arm <test-functions:robot-arm>`                            |
 |         ``Rosenbrock``          |        M        |                          {ref}`Rosenbrock <test-functions:rosenbrock>`                           |
-|        ``RSCircularBar``        |        2        |                    {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`                     |
-|         ``RSQuadratic``         |        2        |                       {ref}`RS - Quadratic <test-functions:rs-quadratic>`                        |
+|        ``RSCircularBar``        |        2        |           {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`            |
+|         ``RSQuadratic``         |        2        |                 {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                  |
 |       ``SaltelliLinear``        |        M        |                      {ref}`SaltelliLinear <test-functions:saltelli-linear>`                      |
 |           ``SobolG``            |        M        |                             {ref}`Sobol'-G <test-functions:sobol-g>`                             |
 |         ``SobolGStar``          |        M        |                          {ref}`Sobol'-G* <test-functions:sobol-g-star>`                          |
