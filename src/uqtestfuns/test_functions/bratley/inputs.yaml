@@ -1,0 +1,8 @@
+Bratley1992:
+  description: >-
+    Independent uniform random variables from Bratley et al. (1992)
+  marginals:
+    distribution: uniform
+    parameters: [0.0, 1.0]
+    name: X_$idx
+  copulas: null

@@ -3,7 +3,6 @@ The init for the 'test_functions' subpackage of UQTestFuns.
 """
 
 from .ackley import Ackley
-from .bratley1992 import Bratley1992a, Bratley1992b, Bratley1992c, Bratley1992d
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
 from .four_branch import FourBranch
 from .genz import (
@@ -26,10 +25,6 @@ from .sulfur import Sulfur
 # NOTE: Import the new test function implementation class from its respective
 __all__ = [
     "Ackley",
-    "Bratley1992a",
-    "Bratley1992b",
-    "Bratley1992c",
-    "Bratley1992d",
     "DampedOscillator",
     "DampedOscillatorReliability",
     "FourBranch",

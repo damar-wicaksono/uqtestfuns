@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:bratley1992b)=
-# Bratley et al. (1992) B function
+(test-functions:bratley-b)=
+# Product-of-Cosines Function from Bratley et al. (1992)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,25 +21,25 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Bratley et al. (1992) B function (or `Bratley1992b` function for short),
-is an $M$-dimensional scalar-valued function.
-The function was introduced in {cite}`Bratley1992` as a test function
-for multi-dimensional numerical integration using low discrepancy sequences.
+The `BratleyB` function maps an M-dimensional input to a scalar output
+by multiplying cosine terms, each weighted by its corresponding index.
+It was introduced in {cite}`Bratley1992` as a test function
+for multidimensional numerical integration using low-discrepancy sequences.
 
 ```{note}
 There are four other test functions used in Bratley et al. {cite}`Bratley1992`:
 
-- {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`:
+- {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`:
   A product of an absolute function 
-- {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`:
-  A product of a trigonometric function (_this function_)
-- {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`:
+- {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`:
+  A product of cosines (_this function_)
+- {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`:
   A product of the Chebyshev polynomial of the first kind
-- {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`:
+- {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`:
   A sum of product
 ```
 
-The plots for one-dimensional and two-dimensional `Bratley1992b` functions
+The plots for one-dimensional and two-dimensional `BratleyB` functions
 are shown below.
 
 ```{code-cell} ipython3
@@ -48,15 +48,15 @@ are shown below.
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # --- Create 1D data
-my_bratley1992b_1d = uqtf.Bratley1992b(input_dimension=1)
+my_bratley_b_1d = uqtf.BratleyB(input_dimension=1)
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
-yy_1d = my_bratley1992b_1d(xx_1d)
+yy_1d = my_bratley_b_1d(xx_1d)
 
 # --- Create 2D data
-my_bratley1992b_2d = uqtf.Bratley1992b(input_dimension=2)
+my_bratley_b_2d = uqtf.BratleyB(input_dimension=2)
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
-yy_2d = my_bratley1992b_2d(xx_2d)
+yy_2d = my_bratley_b_2d(xx_2d)
 
 # --- Create a series of plots
 fig = plt.figure(figsize=(15, 5))
@@ -65,9 +65,9 @@ fig = plt.figure(figsize=(15, 5))
 axs_1 = plt.subplot(131)
 axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
-axs_1.set_xlabel("$x$", fontsize=14)
-axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
-axs_1.set_title("1D Bratley1992b")
+axs_1.set_xlabel(r"$x$", fontsize=14)
+axs_1.set_ylabel(r"$\mathcal{M}(x)$", fontsize=14)
+axs_1.set_title("1D BratleyB")
 
 # Surface
 axs_2 = plt.subplot(132, projection='3d')
@@ -80,19 +80,19 @@ axs_2.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
-axs_2.set_title("Surface plot of 2D Bratley1992b", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_2.set_title("Surface plot of 2D BratleyB", fontsize=14)
 
 # Contour
 axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_3.set_xlabel("$x_1$", fontsize=14)
-axs_3.set_ylabel("$x_2$", fontsize=14)
-axs_3.set_title("Contour plot of 2D Bratley1992b", fontsize=14)
+axs_3.set_xlabel(r"$x_1$", fontsize=14)
+axs_3.set_ylabel(r"$x_2$", fontsize=14)
+axs_3.set_title("Contour plot of 2D BratleyB", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
 fig.colorbar(cf, cax=cax, orientation='vertical')
@@ -104,10 +104,11 @@ plt.gcf().set_dpi(150);
 
 ## Test function instance
 
-To create a default instance of the test function:
+To create an instance of the test function with, for example,
+six input dimensions, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.Bratley1992b()
+my_testfun = uqtf.BratleyB(input_dimension=6)
 ```
 
 Check if it has been correctly instantiated:
@@ -116,19 +117,12 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the input dimension is set to $2$[^default_dimension].
-To create an instance with another value of input dimension,
-pass an integer to the parameter `input_dimension` (keyword only).
-For example, to create an instance of 10-dimensional `Bratley1992b` function,
-type:
-
-```{code-cell} ipython3
-my_testfun = uqtf.Bratley1992b(input_dimension=10)
-```
+In the later sections, 
+the function will be illustrated using this six-dimensional instance.
 
 ## Description
 
-The `Bratley1992b` function is defined as follows[^location]:
+The `BratleyB` function is defined as follows[^location]:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^{M} m \cos{(m x_m)},
@@ -139,22 +133,25 @@ is the $M$-dimensional vector of input variables further defined below.
 
 ## Probabilistic input
 
-Based on {cite}`Bratley1992`, the test function is integrated over the 
-hypercube domain of $[0, 1]^M$.
-Such an input specification can be modeled using an $M$ independent uniform
-random variables as shown in the table below.
+Based on {cite}`Bratley1992`, the probabilistic input model for the function
+consists of $M$ independent uniform random variables over $[0,1]$:
 
-| No.       |  Name    |  Distribution | Parameters | Description |
-|:---------:|:--------:|:-------------:|:----------:|:-----------:|
-|  1        | $x_1$    | uniform       | [0.0 1.0]  |     N/A     |
-|  $\vdots$ | $\vdots$ | $\vdots$      | $\vdots$   |  $\vdots$   |
-|  M        | $x_M$    | uniform       | [0.0 1.0]  |     N/A     |
+$$
+X_m \sim \mathcal{U}(0,1), \quad m = 1, \ldots, M
+$$
 
+which for the current instance is shown below:
+
+```{code-cell} ipython3
+:tags: [hide-input, output_scroll]
+
+print(my_testfun.prob_input)
+```
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Definite integration
 
@@ -168,7 +165,7 @@ $$
 The table below shows the numerical values of the integral
 for several selected dimensions.
 
-| Dimension |      $I[\mathcal{M}]$       |
+| Dimension |  $\mathbb{V}[\mathcal{M}]$  |
 |:---------:|:---------------------------:|
 |     1     | $8.4147098 \times 10^{-1}$  |
 |     2     | $7.6514740 \times 10^{-1}$  |
@@ -181,7 +178,7 @@ for several selected dimensions.
 |     9     | $-5.8652056 \times 10^{-3}$ |
 |    10     | $3.1907957 \times 10^{-3}$  |
 
-The absolute value of the integral is monotonically decreasing function
+The absolute value of the integral is a monotonically decreasing function
 of the number of dimensions. Asymptotically, it is zero.
 In the original paper of Bratley {cite}`Bratley1992`, the integration was
 carried out for the function in dimension eight.
@@ -236,6 +233,3 @@ for a very large dimension.
 
 [^location]: see Section 5.1, p. 207 (test function no. 2)
 in {cite}`Bratley1992`.
-
-[^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `input_dimension` argument is not given.

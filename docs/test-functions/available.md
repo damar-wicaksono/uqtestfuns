@@ -25,10 +25,10 @@ regardless of their typical applications.
 |        ``Alemazkoor2D``         |        2        |              {ref}`Alemazkoor and Meidani (2018) 2D <test-functions:alemazkoor-2d>`              |
 |        ``Alemazkoor20D``        |       20        |             {ref}`Alemazkoor and Meidani (2018) 20D <test-functions:alemazkoor-20d>`             |
 |          ``Borehole``           |        8        |                            {ref}`Borehole <test-functions:borehole>`                             |
-|        ``Bratley1992a``         |        M        |                   {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`                   |
-|        ``Bratley1992b``         |        M        |                   {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`                   |
-|        ``Bratley1992c``         |        M        |                   {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`                   |
-|        ``Bratley1992d``         |        M        |                   {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`                   |
+|        ``Bratley1992a``         |        M        |                    {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`                     |
+|        ``Bratley1992b``         |        M        |                    {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`                     |
+|        ``Bratley1992c``         |        M        |                    {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`                     |
+|        ``Bratley1992d``         |        M        |                    {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`                     |
 |      ``CantileverBeam2D``       |        2        | {ref}` Rajashekhar and Ellingwood (1993) Cantilever Beam 2D <test-functions:cantilever-beam-2d>` |
 |           ``Cheng2D``           |        2        |                    {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`                     |
 |      ``CircularPipeCrack``      |        2        |       {ref}`Verma et al. (2015) Circular Pipe Crack <test-functions:circular-pipe-crack>`        |
