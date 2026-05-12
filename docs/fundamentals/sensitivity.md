@@ -21,10 +21,10 @@ in the comparison of sensitivity analysis methods.
 |                                              Name                                              | Input Dimension |       Constructor       |
 |:----------------------------------------------------------------------------------------------:|:---------------:|:-----------------------:|
 |                           {ref}`Borehole <test-functions:borehole>`                            |        8        |      `Borehole()`       |
-|                  {ref}`Bratley et al. (1992) A <test-functions:bratley1992a>`                  |        M        |    `Bratley1992a()`     |
-|                  {ref}`Bratley et al. (1992) B <test-functions:bratley1992b>`                  |        M        |    `Bratley1992b()`     |
-|                  {ref}`Bratley et al. (1992) C <test-functions:bratley1992c>`                  |        M        |    `Bratley1992c()`     |
-|                  {ref}`Bratley et al. (1992) D <test-functions:bratley1992d>`                  |        M        |    `Bratley1992d()`     |
+|                   {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`                    |        M        |    `Bratley1992a()`     |
+|                   {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`                    |        M        |    `Bratley1992b()`     |
+|                   {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`                    |        M        |    `Bratley1992c()`     |
+|                   {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`                    |        M        |    `Bratley1992d()`     |
 |                  {ref}`Damped Oscillator <test-functions:damped-oscillator>`                   |        7        |  `DampedOscillator()`   |
 |                              {ref}`Flood <test-functions:flood>`                               |        8        |        `Flood()`        |
 |                       {ref}`Friedman (6D) <test-functions:friedman-6d>`                        |        6        |     `Friedman6D()`      |

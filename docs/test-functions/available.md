@@ -90,8 +90,8 @@ regardless of their typical applications.
 |         ``RSQuadratic``         |        2        |                 {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                  |
 |       ``SaltelliLinear``        |        M        |              {ref}`Saltelli et al. (2008) Linear <test-functions:saltelli-linear>`               |
 |           ``SobolG``            |        M        |                   {ref}`Saltelli and Sobol' (1995) G <test-functions:sobol-g>`                   |
-|         ``SobolGStar``          |        M        |                          {ref}`Sobol'-G* <test-functions:sobol-g-star>`                          |
-|        ``SobolLevitan``         |        M        |                       {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                       |
+|         ``SobolGStar``          |        M        |                  {ref}`Saltelli et al. (2010) G* <test-functions:sobol-g-star>`                  |
+|        ``SobolLevitan``         |        M        |                   {ref}`Sobol'-Levitan (1999) <test-functions:sobol-levitan>`                    |
 |          ``SolarCell``          |        5        |                       {ref}`Solar Cell Model <test-functions:solar-cell>`                        |
 |      ``SpeedReducerShaft``      |        5        |                 {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`                  |
 |           ``Sulfur``            |        9        |                              {ref}`Sulfur <test-functions:sulfur>`                               |

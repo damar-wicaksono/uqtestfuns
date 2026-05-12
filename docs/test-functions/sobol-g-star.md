@@ -15,14 +15,12 @@ kernelspec:
 (test-functions:sobol-g-star)=
 # Sobol'-G* Function
 
-The Sobol'-G* function (also known as the modified Sobol'-G function)
-is an $M$-dimensional scalar-valued function.
-It was used in {cite}`Saltelli2010, Sun2022` for testing sensitivity analysis
-methods.
-
-This function introduces shift and curvature parameters to the original 
-{ref}`Sobol'-G <test-functions:sobol-g>` test function
-{cite}`Saltelli1995`[^modified].
+The `SobolGStar` function is an $M$-dimensional scalar-valued function
+as a modification of the {ref}`Sobol'-G <test-functions:sobol-g>` function
+{cite}`Saltelli1995` that introduces shift and curvature
+parameters to avoid a discontinuity at the domain mid-point[^modified].
+It was introduced in {cite}`Saltelli2010` for testing sensitivity
+analysis methods {cite}`Sun2022, Azzini2021`.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -40,16 +38,11 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 # --- Create 1D data from Sobol'-G*
 my_sobolgstar_1d = uqtf.SobolGStar(input_dimension=1)
-rng = np.random.default_rng(42)
-delta = rng.random(1)
-my_sobolgstar_1d.parameters["delta"] = delta
 xx_1d = np.linspace(0, 1, 1000)[:, np.newaxis]
 yy_1d = my_sobolgstar_1d(xx_1d)
 
 # --- Create 2D data from Sobol'-G*
 my_sobolgstar_2d = uqtf.SobolGStar(input_dimension=2)
-delta = rng.random(2)
-my_sobolgstar_2d.parameters["delta"] = delta
 mesh_2d = np.meshgrid(xx_1d, xx_1d)
 xx_2d = np.array(mesh_2d).T.reshape(-1, 2)
 yy_2d = my_sobolgstar_2d(xx_2d)
@@ -61,8 +54,8 @@ fig = plt.figure(figsize=(15, 5))
 axs_1 = plt.subplot(131)
 axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
-axs_1.set_xlabel("$x$", fontsize=14)
-axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
+axs_1.set_xlabel(r"$x$", fontsize=14)
+axs_1.set_ylabel(r"$\mathcal{M}(x)$", fontsize=14)
 axs_1.set_title("1D Sobol'-G*")
 
 # Surface
@@ -76,9 +69,9 @@ axs_2.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_2.set_title("Surface plot of 2D Sobol'-G*", fontsize=14)
 
 # Contour
@@ -86,8 +79,8 @@ axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_3.set_xlabel("$x_1$", fontsize=14)
-axs_3.set_ylabel("$x_2$", fontsize=14)
+axs_3.set_xlabel(r"$x_1$", fontsize=14)
+axs_3.set_ylabel(r"$x_2$", fontsize=14)
 axs_3.set_title("Contour plot of 2D Sobol'-G*", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -100,10 +93,11 @@ plt.gcf().set_dpi(150);
 
 ## Test function instance
 
-To create a default instance of the Sobol'-G* test function, type:
+To create an instance of the test function with, for example,
+ten input dimensions, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SobolGStar()
+my_testfun = uqtf.SobolGStar(input_dimension=10)
 ```
 
 Check if it has been correctly instantiated:
@@ -112,31 +106,22 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the input dimension is set to $2$[^default_dimension].
-To create an instance with another value of input dimension,
-pass an integer to the parameter `input_dimension` (the first parameter).
-For example, to create an instance of the Sobol'-G* function in ten dimensions,
-type:
-
-```{code-cell} ipython3
-my_testfun = uqtf.SobolGStar(input_dimension=10)
-```
-
-In the subsequent section, the function will be illustrated
-using ten dimensions as it originally appeared in {cite}`Saltelli2010`.
+In the later sections, 
+the function will be illustrated using this ten-dimensional instance
+as it appeared in {cite}`Azzini2021`.
 
 ## Description
 
 The Sobol'-G* function is defined as follows[^location]:
 
 $$
-\mathcal{M}(\boldsymbol{x}; \boldsymbol{a}, \boldsymbol{\delta}, \boldsymbol{\alpha}) = \prod_{m = 1}^M g^*_m(x_i; a_i, \delta_i, \alpha_i)
+\mathcal{M}(\boldsymbol{x}; \boldsymbol{a}, \boldsymbol{\delta}, \boldsymbol{\alpha}) = \prod_{m = 1}^M g^*_m(x_m; a_m, \delta_m, \alpha_m)
 $$
 
 where
 
 $$
-g^*_m(x_i; a_i, \delta_i, \alpha_i) = \frac{(1 + \alpha_i) \lvert 2 (x_i + \delta_i - \lfloor x_i + \delta_i \rfloor) - 1 \rvert^{\alpha_i} + a_i}{1 + a_i}
+g^*_m(x_m; a_m, \delta_m, \alpha_m) = \frac{(1 + \alpha_m) \lvert 2 (x_m + \delta_m - \lfloor x_m + \delta_m \rfloor) - 1 \rvert^{\alpha_m} + a_m}{1 + a_m}
 $$
 
 where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$ is the $M$-dimensional vector
@@ -146,11 +131,17 @@ parameters of the function further defined below.
 
 ## Probabilistic input
 
-The probabilistic input model for the Sobol'-G* function consists of $M$
-independent uniform random variables with the ranges shown in the table below.
+Based on {cite}`Saltelli2010`, the probabilistic input model for the function
+consists of $M$ independent uniform random variables over $[0,1]$:
+
+$$
+X_m \sim \mathcal{U}(0,1), \quad m = 1, \ldots, M
+$$
+
+which for the current instance is shown below:
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+:tags: [hide-input, output_scroll]
 
 print(my_testfun.prob_input)
 ```
@@ -173,12 +164,13 @@ below.
 :name: sobol-g-star-parameters
 | No. |                                      $\boldsymbol{a}$                                       |       $\boldsymbol{\delta}$        | $\boldsymbol{\alpha}$ |             Keyword             |                   Source                    |          Remark          |
 |:---:|:-------------------------------------------------------------------------------------------:|:----------------------------------:|:---------------------:|:-------------------------------:|:-------------------------------------------:|:------------------------:|
-| 1.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 1.0$    | `Saltelli2010-1` <br> (default) | {cite}`Saltelli2010` (Table 5, test case 1) | Low effective dimension  |
+| 1.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 1.0$    |        `Saltelli2010-1`         | {cite}`Saltelli2010` (Table 5, test case 1) | Low effective dimension  |
 | 2.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 1.0$    |        `Saltelli2010-2`         | {cite}`Saltelli2010` (Table 5, test case 2) | High effective dimension |
-| 3.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 0.5$    |        `Saltelli2010-3`         | {cite}`Saltelli2010` (Table 5, test case 3) |   Convex version of 1    |
-| 4.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 0.5$    |        `Saltelli2010-4`         | {cite}`Saltelli2010` (Table 5, test case 4) |   Convex version of 2    |
-| 5.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 2.0$    |        `Saltelli2010-5`         | {cite}`Saltelli2010` (Table 5, test case 5) |   Concave version of 1   |
-| 6.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 2.0$    |        `Saltelli2010-6`         | {cite}`Saltelli2010` (Table 5, test case 6) |   Concave version of 2   |
+| 3.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 0.5$    |        `Saltelli2010-3`         | {cite}`Saltelli2010` (Table 5, test case 3) |   Concave version of 1   |
+| 4.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 0.5$    |        `Saltelli2010-4`         | {cite}`Saltelli2010` (Table 5, test case 4) |   Concave version of 2   |
+| 5.  |                           $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                           | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 2.0$    |        `Saltelli2010-5`         | {cite}`Saltelli2010` (Table 5, test case 5) |   Convex version of 1    |
+| 6.  | $a_i = 0.1 (i - 1), 1 \leq i \leq 5$ <br> $a_6 = 0.8$ <br> $a_i = (i - 6), 7 \leq i \leq M$ | $\delta_i \sim \mathcal{U}[0, 1]$  |   $\alpha_i = 2.0$    |        `Saltelli2010-6`         | {cite}`Saltelli2010` (Table 5, test case 6) |   Convex version of 2    |
+| 7.  |                          $a_1 = a_2 = 0$ <br> $a_3 = \ldots = 9$                            | $\delta_i = 0.5$                   |   $\alpha_i = 0.5$    |   `Azzini2021` <br> (default)   | {cite}`Azzini2021`   (Section 3.2.2)        | Low effective dimension  |
 ```
 
 The default parameter is shown below.
@@ -189,29 +181,19 @@ The default parameter is shown below.
 print(my_testfun.parameters)
 ```
 
-````{note}
-To create an instance of the Sobol'-G* function with a different set
-of built-in parameters, pass the corresponding keyword to the parameter
-`parameters_id`.
-For example, to use the parameters of test case 2 from {cite}`Saltelli2010`,
-type:
-
-```python
-my_testfun = uqtf.SobolGStar(parameters_id="Saltelli2010-2")
-```
-````
-
 ```{note}
-The parameter $\boldsymbol{\delta}$ is randomly generated
-from a uniform distribution in $[0, 1]^M$ following {cite}`Saltelli2010` when
-an instance of the function is created;
-creating a new instance generates a new set of $\boldsymbol{\delta}$. 
-This parameter cancels out when relevant uncertainty quantification quantities
-of interest are computed (e.g., variance, sensitivity indices).
+For all ``Saltelli2010-*`` parameter sets, the shift parameter
+$\boldsymbol{\delta}$ is randomly drawn from $\mathcal{U}(0, 1)^M$
+once at instantiation and fixed for the lifetime of the instance,
+following {cite}`Saltelli2010`. Two instances created with the same
+``Saltelli2010-*`` keyword will therefore generally produce different
+outputs, though their moments and Sobol' sensitivity indices are
+identical since $\boldsymbol{\delta}$ cancels out analytically.
+For the ``Azzini2021`` parameter set, $\boldsymbol{\delta}$ is fixed
+at $0.5$ for all inputs {cite}`Azzini2021`.
 
-To have control over the value of $\boldsymbol{\delta}$, you can set the value
-after an instance is created by assigning a set of new values to
-`my_fun.parameters["delta"]`.
+To use a specific value of $\boldsymbol{\delta}$, supply a custom
+``Parameters`` object at instantiation.
 ```
 
 ## Reference results
@@ -233,7 +215,7 @@ yy_test = my_testfun(xx_test)
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -248,7 +230,7 @@ $$
 
 ### Moments estimation
 
-The mean and variance of the Sobol'-G function can be computed analytically. 
+The mean and variance of the Sobol'-G* function can be computed analytically. 
 
 The mean[^integral] is given as follows:
 
@@ -267,7 +249,7 @@ $$
 V_i \equiv \mathbb{V}_{X_i} (\mathbb{E}_{\sim \boldsymbol{X}_i} (Y | X_i)) = \frac{\alpha_i^2}{(1 + 2 \alpha_i) (1 + a_i)^2}.
 $$
 
-Notice that the value of the variance depend on the choice of the parameter values.
+Notice that the value of the variance depends on the choice of the parameter values.
 
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes compared with the
@@ -279,15 +261,14 @@ of the estimates obtained from $50$ replications.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5], dtype=int)
 mean_estimates = np.empty((len(sample_sizes), 50))
 var_estimates = np.empty((len(sample_sizes), 50))
 
 for i, sample_size in enumerate(sample_sizes):
     for j in range(50):
-        xx_test = my_testfun.prob_input.get_sample(sample_size)
-        yy_test = my_testfun(xx_test)
+        yy_test = my_testfun.get_sample(sample_size, rng)
         mean_estimates[i, j] = np.mean(yy_test)
         var_estimates[i, j] = np.var(yy_test)
 
@@ -566,6 +547,3 @@ where the mid-point of the domain is discontinuous in the original formula.
 
 [^integral]: The expected value is the same as the integral over the domain
 because the input is uniform in a unit hypercube.
-
-[^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `input_dimension` argument is not given.
