@@ -17,7 +17,6 @@ from .genz import (
 from .morris2006 import Morris2006
 from .robot_arm import RobotArm
 from .rosenbrock import Rosenbrock
-from .saltelli_linear import SaltelliLinear
 from .sobol_g import SobolG
 from .sobol_g_star import SobolGStar
 from .sobol_levitan import SobolLevitan
@@ -44,7 +43,6 @@ __all__ = [
     "Morris2006",
     "RobotArm",
     "Rosenbrock",
-    "SaltelliLinear",
     "SobolG",
     "SobolGStar",
     "SobolLevitan",

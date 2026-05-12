@@ -88,7 +88,7 @@ regardless of their typical applications.
 |         ``Rosenbrock``          |        M        |                          {ref}`Rosenbrock <test-functions:rosenbrock>`                           |
 |        ``RSCircularBar``        |        2        |           {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`            |
 |         ``RSQuadratic``         |        2        |                 {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                  |
-|       ``SaltelliLinear``        |        M        |                      {ref}`SaltelliLinear <test-functions:saltelli-linear>`                      |
+|       ``SaltelliLinear``        |        M        |              {ref}`Saltelli et al. (2008) Linear <test-functions:saltelli-linear>`               |
 |           ``SobolG``            |        M        |                             {ref}`Sobol'-G <test-functions:sobol-g>`                             |
 |         ``SobolGStar``          |        M        |                          {ref}`Sobol'-G* <test-functions:sobol-g-star>`                          |
 |        ``SobolLevitan``         |        M        |                       {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                       |
