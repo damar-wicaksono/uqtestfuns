@@ -1,4 +1,4 @@
-name: CircularPipeCrack
+name: RSCircularPipeCrack
 description: Circular pipe crack reliability problem from Verma et al. (2015)
 tags:
   - reliability

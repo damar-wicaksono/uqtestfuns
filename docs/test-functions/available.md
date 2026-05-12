@@ -31,7 +31,6 @@ regardless of their typical applications.
 |        ``Bratley1992d``         |        M        |                    {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`                     |
 |      ``CantileverBeam2D``       |        2        | {ref}` Rajashekhar and Ellingwood (1993) Cantilever Beam 2D <test-functions:cantilever-beam-2d>` |
 |           ``Cheng2D``           |        2        |                    {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`                     |
-|      ``CircularPipeCrack``      |        2        |       {ref}`Verma et al. (2015) Circular Pipe Crack <test-functions:circular-pipe-crack>`        |
 |          ``CoffeeCup``          |        2        |                {ref}`Tennøe et al. (2018) Coffee Cup <test-functions:coffee-cup>`                |
 |      ``ConvexFailDomain``       |        2        |                 {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`                 |
 |         ``CurrinSine``          |        1        |                  {ref}`Currin et al. (1988) Sine <test-functions:currin-sine>`                   |
@@ -87,9 +86,10 @@ regardless of their typical applications.
 |          ``RobotArm``           |        8        |                           {ref}`Robot Arm <test-functions:robot-arm>`                            |
 |         ``Rosenbrock``          |        M        |                       {ref}`Rosenbrock (1960) <test-functions:rosenbrock>`                       |
 |        ``RSCircularBar``        |        2        |           {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`            |
+|     ``RSCircularPipeCrack``     |        2        |    {ref}`Verma et al. (2015) RS Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`     |
 |         ``RSQuadratic``         |        2        |                 {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                  |
 |       ``SaltelliLinear``        |        M        |              {ref}`Saltelli et al. (2008) Linear <test-functions:saltelli-linear>`               |
-|           ``SobolG``            |        M        |                             {ref}`Sobol'-G <test-functions:sobol-g>`                             |
+|           ``SobolG``            |        M        |                   {ref}`Saltelli and Sobol' (1995) G <test-functions:sobol-g>`                   |
 |         ``SobolGStar``          |        M        |                          {ref}`Sobol'-G* <test-functions:sobol-g-star>`                          |
 |        ``SobolLevitan``         |        M        |                       {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                       |
 |          ``SolarCell``          |        5        |                       {ref}`Solar Cell Model <test-functions:solar-cell>`                        |
