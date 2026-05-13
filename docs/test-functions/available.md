@@ -52,13 +52,12 @@ regardless of their typical applications.
 |         ``Friedman6D``          |        6        |                  {ref}`Friedman et al. (1983) 6D <test-functions:friedman-6d>`                   |
 |         ``Friedman10D``         |       10        |                     {ref}`Friedman (1991) 10D <test-functions:friedman-10d>`                     |
 |          ``GaytonHat``          |        2        |                {ref}`Echard et al. (2013) Gayton Hat <test-functions:gayton-hat>`                |
-|       ``GenzContinuous``        |        M        |                    {ref}`Genz (Continuous) <test-functions:genz-continuous>`                     |
-|       ``GenzContinuous``        |        M        |                    {ref}`Genz (Continuous) <test-functions:genz-continuous>`                     |
-|       ``GenzCornerPeak``        |        M        |                   {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`                    |
-|      ``GenzDiscontinuous``      |        M        |                 {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>`                  |
-|        ``GenzGaussian``         |        M        |                      {ref}`Genz (Gaussian) <test-functions:genz-gaussian>`                       |
-|       ``GenzOscillatory``       |        M        |                   {ref}`Genz (Oscillatory) <test-functions:genz-oscillatory>`                    |
-|       ``GenzProductPeak``       |        M        |                  {ref}`Genz (Product Peak) <test-functions:genz-product-peak>`                   |
+|       ``GenzContinuous``        |        M        |                  {ref}`Genz (1984) Continuous <test-functions:genz-continuous>`                  |
+|       ``GenzCornerPeak``        |        M        |                 {ref}`Genz (1984) Corner Peak <test-functions:genz-corner-peak>`                 |
+|      ``GenzDiscontinuous``      |        M        |               {ref}`Genz (1984) Discontinuous <test-functions:genz-discontinuous>`               |
+|        ``GenzGaussian``         |        M        |                    {ref}`Genz (1984) Gaussian <test-functions:genz-gaussian>`                    |
+|       ``GenzOscillatory``       |        M        |                 {ref}`Genz (1984) Oscillatory <test-functions:genz-oscillatory>`                 |
+|       ``GenzProductPeak``       |        M        |                {ref}`Genz (1984) Product Peak <test-functions:genz-product-peak>`                |
 |         ``GramacySine``         |        1        |                     {ref}`Gramacy (2007) Sine <test-functions:gramacy-sine>`                     |
 |         ``HigdonSine``          |        1        |                      {ref}`Higdon (2002) Sine <test-functions:higdon-sine>`                      |
 |        ``HolsclawSine``         |        1        |                {ref}`Holsclaw et al. (2013) Sine <test-functions:holsclaw-sine>`                 |

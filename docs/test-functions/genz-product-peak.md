@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:genz-product-peak)=
-# Genz Product Peak Function
+# Product Peak Function from Genz (1984)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,13 +21,13 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Genz product peak function is an $M$-dimensional scalar-valued
-function commonly used to assess the accuracy of numerical
-integration routines.
-It is one of six functions introduced by Genz {cite}`Genz1984`;
-see the box below.
+The Genz product peak function (or `GenzProductPeak` for short)
+is an $M$-dimensional scalar-valued function featuring
+a prominent peak at the center of the input domain.
 
-The function features a peak at the center of the multidimensional space.
+It is one of six functions introduced by Genz {cite}`Genz1984`;
+see the note below.
+
 The plots for one-dimensional and two-dimensional Genz product peak function
 with the default parameters can be seen below.
 
@@ -54,8 +54,8 @@ fig = plt.figure(figsize=(15, 5))
 axs_1 = plt.subplot(131)
 axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
-axs_1.set_xlabel("$x$", fontsize=14)
-axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
+axs_1.set_xlabel(r"$x$", fontsize=14)
+axs_1.set_ylabel(r"$\mathcal{M}(x)$", fontsize=14)
 axs_1.set_title("1D Genz product peak")
 
 # Surface
@@ -69,9 +69,9 @@ axs_2.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_2.set_title("Surface plot of 2D Genz product peak", fontsize=14)
 
 # Contour
@@ -79,8 +79,8 @@ axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_3.set_xlabel("$x_1$", fontsize=14)
-axs_3.set_ylabel("$x_2$", fontsize=14)
+axs_3.set_xlabel(r"$x_1$", fontsize=14)
+axs_3.set_ylabel(r"$x_2$", fontsize=14)
 axs_3.set_title("Contour plot of 2D Genz product peak", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -109,9 +109,10 @@ designed to test the performance of numerical integration routines:
   an exponential decay from the center of the multidimensional space.
   The function is continuous everywhere, but non-differentiable at the center.
 - {ref}`Discontinuous <test-functions:genz-discontinuous>` function features
-  an exponential rise from corner of the multidimensional space up to the
+  an exponential rise from a corner of the multidimensional space up to the
   offset parameter value, after which the function value drops to zero
   everywhere, creating discontinuity.
+
 The functions are further characterized by offset (shift) and shape parameters.
 While the offset parameter has minimal impact on the integral's value,
 the shape parameter significantly affects
@@ -120,10 +121,11 @@ the difficulty of the integration problem.
 
 ## Test function instance
 
-To create a default instance of the test function:
+To create an instance of the test function with, for example,
+six input dimensions, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.GenzProductPeak()
+my_testfun = uqtf.GenzContinuous(input_dimension=6)
 ```
 
 Check if it has been correctly instantiated:
@@ -132,15 +134,8 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the input dimension is set to $2$[^default_dimension].
-To create an instance with another value of input dimension,
-pass an integer to the parameter `input_dimension` (the first parameter).
-For example, to create an instance of the test function in six dimensions,
-type:
-
-```python
-my_testfun = uqtf.GenzProductPeak(input_dimension=6)
-```
+In the later sections, 
+the function will be illustrated using this six-dimensional instance.
 
 ## Description
 
@@ -159,25 +154,31 @@ Further details about these parameters are provided below.
 
 ## Probabilistic input
 
-The input specification for the Genz product peak function is shown below.
+Based on {cite}`Genz1984`, the probabilistic input model for the function
+consists of $M$ independent uniform random variables over $[0,1]$:
+
+$$
+X_m \sim \mathcal{U}(0,1), \quad m = 1, \ldots, M
+$$
+
+which for the current instance is shown below:
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+:tags: [hide-input, output_scroll]
 
 print(my_testfun.prob_input)
 ```
 
 ## Parameters
 
-The parameters of the Genz corner peak function consists
+The parameters of the Genz product peak function consist
 of the vector of shape parameters $\boldsymbol{a}$
 and the vector of offset parameters $\boldsymbol{b}$. 
 
-The shape parameters determines the extent of the product peaking;
-Larger values of $\boldsymbol{a}$
-increase the prominence of the peak,
+The shape parameters determine the extent of the product peaking;
+larger values of $\boldsymbol{a}$ increase the prominence of the peak,
 making the integration problem more challenging.
-The offset parameters, on the other hand, do not affect significantly
+The offset parameters, on the other hand, do not significantly affect
 the difficulty of the problem and can be chosen randomly.
 
 The default parameter is shown below.
@@ -187,7 +188,6 @@ The default parameter is shown below.
 
 print(my_testfun.parameters)
 ```
-
 
 ## Reference results
 
@@ -201,14 +201,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-my_testfun.prob_input.reset_rng(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -217,6 +215,3 @@ plt.gcf().set_dpi(150);
 ```{bibliography}
 :filter: docname in docnames
 ```
-
-[^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `input_dimension` argument is not given.

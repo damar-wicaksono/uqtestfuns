@@ -1,0 +1,37 @@
+name: GenzCornerPeak
+description: >-
+  M-dimensional corner-peaked function from Genz (1984)
+tags:
+  - integration
+  - metamodeling
+  - sensitivity
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs: inputs.yaml
+
+evaluate: evaluate.corner_peak
+
+parameters:
+  keyword_descriptions:
+    aa: Shape parameters (larger = more prominent peak, harder integration)
+  default_parameters: Genz1984
+  sets:
+    Genz1984:
+      aa:
+        factory: evaluate.get_aa_genz1984
+      description: Constant shape parameters from Genz (1984)
+    Zhang2014-1:
+      aa:
+        factory: evaluate.get_aa_zhang2014_1
+      description: >-
+        Linearly increasing shape parameters, originally 3-dimensional;
+        Section 4.4 from Zhang and Pandey (2014)
+    Zhang2014-2:
+      aa:
+        factory: evaluate.get_aa_zhang2014_2
+      description: >-
+        Linearly increasing shape parameters, originally 10-dimensional;
+        Section 4.4 from Zhang and Pandey (2014)
