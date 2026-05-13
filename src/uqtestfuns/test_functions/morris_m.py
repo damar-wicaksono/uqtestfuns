@@ -32,51 +32,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import FunParamSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
-
-__all__ = ["Morris2006"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Morris2006": {
-        "function_id": "Morris2006",
-        "description": (
-            "Probabilistic input model for the M-dimensional function "
-            "from Morris et al. (2006)"
-        ),
-        "marginals": [
-            {
-                "name": "X",
-                "distribution": "uniform",
-                "parameters": [0.0, 1.0],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
-
-
-AVAILABLE_PARAMETERS: FunParamSpecs = {
-    "Morris2006": {
-        "function_id": "Morris2006",
-        "description": (
-            "Parameter set for the M-dimensional function from "
-            "Morris et al. (2006); the parameter controls the number of "
-            "important input variables"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "p",
-                "value": 10,
-                "type": int,
-                "description": "# of important inputs",
-            },
-        ],
-    }
-}
-
 
 def evaluate(xx: np.ndarray, p: int) -> np.ndarray:
     """Evaluate the Morris et al. (2006) function on a set of input values.
@@ -115,14 +70,3 @@ def evaluate(xx: np.ndarray, p: int) -> np.ndarray:
     yy = term_1 + term_2
 
     return yy
-
-
-class Morris2006(UQTestFunVarDimABC):
-    """An implementation of the M-dimensional Morris2006."""
-
-    _tags = ["sensitivity"]
-    _description = "Test function from Morris et al. (2006)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = AVAILABLE_PARAMETERS
-
-    evaluate = staticmethod(evaluate)  # type: ignore

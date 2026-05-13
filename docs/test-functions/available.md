@@ -31,7 +31,6 @@ regardless of their typical applications.
 |        ``Bratley1992d``         |        M        |                    {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`                     |
 |      ``CantileverBeam2D``       |        2        | {ref}` Rajashekhar and Ellingwood (1993) Cantilever Beam 2D <test-functions:cantilever-beam-2d>` |
 |           ``Cheng2D``           |        2        |                    {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`                     |
-|      ``CircularPipeCrack``      |        2        |       {ref}`Verma et al. (2015) Circular Pipe Crack <test-functions:circular-pipe-crack>`        |
 |          ``CoffeeCup``          |        2        |                {ref}`Tennøe et al. (2018) Coffee Cup <test-functions:coffee-cup>`                |
 |      ``ConvexFailDomain``       |        2        |                 {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`                 |
 |         ``CurrinSine``          |        1        |                  {ref}`Currin et al. (1988) Sine <test-functions:currin-sine>`                   |
@@ -53,13 +52,12 @@ regardless of their typical applications.
 |         ``Friedman6D``          |        6        |                  {ref}`Friedman et al. (1983) 6D <test-functions:friedman-6d>`                   |
 |         ``Friedman10D``         |       10        |                     {ref}`Friedman (1991) 10D <test-functions:friedman-10d>`                     |
 |          ``GaytonHat``          |        2        |                {ref}`Echard et al. (2013) Gayton Hat <test-functions:gayton-hat>`                |
-|       ``GenzContinuous``        |        M        |                    {ref}`Genz (Continuous) <test-functions:genz-continuous>`                     |
-|       ``GenzContinuous``        |        M        |                    {ref}`Genz (Continuous) <test-functions:genz-continuous>`                     |
-|       ``GenzCornerPeak``        |        M        |                   {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`                    |
-|      ``GenzDiscontinuous``      |        M        |                 {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>`                  |
-|        ``GenzGaussian``         |        M        |                      {ref}`Genz (Gaussian) <test-functions:genz-gaussian>`                       |
-|       ``GenzOscillatory``       |        M        |                   {ref}`Genz (Oscillatory) <test-functions:genz-oscillatory>`                    |
-|       ``GenzProductPeak``       |        M        |                  {ref}`Genz (Product Peak) <test-functions:genz-product-peak>`                   |
+|       ``GenzContinuous``        |        M        |                  {ref}`Genz (1984) Continuous <test-functions:genz-continuous>`                  |
+|       ``GenzCornerPeak``        |        M        |                 {ref}`Genz (1984) Corner Peak <test-functions:genz-corner-peak>`                 |
+|      ``GenzDiscontinuous``      |        M        |               {ref}`Genz (1984) Discontinuous <test-functions:genz-discontinuous>`               |
+|        ``GenzGaussian``         |        M        |                    {ref}`Genz (1984) Gaussian <test-functions:genz-gaussian>`                    |
+|       ``GenzOscillatory``       |        M        |                 {ref}`Genz (1984) Oscillatory <test-functions:genz-oscillatory>`                 |
+|       ``GenzProductPeak``       |        M        |                {ref}`Genz (1984) Product Peak <test-functions:genz-product-peak>`                |
 |         ``GramacySine``         |        1        |                     {ref}`Gramacy (2007) Sine <test-functions:gramacy-sine>`                     |
 |         ``HigdonSine``          |        1        |                      {ref}`Higdon (2002) Sine <test-functions:higdon-sine>`                      |
 |        ``HolsclawSine``         |        1        |                {ref}`Holsclaw et al. (2013) Sine <test-functions:holsclaw-sine>`                 |
@@ -87,11 +85,12 @@ regardless of their typical applications.
 |          ``RobotArm``           |        8        |                           {ref}`Robot Arm <test-functions:robot-arm>`                            |
 |         ``Rosenbrock``          |        M        |                       {ref}`Rosenbrock (1960) <test-functions:rosenbrock>`                       |
 |        ``RSCircularBar``        |        2        |           {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`            |
+|     ``RSCircularPipeCrack``     |        2        |    {ref}`Verma et al. (2015) RS Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`     |
 |         ``RSQuadratic``         |        2        |                 {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                  |
 |       ``SaltelliLinear``        |        M        |              {ref}`Saltelli et al. (2008) Linear <test-functions:saltelli-linear>`               |
-|           ``SobolG``            |        M        |                             {ref}`Sobol'-G <test-functions:sobol-g>`                             |
-|         ``SobolGStar``          |        M        |                          {ref}`Sobol'-G* <test-functions:sobol-g-star>`                          |
-|        ``SobolLevitan``         |        M        |                       {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                       |
+|           ``SobolG``            |        M        |                   {ref}`Saltelli and Sobol' (1995) G <test-functions:sobol-g>`                   |
+|         ``SobolGStar``          |        M        |                  {ref}`Saltelli et al. (2010) G* <test-functions:sobol-g-star>`                  |
+|        ``SobolLevitan``         |        M        |                   {ref}`Sobol'-Levitan (1999) <test-functions:sobol-levitan>`                    |
 |          ``SolarCell``          |        5        |                       {ref}`Solar Cell Model <test-functions:solar-cell>`                        |
 |      ``SpeedReducerShaft``      |        5        |                 {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`                  |
 |           ``Sulfur``            |        9        |                              {ref}`Sulfur <test-functions:sulfur>`                               |

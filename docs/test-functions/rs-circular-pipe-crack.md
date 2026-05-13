@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:circular-pipe-crack)=
+(test-functions:rs-circular-pipe-crack)=
 # Circular Pipe Crack Reliability Problem from Verma et al. (2015)
 
 ```{code-cell} ipython3
@@ -21,10 +21,13 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The circular pipe crack reliability problem (CircularPipeCrack) is a two-dimensional scalar-valued function introduced in {cite}Verma2015 and used, for instance, in {cite}Li2018. The system under consideration is a circular pipe with a circumferential through-wall crack under a bending moment.
+The circular pipe crack reliability problem (`RSCircularPipeCrack`)
+is a two-dimensional scalar-valued function
+introduced in {cite}`Verma2015` and used, for instance, in {cite}`Li2018`.
+The system under consideration is a circular pipe
+with a circumferential through-wall crack under a bending moment.
 
-The two-dimensional circular pipe crack reliability problem
-was introduced in {cite}`Verma2015` and used, for instance, in {cite}`Li2018`.
+It is yet another variation of RS reliability problems.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour
@@ -35,7 +38,7 @@ overlaid.
 ```{code-cell} ipython3
 :tags: [remove-input]
 
-my_fun = uqtf.CircularPipeCrack()
+my_fun = uqtf.RSCircularPipeCrack()
 xx = my_fun.prob_input.get_sample(1000000, 237324)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
@@ -132,7 +135,7 @@ plt.gcf().set_dpi(150);
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.CircularPipeCrack()
+my_testfun = uqtf.RSCircularPipeCrack()
 ```
 
 Check if it has been correctly instantiated:

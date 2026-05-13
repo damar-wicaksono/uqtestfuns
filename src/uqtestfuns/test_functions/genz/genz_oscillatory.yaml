@@ -1,0 +1,26 @@
+name: GenzOscillatory
+description: >-
+  M-dimensional oscillatory function from Genz (1984)
+tags:
+  - integration
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs: inputs.yaml
+
+evaluate: evaluate.oscillatory
+
+parameters:
+  keyword_descriptions:
+    aa: >-
+      Shape parameters (larger = higher frequency oscillation, harder integration)
+    b: >-
+      Scalar offset parameter (minimal effect on integration difficulty)
+  sets:
+    Genz1984:
+      aa:
+        factory: evaluate.get_aa_genz1984
+      b: 0.5
+      description: Constant shape and offset parameters from Genz (1984)

@@ -1,0 +1,27 @@
+name: GenzGaussian
+description: >-
+  M-dimensional Gaussian-peaked function from Genz (1984)
+tags:
+  - integration
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs: inputs.yaml
+
+evaluate: evaluate.gaussian
+
+parameters:
+  keyword_descriptions:
+    aa: >-
+      Shape parameters (larger = narrower peak, harder integration)
+    bb: >-
+      Offset parameters (location of the peak center)
+  sets:
+    Genz1984:
+      aa:
+        factory: evaluate.get_aa_genz1984
+      bb:
+        factory: evaluate.get_bb_genz1984
+      description: Constant shape and offset parameters from Genz (1984)

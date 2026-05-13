@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:genz-corner-peak)=
-# Genz Corner Peak Function
+# Corner Peak Function from Genz (1984)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,18 +21,15 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Genz corner peak function is an $M$-dimensional scalar-valued
-function commonly used to assess the accuracy of numerical
-integration routines.
-It is one of six functions introduced by Genz {cite}`Genz1984`;
-see the box below.
+The Genz corner peak function (or `GenzCornerPeak` for short)
+is an $M$-dimensional scalar-valued function featuring a prominent peak
+in one corner of the input domain.
 
-The function was later featured in {cite}`Zhang2014` as a test function
-for a global sensitivity analysis method and in {cite}`Jakeman2015` for
-metamodeling applications.
+It is one of six functions introduced by Genz {cite}`Genz1984`
+for testing numerical integration routines; see the note below.
+It was later used in {cite}`Zhang2014` as a test function
+for global sensitivity analysis and in {cite}`Jakeman2015` for metamodeling.
 
-The function features a prominent peak in one corner of the multidimensional
-space.
 The plots for one-dimensional and two-dimensional Genz corner peak function
 with the default parameters can be seen below.
 
@@ -59,8 +56,8 @@ fig = plt.figure(figsize=(15, 5))
 axs_1 = plt.subplot(131)
 axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
-axs_1.set_xlabel("$x$", fontsize=14)
-axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
+axs_1.set_xlabel(r"$x$", fontsize=14)
+axs_1.set_ylabel(r"$\mathcal{M}(x)$", fontsize=14)
 axs_1.set_title("1D Genz corner peak")
 
 # Surface
@@ -74,9 +71,9 @@ axs_2.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_2.set_title("Surface plot of 2D Genz corner peak", fontsize=14)
 
 # Contour
@@ -84,8 +81,8 @@ axs_3 = plt.subplot(133)
 cf = axs_3.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_3.set_xlabel("$x_1$", fontsize=14)
-axs_3.set_ylabel("$x_2$", fontsize=14)
+axs_3.set_xlabel(r"$x_1$", fontsize=14)
+axs_3.set_ylabel(r"$x_2$", fontsize=14)
 axs_3.set_title("Contour plot of 2D Genz corner peak", fontsize=14)
 divider = make_axes_locatable(axs_3)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -114,7 +111,7 @@ designed to test the performance of numerical integration routines:
   an exponential decay from the center of the multidimensional space.
   The function is continuous everywhere, but non-differentiable at the center.
 - {ref}`Discontinuous <test-functions:genz-discontinuous>` function features
-  an exponential rise from corner of the multidimensional space up to the
+  an exponential rise from a corner of the multidimensional space up to the
   offset parameter value, after which the function value drops to zero
   everywhere, creating discontinuity.
 
@@ -126,10 +123,11 @@ the difficulty of the integration problem.
 
 ## Test function instance
 
-To create a default instance of the test function:
+To create an instance of the test function with, for example,
+six input dimensions, type:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.GenzCornerPeak()
+my_testfun = uqtf.GenzCornerPeak(input_dimension=6)
 ```
 
 Check if it has been correctly instantiated:
@@ -138,15 +136,8 @@ Check if it has been correctly instantiated:
 print(my_testfun)
 ```
 
-By default, the input dimension is set to $2$[^default_dimension].
-To create an instance with another value of input dimension,
-pass an integer to the parameter `input_dimension` (the first parameter).
-For example, to create an instance of the test function in six dimensions,
-type:
-
-```python
-my_testfun = uqtf.GenzCornerPeak(input_dimension=6)
-```
+In the later sections, 
+the function will be illustrated using this six-dimensional instance.
 
 ## Description
 
@@ -164,10 +155,17 @@ Further details about these parameters are provided below.
 
 ## Probabilistic input
 
-The input specification for the Genz corner peak function is shown below.
+Based on {cite}`Genz1984`, the probabilistic input model for the function
+consists of $M$ independent uniform random variables over $[0,1]$:
+
+$$
+X_m \sim \mathcal{U}(0,1), \quad m = 1, \ldots, M
+$$
+
+which for the current instance is shown below:
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+:tags: [hide-input, output_scroll]
 
 print(my_testfun.prob_input)
 ```
@@ -192,7 +190,7 @@ are shown in the table below.
 |:---:|:------------------------------------------------------:|:-------------------------:|:-------------------------------:|:-------------------------:|
 | 1.  |                $a_1 = \ldots = a_M = 5$                | `Genz1984` <br> (default) |        {cite}`Genz1984`         |            ---            |
 | 2.  | $a_i = 0.02 + 0.03 \times (i - 1),\, i = 1, \ldots, M$ |       `Zhang2014-1`       | {cite}`Zhang2014` (Section 4.4) | Originally, 3 dimensions  |
-| 3.  |       $a_i = 0.01 \times i,\, i = 1, \ldots, M$        |       `Zhang2014-2`       | {cite}`Zhang2014` (Section 4.4) | Originally, 10 dimensions |
+| 3.  |        $a_i = 0.1 \times i,\, i = 1, \ldots, M$        |       `Zhang2014-2`       | {cite}`Zhang2014` (Section 4.4) | Originally, 10 dimensions |
 
 The default parameter is shown below.
 
@@ -225,24 +223,17 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-my_testfun.prob_input.reset_rng(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
-
-Notice that the values are indeed mostly zeros.
 
 ## References
 
 ```{bibliography}
 :filter: docname in docnames
 ```
-
-[^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `input_dimension` argument is not given.

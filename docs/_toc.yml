@@ -56,8 +56,6 @@ parts:
             title: Cantilever Beam 2D
           - file: test-functions/cheng2d
             title: Cheng and Sandu (2010) 2D
-          - file: test-functions/circular-pipe-crack
-            title: Circular Pipe Crack
           - file: test-functions/coffee-cup
             title: Coffee Cup
           - file: test-functions/convex-fail-domain
@@ -101,17 +99,17 @@ parts:
           - file: test-functions/gayton-hat
             title: Gayton Hat
           - file: test-functions/genz-continuous
-            title: Genz (Continuous)
+            title: Genz Continuous
           - file: test-functions/genz-corner-peak
-            title: Genz (Corner Peak)
-          - file: test-functions/genz-gaussian
-            title: Genz (Gaussian)
+            title: Genz Corner Peak
           - file: test-functions/genz-discontinuous
-            title: Genz (Discontinuous)
+            title: Genz Discontinuous
+          - file: test-functions/genz-gaussian
+            title: Genz Gaussian
           - file: test-functions/genz-oscillatory
-            title: Genz (Oscillatory)
+            title: Genz Oscillatory
           - file: test-functions/genz-product-peak
-            title: Genz (Product Peak)
+            title: Genz Product Peak
           - file: test-functions/gramacy-sine
             title: Gramacy Sine
           - file: test-functions/higdon-sine
@@ -166,6 +164,8 @@ parts:
             title: Rosenbrock
           - file: test-functions/rs-circular-bar
             title: RS - Circular Bar
+          - file: test-functions/rs-circular-pipe-crack
+            title: RS - Circular Pipe Crack
           - file: test-functions/rs-quadratic
             title: RS - Quadratic
           - file: test-functions/saltelli-linear
