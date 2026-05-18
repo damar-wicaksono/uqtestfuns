@@ -16,7 +16,8 @@ from uqtestfuns.core.registry.specs import (
     UQInputSpec,
 )
 
-from .utils import parse_factory, resolve_numeric, safe_load, substitute_idx
+from .utils import parse_factory, safe_load, substitute_idx
+from .expression import resolve_numeric
 from .validation import (
     SpecValidationError,
     validate_marginal,

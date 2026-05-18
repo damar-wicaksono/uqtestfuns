@@ -11,7 +11,8 @@ from typing import Any, Dict
 
 from uqtestfuns.core.registry.specs import UQParametersSpec
 
-from .utils import parse_factory, resolve_generic
+from .utils import parse_factory
+from .expression import resolve_generic
 from .validation import SpecValidationError, validate_required_keys
 
 

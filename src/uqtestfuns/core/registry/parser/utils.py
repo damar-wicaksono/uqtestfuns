@@ -5,12 +5,8 @@ values from YAML specification files used to define UQ test functions. It
 includes utilities for:
 
 - Safe loading of YAML files
-- Resolving generic and numeric values with support for mathematical constants
 - Parsing callable specifications (module paths and function names)
 - Parsing factory function specifications
-
-The module supports expression syntax (e.g., '$(pi)', '$(-e)') for embedding
-mathematical constants in YAML specifications.
 """
 
 import math
@@ -18,10 +14,11 @@ import yaml
 
 from pathlib import Path
 from string import Template
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, Optional, Tuple
 
 from uqtestfuns.core.registry.specs import CallableSpec
 
+from .expression import resolve_generic
 from .validation import SpecValidationError, validate_callable_string
 
 NAMED_CONSTANTS = {
@@ -60,148 +57,6 @@ def safe_load(yaml_file: Path) -> dict:
         data = yaml.safe_load(f)
 
     return data
-
-
-def resolve_generic(value: Any) -> Any:
-    """Resolve generic value to either numeric or string value.
-
-    This function resolves values from YAML specifications by:
-    - Returning numeric values (float, int) unchanged
-    - Extracting and resolving expressions wrapped in '$()' syntax
-    - Substituting named mathematical constants with their numeric values
-    - Handling negative constants (e.g., '$(-pi)')
-
-    Parameters
-    ----------
-    value : Union[str, float, int]
-        The value to resolve.
-
-    Returns
-    -------
-    Union[str, float, int]
-        The resolved value. Expressions wrapped in '$()' are substituted
-        with their numeric equivalents. Numeric values are returned unchanged.
-        Non-expression strings are returned as-is.
-
-    Raises
-    ------
-    SpecValidationError
-        If the value is a string expression and cannot be evaluated.
-
-    Notes
-    -----
-    - Expression syntax requires both '$(' prefix and ')' suffixes.
-    - Currently, only named constants are supported for the expression.
-    - Supported named constants are defined in the NAMED_CONSTANTS dictionary
-    - Negative constants are handled by prefixing with '-'
-      inside the expression.
-    - Non-expression strings are returned unchanged (not validated).
-
-    Examples
-    --------
-    >>> resolve_generic(3.14)
-    3.14
-    >>> resolve_generic("value")
-    'value'
-    >>> resolve_generic('$(pi)')
-    3.141592653589793
-    >>> resolve_generic('$(-pi)')
-    -3.141592653589793
-    >>> resolve_generic('$(e)')
-    2.718281828459045
-    """
-    if isinstance(value, str) and _is_expression(value):
-        # Evaluate the expression
-        value = _resolve_expression(value)
-
-    return value
-
-
-def resolve_numeric(value: Union[str, float, int]) -> Union[float, int]:
-    """Resolve a value to a numeric type.
-
-    Parameters
-    ----------
-    value : Union[str, float, int]
-        The value to resolve. Can be a numeric value or a string expression.
-
-    Returns
-    -------
-    Union[float, int]
-        The resolved numeric value.
-
-    Raises
-    ------
-    SpecValidationError
-        If the value is a string that is not a valid expression.
-    """
-    if isinstance(value, (float, int)):
-        return value
-
-    if not _is_expression(value):
-        raise SpecValidationError(
-            f"Unrecognized string value: {value!r}, "
-            f"numeric value is expected."
-        )
-
-    return _resolve_expression(value)
-
-
-def _is_expression(value: str) -> bool:
-    """Check if a value is an expression wrapped in '$()' syntax.
-
-    Parameters
-    ----------
-    value : str
-        The value to check.
-
-    Returns
-    -------
-    bool
-        True if the value is a string starting with '$(' and ending with ')',
-        False otherwise.
-    """
-    return value.startswith("$(") and value.endswith(")")
-
-
-def _resolve_expression(value: str) -> Union[float, int]:
-    """Resolve an expression wrapped in '$()' syntax.
-
-    This function extracts and evaluates an expression from a string value
-    that is wrapped in the '$()' syntax. It supports named mathematical
-    constants and their negations.
-
-    Parameters
-    ----------
-    value : str
-        A string expression wrapped in '$()' syntax (e.g., '$(pi)', '$(-e)').
-
-    Returns
-    -------
-    Union[float, int]
-        The numeric value of the resolved expression. Returns the value
-        of the named constant, potentially negated if prefixed with '-'.
-
-    Raises
-    ------
-    SpecValidationError
-        If the expression does not match any supported named constant.
-
-    Notes
-    -----
-    - The function assumes the input is already validated to have '$()' syntax.
-    """
-    expression = value[2:-1].strip()
-
-    # Handle negative constants
-    is_negative = expression.startswith("-")
-    constant_name = expression[1:] if is_negative else expression
-
-    if constant_name in NAMED_CONSTANTS:
-        result = NAMED_CONSTANTS[constant_name]
-        return -result if is_negative else result
-
-    raise SpecValidationError(f"Unrecognized string value: {expression!r}")
 
 
 def parse_factory(
