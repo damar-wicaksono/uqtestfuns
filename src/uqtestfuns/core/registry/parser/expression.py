@@ -1,5 +1,6 @@
 import ast
 import math
+import operator
 
 from typing import Any
 
@@ -9,6 +10,14 @@ NAMED_CONSTANTS = {
     "pi": math.pi,
     "e": math.e,
     "inf": math.inf,
+}
+
+BINOP_OPS = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.Pow: operator.pow,
 }
 
 
@@ -176,6 +185,8 @@ def _eval_node(node: ast.AST, expression: str) -> float | int:
         references an unknown name not in ``NAMED_CONSTANTS``, or uses
         unsupported syntax or operations.
     """
+
+    # --- Literal numeric value
     if isinstance(node, ast.Constant):
         if isinstance(node.value, bool) or not isinstance(
             node.value, (int, float)
@@ -186,6 +197,7 @@ def _eval_node(node: ast.AST, expression: str) -> float | int:
             )
         return node.value
 
+    # --- Named constant
     if isinstance(node, ast.Name):
         if node.id in NAMED_CONSTANTS:
             return NAMED_CONSTANTS[node.id]
@@ -193,8 +205,31 @@ def _eval_node(node: ast.AST, expression: str) -> float | int:
             f"Unknown name {node.id!r} in expression {expression!r}"
         )
 
+    # --- Binary operation
+    if isinstance(node, ast.BinOp):
+        op_func = BINOP_OPS.get(type(node.op))
+        if op_func is None:
+            raise SpecValidationError(
+                f"Unsupported operator {type(node.op).__name__} "
+                f"in expression {expression!r}"
+            )
+        # Recurse the binary operation
+        left = _eval_node(node.left, expression)
+        right = _eval_node(node.right, expression)
+        try:
+            return op_func(left, right)
+        except ZeroDivisionError as exc:
+            raise SpecValidationError(
+                f"Division by zero in expression {expression!r}"
+            ) from exc
+
+    # --- Unary negation
     if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.USub):
         return -_eval_node(node.operand, expression)
+
+    # --- Unary positive
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.UAdd):
+        return _eval_node(node.operand, expression)
 
     raise SpecValidationError(
         f"Unsupported syntax in expression {expression!r}: "

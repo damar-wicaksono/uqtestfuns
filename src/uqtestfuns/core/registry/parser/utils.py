@@ -9,7 +9,6 @@ includes utilities for:
 - Parsing factory function specifications
 """
 
-import math
 import yaml
 
 from pathlib import Path
@@ -20,12 +19,6 @@ from uqtestfuns.core.registry.specs import CallableSpec
 
 from .expression import resolve_generic
 from .validation import SpecValidationError, validate_callable_string
-
-NAMED_CONSTANTS = {
-    "pi": math.pi,
-    "e": math.e,
-    "inf": math.inf,
-}
 
 
 def safe_load(yaml_file: Path) -> dict:
