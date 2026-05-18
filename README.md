@@ -2,7 +2,7 @@
 [![JOSS](https://img.shields.io/badge/JOSS-10.21105/joss.05671-brightgreen?style=flat-square)](https://doi.org/10.21105/joss.05671)
 [![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.14710452-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.14710452)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
-[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
+[![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg?style=flat-square)](https://www.python.org/downloads/release/python-3100/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
 [![PyPI](https://img.shields.io/pypi/v/uqtestfuns?style=flat-square)](https://pypi.org/project/uqtestfuns/)
 

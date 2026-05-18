@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.14"
       - name: Install tox
         run: python -m pip install tox
       - name: Run black
@@ -23,7 +23,7 @@ jobs:
        - uses: actions/checkout@v4
        - uses: actions/setup-python@v5
          with:
-            python-version: "3.10"
+            python-version: "3.14"
        - name: Install tox
          run: python -m pip install tox
        - name: Run flake8
@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.14"
       - name: Install tox
         run: python -m pip install tox
       - name: Run mypy
@@ -46,12 +46,8 @@ jobs:
     strategy:
       matrix:
         python:
-          - version: "3.7"
-            toxenv: "py37"
-          - version: "3.8"
-            toxenv: "py38"
-          - version: "3.9"
-            toxenv: "py39"
+          - version: "3.10"
+            toxenv: "py310"
           - version: "3.11"
             toxenv: "py311"
           - version: "3.12"
@@ -68,17 +64,17 @@ jobs:
       - name: Run pytest
         run: tox -e ${{ matrix.python.toxenv }}
   coverage:
-    name: Test (on Python 3.10) w/ coverage to CodeCov
+    name: Test (on Python 3.14) w/ coverage to CodeCov
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.14"
       - name: Install tox
         run: python -m pip install tox
       - name: Run pytest
-        run: tox -e "py310" -- --cov-report=xml --cov-report=term
+        run: tox -e "py314" -- --cov-report=xml --cov-report=term
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
   build_wheels:
