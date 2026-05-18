@@ -68,7 +68,7 @@ def test_compute_variance(input_dimension, params_selection):
     assert my_fun.prob_input is not None
 
     # Compute the variance via Monte Carlo
-    xx = my_fun.prob_input.get_sample(500000)
+    xx = my_fun.prob_input.get_sample(1000000)
     yy = my_fun(xx)
 
     var_mc = np.var(yy)

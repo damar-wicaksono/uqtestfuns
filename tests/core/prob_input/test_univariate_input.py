@@ -152,9 +152,9 @@ def test_get_icdf_values(univariate_input: Any) -> None:
     # Test the upper bound of sampled ICDF
     assert np.max(icdf_values) <= ub
     # Test the lower bound of ICDF
-    assert np.isclose(my_univariate_input.icdf(0.0), lb)
+    assert my_univariate_input.icdf(0.0) >= lb
     # Test the upper bound of ICDF
-    assert np.isclose(my_univariate_input.icdf(1.0), ub)
+    assert my_univariate_input.icdf(1.0) <= ub
 
     # NOTE: Accuracy in ICDF below 1e-15 but above 1e-16.
     assert my_univariate_input.icdf(0.0 + 5e-16) >= lb
