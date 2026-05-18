@@ -1,8 +1,24 @@
+"""Expression parsing and evaluation for YAML specification values.
+
+This module provides functionality to parse and evaluate mathematical
+expressions embedded in YAML specification files using the '$()' syntax.
+
+It supports:
+
+- Named mathematical constants (pi, e, inf)
+- Basic arithmetic operations (add, subtract, multiply, divide, power)
+- Mathematical functions (sqrt, log, exp, trigonometric functions, etc.)
+- Safe evaluation through restricted AST parsing
+
+The module ensures secure expression evaluation by limiting allowed operations
+and preventing arbitrary code execution.
+"""
+
 import ast
 import math
 import operator
 
-from typing import Any
+from typing import Any, Callable, Dict, Union
 
 from .validation import SpecValidationError
 
@@ -18,6 +34,18 @@ BINOP_OPS = {
     ast.Mult: operator.mul,
     ast.Div: operator.truediv,
     ast.Pow: operator.pow,
+}
+
+FUNCTIONS: Dict[str, Callable[..., Union[int, float]]] = {
+    "sqrt": math.sqrt,
+    "log": math.log,  # log(x) for natural log; log(x, base) for arbitrary
+    "log2": math.log2,
+    "log10": math.log10,
+    "exp": math.exp,
+    "sin": math.sin,
+    "cos": math.cos,
+    "tan": math.tan,
+    "abs": abs,  # builtin, not a math function
 }
 
 
@@ -230,6 +258,50 @@ def _eval_node(node: ast.AST, expression: str) -> float | int:
     # --- Unary positive
     if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.UAdd):
         return _eval_node(node.operand, expression)
+
+    # --- Math function call
+    if isinstance(node, ast.Call):
+        # Reject attribute access in function position: foo.bar(...)
+        if not isinstance(node.func, ast.Name):
+            raise SpecValidationError(
+                f"Unsupported call target in expression {expression!r}: "
+                f"{type(node.func).__name__}"
+            )
+
+        # Reject keyword arguments: sqrt(x=5)
+        if node.keywords:
+            raise SpecValidationError(
+                f"Keyword arguments are not supported in expression "
+                f"{expression!r}"
+            )
+
+        # Reject *args splatting: sqrt(*xs)
+        for arg in node.args:
+            if isinstance(arg, ast.Starred):
+                raise SpecValidationError(
+                    f"Argument unpacking is not supported in expression "
+                    f"{expression!r}"
+                )
+
+        # Whitelist lookup
+        func = FUNCTIONS.get(node.func.id)
+        if func is None:
+            raise SpecValidationError(
+                f"Unknown function {node.func.id!r} in expression "
+                f"{expression!r}"
+            )
+
+        # Recursively evaluate positional arguments
+        args = [_eval_node(a, expression) for a in node.args]
+
+        # Call the whitelisted function, wrapping math errors
+        try:
+            return func(*args)
+        except (ValueError, OverflowError, ZeroDivisionError) as exc:
+            raise SpecValidationError(
+                f"Error evaluating {node.func.id!r} in expression "
+                f"{expression!r}: {exc}"
+            ) from exc
 
     raise SpecValidationError(
         f"Unsupported syntax in expression {expression!r}: "
