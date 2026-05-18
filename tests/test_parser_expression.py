@@ -1,3 +1,10 @@
+"""
+Tests for the expression parser in the UQTestFuns registry.
+
+This module contains tests for validating the parsing and resolution of
+generic expressions, including literals, binary operations, and function calls.
+"""
+
 import math
 import pytest
 
@@ -55,3 +62,64 @@ def test_valid_binary_op(input_value, expected_value):
 
     # Assertion
     assert resolved == expected_value
+
+
+class TestFunctionCalls:
+    """Test parsing of valid function calls."""
+
+    @pytest.mark.parametrize(
+        "expression, reference",
+        [
+            ("$(sqrt(4))", math.sqrt(4)),
+            ("$(log(100))", math.log(100)),
+            ("$(log(100, 10))", math.log(100, 10)),
+            ("$(log2(8))", math.log2(8)),
+            ("$(log10(1000))", math.log10(1000)),
+            ("$(exp(1))", math.e),
+            ("$(sin(pi/2))", math.sin(math.pi / 2)),
+            ("$(cos(0))", math.cos(0)),
+            ("$(tan(pi/4))", math.tan(math.pi / 4)),
+            ("$(abs(-5))", abs(-5)),
+        ],
+        ids=[
+            "sqrt",
+            "log",
+            "log_with_base",
+            "log2",
+            "log10",
+            "exp",
+            "sin",
+            "cos",
+            "tan",
+            "abs",
+        ],
+    )
+    def test_valid_expression(self, expression, reference):
+        """Test parsing valid function calls with supported functions."""
+        assert resolve_generic(expression) == reference
+
+    @pytest.mark.parametrize(
+        "expression",
+        [
+            "$(sqrt(x = 5))",  # With keyword argument
+            "$(foo.bar(5))",  # Attribute access
+            "$(max(*[5, 2, 1]))",  # Starred argument
+            "$(max([10, 5]))",  # Unsupported function
+            "$(exp(1000))",  # OverflowError
+            "$(log(-5))",  # ValueError
+            "$(log(1/0))",  # ZeroDivisionError
+        ],
+        ids=[
+            "w/ keyword",
+            "attribute",
+            "starred",
+            "unsupported",
+            "overflow",
+            "value_error",
+            "zero_division",
+        ],
+    )
+    def test_invalid_expression(self, expression):
+        """Test parsing invalid function calls."""
+        with pytest.raises(SpecValidationError):
+            _ = resolve_generic(expression)
