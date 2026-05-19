@@ -21,7 +21,7 @@ regardless of their typical applications.
 
 |              Name               | Input Dimension |                                           Description                                            |
 |:-------------------------------:|:---------------:|:------------------------------------------------------------------------------------------------:|
-|           ``Ackley``            |        M        |                              {ref}`Ackley <test-functions:ackley>`                               |
+|           ``Ackley``            |        M        |                           {ref}`Ackley (1987) <test-functions:ackley>`                           |
 |        ``Alemazkoor2D``         |        2        |              {ref}`Alemazkoor and Meidani (2018) 2D <test-functions:alemazkoor-2d>`              |
 |        ``Alemazkoor20D``        |       20        |             {ref}`Alemazkoor and Meidani (2018) 20D <test-functions:alemazkoor-20d>`             |
 |          ``Borehole``           |        8        |                            {ref}`Borehole <test-functions:borehole>`                             |

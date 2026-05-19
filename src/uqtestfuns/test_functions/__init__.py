@@ -2,7 +2,6 @@
 The init for the 'test_functions' subpackage of UQTestFuns.
 """
 
-from .ackley import Ackley
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
 from .four_branch import FourBranch
 from .robot_arm import RobotArm
@@ -12,7 +11,6 @@ from .sulfur import Sulfur
 
 # NOTE: Import the new test function implementation class from its respective
 __all__ = [
-    "Ackley",
     "DampedOscillator",
     "DampedOscillatorReliability",
     "FourBranch",

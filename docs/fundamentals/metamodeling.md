@@ -20,7 +20,7 @@ in the comparison of metamodeling approaches.
 
 |                                              Name                                              | Input Dimension |       Constructor       |
 |:----------------------------------------------------------------------------------------------:|:---------------:|:-----------------------:|
-|                             {ref}`Ackley <test-functions:ackley>`                              |        M        |       `Ackley()`        |
+|                          {ref}`Ackley (1987) <test-functions:ackley>`                          |        M        |       `Ackley()`        |
 |              {ref}`Alemazkoor & Meidani (2018) 2D <test-functions:alemazkoor-2d>`              |        2        |    `Alemazkoor2D()`     |
 |             {ref}`Alemazkoor & Meidani (2018) 20D <test-functions:alemazkoor-20d>`             |       20        |    `Alemazkoor20D()`    |
 |                           {ref}`Borehole <test-functions:borehole>`                            |        8        |      `Borehole()`       |
