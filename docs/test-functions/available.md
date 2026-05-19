@@ -82,7 +82,7 @@ regardless of their typical applications.
 |           ``Piston``            |        7        |                {ref}`Ben-Ari and Steinberg (2007) Piston <test-functions:piston>`                |
 |          ``Piston20D``          |       20        |                      {ref}`Moon (2010) Piston 20D <test-functions:piston>`                       |
 |         ``Portfolio3D``         |        3        |             {ref}`Saltelli et al. (2004) Portfolio 3D <test-functions:portfolio-3d>`             |
-|          ``RobotArm``           |        8        |                           {ref}`Robot Arm <test-functions:robot-arm>`                            |
+|          ``RobotArm``           |        8        |                  {ref}`An and Owen (2001) Robot Arm <test-functions:robot-arm>`                  |
 |         ``Rosenbrock``          |        M        |                       {ref}`Rosenbrock (1960) <test-functions:rosenbrock>`                       |
 |        ``RSCircularBar``        |        2        |           {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`            |
 |     ``RSCircularPipeCrack``     |        2        |    {ref}`Verma et al. (2015) RS Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`     |

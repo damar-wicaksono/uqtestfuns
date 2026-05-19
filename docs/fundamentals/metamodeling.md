@@ -59,7 +59,7 @@ in the comparison of metamodeling approaches.
 |                  {ref}`Oakley & O'Hagan (2002) 1D <test-functions:oakley-1d>`                  |        1        |      `Oakley1D()`       |
 |                        {ref}`OTL Circuit <test-functions:otl-circuit>`                         |     6 / 20      |     `OTLCircuit()`      |
 |                        {ref}`Piston Simulation <test-functions:piston>`                        |     7 / 20      |       `Piston()`        |
-|                          {ref}`Robot Arm <test-functions:robot-arm>`                           |        8        |      `RobotArm()`       |
+|                 {ref}`An and Owen (2001) Robot Arm <test-functions:robot-arm>`                 |        8        |      `RobotArm()`       |
 |                         {ref}`Rosenbrock <test-functions:rosenbrock>`                          |        M        |     `Rosenbrock()`      |
 |            {ref}`Constantine et al. (2015) Solar Cell <test-functions:solar-cell>`             |        5        |      `SolarCell()`      |
 |                  {ref}`Charlson et al. (1992) Sulfur <test-functions:sulfur>`                  |        9        |       `Sulfur()`        |
