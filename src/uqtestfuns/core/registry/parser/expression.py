@@ -20,6 +20,7 @@ import operator
 
 from typing import Any, Callable, Dict, Union
 
+from .builtin_functions import gumbel_max_beta, gumbel_max_mu
 from .validation import SpecValidationError
 
 NAMED_CONSTANTS = {
@@ -46,6 +47,8 @@ FUNCTIONS: Dict[str, Callable[..., Union[int, float]]] = {
     "cos": math.cos,
     "tan": math.tan,
     "abs": abs,  # builtin, not a math function
+    "gumbel_max_beta": gumbel_max_beta,
+    "gumbel_max_mu": gumbel_max_mu,
 }
 
 

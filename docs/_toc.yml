@@ -166,6 +166,8 @@ parts:
             title: RS - Circular Bar
           - file: test-functions/rs-circular-pipe-crack
             title: RS - Circular Pipe Crack
+          - file: test-functions/rs-speed-reducer-shaft
+            title: RS - Speed Reducer Shaft
           - file: test-functions/rs-quadratic
             title: RS - Quadratic
           - file: test-functions/saltelli-linear
@@ -178,8 +180,6 @@ parts:
             title: Sobol'-Levitan
           - file: test-functions/solar-cell
             title: Solar Cell
-          - file: test-functions/speed-reducer-shaft
-            title: Speed Reducer Shaft
           - file: test-functions/sulfur
             title: Sulfur
           - file: test-functions/undamped-oscillator

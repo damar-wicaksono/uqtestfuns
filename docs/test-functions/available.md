@@ -86,13 +86,13 @@ regardless of their typical applications.
 |         ``Rosenbrock``          |        M        |                       {ref}`Rosenbrock (1960) <test-functions:rosenbrock>`                       |
 |        ``RSCircularBar``        |        2        |           {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`            |
 |     ``RSCircularPipeCrack``     |        2        |    {ref}`Verma et al. (2015) RS Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`     |
+|     ``RSSpeedReducerShaft``     |        5        |  {ref}`Du and Sudjianto (2004) RS Speed Reducer Shaft <test-functions:rs-speed-reducer-shaft>`   |
 |         ``RSQuadratic``         |        2        |                 {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                  |
 |       ``SaltelliLinear``        |        M        |              {ref}`Saltelli et al. (2008) Linear <test-functions:saltelli-linear>`               |
 |           ``SobolG``            |        M        |                   {ref}`Saltelli and Sobol' (1995) G <test-functions:sobol-g>`                   |
 |         ``SobolGStar``          |        M        |                  {ref}`Saltelli et al. (2010) G* <test-functions:sobol-g-star>`                  |
 |        ``SobolLevitan``         |        M        |                   {ref}`Sobol'-Levitan (1999) <test-functions:sobol-levitan>`                    |
 |          ``SolarCell``          |        5        |             {ref}`Constantine et al. (2015) Solar Cell <test-functions:solar-cell>`              |
-|      ``SpeedReducerShaft``      |        5        |                 {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`                  |
 |           ``Sulfur``            |        9        |                   {ref}`Charlson et al. (1992) Sulfur <test-functions:sulfur>`                   |
 |     ``UndampedOscillator``      |        6        |       {ref}`Gayton et al. (2003) Undamped Oscillator <test-functions:undamped-oscillator>`       |
 |          ``Webster2D``          |        2        |                   {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`                    |

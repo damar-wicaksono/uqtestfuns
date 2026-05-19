@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:speed-reducer-shaft)=
-# Speed Reducer Shaft
+(test-functions:rs-speed-reducer-shaft)=
+# Speed Reducer Shaft Reliability Problem from Du and Sudjianto (2004)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,16 +21,23 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The speed reducer shaft test function is a five-dimensional scalar-valued
-test function introduced in {cite}`Du2004`. It is used as a test function for reliability
-analysis algorithms (see, for instance, {cite}`Du2004, Li2018`).
+The speed reducer shaft test function (`RSSpeedReducerShaft`)
+is a five-dimensional reliability problem analyzing
+the performance of a shaft in a speed reducer under combined bending
+and torsional loading.
+The performance is defined as the strength of the shaft minus the stress;
+the system fails when this quantity is negative.
+
+The function was introduced by {cite}`Du2004`
+and is used as a benchmark for reliability analysis algorithms
+(see, for instance, {cite}`Li2018`).
 
 ## Test function instance
 
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.SpeedReducerShaft()
+my_testfun = uqtf.RSSpeedReducerShaft()
 ```
 
 Check if it has been correctly instantiated:
@@ -49,7 +56,7 @@ $$
 g(\boldsymbol{x}) = S - \frac{32}{\pi D^3} \sqrt{\frac{F^2 L^2}{16} + T^2},
 $$
 
-where $\boldsymbol{x} = \{ S, D, F, L, T \}$
+where $\boldsymbol{x} = \{ D, L, F, T, S \}$
 is the five-dimensional vector of input variables probabilistically defined
 further below.
 
@@ -69,11 +76,15 @@ random variables with marginal distributions shown in the table below.
 print(my_testfun.prob_input)
 ```
 
-Note that the variables $F$, $D$, and $L$ must be first converted to their
-corresponding SI units (i.e., $[\mathrm{Pa}]$, $[\mathrm{m}]$,
-and $[\mathrm{m}]$, respectively) before the values are plugged
-into the formula above.
+```{note}
+The variables $S$, $D$, and $L$ must be first converted to SI base units
+before being substituted into the formula above:
 
+- $S$ from $[\mathrm{MPa}]$ to $[\mathrm{Pa}]$ (multiply by $10^6$)
+- $D$ and $L$ from $[\mathrm{mm}]$ to $[\mathrm{m}]$ (multiply by $10^{-3}$)
+
+The forces $F$ and torque $T$ are already in SI base units.
+```
 
 ## Reference results
 
@@ -87,8 +98,7 @@ Shown below is the histogram of the output based on $10^6$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(1000000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(1000000)
 idx_pos = yy_test > 0
 idx_neg = yy_test <= 0
 
@@ -98,7 +108,7 @@ plt.axvline(0, linewidth=1.0, color="#ca0020")
 
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 
@@ -107,12 +117,13 @@ plt.gcf().set_dpi(150);
 Some reference values for the failure probability $P_f$ and from the literature
 are summarized in the table below.
 
-|    Method     |   $N$   |       $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |           Source           |
-|:-------------:|:-------:|:-----------------------:|:-------------------------:|:--------------------------:|
-|  {term}`MCS`  | $10^6$  | $7.850 \times 10^{-4}$  |          &#8212;          | {cite}`Du2004` (Table 11)  |
-| {term}`FORM`  | $1'472$ | $7.007 \times 10^{-7}$  |          &#8212;          | {cite}`Du2004` (Table 11)  |
-| {term}`SORM`  | $1'514$ | $4.3581 \times 10^{-7}$ |          &#8212;          | {cite}`Du2004` (Table 11)  |
-| {term}`FOSPA` |  $102$  | $6.1754 \times 10^{-4}$ |          &#8212;          | {cite}`Du2004` (Table 11)  |
+|    Method     |   $N$   |       $\hat{P}_f$       | $\mathrm{CoV}[\hat{P}_f]$ |          Source           |
+|:-------------:|:-------:|:-----------------------:|:-------------------------:|:-------------------------:|
+|  {term}`MCS`  | $10^6$  | $7.850 \times 10^{-4}$  |          &#8212;          | {cite}`Du2004` (Table 11) |
+| {term}`FORM`  | $1'472$ | $7.007 \times 10^{-7}$  |          &#8212;          | {cite}`Du2004` (Table 11) |
+| {term}`SORM`  | $1'514$ | $4.3581 \times 10^{-7}$ |          &#8212;          | {cite}`Du2004` (Table 11) |
+| {term}`FOSPA` |  $102$  | $6.1754 \times 10^{-4}$ |          &#8212;          | {cite}`Du2004` (Table 11) |
+| {term}`SSRM`  |  $44$   |  $7.52 \times 10^{-3}$  |          &#8212;          | {cite}`Li2018` (Table 9)  |
 
 ## References
 
@@ -121,4 +132,4 @@ are summarized in the table below.
 :filter: docname in docnames
 ```
 
-[^location]: see Eq. (34), p. 1205 in {cite}`Du2004`.
+[^location]: See Eq. (34), p. 1205 in {cite}`Du2004`.

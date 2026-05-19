@@ -18,19 +18,20 @@ kernelspec:
 The table below listed the available test functions typically used
 in the comparison of reliability analysis methods.
 
-|                                        Name                                         | Input Dimension |           Constructor           |
-|:-----------------------------------------------------------------------------------:|:---------------:|:-------------------------------:|
-|           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`           |        2        |       `CantileverBeam2D `       |
-|         {ref}`Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`          |        2        |      `CircularPipeCrack()`      |
-|          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |        2        |      `ConvexFailDomain()`       |
-| {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |        8        | `DampedOscillatorReliability()` |
-|    {ref}`Katsuki and Frangopol (1994) Four-Branch <test-functions:four-branch>`     |        2        |         `FourBranch()`          |
-|                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |        2        |          `GaytonHat()`          |
-|               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |        2        |         `HyperSphere()`         |
-|              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |        2        |        `RSCircularBar()`        |
-|                 {ref}`RS - Quadratic <test-functions:rs-quadratic>`                 |        2        |         `RSQuadratic()`         |
-|           {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`           |        5        |      `SpeedReducerShaft()`      |
-|           {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`           |        6        |     `UndampedOscillator()`      |
+|                                             Name                                              | Input Dimension |           Constructor           |
+|:---------------------------------------------------------------------------------------------:|:---------------:|:-------------------------------:|
+|                {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`                |        2        |       `CantileverBeam2D `       |
+|              {ref}`Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`               |        2        |      `CircularPipeCrack()`      |
+|               {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`                |        2        |      `ConvexFailDomain()`       |
+|      {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>`      |        8        | `DampedOscillatorReliability()` |
+|         {ref}`Katsuki and Frangopol (1994) Four-Branch <test-functions:four-branch>`          |        2        |         `FourBranch()`          |
+|                         {ref}`Gayton Hat <test-functions:gayton-hat>`                         |        2        |          `GaytonHat()`          |
+|                    {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`                    |        2        |         `HyperSphere()`         |
+|                   {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`                   |        2        |        `RSCircularBar()`        |
+|   {ref}`Verma et al. (2015) RS Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`   |        2        |     `RSCircularPipeCrack()`     |
+|                      {ref}`RS - Quadratic <test-functions:rs-quadratic>`                      |        2        |         `RSQuadratic()`         |
+| {ref}`Du and Sudjianto (2004) RS Speed Reducer Shaft <test-functions:rs-speed-reducer-shaft>` |        5        |     `RSSpeedReducerShaft()`     |
+|                {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`                |        6        |     `UndampedOscillator()`      |
 
 In a Python terminal, you can list all the available functions relevant
 for metamodeling applications using ``list_functions()`` and filter the results
