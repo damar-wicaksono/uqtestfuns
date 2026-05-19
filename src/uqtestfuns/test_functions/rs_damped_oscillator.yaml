@@ -1,0 +1,184 @@
+name: RSDampedOscillator
+description: >-
+  Reliability of a damped oscillator system from
+  Der Kiureghian and De Stefano (1990)
+tags:
+  - reliability
+
+dimensions:
+  input: 8
+  output: 1
+
+default_input: DerKiureghian1990a
+
+inputs:
+  DerKiureghian1990a:
+    description: >-
+      Probabilistic input model #1 for the damped oscillator reliability
+      problem from Der Kiureghian and De Stefano (1990)
+    marginals:
+      - name: Mp
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(1.5, 0.1 * 1.5))
+          - $(lognormal_sigma(1.5, 0.1 * 1.5))
+        description: Primary mass
+      - name: Ms
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.01, 0.1 * 0.01))
+          - $(lognormal_sigma(0.01, 0.1 * 0.01))
+        description: Secondary mass
+      - name: Kp
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(1.0, 0.2 * 1.0))
+          - $(lognormal_sigma(1.0, 0.2 * 1.0))
+        description: Primary spring stiffness
+      - name: Ks
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.01, 0.2 * 0.01))
+          - $(lognormal_sigma(0.01, 0.2 * 0.01))
+        description: Secondary spring stiffness
+      - name: Zeta_p
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.05, 0.4 * 0.05))
+          - $(lognormal_sigma(0.05, 0.4 * 0.05))
+        description: Primary damping ratio
+      - name: Zeta_s
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.02, 0.5 * 0.02))
+          - $(lognormal_sigma(0.02, 0.5 * 0.02))
+        description: Secondary damping ratio
+      - name: S0
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(100.0, 0.1 * 100.0))
+          - $(lognormal_sigma(100.0, 0.1 * 100.0))
+        description: White noise base acceleration
+      - name: Fs
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(15.0, 0.1 * 15.0))
+          - $(lognormal_sigma(15.0, 0.1 * 15.0))
+        description: Force capacity of the secondary spring
+
+  DerKiureghian1990b:
+    description: >-
+      Probabilistic input model #2 for the damped oscillator reliability
+      problem from Der Kiureghian and De Stefano (1990)
+    marginals:
+      - name: Mp
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(1.5, 0.1 * 1.5))
+          - $(lognormal_sigma(1.5, 0.1 * 1.5))
+        description: Primary mass
+      - name: Ms
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.01, 0.1 * 0.01))
+          - $(lognormal_sigma(0.01, 0.1 * 0.01))
+        description: Secondary mass
+      - name: Kp
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(1.0, 0.2 * 1.0))
+          - $(lognormal_sigma(1.0, 0.2 * 1.0))
+        description: Primary spring stiffness
+      - name: Ks
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.01, 0.2 * 0.01))
+          - $(lognormal_sigma(0.01, 0.2 * 0.01))
+        description: Secondary spring stiffness
+      - name: Zeta_p
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.05, 0.4 * 0.05))
+          - $(lognormal_sigma(0.05, 0.4 * 0.05))
+        description: Primary damping ratio
+      - name: Zeta_s
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.02, 0.5 * 0.02))
+          - $(lognormal_sigma(0.02, 0.5 * 0.02))
+        description: Secondary damping ratio
+      - name: S0
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(100.0, 0.1 * 100.0))
+          - $(lognormal_sigma(100.0, 0.1 * 100.0))
+        description: White noise base acceleration
+      - name: Fs
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(21.5, 0.1 * 21.5))
+          - $(lognormal_sigma(21.5, 0.1 * 21.5))
+        description: Force capacity of the secondary spring
+
+  DerKiureghian1990c:
+    description: >-
+      Probabilistic input model #3 for the damped oscillator reliability
+      problem from Der Kiureghian and De Stefano (1990)
+    marginals:
+      - name: Mp
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(1.5, 0.1 * 1.5))
+          - $(lognormal_sigma(1.5, 0.1 * 1.5))
+        description: Primary mass
+      - name: Ms
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.01, 0.1 * 0.01))
+          - $(lognormal_sigma(0.01, 0.1 * 0.01))
+        description: Secondary mass
+      - name: Kp
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(1.0, 0.2 * 1.0))
+          - $(lognormal_sigma(1.0, 0.2 * 1.0))
+        description: Primary spring stiffness
+      - name: Ks
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.01, 0.2 * 0.01))
+          - $(lognormal_sigma(0.01, 0.2 * 0.01))
+        description: Secondary spring stiffness
+      - name: Zeta_p
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.05, 0.4 * 0.05))
+          - $(lognormal_sigma(0.05, 0.4 * 0.05))
+        description: Primary damping ratio
+      - name: Zeta_s
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.02, 0.5 * 0.02))
+          - $(lognormal_sigma(0.02, 0.5 * 0.02))
+        description: Secondary damping ratio
+      - name: S0
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(100.0, 0.1 * 100.0))
+          - $(lognormal_sigma(100.0, 0.1 * 100.0))
+        description: White noise base acceleration
+      - name: Fs
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(27.5, 0.1 * 27.5))
+          - $(lognormal_sigma(27.5, 0.1 * 27.5))
+        description: Force capacity of the secondary spring
+
+parameters:
+  keyword:
+    pf: Peak factor [-]
+  sets:
+    DerKiureghian1990:
+      pf: 3.0
+      description: >-
+        Parameter set from Der Kiureghian and De Stefano (1990)

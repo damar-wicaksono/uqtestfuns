@@ -18,20 +18,20 @@ kernelspec:
 The table below listed the available test functions typically used
 in the comparison of reliability analysis methods.
 
-|                                             Name                                              | Input Dimension |           Constructor           |
-|:---------------------------------------------------------------------------------------------:|:---------------:|:-------------------------------:|
-|                {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`                |        2        |       `CantileverBeam2D `       |
-|              {ref}`Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`               |        2        |      `CircularPipeCrack()`      |
-|               {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`                |        2        |      `ConvexFailDomain()`       |
-|      {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>`      |        8        | `DampedOscillatorReliability()` |
-|         {ref}`Katsuki and Frangopol (1994) Four-Branch <test-functions:four-branch>`          |        2        |         `FourBranch()`          |
-|                         {ref}`Gayton Hat <test-functions:gayton-hat>`                         |        2        |          `GaytonHat()`          |
-|                    {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`                    |        2        |         `HyperSphere()`         |
-|                   {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`                   |        2        |        `RSCircularBar()`        |
-|   {ref}`Verma et al. (2015) RS Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`   |        2        |     `RSCircularPipeCrack()`     |
-|                      {ref}`RS - Quadratic <test-functions:rs-quadratic>`                      |        2        |         `RSQuadratic()`         |
-| {ref}`Du and Sudjianto (2004) RS Speed Reducer Shaft <test-functions:rs-speed-reducer-shaft>` |        5        |     `RSSpeedReducerShaft()`     |
-|                {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`                |        6        |     `UndampedOscillator()`      |
+|                                                        Name                                                        | Input Dimension |       Constructor       |
+|:------------------------------------------------------------------------------------------------------------------:|:---------------:|:-----------------------:|
+|                          {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`                           |        2        |   `CantileverBeam2D `   |
+|                         {ref}`Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`                         |        2        |  `CircularPipeCrack()`  |
+|                          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`                          |        2        |  `ConvexFailDomain()`   |
+|                    {ref}`Katsuki and Frangopol (1994) Four-Branch <test-functions:four-branch>`                    |        2        |     `FourBranch()`      |
+|                                   {ref}`Gayton Hat <test-functions:gayton-hat>`                                    |        2        |      `GaytonHat()`      |
+|                              {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`                               |        2        |     `HyperSphere()`     |
+|                    {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`                     |        2        |    `RSCircularBar()`    |
+|             {ref}`Verma et al. (2015) RS Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`              |        2        | `RSCircularPipeCrack()` |
+| {ref}`Der Kiureghian and De Stefano (1990) RS Damped Oscillator <test-functions:rs-damped-oscillator-reliability>` |        8        | `RSDampedOscillator()`  |
+|                          {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                           |        2        |     `RSQuadratic()`     |
+|           {ref}`Du and Sudjianto (2004) RS Speed Reducer Shaft <test-functions:rs-speed-reducer-shaft>`            |        5        | `RSSpeedReducerShaft()` |
+|                          {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`                           |        6        | `UndampedOscillator()`  |
 
 In a Python terminal, you can list all the available functions relevant
 for metamodeling applications using ``list_functions()`` and filter the results
@@ -120,9 +120,9 @@ accurately with as few function/model evaluations as possible.
 import numpy as np
 import matplotlib.pyplot as plt
 
-my_fun = uqtf.CircularPipeCrack()
-my_fun.prob_input.reset_rng(237324)
-xx = my_fun.prob_input.get_sample(1000000)
+my_fun = uqtf.RSCircularPipeCrack()
+rng = np.random.default_rng(237324)
+xx = my_fun.prob_input.get_sample(1000000, rng)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
 idx_pos = yy > 0.0
@@ -154,8 +154,8 @@ cf = axs_1.contour(
 )
 axs_1.set_xlim([lb_1, ub_1])
 axs_1.set_ylim([lb_2, ub_2])
-axs_1.set_xlabel("$x_1$", fontsize=18)
-axs_1.set_ylabel("$x_2$", fontsize=18)
+axs_1.set_xlabel(r"$x_1$", fontsize=18)
+axs_1.set_ylabel(r"$x_2$", fontsize=18)
 axs_1.tick_params(labelsize=16)
 axs_1.clabel(cf, inline=True, fontsize=18)
 
@@ -175,7 +175,7 @@ axs_2.scatter(
     color="#ca0020",
     marker=".",
     s=30,
-    label="$g(x) \leq 0$"
+    label=r"$g(x) \leq 0$"
 )
 axs_2.scatter(
     xx[idx_pos, 0],
@@ -183,19 +183,19 @@ axs_2.scatter(
     color="#0571b0",
     marker=".",
     s=30,
-    label="$g(x) > 0$"
+    label=r"$g(x) > 0$"
 )
 axs_2.set_xlim([lb_1, ub_1])
 axs_2.set_ylim([lb_2, ub_2])
-axs_2.set_xlabel("$x_1$", fontsize=18)
-axs_2.set_ylabel("$x_2$", fontsize=18)
+axs_2.set_xlabel(r"$x_1$", fontsize=18)
+axs_2.set_ylabel(r"$x_2$", fontsize=18)
 axs_2.tick_params(labelsize=16)
 axs_2.clabel(cf, inline=True, fontsize=18)
 axs_2.legend(fontsize=18, loc="lower right");
 
 # Histogram
 axs_3 = plt.subplot(133)
-xx_test = my_fun.prob_input.get_sample(1000000)
+xx_test = my_fun.prob_input.get_sample(1000000, rng)
 yy_test = my_fun(xx_test)
 idx_pos = yy_test > 0
 idx_neg = yy_test <= 0
@@ -206,7 +206,7 @@ axs_3.axvline(0, linewidth=1.0, color="#ca0020")
 
 axs_3.grid()
 axs_3.set_ylabel("Counts [-]", fontsize=18)
-axs_3.set_xlabel("$g(\mathbf{X})$", fontsize=18)
+axs_3.set_xlabel(r"$g(\mathbf{X})$", fontsize=18)
 
 plt.gcf().tight_layout(pad=4.0)
 plt.gcf().set_dpi(150);

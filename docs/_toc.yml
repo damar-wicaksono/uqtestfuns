@@ -66,8 +66,6 @@ parts:
             title: Santner et al. (2018) Damped Cosine
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
-          - file: test-functions/damped-oscillator-reliability
-            title: Damped Oscillator Reliability
           - file: test-functions/dette-8d
             title: Dette 8D
           - file: test-functions/dette-curved
@@ -166,6 +164,8 @@ parts:
             title: RS - Circular Bar
           - file: test-functions/rs-circular-pipe-crack
             title: RS - Circular Pipe Crack
+          - file: test-functions/rs-damped-oscillator
+            title: RS - Damped Oscillator
           - file: test-functions/rs-speed-reducer-shaft
             title: RS - Speed Reducer Shaft
           - file: test-functions/rs-quadratic

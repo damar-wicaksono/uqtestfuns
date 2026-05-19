@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-(test-functions:damped-oscillator-reliability)=
-# Damped Oscillator Reliability
+(test-functions:rs-damped-oscillator-reliability)=
+# Damped Oscillator Reliability Problem from Der Kiureghian and De Stefano (1990)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,22 +21,24 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The damped oscillator reliability problem is an eight-dimensional reliability
-analysis test function {cite}`DerKiureghian1990, DerKiureghian1991, Bourinet2011, Dubourg2011`.
+The damped oscillator reliability problem (or `RSDampedOscillator` for short)
+is an eight-dimensional reliability test function.
+It poses the failure of a damped two-degree-of-freedom primary-secondary
+mechanical system under white-noise base acceleration,
+where failure is defined as the force in the secondary spring
+exceeding its capacity.
 
-```{note}
-The reliability analysis variant differs from
-the {ref}`base model <test-functions:damped-oscillator>`.
-The base model computes the mean-square relative displacement of
-the secondary spring without reference to the performance of the system.
-```
+The problem builds on the base damped oscillator model of {cite}`Igusa1985`
+(see {ref}`Damped Oscillator <test-functions:damped-oscillator>`);
+the reliability formulation is introduced in {cite}`DerKiureghian1990`
+and has been studied by {cite}`DerKiureghian1991, Bourinet2011, Dubourg2011`.
 
 ## Test function instance
 
 To create a default instance of the test function:
 
 ```{code-cell} ipython3
-my_testfun = uqtf.DampedOscillatorReliability()
+my_testfun = uqtf.RSDampedOscillator()
 ```
 
 Check if it has been correctly instantiated:
@@ -116,8 +118,8 @@ print(my_testfun.parameters)
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -126,8 +128,7 @@ Shown below is the histogram of the output based on $10^6$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(1000000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(1000000)
 idx_pos = yy_test > 0
 idx_neg = yy_test <= 0
 
@@ -137,7 +138,7 @@ plt.axvline(0, linewidth=1.0, color="#ca0020")
 
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 
@@ -173,7 +174,7 @@ and the correction runs {cite}`Dubourg2011`.
 :filter: docname in docnames
 ```
 
-[^location]: see, for instance, 
+[^location]: See, for instance, 
 Eqs. (5.5) and (5.7), pp. 184-185 in {cite}`Dubourg2011`.
 
 [^meta-is]: Metamodel-based Importance Sampling
