@@ -24,7 +24,7 @@ in the comparison of reliability analysis methods.
 |         {ref}`Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`          |        2        |      `CircularPipeCrack()`      |
 |          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`           |        2        |      `ConvexFailDomain()`       |
 | {ref}`Damped Oscillator Reliability <test-functions:damped-oscillator-reliability>` |        8        | `DampedOscillatorReliability()` |
-|                   {ref}`Four-branch <test-functions:four-branch>`                   |        2        |         `FourBranch()`          |
+|    {ref}`Katsuki and Frangopol (1994) Four-Branch <test-functions:four-branch>`     |        2        |         `FourBranch()`          |
 |                    {ref}`Gayton Hat <test-functions:gayton-hat>`                    |        2        |          `GaytonHat()`          |
 |               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`               |        2        |         `HyperSphere()`         |
 |              {ref}`RS - Circular Bar <test-functions:rs-circular-bar>`              |        2        |        `RSCircularBar()`        |

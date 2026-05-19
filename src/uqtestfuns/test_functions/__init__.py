@@ -3,7 +3,6 @@ The init for the 'test_functions' subpackage of UQTestFuns.
 """
 
 from .damped_oscillator import DampedOscillator, DampedOscillatorReliability
-from .four_branch import FourBranch
 from .robot_arm import RobotArm
 from .solar_cell import SolarCell
 from .speed_reducer_shaft import SpeedReducerShaft
@@ -13,7 +12,6 @@ from .sulfur import Sulfur
 __all__ = [
     "DampedOscillator",
     "DampedOscillatorReliability",
-    "FourBranch",
     "RobotArm",
     "SolarCell",
     "SpeedReducerShaft",

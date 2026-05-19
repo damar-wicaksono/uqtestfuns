@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:four-branch)=
-# Four-branch Function
+# Four-Branch Reliability Problem from Katsuki and Frangopol (1994)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,24 +21,23 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The two-dimensional four-branch function was introduced in {cite}`Katsuki1994`
-and became a commonly used test function for reliability analysis algorithms
-(see, for instance, {cite}`Waarts2000, Schueremans2005, Echard2011, Schoebi2017`)
-The test function describes the failure of a series system with four distinct
-performance function components.
+The `FourBranch` function is a two-dimensional scalar-valued
+performance function describing the failure of a series system
+with four distinct parts.
+It was introduced in {cite}`Katsuki1994` and has since become a widely used
+benchmark for reliability analysis algorithms (see, for instance,
+{cite}`Waarts2000, Schueremans2005, Echard2011, Schoebi2017`).
 
-The plots of the function are shown below. The left plot shows the surface
-plot of the performance function, the center plot shows the contour
-plot with a single contour line at function value of $0.0$ (the limit-state
-surface), and the right plot shows the same plot with $10^6$ sample points
-overlaid.
+The left plot below shows the surface plot of the performance function,
+the center plot shows the contour plot with a single contour line
+at function value of $0.0$ (the limit-state  surface),
+and the right plot shows the same plot with $10^6$ sample points overlaid.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
 
 my_fun = uqtf.FourBranch()
-my_fun.prob_input.reset_rng(237324)
-xx = my_fun.prob_input.get_sample(1000000)
+xx = my_fun.prob_input.get_sample(1000000, 237324)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
 idx_pos = yy > 0.0
@@ -69,9 +68,9 @@ axs_0.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_0.set_xlabel("$x_1$", fontsize=18)
-axs_0.set_ylabel("$x_2$", fontsize=18)
-axs_0.set_zlabel("$g$", fontsize=18)
+axs_0.set_xlabel(r"$x_1$", fontsize=18)
+axs_0.set_ylabel(r"$x_2$", fontsize=18)
+axs_0.set_zlabel(r"$g$", fontsize=18)
 
 # Contour plot
 axs_1 = plt.subplot(132)
@@ -85,8 +84,8 @@ cf = axs_1.contour(
 )
 axs_1.set_xlim([lb_1, ub_1])
 axs_1.set_ylim([lb_2, ub_2])
-axs_1.set_xlabel("$x_1$", fontsize=18)
-axs_1.set_ylabel("$x_2$", fontsize=18)
+axs_1.set_xlabel(r"$x_1$", fontsize=18)
+axs_1.set_ylabel(r"$x_2$", fontsize=18)
 axs_1.tick_params(labelsize=16)
 axs_1.set_aspect("equal", "box")
 axs_1.clabel(cf, inline=True, fontsize=18)
@@ -107,7 +106,7 @@ axs_2.scatter(
     color="#ca0020",
     marker=".",
     s=30,
-    label="$g(x) \leq 0$"
+    label=r"$g(x) \leq 0$"
 )
 axs_2.scatter(
     xx[idx_pos, 0],
@@ -115,12 +114,12 @@ axs_2.scatter(
     color="#0571b0",
     marker=".",
     s=30,
-    label="$g(x) > 0$"
+    label=r"$g(x) > 0$"
 )
 axs_2.set_xlim([lb_1, ub_1])
 axs_2.set_ylim([lb_2, ub_2])
-axs_2.set_xlabel("$x_1$", fontsize=18)
-axs_2.set_ylabel("$x_2$", fontsize=18)
+axs_2.set_xlabel(r"$x_1$", fontsize=18)
+axs_2.set_ylabel(r"$x_2$", fontsize=18)
 axs_2.tick_params(labelsize=16)
 axs_2.set_aspect("equal", "box")
 axs_2.clabel(cf, inline=True, fontsize=18)
@@ -181,8 +180,13 @@ print(my_testfun.prob_input)
 
 ## Parameters
 
-The test function is parameterized by a single value $p$. Some values available
-in the literature is given in the table below.
+The test function is parameterized by a single value $p$ which controls
+the offset of the diagonal branches $g_3$ and $g_4$ from the origin.
+Larger values push the failure boundary further, 
+thus reducing the failure probability.
+
+Some values available
+in the literature are given in the table below.
 
 |         $p$          |           Keyword           |         Source          |
 |:--------------------:|:---------------------------:|:-----------------------:|
@@ -199,8 +203,8 @@ print(my_testfun.parameters)
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -209,8 +213,7 @@ Shown below is the histogram of the output based on $10^6$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(1000000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(1000000)
 idx_pos = yy_test > 0
 idx_neg = yy_test <= 0
 
@@ -220,7 +223,7 @@ plt.axvline(0, linewidth=1.0, color="#ca0020")
 
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 

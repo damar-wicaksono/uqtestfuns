@@ -42,7 +42,7 @@ regardless of their typical applications.
 |          ``DetteExp``           |        3        |            {ref}`Dette and Pepelyshev (2010) Exponential <test-functions:dette-exp>`             |
 |            ``Flood``            |        8        |                  {ref}`Iooss and Lemaître (2015) Flood <test-functions:flood>`                   |
 |         ``Forrester1D``         |        1        |                 {ref}`Forrester et al. (2008) 1D <test-functions:forrester-1d>`                  |
-|         ``FourBranch``          |        2        |                         {ref}`Four-branch <test-functions:four-branch>`                          |
+|         ``FourBranch``          |        2        |           {ref}`Katsuki and Frangopol (1994) Four-Branch <test-functions:four-branch>`           |
 |           ``Franke1``           |        2        |                        {ref}`Franke (1979) 1st <test-functions:franke-1>`                        |
 |           ``Franke2``           |        2        |                        {ref}`Franke (1979) 2nd <test-functions:franke-2>`                        |
 |           ``Franke3``           |        2        |                        {ref}`Franke (1979) 3rd <test-functions:franke-3>`                        |

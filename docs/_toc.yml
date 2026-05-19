@@ -79,7 +79,7 @@ parts:
           - file: test-functions/forrester-1d
             title: Forrester et al. (2008) 1D
           - file: test-functions/four-branch
-            title: Four-branch
+            title: Four-Branch
           - file: test-functions/franke-1
             title: Franke (1979) 1st
           - file: test-functions/franke-2
