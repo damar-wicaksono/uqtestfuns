@@ -20,7 +20,7 @@ in the comparison of metamodeling approaches.
 
 |                                              Name                                              | Input Dimension |       Constructor       |
 |:----------------------------------------------------------------------------------------------:|:---------------:|:-----------------------:|
-|                             {ref}`Ackley <test-functions:ackley>`                              |        M        |       `Ackley()`        |
+|                          {ref}`Ackley (1987) <test-functions:ackley>`                          |        M        |       `Ackley()`        |
 |              {ref}`Alemazkoor & Meidani (2018) 2D <test-functions:alemazkoor-2d>`              |        2        |    `Alemazkoor2D()`     |
 |             {ref}`Alemazkoor & Meidani (2018) 20D <test-functions:alemazkoor-20d>`             |       20        |    `Alemazkoor20D()`    |
 |                           {ref}`Borehole <test-functions:borehole>`                            |        8        |      `Borehole()`       |
@@ -59,10 +59,10 @@ in the comparison of metamodeling approaches.
 |                  {ref}`Oakley & O'Hagan (2002) 1D <test-functions:oakley-1d>`                  |        1        |      `Oakley1D()`       |
 |                        {ref}`OTL Circuit <test-functions:otl-circuit>`                         |     6 / 20      |     `OTLCircuit()`      |
 |                        {ref}`Piston Simulation <test-functions:piston>`                        |     7 / 20      |       `Piston()`        |
-|                          {ref}`Robot Arm <test-functions:robot-arm>`                           |        8        |      `RobotArm()`       |
+|                 {ref}`An and Owen (2001) Robot Arm <test-functions:robot-arm>`                 |        8        |      `RobotArm()`       |
 |                         {ref}`Rosenbrock <test-functions:rosenbrock>`                          |        M        |     `Rosenbrock()`      |
-|                      {ref}`Solar Cell Model <test-functions:solar-cell>`                       |        5        |      `SolarCell()`      |
-|                             {ref}`Sulfur <test-functions:sulfur>`                              |        9        |       `Sulfur()`        |
+|            {ref}`Constantine et al. (2015) Solar Cell <test-functions:solar-cell>`             |        5        |      `SolarCell()`      |
+|                  {ref}`Charlson et al. (1992) Sulfur <test-functions:sulfur>`                  |        9        |       `Sulfur()`        |
 |                {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`                 |        6        | `UndampedOscillator()`  |
 |                  {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`                   |        2        |      `Webster2D()`      |
 |                     {ref}`Welch et al. (1992) <test-functions:welch1992>`                      |       20        |      `Welch1992()`      |

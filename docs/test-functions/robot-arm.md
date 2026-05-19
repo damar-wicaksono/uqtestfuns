@@ -21,14 +21,11 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The robot arm function is an eight-dimensional, scalar-valued test function
-that calculates the distance between a fixed origin and the tip
-of a four-segment robot arm.
-
-The function is commonly used in metamodeling exercises; for example,
-see {cite}`An2001, Bouhlel2019`. Due to its complexity, the function is
-challenging to approximate using polynomials and has therefore been studied 
-extensively in the neural network literature {cite}`An2001`.
+The `RobotArm` function is an eight-dimensional scalar-valued function
+that computes the distance between a fixed origin
+and the tip of a four-segment robot arm.
+It is commonly used in metamodeling exercises
+(see, for example, {cite}`An2001, Bouhlel2019`).
 
 ## Test function instance
 
@@ -49,7 +46,7 @@ print(my_testfun)
 Consider a four-segment robot arm, with its shoulder fixed at the origin
 in the $(x, y)$-plane.
 The segments have lengths $L_1, L_2, L_3$ and $L_4$.
-The position of the end of the robot arm is given by:
+The coordinates of the robot arm’s tip are given by:
 
 $$
 \begin{aligned}
@@ -98,14 +95,12 @@ Shown below is the histogram of the output based on $1'000'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-my_testfun.prob_input.reset_rng(42)
-xx_test = my_testfun.prob_input.get_sample(1000000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(1000000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

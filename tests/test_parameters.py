@@ -68,6 +68,13 @@ class TestConstruction:
         assert len(params) == 0
         assert not params
 
+    def test_inconsistent(self):
+        """Test the construction of Parameters with inconsistent kwargs."""
+        values = {"a": 1, "b": 2}
+        descriptions = {"a": "Description A", "c": "Description C"}
+        with pytest.raises(ValueError):
+            _ = Parameters(values, keyword_descriptions=descriptions)
+
 
 class TestDescribe:
     """All tests related to the describe() method of Parameters."""

@@ -1,0 +1,48 @@
+name: RobotArm
+description: >-
+  Eight-dimensional four-segment robot arm function from An and Owen (2001)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 8
+  output: 1
+
+inputs:
+  An2001:
+    description: >-
+      Independent uniform random variables from An and Owen (2001)
+    marginals:
+      - name: L1
+        distribution: uniform
+        parameters: [0.0, 1.0]
+        description: Length of the 1st segment
+      - name: L2
+        distribution: uniform
+        parameters: [0.0, 1.0]
+        description: Length of the 2nd segment
+      - name: L3
+        distribution: uniform
+        parameters: [0.0, 1.0]
+        description: Length of the 3rd segment
+      - name: L4
+        distribution: uniform
+        parameters: [0.0, 1.0]
+        description: Length of the 4th segment
+      - name: theta1
+        distribution: uniform
+        parameters: [0.0, $(2 * pi)]
+        description: Angle between 1st segment and horizontal axis
+      - name: theta2
+        distribution: uniform
+        parameters: [0.0, $(2 * pi)]
+        description: Angle between 2nd and 1st segments
+      - name: theta3
+        distribution: uniform
+        parameters: [0.0, $(2 * pi)]
+        description: Angle between 3rd and 2nd segments
+      - name: theta4
+        distribution: uniform
+        parameters: [0.0, $(2 * pi)]
+        description: Angle between 4th and 3rd segments
+    copulas: null

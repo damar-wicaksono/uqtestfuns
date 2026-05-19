@@ -20,7 +20,7 @@ in the comparison of global optimization methods.
 
 |                              Name                               | Input Dimension |    Constructor    |
 |:---------------------------------------------------------------:|:---------------:|:-----------------:|
-|              {ref}`Ackley <test-functions:ackley>`              |        M        |    `Ackley()`     |
+|          {ref}`Ackley (1987) <test-functions:ackley>`           |        M        |    `Ackley()`     |
 | {ref}`Forrester et al. (2008) 1D <test-functions:forrester-1d>` |        1        | `Forrester2008()` |
 |          {ref}`Rosenbrock <test-functions:rosenbrock>`          |        M        |  `Rosenbrock()`   |
 

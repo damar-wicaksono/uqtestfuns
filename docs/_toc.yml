@@ -66,8 +66,6 @@ parts:
             title: Santner et al. (2018) Damped Cosine
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
-          - file: test-functions/damped-oscillator-reliability
-            title: Damped Oscillator Reliability
           - file: test-functions/dette-8d
             title: Dette 8D
           - file: test-functions/dette-curved
@@ -79,7 +77,7 @@ parts:
           - file: test-functions/forrester-1d
             title: Forrester et al. (2008) 1D
           - file: test-functions/four-branch
-            title: Four-branch
+            title: Four-Branch
           - file: test-functions/franke-1
             title: Franke (1979) 1st
           - file: test-functions/franke-2
@@ -166,6 +164,10 @@ parts:
             title: RS - Circular Bar
           - file: test-functions/rs-circular-pipe-crack
             title: RS - Circular Pipe Crack
+          - file: test-functions/rs-damped-oscillator
+            title: RS - Damped Oscillator
+          - file: test-functions/rs-speed-reducer-shaft
+            title: RS - Speed Reducer Shaft
           - file: test-functions/rs-quadratic
             title: RS - Quadratic
           - file: test-functions/saltelli-linear
@@ -178,8 +180,6 @@ parts:
             title: Sobol'-Levitan
           - file: test-functions/solar-cell
             title: Solar Cell
-          - file: test-functions/speed-reducer-shaft
-            title: Speed Reducer Shaft
           - file: test-functions/sulfur
             title: Sulfur
           - file: test-functions/undamped-oscillator

@@ -1,0 +1,36 @@
+name: FourBranch
+description: >-
+  Two-dimensional series system reliability problem from
+  Katsuki and Frangopol (1994)
+tags:
+  - reliability
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Katsuki1994:
+    description: >-
+      Independent standard normal random variables
+      from Katsuki and Frangopol (1994)
+    marginals:
+      - name: X1
+        distribution: normal
+        parameters: [0.0, 1.0]
+      - name: X2
+        distribution: normal
+        parameters: [0.0, 1.0]
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    p: Diagonal branch offset
+  default_parameters: Schueremans2005
+  sets:
+    Katsuki1994:
+      p: $(3.5 * sqrt(2))
+      description: Parameter from Katsuki and Frangopol (1994)
+    Schueremans2005:
+      p: $(6 / sqrt(2))
+      description: Parameter from Schueremans and Van Gemert (2005)

@@ -6,6 +6,7 @@ import pytest
 
 from conftest import assert_call
 
+from uqtestfuns.api import list_functions as lst_fun
 from uqtestfuns import list_functions, test_functions
 from uqtestfuns.utils import get_available_classes, SUPPORTED_TAGS
 
@@ -120,7 +121,7 @@ def test_untabulated_call():
 def test_tablefmt_html():
     """Test function call with 'html' as tablefmt."""
 
-    table = list_functions(tablefmt="html")
+    table = lst_fun(tablefmt="html")
 
     # Assertion
     assert isinstance(table, str)

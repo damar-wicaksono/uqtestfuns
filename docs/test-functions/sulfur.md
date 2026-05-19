@@ -15,10 +15,10 @@ kernelspec:
 (test-functions:sulfur)=
 # Sulfur Model
 
-The sulfur model is a nine-dimensional scalar-valued function.
+The `Sulfur` model is a nine-dimensional scalar-valued function
+that analytically computes the direct radiative forcing by sulfate aerosols.
 Based on the model from {cite}`Charlson1992`,
-the model was used in {cite}`Tatang1997` in the context of metamodeling
-and uncertainty propagation.
+it was used in {cite}`Tatang1997` for metamodeling and uncertainty propagation.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -106,18 +106,16 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000, 42)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
-### Moments estimation
+### Moment estimation
 
 Due to the multiplicative form of the function, the geometric mean (the mode)
 and the geometric standard deviation of the response are analytically available
@@ -184,15 +182,14 @@ geom_mean_analytical = np.exp(mu)
 geom_var_analytical = np.exp(sigma**2)
 
 # --- Compute the MC estimate of the mean and variance
-np.random.seed(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6], dtype=int)
 mean_estimates = np.empty((len(sample_sizes), 25))
 var_estimates = np.empty((len(sample_sizes), 25))
 
 for i, sample_size in enumerate(sample_sizes):
     for j in range(25):
-        xx_test = my_testfun.prob_input.get_sample(sample_size)
-        yy_test = my_testfun(xx_test)
+        yy_test = my_testfun.get_sample(sample_size, rng)
         mean_estimates[i, j] = np.mean(yy_test)
         var_estimates[i, j] = np.var(yy_test)
 
@@ -256,7 +253,7 @@ plt.grid()
 fig.set_dpi(150)
 ```
 
-The tabulated results for is shown below.
+The tabulated results for each sample size are shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -318,22 +315,20 @@ tabulate(
 ```
 
 The convergence of a direct Monte-Carlo estimation of the output geometric mean
-and variance is shown below. As before the error bars are obtained
+and variance is shown below. As before, the error bars are obtained
 by replicating the estimation.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
 # --- Compute the MC estimates of geometric mean and variance
-np.random.seed(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6], dtype=int)
 geom_mean_estimates = np.empty((len(sample_sizes), 25))
 geom_var_estimates = np.empty((len(sample_sizes), 25))
 
 for i, sample_size in enumerate(sample_sizes):
     for j in range(25):
-        xx_test = my_testfun.prob_input.get_sample(sample_size)
-        yy_test = my_testfun(xx_test)
+        yy_test = my_testfun.get_sample(sample_size, rng)
         geom_mean_estimates[i, j] = np.mean(np.log(-1 * yy_test))
         geom_var_estimates[i, j] = np.var(np.log(-1 * yy_test))
 
