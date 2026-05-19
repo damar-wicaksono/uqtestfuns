@@ -93,7 +93,7 @@ regardless of their typical applications.
 |        ``SobolLevitan``         |        M        |                   {ref}`Sobol'-Levitan (1999) <test-functions:sobol-levitan>`                    |
 |          ``SolarCell``          |        5        |                       {ref}`Solar Cell Model <test-functions:solar-cell>`                        |
 |      ``SpeedReducerShaft``      |        5        |                 {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`                  |
-|           ``Sulfur``            |        9        |                              {ref}`Sulfur <test-functions:sulfur>`                               |
+|           ``Sulfur``            |        9        |                   {ref}`Charlson et al. (1992) Sulfur <test-functions:sulfur>`                   |
 |     ``UndampedOscillator``      |        6        |       {ref}`Gayton et al. (2003) Undamped Oscillator <test-functions:undamped-oscillator>`       |
 |          ``Webster2D``          |        2        |                   {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`                    |
 |           ``Welch2D``           |       20        |                    {ref}`Welch et al. (1992) 20D <test-functions:welch1992>`                     |
