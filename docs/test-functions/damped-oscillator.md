@@ -21,9 +21,16 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The damped oscillator model is a seven-dimensional scalar-valued function.
-The model was first proposed in {cite}`Igusa1985` and used in the context of
-reliability analysis in {cite}`DerKiureghian1991, Dubourg2011`.
+The damped oscillator model (or `DampedOscillator` for short)
+is a seven-dimensional function
+describing a two-degree-of-freedom primary-secondary mechanical system
+characterized by two masses, two springs, and the corresponding damping ratios.
+It computes the root-mean-square relative displacement of the secondary spring
+under white-noise base acceleration.
+
+The model was proposed by {cite}`Igusa1985`
+and has been used in the context of reliability analysis
+(see, for instance, {cite}`DerKiureghian1991, Dubourg2011`).
 
 ```{note}
 The {ref}`reliability analysis variant <test-functions:damped-oscillator-reliability>`
@@ -49,7 +56,7 @@ print(my_testfun)
 
 ## Description
 
-The damped oscillator model is based on a two degree-of-freedom
+The damped oscillator model is based on a two-degree-of-freedom
 primary-secondary mechanical system characterized by two masses,
 two springs, and the corresponding damping ratios.
 Originally, the model computes the mean-square relative displacement of
@@ -70,8 +77,8 @@ where $\boldsymbol{x} = \{ M_p, M_s, K_p, K_s, \zeta_p, \zeta_s, S_0 \}$
 is the seven-dimensional vector of input variables further defined below.
 
 ```{note}
-In UQTestFuns, this original output is square-rooted
-to get the relative displacement
+In UQTestFuns, the square root of this mean-square quantity is returned,
+giving the root-mean-square relative displacement.
 ```
 
 ## Probabilistic input
@@ -99,18 +106,16 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun..get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
-### Moments estimation
+### Moment estimation
 
 Shown below is the convergence of a direct Monte-Carlo estimation of
 the output mean and variance with increasing sample sizes.
@@ -119,14 +124,13 @@ the output mean and variance with increasing sample sizes.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], dtype=int)
 mean_estimates = np.empty(len(sample_sizes))
 var_estimates = np.empty(len(sample_sizes))
 
 for i, sample_size in enumerate(sample_sizes):
-    xx_test = my_testfun.prob_input.get_sample(sample_size)
-    yy_test = my_testfun(xx_test)
+    yy_test = my_testfun.get_sample(sample_size, rng)
     mean_estimates[i] = np.mean(yy_test)
     var_estimates[i] = np.var(yy_test)
 
@@ -227,4 +231,4 @@ tabulate(
 :filter: docname in docnames
 ```
 
-[^location]: see, for instance, Eqs. (5.5), pp. 184 in {cite}`Dubourg2011`.
+[^location]: See, for instance, Eqs. (5.5), pp. 184 in {cite}`Dubourg2011`.

@@ -49,7 +49,7 @@ from uqtestfuns.core.custom_typing import (
 from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
 from .utils import lognorm2norm_mean, lognorm2norm_std
 
-__all__ = ["DampedOscillator", "DampedOscillatorReliability"]
+__all__ = ["DampedOscillatorReliability"]
 
 
 MARGINALS_DERKIUREGHIAN1991: MarginalSpecs = [  # From [2]
@@ -215,18 +215,18 @@ AVAILABLE_PARAMETERS_RELIABILITY: FunParamSpecs = {
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
-    """Evaluate the rms displacement of the damped oscillator model.
+    """Evaluate the damped oscillator model.
 
     Parameters
     ----------
     xx : np.ndarray
-        A 7-dimensional input values given by an N-by-7 array
-        where N is the number of input values.
+        An ``(N, 7)`` array of input values.
 
     Returns
     -------
     np.ndarray
-        The mean-square relative displacement of the secondary spring.
+        A one-dimensional array of length ``N`` containing the
+        root-mean-square relative displacement of the secondary spring.
     """
 
     # Get the parameters
@@ -248,7 +248,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     zt_a = (zt_p + zt_s) / 2.0  # average damping ratio
     theta = (omega_p - omega_s) / omega_a  # tuning parameter
 
-    # Compute the mean-square relative displacement of the secondary spring
+    # Compute the RMS relative displacement of the secondary spring
     first_term = np.pi * ss_0 / 4 / zt_s / (omega_s**3)
     second_term = (
         zt_a
@@ -267,19 +267,6 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     xx_s = first_term * second_term * third_term
 
     return np.sqrt(xx_s)
-
-
-class DampedOscillator(UQTestFunFixDimABC):
-    """A concrete implementation of the Damped oscillator test function."""
-
-    _tags = ["metamodeling", "sensitivity"]
-    _description = (
-        "Damped oscillator model from Igusa and Der Kiureghian (1985)"
-    )
-    _available_inputs = AVAILABLE_INPUTS_BASE
-    _available_parameters = None
-
-    evaluate = staticmethod(evaluate)  # type: ignore
 
 
 def evaluate_reliability(xx: np.ndarray, pf: float):
