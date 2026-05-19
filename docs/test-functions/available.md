@@ -91,7 +91,7 @@ regardless of their typical applications.
 |           ``SobolG``            |        M        |                   {ref}`Saltelli and Sobol' (1995) G <test-functions:sobol-g>`                   |
 |         ``SobolGStar``          |        M        |                  {ref}`Saltelli et al. (2010) G* <test-functions:sobol-g-star>`                  |
 |        ``SobolLevitan``         |        M        |                   {ref}`Sobol'-Levitan (1999) <test-functions:sobol-levitan>`                    |
-|          ``SolarCell``          |        5        |                       {ref}`Solar Cell Model <test-functions:solar-cell>`                        |
+|          ``SolarCell``          |        5        |             {ref}`Constantine et al. (2015) Solar Cell <test-functions:solar-cell>`              |
 |      ``SpeedReducerShaft``      |        5        |                 {ref}`Speed Reducer Shaft <test-functions:speed-reducer-shaft>`                  |
 |           ``Sulfur``            |        9        |                   {ref}`Charlson et al. (1992) Sulfur <test-functions:sulfur>`                   |
 |     ``UndampedOscillator``      |        6        |       {ref}`Gayton et al. (2003) Undamped Oscillator <test-functions:undamped-oscillator>`       |
