@@ -5,7 +5,7 @@ managing callable objects in the UQTestFuns registry system.
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, TypedDict
 
 
 @dataclass(frozen=True)
@@ -168,16 +168,73 @@ class UQParametersSpec:
     ----------
     name : str, optional
         The name of the parameters set. Default is None.
-    descriptions : Dict[str, str], optional
-        Optional dictionary mapping parameter names to their human-readable
+    keyword_descriptions : Dict[str, str], optional
+        Dictionary that maps parameter names to their human-readable
         descriptions. This provides documentation for what each parameter
         represents and how it affects the test function. Default is None.
     values : Dict[str, Any]
         Dictionary mapping parameter names to their values. The keys are
-        parameter names (strings) and the values can be of any type
+        parameter names (strings), and the values can be of any type
         appropriate for the parameter (e.g., float, int, str, list).
     """
 
-    name: Optional[str]
+    name: str
     keyword_descriptions: Optional[Dict[str, str]]
     values: Dict[str, Any]
+
+
+@dataclass(frozen=True)
+class InputVariants:
+    """Specification for multiple input variants of a UQ test function.
+
+    This immutable dataclass represents a collection of input specifications
+    for a UQ test function, allowing different input configurations to be
+    registered and accessed by unique identifiers. It is used in the registry
+    system to manage test functions that support multiple input variants
+    (e.g., probabilistic input models).
+
+    Parameters
+    ----------
+    by_id : Dict[str, UQInputSpec]
+        Dictionary mapping unique identifiers to their corresponding
+        UQInputSpec instances. Each key is a string identifier
+        and each value is a complete input specification.
+    default_id : str
+        The identifier of the default input variant to use when no specific
+        variant is requested. This key must exist in the by_id dictionary.
+    """
+
+    by_id: Dict[str, UQInputSpec]
+    default_id: str
+
+
+@dataclass(frozen=True)
+class ParametersVariants:
+    """Specification for multiple parameter variants of a UQ test function.
+
+    This immutable dataclass represents a collection of parameter
+    specifications for a UQ test function,
+    allowing different parameter configurations to be registered
+    and accessed by unique identifiers. It is used in the registry system
+    to manage test functions that support multiple parameter variants
+    (e.g., different parameterization of the same function).
+
+    Parameters
+    ----------
+    by_id : Dict[str, UQParametersSpec]
+        Dictionary mapping unique identifiers to their corresponding
+        UQParametersSpec instances. Each key is a string identifier
+        and each value is a complete parameter specification.
+    default_id : str
+        The identifier of the default parameter variant to use when no specific
+        variant is requested. This key must exist in the by_id dictionary.
+    """
+
+    by_id: Dict[str, UQParametersSpec]
+    default_id: str
+
+
+class ParametersSection(TypedDict, total=False):
+    sets: Dict[str, Dict[str, Any]]
+    keyword_descriptions: Dict[str, str]
+    default_parameters: str
