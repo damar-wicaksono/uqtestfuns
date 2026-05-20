@@ -6,6 +6,7 @@ parameter/input ID handling, dimension validation,
 function evaluation, sampling, input transformation, and string representation.
 """
 
+import copy
 import numpy as np
 import pytest
 import random
@@ -13,7 +14,9 @@ import string
 
 import uqtestfuns as uqtf
 
-from uqtestfuns import UQTestFun
+from uqtestfuns import UQTestFun, Marginal
+from uqtestfuns.core import Parameters
+from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
 from uqtestfuns.api import create
 from uqtestfuns.core.registry.entries import UQTestFunInfo
 from uqtestfuns.core.registry import get_registry
@@ -179,6 +182,14 @@ class TestConstruction:
         else:
             pytest.skip(f"No parameters IDs available for {builtin_name}")
 
+    def test_invalid_dim_neg(self, builtin_name: str, info: UQTestFunInfo):
+        """Test creating a UQ test function with negative dimension."""
+        with pytest.raises(ValueError):
+            _ = create(builtin_name, input_dimension=-1)
+
+        with pytest.raises(ValueError):
+            _ = getattr(uqtf, builtin_name)(input_dimension=-1)
+
     def test_invalid_var_dim(self, builtin_name: str, info: UQTestFunInfo):
         """Test creating a UQ test function with an invalid var dimension."""
 
@@ -211,10 +222,6 @@ class TestConstruction:
         else:
             input_dim = info.input_dimension
 
-        # None is valid in create() but should be rejected by the factory
-        with pytest.raises(ValueError):
-            _ = getattr(uqtf, builtin_name)(input_dim, input_id=None)
-
         random_id = random_string(5)
         with pytest.raises(ValueError):
             _ = create(builtin_name, input_dim, input_id=random_id)
@@ -231,10 +238,6 @@ class TestConstruction:
 
         if not info.available_parameters_ids:
             pytest.skip(f"{builtin_name} is not parameterized")
-
-        # None is valid in create() but should be rejected by the factory
-        with pytest.raises(ValueError):
-            _ = getattr(uqtf, builtin_name)(input_dim, parameters_id=None)
 
         random_id = random_string(5)
         with pytest.raises(ValueError):
@@ -338,3 +341,161 @@ class TestStr:
         default_parameters_id = info.default_parameters_id
         if default_parameters_id is not None:
             assert default_parameters_id in r
+
+
+class TestProbInputObject:
+    """Test using an instance of ProbInput for a test function construction."""
+
+    def test_valid(self, builtin_name: str, info: UQTestFunInfo):
+        """Test that the ProbInput object is valid for construction."""
+        if info.input_dimension is None:
+            input_dim = 5
+        else:
+            input_dim = info.input_dimension
+        f_1 = create(builtin_name, input_dimension=input_dim)
+        prob_input = copy.copy(f_1.prob_input)
+
+        # Construct a new instance
+        f_2 = create(builtin_name, prob_input=prob_input)
+
+        # Generate function values
+        sample_size = 1000
+        seed = 42
+        yy_1 = f_1.get_sample(sample_size, seed)
+        yy_2 = f_2.get_sample(sample_size, seed)
+
+        # Assertion
+        assert np.array_equal(yy_1, yy_2)
+
+    def test_invalid_dim(self, builtin_name: str, info: UQTestFunInfo):
+        """Test invalid dimension with ProbInput for construction."""
+        if info.input_dimension is None:
+            input_dim = 5
+        else:
+            input_dim = info.input_dimension
+        f_1 = create(builtin_name, input_dimension=input_dim)
+        prob_input = copy.copy(f_1.prob_input)
+
+        # Assertion
+        with pytest.raises(ValueError):
+            _ = create(
+                builtin_name,
+                input_dimension=input_dim + 1,
+                prob_input=prob_input,
+            )
+
+    def test_invalid_prob_input(self, builtin_name: str, info: UQTestFunInfo):
+        """Test creating a UQ test function with invalid ProbInput."""
+        if info.input_dimension is None:
+            pytest.skip()
+        else:
+            input_dim = info.input_dimension
+
+        # Create ProbInput with mismatched dimension
+        marginals = []
+        for _ in range(input_dim + 1):
+            marginals.append(Marginal("uniform", [0, 1]))
+        prob_input = ProbInput(marginals)
+
+        # Assert
+        with pytest.raises(ValueError):
+            _ = create(
+                builtin_name,
+                input_dimension=input_dim,
+                prob_input=prob_input,
+            )
+
+    def test_invalid_exclusive(self, builtin_name: str, info: UQTestFunInfo):
+        """Test invalid exclusive arguments for construction."""
+        if info.input_dimension is None:
+            input_dim = 5
+        else:
+            input_dim = info.input_dimension
+
+        f_1 = create(builtin_name, input_dimension=input_dim)
+        prob_input = copy.copy(f_1.prob_input)
+
+        # Assert
+        with pytest.raises(ValueError):
+            _ = create(
+                builtin_name,
+                input_dimension=input_dim,
+                input_id=info.default_input_id,
+                prob_input=prob_input,
+            )
+
+
+class TestParametersObject:
+    """Test the Parameters class for a test function construction."""
+
+    def test_invalid_exclusive(self, builtin_name: str, info: UQTestFunInfo):
+        """Test invalid exclusive parameters arguments for construction."""
+
+        if info.input_dimension is None:
+            input_dim = 5
+        else:
+            input_dim = info.input_dimension
+
+        if info.default_parameters_id is None:
+            pytest.skip(
+                "Non-parameterized functions do not support parameters"
+            )
+
+        f_1 = create(builtin_name, input_dim)
+        parameters = copy.copy(f_1.parameters)
+
+        # Construct a new instance
+        f_2 = create(builtin_name, input_dim, parameters=parameters)
+
+        # Generate function values
+        sample_size = 1000
+        seed = 42
+        yy_1 = f_1.get_sample(sample_size, seed)
+        yy_2 = f_2.get_sample(sample_size, seed)
+
+        # Assertion
+        assert np.array_equal(yy_1, yy_2)
+
+    def test_no_parameters(self, builtin_name: str, info: UQTestFunInfo):
+        """Test passing parameters for non-parameterized functions."""
+        if info.input_dimension is None:
+            input_dim = 5
+        else:
+            input_dim = info.input_dimension
+
+        if info.default_parameters_id is not None:
+            pytest.skip(
+                "Non-parameterized functions do not support parameters"
+            )
+
+        # Create a dummpy Parameters
+        params = Parameters({})
+
+        with pytest.raises(ValueError):
+            _ = create(builtin_name, input_dim, parameters=params)
+
+        with pytest.raises(ValueError):
+            _ = create(builtin_name, input_dim, parameters_id="123")
+
+    def test_valid(self, builtin_name: str, info: UQTestFunInfo):
+        """Test invalid exclusive parameters arguments for construction."""
+
+        if info.input_dimension is None:
+            input_dim = 5
+        else:
+            input_dim = info.input_dimension
+
+        if info.default_parameters_id is None:
+            pytest.skip()
+
+        f = create(builtin_name, input_dimension=input_dim)
+        parameters = copy.copy(f.parameters)
+
+        # Assert
+        with pytest.raises(ValueError):
+            _ = create(
+                builtin_name,
+                input_dimension=input_dim,
+                parameters_id=info.default_parameters_id,
+                parameters=parameters,
+            )
