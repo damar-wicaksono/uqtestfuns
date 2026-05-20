@@ -8,6 +8,7 @@ from uqtestfuns.core.registry.entries import (
     UQTestFunSpec,
     KeywordInfo,
 )
+from uqtestfuns.core.registry.specs import InputVariants
 from .evaluate import parse_evaluate
 from .inputs import parse_inputs
 from .parameters import parse_parameters
@@ -226,18 +227,33 @@ def parse_spec(spec_file: Path, pkg_root: Path) -> UQTestFunSpec:
     # Parse the "evaluate" section and return a CallableSpec
     evaluate = parse_evaluate(data.get("evaluate"), spec_file, pkg_root)
 
-    # Parse the "inputs" section and return a dictionary of UQInputSpec
+    # Parse the "inputs" section
     inputs = parse_inputs(data["inputs"], spec_file, pkg_root)
 
-    # Parse the "parameters" section & return a dictionary of UQParametersSpec
-    if "parameters" not in data:
-        parameters = None
+    # Get the default input ID
+    if len(inputs) > 1:
+        default_input = data["default_input"]
     else:
-        parameters = parse_parameters(data["parameters"], spec_file, pkg_root)
+        default_input = next(iter(inputs))
+
+    input_specs = InputVariants(
+        by_id=inputs,
+        default_id=default_input,
+    )
+
+    # Parse the "parameters" section
+    if "parameters" not in data:
+        parameters_specs = None
+    else:
+        parameters_specs = parse_parameters(
+            data["parameters"],
+            spec_file,
+            pkg_root,
+        )
 
     return UQTestFunSpec(
         name=name,
         evaluate=evaluate,
-        inputs=inputs,
-        parameters=parameters,
+        inputs=input_specs,
+        parameters=parameters_specs,
     )

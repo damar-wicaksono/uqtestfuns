@@ -9,6 +9,8 @@ from uqtestfuns.core.registry.specs import (
     MarginalTemplate,
     UQInputSpec,
     UQParametersSpec,
+    ParametersVariants,
+    InputVariants,
 )
 from uqtestfuns.core.registry.parser import parse_spec, SpecValidationError
 from uqtestfuns.core.registry.entries import UQTestFunSpec
@@ -107,16 +109,16 @@ def test_parse_spec_structural(valid_spec_file):
     assert isinstance(spec.evaluate, CallableSpec)
 
     # Parsed inputs
-    assert isinstance(spec.inputs, dict)
-    for input_id, input_spec in spec.inputs.items():
+    assert isinstance(spec.inputs, InputVariants)
+    for input_id, input_spec in spec.inputs.by_id.items():
         assert isinstance(input_id, str)
         assert isinstance(input_spec, UQInputSpec)
         assert isinstance(input_spec.marginals, MARGINALS_SPECS)
 
     # Parsed parameters (optional, may be None)
     if spec.parameters is not None:
-        assert isinstance(spec.parameters, dict)
-        for parameters_id, parameters_spec in spec.parameters.items():
+        assert isinstance(spec.parameters, ParametersVariants)
+        for parameters_id, parameters_spec in spec.parameters.by_id.items():
             assert isinstance(parameters_id, str)
             assert isinstance(parameters_spec, UQParametersSpec)
             assert isinstance(parameters_spec.name, str)
@@ -154,14 +156,14 @@ class TestResolverCallableSpec:
         # Assertions
         assert callable(evaluate)
 
-        for input_spec in spec.inputs.values():
+        for input_spec in spec.inputs.by_id.values():
             if isinstance(input_spec.marginals, CallableSpec):
                 marginal_factory = resolve_callable(input_spec.marginals)
 
                 assert callable(marginal_factory)
 
         if spec.parameters is not None:
-            for parameters_spec in spec.parameters.values():
+            for parameters_spec in spec.parameters.by_id.values():
                 if isinstance(parameters_spec.values, CallableSpec):
                     parameter_factory = resolve_callable(
                         parameters_spec.values
@@ -195,7 +197,7 @@ class TestResolveProbInput:
         if input_dimension == "variable":
             input_dimension = 5  # Arbitrary input dimension for testing
 
-        for input_spec in spec.inputs.values():
+        for input_spec in spec.inputs.by_id.values():
             prob_input = resolve_prob_input(input_spec, input_dimension)
             assert isinstance(prob_input, ProbInput)
             assert prob_input.dimension == input_dimension
@@ -206,7 +208,7 @@ class TestResolveProbInput:
         spec_file = VALID_ROOT / "circular_bar_2d.yaml"
         spec = parse_spec(spec_file, VALID_ROOT)
 
-        for input_spec in spec.inputs.values():
+        for input_spec in spec.inputs.by_id.values():
             with pytest.raises(SpecValidationError):
                 # Dimension is 2, but input is 3
                 _ = resolve_prob_input(input_spec, input_dimension=3)
@@ -241,8 +243,8 @@ class TestResolveParameters:
 
         # Parsed parameters (optional, may be None)
         if spec.parameters is not None:
-            assert isinstance(spec.parameters, dict)
-            for parameters_spec in spec.parameters.values():
+            assert isinstance(spec.parameters, ParametersVariants)
+            for parameters_spec in spec.parameters.by_id.values():
                 parameters = resolve_parameters(
                     parameters_spec,
                     input_dimension,
@@ -267,5 +269,5 @@ class TestResolveParameters:
 
         assert spec.parameters is not None
         with pytest.raises(SpecValidationError):
-            for parameters_spec in spec.parameters.values():
+            for parameters_spec in spec.parameters.by_id.values():
                 _ = resolve_parameters(parameters_spec, input_dimension)

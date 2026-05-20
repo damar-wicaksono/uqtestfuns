@@ -131,9 +131,9 @@ def _instantiate(
     if input_id not in info.available_input_ids:
         raise ValueError(
             f"Input ID '{input_id}' is not available "
-            f"for function '{info.name}'"
+            f"for function '{spec.name}'"
         )
-    input_spec = spec.inputs[input_id]
+    input_spec = spec.inputs.by_id[input_id]
     prob_input = resolve_prob_input(input_spec, input_dimension)
 
     # Resolve parameters
@@ -144,12 +144,12 @@ def _instantiate(
             raise ValueError(
                 f"Parameter ID must be specified for function '{info.name}'"
             )
-        if parameters_id not in info.available_parameters_ids:
+        if parameters_id not in spec.parameters.by_id.keys():
             raise ValueError(
                 f"Parameter ID '{parameters_id}' is not available "
-                f"for function '{info.name}'"
+                f"for function '{spec.name}'"
             )
-        parameters_spec = spec.parameters[parameters_id]
+        parameters_spec = spec.parameters.by_id[parameters_id]
         parameters = resolve_parameters(parameters_spec, input_dimension)
 
     # Resolve evaluate

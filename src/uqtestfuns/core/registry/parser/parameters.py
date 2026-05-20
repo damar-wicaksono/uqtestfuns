@@ -1,15 +1,30 @@
 """Parser for the parameters section in the YAML specifications.
 
 This module provides functionality to parse and validate parameter sets
-from YAML configuration files. It processes parameter specifications,
-resolves factory references for dynamically created parameter values,
-and handles generic parameter values including expressions.
+from YAML configuration files used to define UQ test function parameters.
+It processes parameter specifications, resolves factory references for
+dynamically created parameter values, and handles generic parameter values
+including expressions.
+
+The parser supports:
+- Multiple parameter sets within a single specification
+- Factory-based parameter generation using callable references
+- Generic parameter values with expression resolution
+- Parameter keyword descriptions for documentation
+- Default parameter set selection
+
+The main entry point is the `parse_parameters` function which returns
+a ParametersVariants object containing all parsed parameter sets.
 """
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Dict
 
-from uqtestfuns.core.registry.specs import UQParametersSpec
+from uqtestfuns.core.registry.specs import (
+    UQParametersSpec,
+    ParametersVariants,
+    ParametersSection,
+)
 
 from .utils import parse_factory
 from .expression import resolve_generic
@@ -17,38 +32,50 @@ from .validation import SpecValidationError, validate_required_keys
 
 
 def parse_parameters(
-    parameters_value: Dict[str, Dict[str, Any]],
+    parameters_section: ParametersSection,
     spec_file: Path,
     pkg_root: Path,
-) -> Dict[str, UQParametersSpec]:
+) -> ParametersVariants:
     """Parse the 'parameters' section from a YAML configuration.
 
     This function processes the parameter sets defined in a YAML configuration,
     resolving factory references and generic values to create structured
-    parameter specifications.
+    parameter specifications. It validates the structure of the parameters
+    section and creates UQParametersSpec objects for each parameter set.
 
     Parameters
     ----------
-    parameters_value : Dict[str, Any]
-        Dictionary containing parameter sets under a "sets" key. Each set
-        contains keyword-value pairs defining parameters.
+    parameters_section : ParametersSection
+        Dictionary containing parameter specifications in the YAML file.
     spec_file : Path
         Path to the YAML file being parsed, used for resolving relative
-        references in factory definitions.
+        references in factory definitions and for error reporting.
     pkg_root : Path
         Root directory of the package, used for resolving module paths
         in factory definitions.
 
     Returns
     -------
-    Dict[str, UQParametersSpec]
-        Dictionary mapping parameter set names to their corresponding
-        UQParametersSpec objects, which contain parameter descriptions
-        and parsed values.
+    ParametersVariants
+        Object containing a dictionary of parameter specifications by ID
+        and the default parameter set ID. Each specification includes
+        parameter values (either resolved generics or factory callables)
+        and optional keyword descriptions.
+
+    Raises
+    ------
+    SpecValidationError
+        If the "sets" key is missing from parameters_value, or if any
+        parameter set is not a dictionary mapping.
+
+    Notes
+    -----
+    - If no default_parameters is specified in the YAML, the first parameter
+      set in iteration order is used as the default.
     """
     # Check for mandatory field
     validate_required_keys(
-        parameters_value,
+        parameters_section,
         required_keys={"sets"},
         context=f"parameters section of {str(spec_file)}",
     )
@@ -59,10 +86,14 @@ def parse_parameters(
     parameters_specs: Dict[str, UQParametersSpec] = {}
 
     # keywords_descriptions is repeated for each specification
-    keyword_descriptions = parameters_value.get("keyword_descriptions", None)
+    keyword_descriptions = parameters_section.get("keyword_descriptions", None)
+
+    default_id = parameters_section.get("default_parameters")
 
     # Iterate over available parameters sets
-    parameters_sets = parameters_value["sets"]
+    parameters_sets = parameters_section["sets"]
+    if default_id is None:
+        default_id = next(iter(parameters_sets))
     for key, parameters_set in parameters_sets.items():
         if not isinstance(parameters_set, dict):
             raise SpecValidationError(
@@ -92,4 +123,7 @@ def parse_parameters(
             values=parsed_values,
         )
 
-    return parameters_specs
+    return ParametersVariants(
+        by_id=parameters_specs,
+        default_id=default_id,
+    )
