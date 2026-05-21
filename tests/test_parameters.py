@@ -2,6 +2,7 @@
 Test suite for the Parameters class.
 """
 
+import copy
 import numpy as np
 import pytest
 
@@ -178,3 +179,45 @@ class TestPrint:
 
         # Assertion
         assert f"{array_value.shape} array" in str(params)
+
+
+class TestCopy:
+    """Test the copy functionality of Parameters class."""
+
+    def test_shallow(self, num_params):
+        """Test making shallow copy."""
+        # Create a test instance
+        values, descriptions = create_values(num_params)
+        values["mutable"] = [[1, 2], [3, 4]]
+        name_ori = "original"
+        params = Parameters(values, name_ori, descriptions)
+
+        # Create a copy
+        params_cp = copy.copy(params)
+        # Mutate mutable nested value
+        params_cp["mutable"][0].append(99)
+
+        # Assertions
+        assert params.name == name_ori
+        assert params is not params_cp
+        assert params_cp["mutable"] == params["mutable"]
+
+    def test_deep(self, num_params):
+        """Test making deep copy."""
+        # Create a test instance
+        values, descriptions = create_values(num_params)
+        values["mutable"] = [[1, 2], [3, 4]]
+        name_ori = "original"
+        params = Parameters(values, name_ori, descriptions)
+
+        # Create a deep copy
+        name_cp = "copy"
+        params_cp = params.copy(name_cp)
+        # Mutate mutable nested value
+        params_cp["mutable"][0].append(99)
+
+        # Assertions
+        assert params.name == name_ori
+        assert params_cp.name == name_cp
+        assert params is not params_cp
+        assert params_cp["mutable"] != params["mutable"]

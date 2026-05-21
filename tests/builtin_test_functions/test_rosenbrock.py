@@ -10,7 +10,6 @@ import numpy as np
 import pytest
 
 from uqtestfuns import Rosenbrock
-from uqtestfuns.core.parameters import Parameters
 
 
 def test_one_dimensional():
@@ -45,15 +44,15 @@ def test_optimum_value_a_eq_1(input_dimension):
 @pytest.mark.parametrize("input_dimension", [2, 3, 10])
 def test_optimum_value_a_eq_0(input_dimension):
     """Test the optimum value, regardless of the dimension, when a == 0"""
-    my_fun = Rosenbrock(input_dimension=input_dimension)
+    my_fun = Rosenbrock(input_dimension)
+    # Create an editable parameter values
+    params = my_fun.parameters.copy()
+    my_fun = Rosenbrock(input_dimension, parameters=params)
 
-    # TODO: This is a workaround
-    params = {**my_fun.parameters}
-    params["a"] = 0
-    params_ = Parameters(params)
-    my_fun._parameters = params_
+    # Change the parameter value
+    my_fun.parameters["a"] = 0
 
-    # The optima of the function when a = 0 is not at 1.0's
+    # The optimum of the function when a = 0 is not at 1.0's
     xx = np.ones((1, my_fun.input_dimension))
     yy = my_fun(xx)
 
