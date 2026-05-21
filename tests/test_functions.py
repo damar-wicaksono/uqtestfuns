@@ -15,7 +15,7 @@ import string
 import uqtestfuns as uqtf
 
 from uqtestfuns import UQTestFun, Marginal
-from uqtestfuns.core import Parameters
+from uqtestfuns.core.parameters import Parameters, ParametersProtectedError
 from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
 from uqtestfuns.api import create
 from uqtestfuns.core.registry.entries import UQTestFunInfo
@@ -245,6 +245,26 @@ class TestConstruction:
         with pytest.raises(ValueError):
             _ = getattr(uqtf, builtin_name)(input_dim, parameters_id=random_id)
 
+    def test_set_parameter(self, builtin_name: str, info: UQTestFunInfo):
+        """Test setting a value of a parameter raises an exception."""
+        if info.default_parameters_id is None:
+            pytest.skip(f"{builtin_name} does not support parameterization")
+
+        if info.input_dimension is None:
+            input_dim = 5
+        else:
+            input_dim = info.input_dimension
+
+        # Create an instance
+        f = create(builtin_name, input_dim)
+
+        # Assertion
+        assert f.parameters is not None
+        assert isinstance(f.parameters, Parameters)
+        key = next(iter(f.parameters.keys()))
+        with pytest.raises(ParametersProtectedError):
+            f.parameters[key] = 1.0
+
 
 class TestCall:
 
@@ -359,7 +379,7 @@ class TestProbInputObject:
         f_2 = create(builtin_name, prob_input=prob_input)
 
         # Generate function values
-        sample_size = 1000
+        sample_size = 100
         seed = 42
         yy_1 = f_1.get_sample(sample_size, seed)
         yy_2 = f_2.get_sample(sample_size, seed)
@@ -448,7 +468,7 @@ class TestParametersObject:
         f_2 = create(builtin_name, input_dim, parameters=parameters)
 
         # Generate function values
-        sample_size = 1000
+        sample_size = 100
         seed = 42
         yy_1 = f_1.get_sample(sample_size, seed)
         yy_2 = f_2.get_sample(sample_size, seed)

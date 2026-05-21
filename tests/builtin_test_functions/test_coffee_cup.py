@@ -11,7 +11,6 @@ import pytest
 
 from conftest import assert_call
 from uqtestfuns import CoffeeCup
-from uqtestfuns.core.parameters import Parameters
 
 
 @pytest.mark.parametrize(
@@ -21,18 +20,10 @@ def test_solve_ivp_kwargs(solve_ivp_kwargs):
     """Test passing additional kwargs for solve_ivp."""
 
     # Create an instance
-    fun = CoffeeCup()
+    fun = CoffeeCup(parameters=CoffeeCup().parameters.copy())
 
-    # Add the new parameter
-    params = Parameters(
-        {
-            "temp_0": fun.parameters["temp_0"],
-            "solve_ivp_kwargs": solve_ivp_kwargs,
-        }
-    )
-
-    # TODO: This is a temporary solution, should be better accessed
-    fun._parameters = params
+    # Create the new parameter
+    fun.parameters["solve_ivp_kwargs"] = solve_ivp_kwargs
 
     # Generate test points
     xx = fun.prob_input.get_sample(10)
@@ -44,18 +35,10 @@ def test_solve_ivp_kwargs(solve_ivp_kwargs):
 @pytest.mark.parametrize("temp_0", [50.0, 60.0, 70.0])
 def test_parameter_temp0(temp_0):
     # Create an instance
-    fun = CoffeeCup()
+    fun = CoffeeCup(parameters=CoffeeCup().parameters.copy())
 
     # Add the new parameter
-    params = Parameters(
-        {
-            "temp_0": temp_0,
-            "solve_ivp_kwargs": None,
-        }
-    )
-
-    # TODO: This is a temporary solution, should be better accessed
-    fun._parameters = params
+    fun.parameters["temp_0"] = temp_0
 
     # Generate test points
     xx = fun.prob_input.get_sample(10)

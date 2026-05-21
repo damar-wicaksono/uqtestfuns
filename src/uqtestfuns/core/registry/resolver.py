@@ -208,6 +208,7 @@ def resolve_parameters(
         name=name,
         keyword_descriptions=kw_descriptions,
         values=values,
+        _protected=True,  # This parameter instance is protected
     )
 
 
