@@ -19,7 +19,6 @@ from uqtestfuns.core.parameters import Parameters, ParametersProtectedError
 from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
 from uqtestfuns.api import create
 from uqtestfuns.core.registry.entries import UQTestFunInfo
-from uqtestfuns.core.registry import get_registry
 
 
 def random_string(length):
@@ -53,17 +52,6 @@ def assert_equal(f1: UQTestFun, f2: UQTestFun) -> None:
                 assert np.array_equal(v_1, v_2)
             else:
                 assert v_1 == v_2
-
-
-@pytest.fixture(params=list(get_registry()))
-def builtin_name(request) -> str:
-
-    return request.param
-
-
-@pytest.fixture
-def info(builtin_name: str) -> UQTestFunInfo:
-    return get_registry()[builtin_name]
 
 
 @pytest.fixture(params=[1, 3, 5])

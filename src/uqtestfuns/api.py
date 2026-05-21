@@ -7,8 +7,8 @@ from tabulate import tabulate as tbl
 from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
 from uqtestfuns.core.parameters import Parameters
 from uqtestfuns.core.uqtestfun import UQTestFun
-from uqtestfuns.core.registry.entries import UQTestFunInfo
 from uqtestfuns.core.registry import get_registry
+from uqtestfuns.core.registry.entries import UQTestFunInfo
 
 SUPPORTED_TAGS = (
     "sensitivity",
@@ -84,6 +84,106 @@ def create(
         return factory(input_dimension, **kwargs)
     else:
         return factory(**kwargs)
+
+
+def list_parameters(
+    name: str,
+    show: str = "all",
+    *,
+    parameters_id: str | None = None,
+):
+    """Display parameter information for a UQ test function.
+
+    This function prints information about the parameters of a specified
+    test function, including parameter keywords and available parameter sets.
+
+    Parameters
+    ----------
+    name : str
+        The name of the test function to query.
+    show : str, optional
+        Controls which information to display. Options are:
+        - 'all': Display both parameter keywords and available sets.
+        - 'keywords': Display only parameter keywords.
+        - 'sets': Display only available parameter sets.
+        Default is 'all'.
+    parameters_id : str, optional
+        Identifier for a specific parameter set. If specified, only the
+        keywords for that parameter set are shown (show is set to 'keywords').
+        If None, uses the default parameter set. Default is None.
+
+    Returns
+    -------
+    None
+        This function prints directly to stdout and does not return a value.
+    """
+
+    # Get the test function information
+    reg = get_registry()
+    info = reg[name]
+
+    # Skip if the function is not parameterized
+    if info.default_parameters_id is None:
+        print(f"\n{name} has no parameters.")
+        return
+
+    header = f"Parameters for {name}"
+    print(f"\n{header}")
+    print("=" * len(header))
+
+    # Get default parameter, if not specified
+    if parameters_id is None:
+        parameters_id = info.default_parameters_id
+    else:
+        show = "keywords"
+
+    parameters_keywords = info.parameters_keywords[parameters_id]
+
+    # Print the tabulated keyword descriptions
+    if show in ("all", "keywords"):
+        headers = ["No", "Name", "Type", "Description"]
+        rows = [
+            [
+                i + 1,
+                k,
+                "callable" if v["type"] is callable else v["type"].__name__,
+                v["description"] or "—",
+            ]
+            for i, (k, v) in enumerate(parameters_keywords.items())
+        ]
+        print("\nKeywords:")
+
+        out = tbl(
+            rows,
+            headers=headers,
+            tablefmt="simple",
+            colalign=("center", "center", "center", "left"),
+            maxcolwidths=[None, None, None, 50],
+            disable_numparse=True,
+        )
+
+        print(out)
+
+    if show in ("all", "sets"):
+        available_ids = info.available_parameters_ids
+        headers = ["No", "ID", "Description"]
+        rows = [
+            [i + 1, param_id, desc or "—"]
+            for i, (param_id, desc) in enumerate(available_ids.items())
+        ]
+        print("\nAvailable sets:")
+
+        out = tbl(
+            rows,
+            headers=headers,
+            tablefmt="simple",
+            colalign=("center", "left", "left"),
+            maxcolwidths=[None, None, 50],
+            disable_numparse=True,
+        )
+        out += f"\nDefault: {info.default_parameters_id}"
+
+        print(out)
 
 
 def list_functions(

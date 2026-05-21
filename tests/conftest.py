@@ -5,9 +5,13 @@ All global fixtures are defined here.
 """
 
 import numpy as np
+import pytest
 import string
+
 from typing import List, Callable, Any, Dict
 
+from uqtestfuns.core.registry import get_registry
+from uqtestfuns.core.registry.entries import UQTestFunInfo
 from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 from uqtestfuns.core.prob_input.marginal import Marginal
 
@@ -125,3 +129,14 @@ def assert_call(fct: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
             f"The function was not called properly. "
             f"It raised the exception:\n\n {e.__class__.__name__}: {e}"
         )
+
+
+@pytest.fixture(params=list(get_registry()))
+def builtin_name(request) -> str:
+
+    return request.param
+
+
+@pytest.fixture
+def info(builtin_name: str) -> UQTestFunInfo:
+    return get_registry()[builtin_name]
