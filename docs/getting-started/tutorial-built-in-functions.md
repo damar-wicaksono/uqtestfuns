@@ -16,19 +16,19 @@ kernelspec:
 # Tutorial: Create Built-in Test Functions
 
 UQTestFuns includes a wide range of test functions from the uncertainty
-quantification community; these functions are referred to
-as the _built-in test functions_.
-This tutorial provides you with an overview of the package;
-you'll learn about the built-in test functions, their common interfaces,
-as well as their important properties and methods.
+quantification community; these are the _built-in test functions_.
 
-By the end of this tutorial, you'll be able to create any test function
-available in UQTestFuns and access its basic but important functionalities.
+This tutorial gives you an overview of them. You'll learn what the built-in
+test functions are, the common interface they share, and their important
+properties and methods.
 
-UQTestFuns is designed to work with minimal dependency within the numerical
-Python ecosystem.
-At the very least, UQTestFuns requires NumPy and SciPy to work.
-It might be a good idea to import NumPy alongside UQTestFuns:
+By the end, you'll be able to create any test function available in
+UQTestFuns and use its basic but essential functionality.
+
+UQTestFuns is designed to work with minimal dependencies within the numerical
+Python ecosystem. It mainly requires NumPy and SciPy.
+
+To follow along with this tutorial, import NumPy alongside UQTestFuns:
 
 ```{code-cell} ipython3
 import numpy as np
@@ -45,38 +45,38 @@ To list all the test functions currently available:
 uqtf.list_functions()
 ```
 
-This function produces a list of test functions,
-their respective constructor, input dimension, typical applications,
-as well as a short description.
+The output lists each test function along with its constructor,
+input dimension, typical applications, and a short description.
 
 ## A Callable instance
 
 Take, for instance, the {ref}`borehole <test-functions:borehole>` function
-{cite}`Harper1983`, an eight-dimensional test function typically used
-in the context of metamodeling and sensitivity analysis.
-To instantiate a borehole test function, call the constructor as follows:
+{cite}`Harper1983`. It's an eight-dimensional test function widely used in
+metamodeling and sensitivity analysis exercises.
+
+To instantiate it, call the constructor:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Borehole()
 ```
 
-To verify whether the instance has been created,
-print it to get some basic information on the terminal:
+Print the instance to see some basic information about it:
 
 ```{code-cell} ipython3
 print(my_testfun)
 ```
 
 ```{margin}
-Think of a `Callable` as a regular function;
-it takes some inputs, evaluates them, and produces some outputs.
-In otherwords, you _call_ it with arguments.
+Think of a `Callable` as a regular function: it takes some inputs,
+evaluates them, and produces some outputs. In other words, you _call_ it
+with arguments.
 ```
 
-The resulting object is a `Callable`.
-The instance can be evaluated with a set of input values.
-For example, the eight-dimensional borehole function can be evaluated
-at a single point (1-by-8 array):
+The resulting object is a `Callable`. It can be evaluated on a set of input
+values.
+
+For example, the borehole function can be evaluated at a single point
+(a 1-by-8 array):
 
 ```{code-cell} ipython3
 xx = np.array([
@@ -89,50 +89,49 @@ my_testfun(xx)
 ```
 
 ```{note}
-Calling the function on a set of input values automatically
-verifies the correctness of the input (its dimensionality and bounds).
-Moreover, the test function accepts a vectorized input
-(that is, an $N$-by-$M$ array where $N$ and $M$ are the number of points
-and dimensions, respectively)
+Calling the function on a set of input values automatically checks
+that the input is correct (both its dimensionality and its bounds).
+
+The test function also accepts vectorized input: an $N$-by-$M$ array,
+where $N$ and $M$ are the number of points and dimensions.
 ```
 
 ## Probabilistic input
 
-In general, the results of uncertainty quantification (UQ) analyses
-depend on the specified probabilistic input.
-When a test function appears in the literature,
-a specification for the probabilistic input is usually provided.
-In UQTestFuns, a probabilistic input model is an integral part
-of each test function.
+In general, the results of uncertainty quantification (UQ) analyses depend
+on the specified probabilistic input.
 
-For instance, the borehole function has a probabilistic input model
-that consists of eight independent random variables.
-This input model is stored inside the `prob_input` property
-of the test function instance.
-Print it to the terminal to see the full specification:
+When a test function appears in the literature, it usually comes
+with a specification for its probabilistic input.
+In UQTestFuns, this input model is an integral part of each test function.
+
+For instance, the borehole function has probabilistic input model consisting
+of eight independent random variables. The model is stored in the `prob_input`
+property of the instance.
+Print it to see the full specification:
 
 ```{code-cell} ipython3
 print(my_testfun.prob_input)
 ```
 
 ```{note}
-_Copulas_ models the statistical dependence structure
-between the component (univariate) marginals.
-If the marginals are independent, then the copulas value is `None`.
-Currently, UQTestFuns does not support dependent probability inputs.
+_Copulas_ models the statistical dependence structure between the component
+(univariate) marginals.
+
+Currently, UQTestFuns does not support probabilistic input models with
+dependence structure.
 ```
 
-From the underlying probabilistic input model,
-a set of input values can be randomly generated.
-This is often useful for verification and validation purposes.
-For instance, to generate $10'000$ sample points:
+From the input model, you can randomly generate a set of input values,
+which is often useful for verification and validation. For instance,
+to generate $10,000$ sample points:
 
 ```{code-cell} ipython3
 xx_sample = my_testfun.prob_input.get_sample(10000)
 yy_sample = my_testfun(xx_sample)
 ```
 
-The histogram of the output values can be created as follows:
+The histogram of the output values is shown below:
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -141,41 +140,58 @@ import matplotlib.pyplot as plt
 
 plt.hist(yy_sample, bins="auto", color="#8da0cb")
 plt.grid()
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$")
 plt.ylabel("Counts [-]")
 plt.gcf().set_dpi(150);
 ```
 
 ```{note}
-An `ProbInput` instance has a method called `reset_rng()`;
-You can call this method to create a new underlying RNG
-perhaps with a seed number.
-In that case, the seed number is optional; if not specified,
-the system entropy is used to initialized
-the [NumPy default random generator](https://numpy.org/doc/stable/reference/random/generator.html#numpy.random.default_rng).
+By default, sampling uses a fresh RNG seeded from system entropy. To make
+sampling reproducible, pass `rng` to `get_sample()`. It accepts a seed
+(an integer), an existing NumPy generator, or `None` to fall back to the
+[NumPy default random generator](https://numpy.org/doc/stable/reference/random/generator.html#numpy.random.default_rng).
 
-In UQTestFuns, each instance of probabilistic input model carries
-its own pseudo-random number generator (RNG)
-to avoid using the global NumPy random RNG.
 See this [blog post](https://albertcthomas.github.io/good-practices-random-number-generators/)
-regarding some good practices on using NumPy RNG.
+on good practices for using NumPy's RNG.
 ```
 
-## Transformation to the function domain
+Often you only need the output values, not the inputs that produced them.
+For that case, the test function offers a shortcut: calling `get_sample()`
+directly on the instance returns the output values in one step.
 
-Some UQ methods often produce sample points in a hypercube domain
-(for example, $[0, 1]^M$ or $[-1, 1]^M$ where $M$ is the number of input dimension)
-at which the function should be evaluated.
+```{code-cell} ipython3
+yy_sample = my_testfun.get_sample(10000)
+```
+
+This is exactly the two steps above composed into one. With the same `rng`,
+the two approaches produce identical results:
+
+```{code-cell} ipython3
+assert np.array_equal(
+    my_testfun.get_sample(10000, rng=42),
+    my_testfun(my_testfun.prob_input.get_sample(10000, rng=42)),
+)
+```
+
+## Transforming a sample into the function domain
+
+Some UQ methods produce sample points in a hypercube domain
+(for example, $[0, 1]^M$ or $[-1, 1]^M, where $M$ is the number of input
+dimensions) at which the function should be evaluated.
+
 This hypercube domain may differ from the test function's domain.
-Before the test function can be evaluated,
-those values must be first transformed to the function domain.
+Before the function can be evaluated, those values must first be transformed
+to the function domain.
 
 ```{margin}
-The transformation is done via an isoprobabilistic transformation.
+The transformation is _isoprobabilistic_: each value is mapped so that its
+position in the source distribution (i.e., its quantile) is preserved in the
+target distribution. In other words, equal probability in,
+equal probability out.
 ```
 
-UQTestFuns provides a convenient function to transform sample points
-in one domain to the function domain.
+The probabilistic input instance provides `transform_from()` method for this:
+it brings a sample from a source domain into the input model's own domain.
 For instance, suppose we have a sample of size $5$ in $[-1, 1]^8$
 for the borehole function:
 
@@ -185,18 +201,17 @@ xx_sample_dom_1 = rng_1.uniform(low=-1, high=1, size=(5, 8))
 xx_sample_dom_1
 ```
 
-We can transform this set of values to the domain of the function
-via the `transform_sample()` method:
+Transform these values into the function's domain with `transform_from()`:
 
 ```{code-cell} ipython3
-xx_sample_trans_1 = my_testfun.transform_sample(xx_sample_dom_1)
+xx_sample_trans_1 = my_testfun.prob_input.transform_from(xx_sample_dom_1)
 xx_sample_trans_1
 ```
 
-By default, the method assumes the uniform domain of the passed values
-is in $[-1, 1]^M$.
-It is possible to transform values defined in another uniform domain.
-For example, the sample values in $[0, 1]^8$ (a unit hypercube):
+By default, the method assumes the input values lie in $[-1, 1]^M$. You can
+also transform values from another uniform domain by passing `source`.
+
+For example, take sample values in $[0, 1]^8$, the unit hypercube:
 
 ```{code-cell} ipython3
 rng_2 = np.random.default_rng(42)
@@ -204,21 +219,20 @@ xx_sample_dom_2 = rng_2.random((5, 8))
 xx_sample_dom_2
 ```
 
-can be transformed to the domain of the borehole function as follows:
+These transform into the borehole function's domain as follows:
 
 ```{code-cell} ipython3
-xx_sample_trans_2 = my_testfun.transform_sample(
-    xx_sample_dom_2, min_value=0.0, max_value=1.0
+xx_sample_trans_2 = my_testfun.prob_input.transform_from(
+    xx_sample_dom_2, source=(0.0, 1.0)
 )
 xx_sample_trans_2
 ```
 
-Note that for a given sample, the bounds of the hypercube domain must be
-the same in all dimensions.
+For a given sample, the bounds of the hypercube domain must be the same in
+all dimensions.
 
-The two transformed values above should be the same since
-we use two instances of the default RNG with the same seed
-to generate the random sample.
+The two transformed samples should match, since we generated both
+from the default RNG with the same seed:
 
 ```{code-cell} ipython3
 assert np.allclose(xx_sample_trans_1, xx_sample_trans_2)
@@ -228,27 +242,37 @@ assert np.allclose(my_testfun(xx_sample_trans_1), my_testfun(xx_sample_trans_2))
 ## Test functions with parameters
 
 ```{margin}
-Parameters of a test function can be anything.
+Parameters of a test function can be anything: numerical values, flags,
+strings, and so on.
 ```
 
-Some test functions are _parameterized_;
-this means that to fully specify the function,
-an additional set of values must be specified.
-In principle, these parameter values can be anything:
-numerical values, flags, selection using strings, etc.
+Some test functions are _parameterized_. Alongside the probabilistic input,
+they carry a set of fixed values called _parameters_.
 
-For instance, consider the {ref}`Ishigami <test-functions:ishigami>` function
-{cite}`Ishigami1991` defined as follows:
+It helps to be clear about how a parameter differs from an input. The
+probabilistic input is the uncertain part of the problem: you put
+distributions over it, sample from it, and propagate it through the function.
+
+A parameter is not uncertain. It is part of the model's definition, a fixed
+value that shapes how the function computes without ever being sampled.
+
+Changing a parameter does not draw a new realization. It changes which
+function you are studying.
+
+Take the {ref}`Ishigami <test-functions:ishigami>` function
+{cite}`Ishigami1991`, defined as:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \sin{(x_1)} + a \sin^2{(x_2)} + b x_3^4 \sin{(x_1)}
 $$
 
-where $a$ and $b$ are the so-called parameters of the function.
-Before the function can be evaluated,
-these parameters must be assigned to some values.
-The default Ishigami function in UQTestFuns has these values given
-and stored in the `parameters` property:
+The coefficients $a$ and $b$ are its parameters. The three $x_i$ are its
+uncertain inputs. Before the function can be evaluated, $a$ and $b$ must be
+assigned values.
+
+When you instantiate a function from the library, its parameters come
+pre-loaded with values from a published source. Print the parameters to see
+them:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.Ishigami()
@@ -256,38 +280,87 @@ my_testfun = uqtf.Ishigami()
 print(my_testfun.parameters)
 ```
 
-To assign different parameter values, override the property values
-of the instance by specifying the name in brackets just like a dictionary:
-For example:
+These values are reference points. They make your results reproducible against
+the literature, and they are what gives the name `Ishigami1991` its meaning.
+
+For that reason, the library protects them. You cannot change the parameter
+values on a function you obtained directly from the library:
 
 ```{code-cell} ipython3
-my_testfun.parameters["a"] = 7.0
-my_testfun.parameters["b"] = 0.35
+:tags: [raises-exception]
+
+my_testfun.parameters["a"] = 10.0
 ```
 
-Note that once set, the parameter values are kept constant
-during the evaluation of the function on a set of input values
+### Choosing a published parameter set
 
-Different parameter values usually change the overall behavior of the function.
-In the case of the Ishigami function,
-different parameter values alter the total variance of the output
-as illustrated in the figure below.
+Some functions ship with more than one published set of parameters.
+You can select one by name at construction with `parameters_id`:
 
 ```{code-cell} ipython3
-:tags: [remove-input]
+my_testfun = uqtf.Ishigami(parameters_id="Sobol1999")
+```
 
+To see which sets are available for a function, use `list_parameters`,
+which also lists the current values:
+
+```{code-cell} ipython3
+uqtf.list_parameters("Ishigami")
+```
+
+### Experimenting with your own values
+
+When you want to experiment, sweep a value, try a variant, see what happens at
+the edges, start from a copy. Copying a published set gives you a working
+version that is yours to edit:
+
+```{code-cell} ipython3
+my_params = uqtf.Ishigami().parameters.copy()
+```
+
+A copy is no longer the published set, so the library does not protect it.
+Pass it to the constructor to build a function that uses it:
+
+```{code-cell} ipython3
+my_testfun = uqtf.Ishigami(parameters=my_params)
+```
+
+The result is still an Ishigami function, the same mathematical model,
+evaluated at parameter values you control. From here, change values directly
+through the function:
+
+```{code-cell} ipython3
+my_testfun.parameters["a"] = 10.0
+```
+
+The function uses the updated value the next time you call it.
+
+### How parameters change the function
+
+Recall that changing a parameter changes which function you are studying. Two
+parameter values give two different Ishigami functions, and they need not have
+the same output variance, as the figure below illustrates.
+
+We build one experimental instance from a copy, then sweep `b` through it:
+
+```{code-cell} ipython3
+my_testfun = uqtf.Ishigami(parameters=uqtf.Ishigami().parameters.copy())
 xx_sample = my_testfun.prob_input.get_sample(10000)
-my_testfun.parameters["a"] = 7.0
+
 my_testfun.parameters["b"] = 0.05
 yy_param_1 = my_testfun(xx_sample)
-my_testfun.parameters["a"] = 7.0
+
 my_testfun.parameters["b"] = 0.35
 yy_param_2 = my_testfun(xx_sample)
+```
+
+```{code-cell} ipython3
+:tags: [hide-input]
 
 plt.hist(yy_param_2, bins="auto", color="#fc8d62", label="parameter 2")
 plt.hist(yy_param_1, bins="auto", color="#66c2a5", label="parameter 1")
 plt.grid()
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$")
 plt.ylabel("Counts [-]")
 plt.legend(fontsize=14)
 plt.gcf().set_dpi(150);
@@ -295,45 +368,60 @@ plt.gcf().set_dpi(150);
 
 ## Test functions with variable dimension
 
-```{margin}
-input dimension must be a positive integer.
-```
+Some test functions support a _variable dimension_, meaning an instance can be
+constructed for any number (positive integer, please) of input dimensions.
 
-Some test functions support a _variable dimension_, meaning that an instance
-of a test function can be constructed for any number (positive integer, please) 
-of input dimension.
-
-Consider, for instance, the {ref}`Sobol'-G <test-functions:sobol-g>` function
-{cite}`Saltelli1995`,
-a test function whose dimension can be varied
-and a popular choice in the context of sensitivity analysis.
-It is defined as follows:
+Consider the {ref}`Sobol'-G <test-functions:sobol-g>` function
+{cite}`Saltelli1995`, a popular choice in sensitivity analysis whose dimension
+you can vary. It is defined as:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \prod_{m = 1}^M \frac{\lvert 4 x_m - 2 \rvert + a_m}{1 + a_m}
 $$
-where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$ is the $M$-dimensional vector
-of input variables,
-and $\boldsymbol{a} = \{ a_1, \ldots, a_M \}$ are parameters of the function.
 
-To create a six-dimensional Sobol'-G function,
-use the parameter `input_dimension` to specify the desired dimensionality:
+where $\boldsymbol{x} = \{ x_1, \ldots, x_M \}$ is the $M$-dimensional vector of
+input variables, and $\boldsymbol{a} = \{ a_1, \ldots, a_M \}$ are parameters of
+the function.
+
+To create a six-dimensional Sobol'-G function with the default selection
+of parameter values,
+pass the desired dimensionality  through `input_dimension`:
 
 ```{code-cell} ipython3
 my_testfun = uqtf.SobolG(input_dimension=6)
 ```
 
-Verify that the function is indeed a six-dimension one:
+Verify that the function is indeed six-dimensional:
 
 ```{code-cell} ipython3
 print(my_testfun)
 ```
 
-and:
+and that its probabilistic input has six marginals:
 
 ```{code-cell} ipython3
 print(my_testfun.prob_input)
 ```
+
+## Where to go next
+
+You now can list all the built-in test functions, create any of them,
+inspect its probabilistic input, generate a sample, transform a sample into
+the function's domain, and work with parameters and variable dimensions.
+That covers the common interface every built-in function shares.
+
+This tutorial stayed with the basics, the functions themselves, and how to
+handle them. It did not touch the UQ analysis they are typically built for,
+nor how to build a function that is not in the library.
+
+From here:
+
+- {ref}`Test a Sensitivity Analysis Method <getting-started:tutorial-sensitivity>`,
+  to put these functions to work in sensitivity analysis.
+- {ref}`Test a Reliability Analysis Method <getting-started:tutorial-reliability>`,
+  to use them in reliability analysis.
+- {ref}`Create a Custom Function <getting-started:tutorial-custom-functions>`,
+  to define a test function of your own.
 
 ## References
 
