@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   inputs with identical marginals across all dimensions; used internally
   by the YAML-driven factory for variable-dimension test functions.
 
+### Removed
+
+- The abstract-base-class system (`UQTestFunBareABC`, `UQTestFunABC`,
+  `UQTestFunVarDimABC`, `UQTestFunFixDimABC`) has been removed
+  following the new YAML-based architecture.
+
 ## [0.6.0] - 2025-01-21
 
 UQTestFuns now includes 75 test functions.

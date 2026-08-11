@@ -12,8 +12,6 @@ from .utils import get_available_classes, SUPPORTED_TAGS
 from . import test_functions
 from typing import List, Optional, Union
 
-from .core import UQTestFunABC
-
 __all__ = ["list_functions"]
 
 
@@ -53,7 +51,7 @@ def list_functions(
     parameterized: Optional[bool] = None,
     tabulate: bool = True,
     tablefmt: str = "grid",
-) -> Optional[Union[List[UQTestFunABC], str]]:
+):
     """List of all the available functions.
 
     Parameters
@@ -79,7 +77,6 @@ def list_functions(
 
     Returns
     -------
-    Optional[List[UQTestFunABC]]
         Either a tabulated view of the list of available functions,
         or a list of fully-qualified class name (each is callable).
         The function may return None if after filtering there is no entry.
@@ -354,7 +351,7 @@ def _parse_modules_data(package):
     for available_class, class_path in available_classes:
 
         # Create an instance of test function to parse its properties
-        instance: UQTestFunABC = class_path()
+        instance = class_path()
 
         # Get the dimension
         if instance.variable_dimension:
