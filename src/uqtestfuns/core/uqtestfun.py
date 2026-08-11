@@ -10,7 +10,7 @@ import numpy as np
 from typing import Callable, Optional, Union
 
 from .parameters import Parameters
-from .prob_input.probabilistic_input_new import ProbInput
+from .prob_input.probabilistic_input import ProbInput
 
 __all__ = ["UQTestFun"]
 

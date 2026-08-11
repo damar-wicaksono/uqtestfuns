@@ -20,7 +20,7 @@ from uqtestfuns.core.registry.resolver import (
     resolve_prob_input,
 )
 from uqtestfuns.core.parameters import Parameters
-from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
+from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 
 # Fixture roots
 FIXTURE_ROOT = Path(__file__).parent / "fixtures"

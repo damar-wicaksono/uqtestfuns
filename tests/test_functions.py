@@ -14,9 +14,8 @@ import string
 
 import uqtestfuns as uqtf
 
-from uqtestfuns import UQTestFun, Marginal
+from uqtestfuns import UQTestFun, Marginal, ProbInput
 from uqtestfuns.core.parameters import Parameters, ParametersProtectedError
-from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
 from uqtestfuns.api import create
 from uqtestfuns.core.registry.entries import UQTestFunInfo
 
