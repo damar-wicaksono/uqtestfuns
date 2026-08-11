@@ -1,8 +1,7 @@
 import pytest
 import numpy as np
 
-from uqtestfuns import Marginal
-from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
+from uqtestfuns import Marginal, ProbInput
 from conftest import create_random_marginals, create_random_marginal_dicts
 
 # Dimension (`m`)

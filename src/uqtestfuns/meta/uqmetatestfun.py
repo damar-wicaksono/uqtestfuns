@@ -23,7 +23,7 @@ from typing import Optional, Union, List
 
 from .metaspec import UQMetaFunSpec, UQTestFunSpec
 from .basis_functions import BASIS_BY_ID
-from ..core.prob_input.probabilistic_input_new import ProbInput, Marginal
+from ..core.prob_input.probabilistic_input import ProbInput, Marginal
 from ..core.uqtestfun import UQTestFun
 from ..core.parameters import Parameters
 

@@ -9,7 +9,7 @@ from typing import Callable, Optional
 from typing_extensions import TypedDict
 
 from uqtestfuns.core.uqtestfun import UQTestFun
-from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
+from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 from uqtestfuns.core.prob_input.marginal import Marginal
 from uqtestfuns.core.parameters import Parameters
 from conftest import assert_call, create_random_marginals
