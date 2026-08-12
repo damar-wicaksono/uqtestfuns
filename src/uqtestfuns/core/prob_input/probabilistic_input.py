@@ -1,290 +1,352 @@
 """
-Module with an implementation of ``ProbInput`` class.
+Module with an implementation of `ProbInput` class.
 
-The ``ProbInput`` class represents a probabilistic input model.
-Each probabilistic input has a set of one-dimensional marginals each of which
-is defined by an instance of the ``Marginal`` class.
+This module provides a `ProbInput` class for building, sampling, evaluating,
+and transforming the probabilistic input model of an uncertainty quantification
+test function.
+
+Copula-based dependence is reserved for future support.
 """
 
 from __future__ import annotations
 
 import numpy as np
-import textwrap
 
-from numpy.random._generator import Generator
-from numpy.typing import ArrayLike
 from tabulate import tabulate
-from typing import Any, List, Optional, Sequence
+from typing import Any, List, Optional, Sequence, Tuple, Union
 
-from .marginal import Marginal, FIELD_NAMES
+from uqtestfuns.core.prob_input.marginal import FIELD_NAMES, Marginal
 
 __all__ = ["ProbInput"]
 
 
 class ProbInput:
-    """A class for multivariate input variables.
+    """A class representing a probabilistic input model to a UQ test function.
+
+    A probabilistic input model to an uncertainty quantification test function
+    is a random vector with a joint probability density function. It is
+    defined by a sequence of one-dimensional marginal distributions and,
+    optionally, a copula to model the dependence structure between the
+    variables.
 
     Parameters
     ----------
-    marginals : Union[List[Marginal], Tuple[Marginal, ...]]
-        A list of one-dimensional marginals (univariate random variables).
-    copulas : Any
-        Copulas between univariate inputs that define dependence structure
-        (currently not used).
-    input_id: str, optional
-        The ID of the probabilistic input. If not specified, the value is None.
-    function_id: str, optional
-        The ID of the function associated with the input. If not specified,
-        the value is None.
-    description: str, optional
-        The short description regarding the input model.
-    rng_seed : int, optional.
-        The seed used to initialize the pseudo-random number generator.
-        If not specified, the value is taken from the system entropy.
+    marginals : Sequence[Marginal]
+        A sequence of one-dimensional marginal distributions.
+    copulas : Any, optional
+        Copulas to model the dependence structure between the variables.
+        Currently, it is not used.
+    name : str, optional
+        The name of the probabilistic input model.
     """
 
     def __init__(
         self,
         marginals: Sequence[Marginal],
         copulas: Any = None,
-        input_id: Optional[str] = None,
-        function_id: Optional[str] = None,
-        description: Optional[str] = None,
-        rng_seed: Optional[int] = None,
+        name: Optional[str] = None,
     ):
         # Read-only properties
-        self._marginals = marginals
+        self._marginals = tuple(marginals)
         self._copulas = copulas
-        # Attributes
-        self.input_id = input_id
-        self.function_id = function_id
-        self.description = description
-        # Other properties
-        self._rng_seed = rng_seed
-        self._rng: Optional[Generator] = None
+        self._name = name
 
-    # Factory methods
-    @classmethod
-    def replicate(
-        cls,
-        input_dimension: int,
-        distribution: str,
-        parameters: ArrayLike,
-        base_name: str = "X",
-        *,
-        copulas: Any = None,
-        input_id: Optional[str] = None,
-        function_id: Optional[str] = None,
-        description: Optional[str] = None,
-        rng_seed: Optional[int] = None,
-    ) -> "ProbInput":
-        """Create a probabilistic input model with replicated marginals.
+    # --- Properties
+    @property
+    def marginals(self) -> Tuple[Marginal, ...]:
+        """Return the sequence of Marginals defining the probabilistic input.
 
-        Parameters
-        -----------
-        input_dimension : int
-            The dimension of the probabilistic input.
-        distribution : str
-            The type of the probability distribution.
-        parameters : array_like
-           The parameters of the chosen probability distribution
-        base_name : str, optional
-            The base name of all the marginals. It will be spawned as
-            ``{base_name}{i + 1}`` where ``i`` is the index of the marginal
-            (1-indexed). If not specified, the value is "X".
-        copulas : Any
-            Copulas between univariate inputs that define dependence structure
-            (currently not used).
-        input_id: str, optional
-            The ID of the probabilistic input. If not specified,
-            the value is None.
-        function_id: str, optional
-            The ID of the function associated with the input. If not specified,
-            the value is None.
-        description: str, optional
-            The short description regarding the input model. If not specified,
-            the value is None.
-        rng_seed : int, optional.
-            The seed used to initialize the pseudo-random number generator.
-            If not specified, the value is taken from the system entropy.
+        Returns
+        -------
+        Tuple[Marginal, ...]
+            The sequence of Marginals that defines the probabilistic input.
         """
-        marginals = []
-        for i in range(input_dimension):
-            name = f"{base_name}{i + 1}"
-            marginal = Marginal(distribution, parameters, name)
-            marginals.append(marginal)
-
-        return cls(
-            marginals,
-            copulas,
-            input_id,
-            function_id,
-            description,
-            rng_seed,
-        )
-
-    @property
-    def input_dimension(self) -> int:
-        """Return the number of constituents (random) input variables."""
-        return len(self._marginals)
-
-    @property
-    def marginals(self) -> Sequence[Marginal]:
-        """Return the sequence of Marginals that define the input variables."""
         return self._marginals
 
     @property
     def copulas(self) -> Any:
-        """Return the underlying Copulas of the probabilistic input."""
-        return self._copulas
-
-    @property
-    def rng_seed(self) -> Optional[int]:
-        """Return the seed for RNG."""
-        return self._rng_seed
-
-    @rng_seed.setter
-    def rng_seed(self, value: Optional[int]):
-        """Set/reset the seed for RNG."""
-        self.reset_rng(value)
-
-    def transform_sample(self, xx: np.ndarray, other: ProbInput):
-        """Transform a sample from the distribution to another."""
-        # Make sure the dimensionality is consistent
-        if self.input_dimension != other.input_dimension:
-            raise ValueError(
-                "The dimensionality of the two inputs are not consistent!"
-            )
-
-        xx_trans = xx.copy()
-        if not self.copulas:
-            # Independent inputs, transform marginal by marginal
-            for idx_dim, (marginal_self, marginal_other) in enumerate(
-                zip(self.marginals, other.marginals)
-            ):
-                xx_trans[:, idx_dim] = marginal_self.transform_to(
-                    xx[:, idx_dim], marginal_other
-                )
-        else:
-            raise ValueError("Copulas are not currently supported!")
-
-        return xx_trans
-
-    def get_sample(self, sample_size: int = 1) -> np.ndarray:
-        """Get a random sample from the distribution.
-
-        Parameters
-        ----------
-        sample_size : int
-            The number of sample points in the generated sample.
+        """Return the underlying Copulas of the probabilistic input.
 
         Returns
         -------
-        np.ndarray
-            The generated sample in an :math:`N`-by-:math:`M` array
-            where :math:`N` and :math:`M` are the sample size
-            and the number of input dimensions, respectively.
+        Any
+            The underlying Copulas of the probabilistic input.
         """
-        if self._rng is None:  # pragma: no cover
-            # Create a pseudo-random number generator (lazy evaluation)
-            self._rng = np.random.default_rng(self.rng_seed)
+        return self._copulas
 
-        xx = self._rng.random((sample_size, self.input_dimension))
+    @property
+    def name(self) -> Optional[str]:
+        """Return the name of the probabilistic input model.
+
+        Returns
+        -------
+        str, optional
+            The name of the probabilistic input model.
+        """
+        return self._name
+
+    @property
+    def dimension(self) -> int:
+        """Return the number of random input variables.
+
+        Returns
+        -------
+        int
+            The number of random input variables.
+        """
+        return len(self.marginals)
+
+    # --- Public methods
+    def get_sample(
+        self,
+        sample_size: int = 1,
+        rng: Union[np.random.Generator, int, None] = None,
+    ) -> np.ndarray:
+        r"""Generate a random sample from the probabilistic input model.
+
+        Parameters
+        ----------
+        sample_size : int, optional
+            The number of sample points to generate. The default is 1.
+        rng :  Union[np.random.Generator, int, None]
+            The random number generator or the seed for the default NumPy
+            random number generator. If not specified, the default random
+            number generator with the operating system entropy is used.
+
+        Returns
+        -------
+        :class:`numpy:numpy.ndarray`
+            The generated random sample from the probabilistic input model,
+            a multi-dimensional array of shape :math:`(N, m)` where :math:`N`
+            and :math:`m` are the number of samples and the dimension of the
+            probabilistic input model, respectively.
+        """
+        if rng is None or isinstance(rng, int):
+            rng = np.random.default_rng(rng)
+
+        # Generate random sample of dimension 'm' in [0, 1]
+        xx = rng.random((sample_size, self.dimension))
+
         if not self.copulas:
-            # Transform the sample in [0, 1] to the domain of the distribution
-            for idx_dim, marginal in enumerate(self.marginals):
-                xx[:, idx_dim] = marginal.icdf(xx[:, idx_dim])
+            # Iso-probabilistically transform the sample to the marginal
+            for idx, marginal in enumerate(self.marginals):
+                xx[:, idx] = marginal.icdf(xx[:, idx])
         else:
             raise ValueError("Copulas are not currently supported!")
 
         return xx
 
+    def transform_to(
+        self,
+        xx: np.ndarray,
+        target: Union[ProbInput, Tuple[float, float]] = (-1.0, 1.0),
+    ) -> np.ndarray:
+        """Transform a sample from this input model to another.
+
+        Parameters
+        ----------
+        xx : :class:`numpy:numpy.ndarray`
+            The sample points from the source (this) probabilistic input model.
+        target : Union[ProbInput, Tuple[float, float]], optional
+            The target probabilistic input model, or a tuple ``(lower, upper)``
+            specifying the bounds of a hypercube with independent uniform
+            marginals. The default is ``(-1.0, 1.0)``.
+
+        Returns
+        -------
+        :class:`numpy:numpy.ndarray`
+            The transformed sample from the current probabilistic input model
+            to the target probabilistic input model.
+        """
+        target_ = self._prepare_transform(xx, target)
+
+        if self.copulas:
+            raise ValueError("Copulas are not currently supported!")
+
+        xx_trans = np.empty(xx.shape)
+        # Independence copula, transform marginal by marginal
+        zipped_marginals = zip(self.marginals, target_.marginals)
+        for i, (m_self, m_target) in enumerate(zipped_marginals):
+            xx_trans[:, i] = m_self.transform_to(xx[:, i], m_target)
+
+        return xx_trans
+
+    def transform_from(
+        self,
+        xx: np.ndarray,
+        source: Union[ProbInput, Tuple[float, float]] = (-1.0, 1.0),
+    ) -> np.ndarray:
+        """Transform a sample from another input model to this one.
+
+        Parameters
+        ----------
+        xx : :class:`numpy:numpy.ndarray`
+            The sample points from the source probabilistic input model.
+        source : Union[ProbInput, Tuple[float, float]], optional
+            The source probabilistic input model, or a tuple ``(lower, upper)``
+            specifying the bounds of a hypercube with independent uniform
+            marginals. The default is ``(-1.0, 1.0)``.
+
+        Returns
+        -------
+        :class:`numpy:numpy.ndarray`
+            The transformed sample in the domain of this probabilistic input
+            model.
+        """
+        source_ = self._prepare_transform(xx, source)
+
+        return source_.transform_to(xx, self)
+
     def pdf(self, xx: np.ndarray) -> np.ndarray:
-        """Get the PDF value of the distribution on a set of values.
+        """Compute the probability density function of the probabilistic input.
+
+        Parameters
+        ----------
+        xx : :class:`numpy:numpy.ndarray`
+            The input values in the support of the distribution,
+            a two-dimensional array of shape :math:`(N, m)` where :math:`N`
+            and :math:`m` are the number of sample points and the dimension,
+            respectively. A one-dimensional array of length :math:`m` is also
+            accepted and interpreted as a single sample point.
+
+        Returns
+        -------
+        :class:`numpy:numpy.ndarray`
+            The probability density function (PDF) values at the input values.
+            The output is a one-dimensional array of length :math:`N`.
+        """
+        if self.copulas:
+            raise ValueError("Copulas are not currently supported!")
+
+        xx = np.atleast_2d(xx)
+
+        if xx.shape[1] != self.dimension:
+            raise ValueError(
+                f"Input dimension {xx.shape[1]} does not match "
+                f"ProbInput dimension {self.dimension}"
+            )
+
+        log_pdf = np.zeros(xx.shape[0])
+        with np.errstate(divide="ignore"):
+            # Use log-transform because of the smallness of numbers
+            for i, marginal in enumerate(self.marginals):
+                log_pdf += np.log(marginal.pdf(xx[:, i]))
+
+        return np.exp(log_pdf)
+
+    def cdf(self, xx: np.ndarray) -> np.ndarray:
+        """Compute the cumulative distribution function of the input.
+
+        Parameters
+        ----------
+        xx : :class:`numpy:numpy.ndarray`
+            The input values in the support of the distribution,
+            a two-dimensional array of shape :math:`(N, m)` where :math:`N`
+            and :math:`m` are the number of sample points and the dimension,
+            respectively. A one-dimensional array of length :math:`m` is also
+            accepted and interpreted as a single sample point.
+
+        Returns
+        -------
+        :class:`numpy:numpy.ndarray`
+            The cumulative distribution function (CDF) values
+            at the input values. The output is a one-dimensional array
+            of length :math:`N`.
+        """
+        if self.copulas:
+            raise ValueError("Copulas are not currently supported!")
+
+        xx = np.atleast_2d(xx)
+
+        if xx.shape[1] != self.dimension:
+            raise ValueError(
+                f"Input dimension {xx.shape[1]} does not match "
+                f"ProbInput dimension {self.dimension}"
+            )
+
+        log_cdf = np.zeros(xx.shape[0])
+        with np.errstate(divide="ignore"):
+            # Use log-transform because of the smallness of numbers
+            for i, marginal in enumerate(self.marginals):
+                log_cdf += np.log(marginal.cdf(xx[:, i]))
+
+        return np.exp(log_cdf)
+
+    def is_valid_shape(self, xx: np.ndarray) -> bool:
+        """Check if the input array has the correct shape.
 
         Parameters
         ----------
         xx : np.ndarray
-            Sample values (realizations) from a distribution.
+            Input array to check.
+
+        Returns
+        -------
+        bool
+            ``True`` if the array is 2D and has ``input_dimension`` columns,
+            ``False`` otherwise.
+        """
+        return xx.ndim == 2 and xx.shape[1] == self.dimension
+
+    def is_valid_domain(self, xx: np.ndarray) -> np.ndarray:
+        """Check which input values fall within the valid domain.
+
+        Parameters
+        ----------
+        xx : np.ndarray
+            Input array of shape ``(sample_size, input_dimension)``.
 
         Returns
         -------
         np.ndarray
-            PDF values of the distribution on the sample values.
+            Boolean array of shape ``(sample_size, input_dimension)`` where
+            ``True`` indicates the value is within the domain
+            ``[lower, upper]`` of the corresponding marginal.
         """
-        if not self.copulas:
-            yy = np.empty(xx.shape)
-            for i, marginal in enumerate(self.marginals):
-                yy[:, i] = marginal.pdf(xx[:, i])
-            # Use log-transform because of the smallness of numbers
-            yy = np.exp(np.sum(np.log(yy), axis=1))
-        else:
-            raise ValueError("Copulas are not currently supported!")
+        result = np.ones(xx.shape, dtype=bool)
+        for i, marginal in enumerate(self.marginals):
+            lower, upper = marginal.lower, marginal.upper
+            result[:, i] = (xx[:, i] >= lower) & (xx[:, i] <= upper)
 
-        return yy
+        return result
 
-    def reset_rng(self, rng_seed: Optional[int]) -> None:
-        """Reset the random number generator.
+    # --- Dunder methods
+    def __eq__(self, other: Any) -> bool:
+        """Check if two ProbInput instances are equal in value.
+
+        An equality in value between two instances of `ProbInput` means that:
+
+        - All the marginals are equal
+        - The copulas are equal
+        - The names are equal
 
         Parameters
         ----------
-        rng_seed : int, optional.
-            The seed used to initialize the pseudo-random number generator.
-            If not specified, the value is taken from the system entropy.
+        other : Any
+            The other instance to compare with.
+
+        Returns
+        -------
+        bool
+            ``True`` if the instances are equal in value, ``False`` otherwise.
         """
-        rng = np.random.default_rng(rng_seed)
-        self._rng = rng
-        self._rng_seed = rng_seed
+        if not isinstance(other, ProbInput):
+            return False
 
-    def __str__(self):
-        """Return human-readable string representation of the instance."""
-        if self.input_id is None or self.input_id == "":
-            input_id = "-"
-        else:
-            input_id = self.input_id
-        if self.function_id is None or self.function_id == "":
-            function_id = "-"
-        else:
-            function_id = self.function_id
-        table = f"Function ID     : {function_id}\n"
-        table += f"Input ID        : {input_id}\n"
-        table += f"Input Dimension : {self.input_dimension}\n"
+        if self.name != other.name:
+            return False
 
-        # Parse the description column
-        if self.description is None or self.description == "":
-            description = "-"
-        else:
-            desc = textwrap.wrap(self.description, width=57)
-            # Pad new lines
-            if len(desc) > 1:
-                desc[1:] = ["                  " + line for line in desc[1:]]
-            description = "\n".join(desc)
-        table += f"Description     : {description}\n"
-        table += "Marginals       :\n\n"
+        if self.copulas != other.copulas:
+            return False
 
-        # Get the header names
-        header_names = [name.capitalize() for name in FIELD_NAMES]
-        header_names.insert(0, "No.")
+        if self.dimension != other.dimension:
+            return False
 
-        # Get the values for each field as a list
-        list_values = _get_values_as_list(self.marginals, FIELD_NAMES)
+        for m_self, m_other in zip(self.marginals, other.marginals):
+            if m_self != m_other:
+                return False
 
-        table += tabulate(
-            list_values,
-            headers=header_names,
-            stralign="center",
-            disable_numparse=True,
-        )
-
-        if self.input_dimension == 1:
-            return table
-
-        # Temporary solution for independence copula
-        copulas = "Independence" if self.copulas is None else self.copulas
-
-        table += f"\n\nCopulas         : {copulas}"
-
-        return table
+        return True
 
     def __repr__(self):
         """Return the unambiguous string representation of the instance."""
@@ -293,44 +355,93 @@ class ProbInput:
         attrs = {
             "marginals": self.marginals,
             "copulas": self.copulas,
-            "input_id": self.input_id,
-            "function_id": self.function_id,
-            "description": self.description,
-            "rng_seed": self.rng_seed,
+            "name": self.name,
         }
         attrs_str = ", ".join(f"{k}={v!r}" for k, v in attrs.items())
 
         return f"{class_name}({attrs_str})"
 
+    def __str__(self):
+        """Return a human-readable string representation of the instance."""
+        if self.name is None or self.name == "":
+            table = f"Dimension : {self.dimension}\n"
+        else:
+            table = f"Name      : {self.name}\n"
+            table += f"Dimension : {self.dimension}\n"
+        table += "Marginals :\n\n"
 
-def _get_values_as_list(
-    univ_inputs: Sequence[Marginal],
-    field_names: List[str],
-) -> list:
-    """Get the values from each field from a list of UnivariateInput
+        # Get the header names
+        header_names = [name.capitalize() for name in FIELD_NAMES]
+        header_names.insert(0, "No.")
 
-    Parameters
-    ----------
-    univ_inputs : Union[List[UnivariateInput], Tuple[UnivariateInput, ...]]
-        A list or a tuple of UnivariateInput representing
-        the marginal distribution.
-    field_names : List[str]
-        A list of field names from each UnivariateInput to access
-        (and its value grabbed).
+        # Get the values for each field as a list
+        rows = []
+        for i, m in enumerate(self.marginals):
+            row: List[Any] = [i + 1]
+            for field_name in FIELD_NAMES:
+                attr_value = getattr(m, field_name)
+                if attr_value is None:
+                    attr_value = "-"
+                row.append(attr_value)
+            rows.append(row)
 
-    Return
-    ------
-    list
-        List of values.
-    """
-    list_values = []
-    for i, marginal in enumerate(univ_inputs):
-        values = [i + 1]
-        for field_name in field_names:
-            attr_value = getattr(marginal, field_name)
-            if attr_value is None:
-                attr_value = "-"
-            values.append(attr_value)
-        list_values.append(values)
+        # Create a table of marginals details
+        table += tabulate(
+            rows,
+            headers=header_names,
+            colalign=["center" for _ in range(len(header_names) - 1)]
+            + ["left"],
+            disable_numparse=True,
+        )
 
-    return list_values
+        if self.dimension == 1:
+            return table
+
+        # Temporary solution for independence copula
+        copulas = "Independence" if self.copulas is None else self.copulas
+
+        table += f"\n\nCopulas   : {copulas}"
+
+        return table
+
+    # --- Private utilities
+    def _prepare_transform(
+        self,
+        xx: np.ndarray,
+        other: Union[ProbInput, Tuple[float, float]],
+    ) -> "ProbInput":
+        """Prepare the transformation counterpart as a ProbInput instance.
+
+        Parameters
+        ----------
+        xx : :class:`numpy:numpy.ndarray`
+            The sample points to transform.
+        other : Union[ProbInput, Tuple[float, float]]
+            The other instance for transformation, either as the source or
+            target. If the input is a tuple, it is assumed to be the parameters
+            of a uniform distribution (i.e., its lower and upper bounds).
+
+        Returns
+        -------
+        ProbInput
+            The prepared ProbInput instance for transformation.
+        """
+        if not isinstance(other, ProbInput):
+            marginals = []
+            for _ in range(self.dimension):
+                marginals.append(
+                    Marginal(distribution="uniform", parameters=other)
+                )
+            other_ = ProbInput(marginals)
+        else:
+            other_ = other
+
+        # Make sure the dimensions of the inputs are consistent
+        if xx.shape[1] != self.dimension or xx.shape[1] != other_.dimension:
+            raise ValueError(
+                f"The dimensions of the input samples ({xx.shape[1]}) and "
+                f"the probabilistic input models "
+                f"({self.dimension}, {other_.dimension}) do not match."
+            )
+
+        return other_

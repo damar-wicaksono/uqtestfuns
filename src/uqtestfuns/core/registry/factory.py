@@ -16,7 +16,7 @@ from uqtestfuns.core.registry.resolver import (
     resolve_prob_input,
     resolve_parameters,
 )
-from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
+from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 from uqtestfuns.core.parameters import Parameters
 
 

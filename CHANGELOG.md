@@ -12,9 +12,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A `Registry` class that auto-scans `test_functions/` at import time,
   parsing YAML specification files into lightweight registry entries
   for function discovery without importing any Python modules eagerly.
-- New `ProbInput.replicate()` classmethod for constructing probabilistic
-  inputs with identical marginals across all dimensions; used internally
-  by the YAML-driven factory for variable-dimension test functions.
+
+### Changed
+
+- The internal implementation of `ProbInput` has been consolidated onto
+  the modernized, registry-oriented implementation; the previous
+  implementation has been removed. The import path is unchanged.
+
+### Removed
+
+- `ProbInput.reset_rng()` and the `rng_seed` property have been removed.
+  Sampling is now stateless: pass a seed or `numpy.random.Generator`
+  directly to `get_sample(rng=...)` instead of resetting RNG state on
+  the instance.
+- The abstract-base-class system (`UQTestFunBareABC`, `UQTestFunABC`,
+  `UQTestFunVarDimABC`, `UQTestFunFixDimABC`) has been removed
+  following the new YAML-based architecture.
+- `FunParams` has been removed in favor of `Parameters`, which offers an
+  equivalent named parameter-set model, with sets sourced from the
+  registry now protected (read-only) to preserve their correspondence
+  with the published source; use `.copy()` to get an editable instance.
 
 ## [0.6.0] - 2025-01-21
 

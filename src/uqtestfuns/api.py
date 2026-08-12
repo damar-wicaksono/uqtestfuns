@@ -4,11 +4,13 @@ from typing import Dict, List, Optional, Union
 
 from tabulate import tabulate as tbl
 
-from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
+from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 from uqtestfuns.core.parameters import Parameters
 from uqtestfuns.core.uqtestfun import UQTestFun
 from uqtestfuns.core.registry import get_registry
 from uqtestfuns.core.registry.entries import UQTestFunInfo
+
+from .helpers import _verify_input_args
 
 SUPPORTED_TAGS = (
     "sensitivity",
@@ -259,6 +261,10 @@ def list_functions(
     """
 
     entries = get_registry().entries
+
+    _verify_input_args(
+        input_dimension, tag, output_dimension, parameterized, tabulate
+    )
 
     if tag is not None and tag not in SUPPORTED_TAGS:
         raise ValueError(
