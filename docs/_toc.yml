@@ -237,10 +237,8 @@ parts:
         title: ProbInput
       - file: api/marginal
         title: Marginal
-      - file: api/input-spec
-        title: ProbInputSpec
-      - file: api/funparams
-        title: FunParams
+      - file: api/parameters
+        title: Parameters
   - caption: Development
     chapters:
       - file: development/overview

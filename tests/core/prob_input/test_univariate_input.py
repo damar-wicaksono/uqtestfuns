@@ -30,7 +30,7 @@ def univariate_input(
     if distribution == "uniform":
         parameters = np.sort(np.round(np.random.rand(2), decimals=5))
     elif distribution == "beta":
-        parameters = np.sort(np.round(np.random.rand(4), decimals=5))
+        parameters = np.sort(np.random.randint(1, 100000, size=4) / 100000)
     elif distribution == "exponential":
         # Single parameter must be strictly positive
         parameters = (1 + np.round(np.random.rand(1), decimals=5)).astype(

@@ -7,7 +7,7 @@ import sys
 from .core import Marginal
 from .core import ProbInput
 from .core import UQTestFun
-from .core import FunParams
+from .core import Parameters
 from .core import RealVariable
 from .core.registry import get_registry
 
@@ -30,7 +30,7 @@ __version__ = metadata.version("uqtestfuns")
 __all__ = [
     "Marginal",
     "ProbInput",
-    "FunParams",
+    "Parameters",
     "UQTestFun",
     "RealVariable",
     "test_functions",
