@@ -15,17 +15,22 @@ kernelspec:
 (getting-started:tutorial-sensitivity)=
 # Tutorial: Test a Sensitivity Analysis Method
 
-UQTestFuns includes a wide range of test functions from the literature
-employed in a sensitivity analysis exercise.
-In this tutorial, you'll implement a sensitivity analysis method and test
-the implemented method using a test function available in UQTestFuns
-(the popular Ishigami function).
-Afterward, you'll compare the results against analytical results.
+UQTestFuns includes a wide range of test functions from the literature used
+in sensitivity analysis.
+In this tutorial, you'll implement a sensitivity analysis method
+and try it out on a test function from UQTestFuns:
+the popular Ishigami function.
+You'll then compare the estimates against known analytical results.
 
-By the end of this tutorial, you'll get an idea how a function from UQTestFuns
-is used to test a sensitivity analysis method.
+By the end, you'll understand how a UQTestFuns function lets you verify
+a global sensitivity analysis method. In global sensitivity analysis,
+the probabilistic input is part of the problem: both the function
+and its probabilistic input specification define what the sensitivity indices
+even mean. Each UQTestFuns function bundles both in one object.
+Furthermore, the sensitivity indices of the Ishigami function are analytically
+ available, giving you exact values to check against.
 
-```{code-cell} ipython3
+```{code-cell}
 import numpy as np
 import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
@@ -33,213 +38,234 @@ import uqtestfuns as uqtf
 
 ## Global sensitivity analysis
 
-Sensitivity analysis is a model inference technique whose overarching goal is
-to understand the inputs/outputs relationship of a complex
-(potentially, black box) model. Specific goals include:
+Sensitivity analysis is a model inference technique whose overarching goal
+is to understand the input/output relationship of a complex,
+potentially black-box model. In short: *how the inputs affect the output*.
 
-- _identification of inputs that drive output variability_ that leads to
-  _factor prioritization_, that is, identifying which inputs that result in
-  the largest reduction in the output variability.
-- _identification of non-influential inputs_ that leads to _factor fixing_,
-  that is, identifying which inputs that can be fixed at any value without
-  affecting the output.
+A *global* sensitivity analysis is usually distinguished from a *local* one.
+A local analysis concerns the effect on the output of perturbations around
+a particular instance of the inputs (e.g., their nominal values).
+A global analysis, by contrast, concerns the effect of variations
+across the inputs' entire uncertainty ranges.
 
-A _global_ sensitivity analysis is often distinguished from a _local_ analysis.
-A local analysis is concerned with the effects
-of perturbation around a particular instance of the inputs
-(e.g., their nominal values) on the output.
-A global analysis, on the other hand, is concerned with the effects of
-variations over all possible instances of inputs 
-within their respective uncertainty range on the output.
+The specific goals of global sensitivity analysis include:
+
+- *identifying the inputs that drive output uncertainty*, which supports
+  *factor prioritization*: ranking inputs by how much reducing
+  their uncertainty would reduce the output uncertainty.
+- *identifying non-influential inputs*, which supports *factor fixing*:
+  determining which inputs can be fixed with minimal effects on
+  the output uncertainty.
 
 ### Variance decomposition
 
-Consider an $M$-dimensional mathematical function
-$\mathcal{M}: \mathcal{D}_{\boldsymbol{X}} \in [0, 1]^M \mapsto \mathbb{R}$ that represents
+Consider an $M$-dimensional function $\mathcal{M}:
+\mathcal{D}_{\boldsymbol{X}} = [0, 1]^M \to \mathbb{R}$ representing
 a computational model of interest.
 
-Due to uncertain inputs, represented as an $M$-dimensional random vector $\boldsymbol{X}$,
-the output of the model becomes a random variable $Y = \mathcal{M}(\boldsymbol{X})$.
-It is further assumed that the components $X_m$'s of the random vector $\boldsymbol{X}$
-are mutually independent such that the joint probability density function $f_{\boldsymbol{X}}$
-reads:
+Because the inputs are uncertain, represented by an $M$-dimensional random
+vector $\boldsymbol{X}$, the model output becomes a random variable
+$Y = \mathcal{M}(\boldsymbol{X})$.
+
+We further assume that the components $X_m$ of $\boldsymbol{X}$ are mutually
+independent,
+so that the joint probability density function (PDF) $f_{\boldsymbol{X}}$
+factorizes:
 
 $$
-f_{\boldsymbol{X}}(\boldsymbol{x}) = \prod_{m = 1}^M f_{X_m}(x_m),
+f_{\boldsymbol{X}}(\boldsymbol{x}) = \prod_{m=1}^M f_{X_m}(x_m)
 $$
 
-where $f_{X_m}$ is the marginal probability density function of $X_m$.
+where $f_{X_m}$ is the marginal PDF of $X_m$.
 
-The Hoeffding-Sobol' variance decomposition of random variable $Y$ reads as follows:
+```{margin}
+Variance is now used to measure the more general (perhaps rather vague)
+notion of *uncertainty* in both the inputs and the output.
+```
+
+The Hoeffding-Sobol' decomposition expresses the variance of $Y$ as a sum
+of contributions from every subset of the inputs.
+Let $\boldsymbol{u} \subseteq \{ 1, \ldots, M \}$ index such a subset,
+and let $\boldsymbol{X}_{\boldsymbol{u}}$ denote the corresponding group of
+input variables. The decomposition then reads:
 
 $$
-\mathbb{V}[Y] = \sum_{m = 1}^M V_i + \sum_{1 \leq i < j \leq M} V_{m, n} + \ldots + V_{1, \ldots, M},
+\mathbb{V}[Y] = \sum_{\lvert \boldsymbol{u} \rvert > 0}^M V_{\boldsymbol{u}}
 $$
 
-where the terms are partial variances defined below:
+where the sum runs over all non-empty subsets $\boldsymbol{u}$
+and each $V_{\boldsymbol{u}}$ is the *partial variance* attributable
+to the interaction of the variables in $\boldsymbol{X}_{\boldsymbol{u}}$.
+For a single input ($\boldsymbol{u} = { m }$), the partial variance is
 
-- $V_m = \mathbb{V}_{X_m} \left[ \mathbb{E}_{X_{\sim m}}\left[ Y | X_m \right]\right]$
-- $V_{m, n} = \mathbb{V}_{X_{\{m, n\}}} \left[ \mathbb{E}_{X_{\sim \{m, n\}}}\left[ Y | X_m, X_n \right]\right]$
-- etc.
+$$
+V_m = \mathbb{V}_{X_m} \left[ \mathbb{E}_{\boldsymbol{X}_{\sim m}} \left[ Y \mid X_m \right] \right],
+$$
+
+where $\boldsymbol{X}_{\sim m}$ denotes all input variables *except* $X_m$. 
 
 ### Sobol' sensitivity indices
 
-By normalizing the above equation with the total variance $\mathbb{V}[Y]$, we obtain the following expression:
+Dividing the variance decomposition by the total variance $\mathbb{V}[Y]$ gives
 
 $$
-1 = \sum_{m = 1}^M S_m + \sum_{1 \leq m < n \leq M} S_{m, n} + \ldots + S_{1, \ldots, M},
+1 = \sum_{\lvert \boldsymbol{u} \rvert > 0} S_{\boldsymbol{u}}, \quad \text{where} \quad S\_{\boldsymbol{u}} = \frac{V_{\boldsymbol{u}}}{\mathbb{V}[Y]}.
 $$
 
-where now each term is a normalized partial variance.
-These normalized terms are called Sobol' sensitivity indices and there are $2^M - 1$ (where $M$ is the number of dimension)
-indices.
+Each $S_{\boldsymbol{u}}$ is a normalized partial variance,
+called a Sobol' sensitivity index.
+There are $2^M - 1$ of them, one per non-empty subset of the $M$ inputs.
 
-Of particular importance is the _first-order_ (or _main-effect_) Sobol' index $S_m$ defined as follows {cite}`Sobol1993`:
-
-$$
-S_m = \frac{\mathbb{V}_{X_m} \left[ \mathbb{E}_{X_{\sim m}}\left[ Y | \boldsymbol{X}_m \right]\right]}{\mathbb{V}[Y]}.
-$$
-
-This index indicates the importance of a particular input variable on the output variance. These indices are aligned
-with the aforementioned _factor prioritization_ goal of sensitivity analysis.
-
-Another sensitivity index of particular importance is the _total-effect_ Sobol' index defined for input variable $m$
-below {cite}`Homma1996`:
+Of particular importance is the *first-order* (or *main-effect*) index $S_m$,
+the index of the singleton $\boldsymbol{u} = \{ m \}$ {cite}`Sobol1993`:
 
 $$
-ST_m = 1 - \frac{\mathbb{V}_{\boldsymbol{X}_{\sim m}}[\mathbb{E}_{X_m}[Y | \boldsymbol{X}_{\sim m}]]}{\mathbb{V}[Y]}.
+S_m = \frac{\mathbb{V}_{X_m} \left[ \mathbb{E}_{\boldsymbol{X}_{\sim m}} \left[ Y \mid X_m \right] \right]}{\mathbb{V}[Y]}.
+$$
+
+It measures the contribution of $X_m$ acting alone to the output variance,
+and thus in line with the *factor prioritization* goal above.
+
+The other widely used index is the *total-effect* index $ST_m$,
+which captures the contribution of $X_m$ through its main effect
+and all its interactions {cite}`Homma1996`:
+
+$$
+ST_m = 1 - \frac{\mathbb{V}_{\boldsymbol{X}_{\sim m}} \left[ \mathbb{E}_{X_m} \left[ Y \mid \boldsymbol{X}_{\sim m} \right] \right]}{\mathbb{V}[Y]}.
 $$
 
 ### Monte-Carlo estimation
 
 ```{warning}
-A method to estimate the main-effect and total-effect indices via
-a Monte-Carlo simulation is implemented here following the most
-naive and straightforward approach.
-It is only to serve as an illustration.
-This implementation is, however, not the state-of-the-art approach to estimate
-the indices (see, for instance, {cite}`Saltelli2002, Saltelli2010`).
-Please refer to a dedicated sensitivity analysis and uncertainty
-quantification package for a proper analysis.
+The method implemented here estimates the main-effect and total-effect indices
+by Monte-Carlo simulation,
+following the most naive and straightforward approach.
+It serves only as an illustration and is far from the state of the art
+(see, for instance, {cite}`Saltelli2002, Saltelli2010`).
+
+For a proper analysis, use a dedicated sensitivity analysis
+and uncertainty quantification package.
 ```
 
-The estimation of the Sobol' sensitivity indices as defined
-in the above equations can be directly carried out using
-a Monte-Carlo simulation.
-The most straightforward, though rather naive and computationally expensive,
-method is to use a nested loop for the 
-computation of the conditional variances and expectations appearing
-in both indices.
+The Sobol' indices defined above can be estimated directly
+by Monte-Carlo simulation.
+The most straightforward (though naive and computationally expensive) approach
+uses a nested loop to compute the conditional variances
+and expectations that appear in both indices.
 
-For instance, in the estimation of the first-order index of, say,
-input variable $x_m$, the outer loop samples values of $X_m$
-while the inner loop samples values of $\boldsymbol{X}_{\sim m}$
-(i.e., all input variables except $x_m$).
-The cost of the analysis in terms of the model evaluations for estimating
-the first-order index for _each input variable_ is $N^2$ where $N$
-is the Monte-Carlo sample size.
-It is expected that size of $N$ is between $10^3$ and $10^6$.
+Take the first-order index of an input variable $X_m$.
+The outer loop samples values of $X_m$,
+and for each one the inner loop samples values of $\boldsymbol{X}_{\sim m}$
+to estimate the conditional expectation $\mathbb{E}_{\boldsymbol{X}_{\sim m}}\[Y \mid X_m]$.
 
-{prf:ref}`Brute Force MC First-Order` below illustrates
-the procedure to compute main-effect Sobol' indices.
+Estimating the first-order index for a single input therefore
+costs $N^2$ model evaluations, where $N$ is the Monte-Carlo sample size,
+typically between $10^3$ and $10^6$.
 
-```{prf:algorithm} Brute force MC for estimating all $S_m$
+{prf:ref}`Brute Force MC First-Order` below illustrates the procedure
+to compute the main-effect Sobol' indices.
+
+```{prf:algorithm}
 :label: Brute Force MC First-Order
 
-**Inputs** A computational model $\mathcal{M}$, random input variables $\boldsymbol{X} = \{ X_1, \ldots, X_M \}$, number of MC sample points $N$
+**Inputs** A computational model $\mathcal{M}$,
+random input variables $\boldsymbol{X} = \{ X_1, \ldots, X_M \}$,
+number of MC sample points $N$
 
 **Output** First-order Sobol' sensitivity indices $S_m$ for $m = 1, \ldots, M$
 
 For $m = 1$ to $M$:
 
-1. $\Sigma_i \leftarrow 0$
-2. $\Sigma_i^2 \leftarrow 0$
+1. $S \leftarrow 0$
+2. $Q \leftarrow 0$
 3. For $i = 1$ to $N$:
 
    1. Sample $x_m^{(i)}$ from $X_m$
-   2. $\Sigma_j \leftarrow 0$
+   2. $T \leftarrow 0$
    3. For $j = 1$ to $N$:
-  
+
       1. Sample $\boldsymbol{x}_{\sim m}^{(j)}$ from $\boldsymbol{X}_{\sim m}$
-      2. $\Sigma_j \leftarrow \Sigma_j + \mathcal{M}(x_m^{(j)}, \boldsymbol{x}_{\sim m}^{(j)})$
-    
-   4. $\mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y | X_m \right]^{(i)} \leftarrow \frac{1}{N} \Sigma_j$
-   5. $\Sigma_i \leftarrow \Sigma_i + \mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y | X_m \right]^{(i)}$
-   6. $\Sigma_{i^2} \leftarrow \Sigma_{i^2} + \left( \mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y | X_m \right]^{(i)} \right)^2$
-4. $\mathbb{V}_{X_m} \left[ \mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y | X_m \right]\right] \leftarrow \frac{1}{N} \Sigma_{i^2} - 
-\left( \frac{1}{N} \Sigma_{i} \right)^2$
-5. $S_m \leftarrow \frac{\mathbb{V}_{X_m} \left[ \mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y | X_m \right]\right]}{\mathbb{V}[Y]}$
+      2. $T \leftarrow T + \mathcal{M}(x_m^{(i)}, \boldsymbol{x}_{\sim m}^{(j)})$
+
+   4. $\mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y \mid X_m \right]^{(i)} \leftarrow \frac{1}{N} T$
+   5. $S \leftarrow S + \mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y \mid X_m \right]^{(i)}$
+   6. $Q \leftarrow Q + \left( \mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y \mid X_m \right]^{(i)} \right)^2$
+4. $\mathbb{V}_{X_m} \left[ \mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y \mid X_m \right]\right] \leftarrow \frac{1}{N} Q - \left( \frac{1}{N} S \right)^2$
+5. $S_m \leftarrow \frac{\mathbb{V}_{X_m} \left[ \mathbb{E}_{\boldsymbol{X}_{\sim m}}\left[ Y \mid X_m \right]\right]}{\mathbb{V}[Y]}$
 ```
 
-The output variance $\mathbb{V}[Y]$ used in the above algorithm can be computed following {prf:ref}`Brute Force Output Variance`.
+The output variance $\mathbb{V}[Y]$ used in the algorithm above can be computed
+following {prf:ref}`Brute Force Output Variance`.
 
-```{prf:algorithm} Brute force MC for estimating output variance $\mathbb{V}[Y]$
+```{prf:algorithm}
 :label: Brute Force Output Variance
 
-**Inputs** A computational model $\mathcal{M}$, random input variables $\boldsymbol{X}$, number of MC sample points $N$
+**Inputs** A computational model $\mathcal{M}$,
+random input variables $\boldsymbol{X}$, number of MC sample points $N$
 
 **Output** Output variance $\mathbb{V}[Y]$
 
-1. $\Sigma_i \leftarrow 0$
-2. $\Sigma_i^2 \leftarrow 0$
+1. $S \leftarrow 0$
+2. $Q \leftarrow 0$
 3. For $i = 1$ to $N$:
 
    1. Sample $\boldsymbol{x}^{(i)}$ from $\boldsymbol{X}$
-   2. $\Sigma_i \leftarrow \Sigma_i + \mathcal{M}(\boldsymbol{x}^{(i)})$
-   3. $\Sigma_{i^2} \leftarrow \Sigma_{i^2} + \left( \mathcal{M}(\boldsymbol{x}^{(i)} \right)^2$
-    
-4. $\mathbb{V}[Y] \leftarrow \frac{1}{N} \Sigma_{i^2} - \left( \frac{1}{N} \Sigma_i \right)^2$
+   2. $S \leftarrow S + \mathcal{M}(\boldsymbol{x}^{(i)})$
+   3. $Q \leftarrow Q + \left( \mathcal{M}(\boldsymbol{x}^{(i)}) \right)^2$
+
+4. $\mathbb{V}[Y] \leftarrow \frac{1}{N} Q - \left( \frac{1}{N} S \right)^2$
 ```
 
-Similar Monte-Carlo algorithm can be devised to compute
-the total-effect Sobol' indices
+A similar Monte-Carlo algorithm computes the total-effect Sobol' indices,
 as shown in {prf:ref}`Brute Force MC Total-Effect`.
 
-```{prf:algorithm} Brute force MC for estimating all $ST_m$
+```{prf:algorithm}
 :label: Brute Force MC Total-Effect
 
-**Inputs** A computational model $\mathcal{M}$, random input variables $\boldsymbol{X} = \{ X_1, \ldots, X_M \}$, number of MC sample points $N$
+**Inputs** A computational model $\mathcal{M}$,
+random input variables $\boldsymbol{X} = \{ X_1, \ldots, X_M \}$,
+number of MC sample points $N$
 
-**Output** First-order Sobol' sensitivity indices $S_m$ for $m = 1, \ldots, M$
+**Output** Total-effect Sobol' sensitivity indices $ST_m$
+for $m = 1, \ldots, M$
 
 For $m = 1$ to $M$:
 
-1. $\Sigma_i \leftarrow 0$
-2. $\Sigma_i^2 \leftarrow 0$
+1. $S \leftarrow 0$
+2. $Q \leftarrow 0$
 3. For $i = 1$ to $N$:
 
    1. Sample $\boldsymbol{x}_{\sim m}^{(i)}$ from $\boldsymbol{X}_{\sim m}$
-   2. $\Sigma_j \leftarrow 0$
+   2. $T \leftarrow 0$
    3. For $j = 1$ to $N$:
-  
+
       1. Sample $x_{m}^{(j)}$ from $X_m$
-      2. $\Sigma_j \leftarrow \Sigma_j + \mathcal{M}(x_m^{(j)}, \boldsymbol{x}_{\sim m}^{(j)})$
-    
-   4. $\mathbb{E}_{X_m}\left[ Y | \boldsymbol{X}_{\sim m} \right]^{(i)} \leftarrow \frac{1}{N} \Sigma_j$
-   5. $\Sigma_i \leftarrow \Sigma_i + \mathbb{E}_{X_m}\left[ Y | \boldsymbol{X}_{\sim m} \right]^{(i)}$
-   6. $\Sigma_{i^2} \leftarrow \Sigma_{i^2} + \left( \mathbb{E}_{X_m}\left[ Y | \boldsymbol{X}_{\sim m} \right]^{(i)} \right)^2$
-4. $\mathbb{V}_{\boldsymbol{X}_{\sim m}} \left[ \mathbb{E}_{X_m}\left[ Y | \boldsymbol{X}_{\sim m} \right]\right] \leftarrow \frac{1}{N} \Sigma_{i^2} - 
-\left( \frac{1}{N} \Sigma_{i} \right)^2$
-5. $ST_m \leftarrow 1 - \frac{\mathbb{V}_{\boldsymbol{X}_{\sim m}} \left[ \mathbb{E}_{X_m}\left[ Y | \boldsymbol{X}_{\sim m} \right]\right]}{\mathbb{V}[Y]}$
+      2. $T \leftarrow T + \mathcal{M}(x_m^{(j)}, \boldsymbol{x}_{\sim m}^{(i)})$
+
+   4. $\mathbb{E}_{X_m}\left[ Y \mid \boldsymbol{X}_{\sim m} \right]^{(i)} \leftarrow \frac{1}{N} T$
+   5. $S \leftarrow S + \mathbb{E}_{X_m}\left[ Y \mid \boldsymbol{X}_{\sim m} \right]^{(i)}$
+   6. $Q \leftarrow Q + \left( \mathbb{E}_{X_m}\left[ Y \mid \boldsymbol{X}_{\sim m} \right]^{(i)} \right)^2$
+4. $\mathbb{V}_{\boldsymbol{X}_{\sim m}} \left[ \mathbb{E}_{X_m}\left[ Y \mid \boldsymbol{X}_{\sim m} \right]\right] \leftarrow \frac{1}{N} Q - \left( \frac{1}{N} S \right)^2$
+5. $ST_m \leftarrow 1 - \frac{\mathbb{V}_{\boldsymbol{X}_{\sim m}} \left[ \mathbb{E}_{X_m}\left[ Y \mid \boldsymbol{X}_{\sim m} \right]\right]}{\mathbb{V}[Y]}$
 ```
 
-These algorithms are implemented in a Python function that returns
+These algorithms are implemented below in a Python function that returns
 the main-effect and total-effect Sobol' indices
-of all the input variables of a computational model.
-The function assumes that a probabilistic input model of the computational
-model has been defined such that sample points may be generated from them.
+for every input of a computational model.
+It assumes a probabilistic input model has been defined,
+so that sample points can be drawn from it.
 
-```{note}
-And indeed, test functions included in UQTestFuns are all given with the
-corresponding probabilistic input model according to the literature.
+```{margin}
+As you shall soon see, every test function in UQTestFuns comes
+with a probabilistic input model taken from the literature.
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-input]
 
-def estimate_sobol_indices(my_func, prob_input, num_sample):
+def estimate_sobol_indices(my_func, prob_input, num_sample, rng):
     """Estimate the first-order and total-effect Sobol' indices via MC.
-    
+
     Parameters
     ----------
     my_func
@@ -248,27 +274,30 @@ def estimate_sobol_indices(my_func, prob_input, num_sample):
         The probabilistic input model of the function.
     num_sample
         The Monte-Carlo sample size.
-       
+    rng
+        An instance of a NumPy random number generator used to draw the
+        samples.
+
     Returns
     -------
-    A tuple of NumPy array: first-order and total-effect Sobol' indices each
-    has a length of the number of input variables.
+    A tuple of two NumPy arrays: the first-order and total-effect Sobol'
+    indices, each of length equal to the number of input variables.
     """
 
     # --- Compute output variance
-    xx = prob_input.get_sample(num_sample)
+    xx = prob_input.get_sample(num_sample, rng=rng)
     yy = my_func(xx)
     var_yy = np.var(yy)
 
-    num_dim = prob_input.input_dimension
+    num_dim = prob_input.dimension
 
     # --- Compute first-order Sobol' indices
     first_order = np.zeros(num_dim)
     for m in range(num_dim):
-        xx_m = prob_input.marginals[m].get_sample(num_sample)
+        xx_m = prob_input.marginals[m].get_sample(num_sample, rng=rng)
         exp_nm = np.zeros(num_sample)
         for i in range(num_sample):
-            xx = prob_input.get_sample(num_sample)
+            xx = prob_input.get_sample(num_sample, rng=rng)
             # Replace the m-th column
             xx[:, m] = xx_m[i]
             yy = my_func(xx)
@@ -279,85 +308,79 @@ def estimate_sobol_indices(my_func, prob_input, num_sample):
     # --- Compute total-effect Sobol' indices
     total_effect = np.zeros(num_dim)
     for m in range(num_dim):
-        xx = prob_input.get_sample(num_sample)
+        xx = prob_input.get_sample(num_sample, rng=rng)
         exp_m = np.zeros(num_sample)
         for i in range(num_sample):
-            xx_m = np.repeat(xx[i:i+1], num_sample, axis=0)
-            xx_m[:, m] = prob_input.marginals[m].get_sample(num_sample)
+            xx_m = np.repeat(xx[i:i + 1], num_sample, axis=0)
+            xx_m[:, m] = prob_input.marginals[m].get_sample(num_sample, rng=rng)
             yy = my_func(xx_m)
             exp_m[i] = np.mean(yy)
         var_nm = np.var(exp_m)
         total_effect[m] = 1 - var_nm / var_yy
-    
+
     return first_order, total_effect
 ```
 
 ## Ishigami function
 
-To test the implemented algorithm above,
-we choose the popular Ishigami function {cite}`Ishigami1991` whose
-analytical values for the sensitivity indices are known.
-The function is highly non-linear and non-monotonous and given as follows:
+To test the algorithm above,
+we use the popular {ref}`Ishigami function <test-functions:ishigami>`
+{cite}`Ishigami1991`,
+whose sensitivity indices are known analytically.
+The function is highly non-linear and non-monotonic, and reads
 
 $$
-\mathcal{M}(\boldsymbol{x}) = \sin(x_1) + a \sin^2(x_2) + b \, x_3^4 \sin(x_1)
+\mathcal{M}(\boldsymbol{x}) = \sin(x_1) + a \sin^2(x_2) + b , x_3^4 \sin(x_1),
 $$
-where $\boldsymbol{x} = \{ x_1, x_2, x_3 \}$ is the three-dimensional vector of
-input variables further defined in the table below,
-and $a$ and $b$ are parameters of the function.
 
-To create an instance of the Ishigami function:
+where $\boldsymbol{x} = \{ x_1, x_2, x_3 \}$ collects
+the three input variables, defined probabilistically below,
+and $a$ and $b$ are the function's parameters.
 
-```{code-cell} ipython3
+Create an instance of the Ishigami function:
+
+```{code-cell}
 ishigami = uqtf.Ishigami()
 ```
 
-The input variables of the function are probabilistically defined according
-to the table below.
+The input variables are defined probabilistically as shown below:
 
-```{code-cell} ipython3
+```{code-cell}
 print(ishigami.prob_input)
 ```
 
-Finally, the default values for the parameters $a$ and $b$ are:
+Finally, the default values of the parameters $a$ and $b$ are:
 
-```{code-cell} ipython3
+```{code-cell}
 print(ishigami.parameters)
 ```
 
-For reproducibility of this tutorial, set the seed number for the pseudo-random
-generator attached to the probabilistic input model:
-
-```{code-cell} ipython3
-ishigami.prob_input.reset_rng(452397)
-```
-
-The variance of the Ishigami function can be analytically derived
-and it is a function of the parameters:
+The variance of the Ishigami function can be derived analytically,
+as a function of the parameters:
 
 $$
 \mathbb{V}[Y] = \frac{a^2}{8} + \frac{b \pi^4}{5} + \frac{b^2 \pi^8}{18} + \frac{1}{2}.
 $$
 
-The analytical sensitivity indices are also available as shown in the table
-below also as functions of the parameters.
+The sensitivity indices are likewise available in closed form, again as functions of the parameters:
 
-| Input variable  |                              $S_m$                              |                                                   $ST_m$                                                    |
-|:---------------:|:---------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------:|
-|       $1$       | $\frac{1}{\mathbb{V}[Y]} \frac{1}{2} (1 + \frac{b \pi^4}{5})^2$ | $\frac{1}{\mathbb{V}[Y]} \left( \frac{1}{2} \, (1 + \frac{b \pi^4}{5})^2 + \frac{8 b^2 \pi^8}{225} \right)$ |
-|       $2$       |             $\frac{1}{\mathbb{V}[Y]} \frac{a^2}{8}$             |                                        $\frac{a^2}{8 \mathbb{V}[Y]}$                                        | 
-|       $3$       |                              $0.0$                              |                                   $\frac{8 b^2 \pi^8}{225 \mathbb{V}[Y]}$                                   | 
- 
-Notice that while $X_3$ does not directly influence the output variance
-by itself (it's main-effect index is zero),
-it does influence the output variance via interaction with $X_1$.
-Furthermore, $X_2$ has no interaction effect whatsoever
-as its main-effect and total-effect indices are the same.
+| Input variable |                                    $S_m$                                     |                                                        $ST_m$                                                         |
+|:--------------:|:----------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------:|
+|     $X_1$      | $\frac{1}{\mathbb{V}[Y]} \frac{1}{2} \left( 1 + \frac{b \pi^4}{5} \right)^2$ | $\frac{1}{\mathbb{V}[Y]} \left( \frac{1}{2} \left( 1 + \frac{b \pi^4}{5} \right)^2 + \frac{8 b^2 \pi^8}{225} \right)$ |
+|     $X_2$      |                   $\frac{1}{\mathbb{V}[Y]} \frac{a^2}{8}$                    |                                           $\frac{a^2}{8 \, \mathbb{V}[Y]}$                                            |
+|     $X_3$      |                                     $0$                                      |                                      $\frac{8 b^2 \pi^8}{225 \, \mathbb{V}[Y]}$                                       |
 
-For later comparison, we define a Python function that returns
-the analytical values of the Sobol' indices of the Ishigami function.
+Notice that although $X_3$ has no main effect of its own
+(its main-effect index is zero), it still contributes to the output variance
+through its interaction with $X_1$,
+reflected in its nonzero total-effect index.
+By contrast, $X_2$ has no interaction effect at all:
+its main-effect and total-effect indices are equal.
 
-```{code-cell} ipython3
+For later comparison, we define a Python function
+that returns the analytical Sobol' indices of the Ishigami function:
+
+```{code-cell}
 :tags: [hide-input]
 
 def compute_sobol_indices(a, b):
@@ -365,49 +388,55 @@ def compute_sobol_indices(a, b):
 
     # --- Compute the variance
     var_y = a**2 / 8 + b * np.pi**4 / 5 + b**2 * np.pi**8 / 18 + 1 / 2
-    
+
     # --- Compute the first-order Sobol' indices
     first_order = np.zeros(3)
-    first_order[0] = (1 + b * np.pi**4 / 5)**2 / 2
+    first_order[0] = (1 + b * np.pi**4 / 5) ** 2 / 2
     first_order[1] = a**2 / 8
     first_order[2] = 0
-    
+
     # --- Compute the total-effect Sobol' indices
     total_effect = np.zeros(3)
     total_effect[2] = 8 * b**2 * np.pi**8 / 225
     total_effect[1] = first_order[1]
-    total_effect[0] = first_order[0] + total_effect[2] 
+    total_effect[0] = first_order[0] + total_effect[2]
 
     return first_order / var_y, total_effect / var_y
 ```
 
 ## Sobol' indices estimation
 
-To observe the convergence of the estimation procedure implemented above,
-several Monte-Carlo sample sizes are used:
+To observe the convergence of the estimation procedure,
+we estimate the Sobol' indices at several Monte-Carlo sample sizes.
+For reproducibility, we create a random number generator with a fixed seed
+and pass it to each call, so the successive estimates draw from a single,
+advancing stream:
 
-```{code-cell} ipython3
-sample_sizes = np.arange(0, 3500, 500)[1:]
+```{code-cell}
+rng = np.random.default_rng(452397)
+
+sample_sizes = np.arange(1000, 5000, 1000)
 first_order_indices = np.zeros((len(sample_sizes), ishigami.input_dimension))
 total_effect_indices = np.zeros((len(sample_sizes), ishigami.input_dimension))
 
 for i, sample_size in enumerate(sample_sizes):
-  first_order_indices[i, :], total_effect_indices[i, :] = estimate_sobol_indices(
-      ishigami, ishigami.prob_input, sample_size
-  )
+    first_order_indices[i, :], total_effect_indices[i, :] = estimate_sobol_indices(
+        ishigami, ishigami.prob_input, sample_size, rng
+    )
 ```
 
 Compute the analytical values for the given parameters:
 
-```{code-cell} ipython3
-first_order_ref, total_effect_ref = compute_sobol_indices(**ishigami.parameters.as_dict())
+```{code-cell}
+first_order_ref, total_effect_ref = compute_sobol_indices(
+    **ishigami.parameters
+)
 ```
 
-The estimated indices as a function of sample size is plotted below;
-the estimated values are in solid lines while the analytical values are in
-dashed lines.
+The estimated indices are plotted below against the sample size:
+solid lines for the estimates, dashed lines for the analytical values.
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-input]
 
 fig, axs = plt.subplots(1, 2, figsize=(10, 5))
@@ -424,11 +453,11 @@ axs[0].set_xscale("log")
 axs[0].set_ylim([-0.1, 1])
 axs[0].set_title("First-order Sobol' indices")
 axs[0].set_xlabel("MC sample size", fontsize=14)
-axs[0].set_ylabel("Sensivity index", fontsize=14)
+axs[0].set_ylabel("Sensitivity index", fontsize=14)
 
-axs[1].plot(sample_sizes, total_effect_indices[:, 0], color="#e41a1c", label=r"$x_1$")
-axs[1].plot(sample_sizes, total_effect_indices[:, 1], color="#377eb8", label=r"$x_2$")
-axs[1].plot(sample_sizes, total_effect_indices[:, 2], color="#4daf4a", label=r"$x_3$")
+axs[1].plot(sample_sizes, total_effect_indices[:, 0], color="#e41a1c", label=r"$X_1$")
+axs[1].plot(sample_sizes, total_effect_indices[:, 1], color="#377eb8", label=r"$X_2$")
+axs[1].plot(sample_sizes, total_effect_indices[:, 2], color="#4daf4a", label=r"$X_3$")
 
 axs[1].axhline(total_effect_ref[0], linestyle="--", color="#e41a1c")
 axs[1].axhline(total_effect_ref[1], linestyle="--", color="#377eb8")
@@ -444,13 +473,59 @@ fig.tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
 
-The implemented method seems to estimate the indices relatively well;
-increasing the Monte-Carlo sample size would improve the accuracy of
-the estimates but with a high computational cost.
+The method estimates the indices reasonably well,
+and the estimates converge toward the analytical values
+as the sample size grows.
+As the nested loop makes clear, though,
+that accuracy comes at a steep computational cost:
+each additional level of precision multiplies the number of model evaluations.
 
-The challenge for a sensitivity analysis method is to ascertain the importance
-(or non-importance) of input variables either qualitatively or quantitatively
-with as few computational model evaluations as possible.
+## Trying another problem
+
+Because `estimate_sobol_indices()` takes the test function
+and its probabilistic input as arguments,
+nothing in it is specific to the Ishigami function.
+To test the method on a different problem, you change a single line.
+The {ref}`Sobol'-G <test-functions:sobol-g>` function {cite}`Saltelli1995`
+is a good example: it is variable-dimension,
+so the same method now also runs at a dimension of your choosing,
+with its probabilistic input supplied by the library.
+
+```{code-cell}
+sobol_g = uqtf.SobolG(input_dimension=6)
+
+rng = np.random.default_rng(452397)
+first_order, total_effect = estimate_sobol_indices(
+    sobol_g, sobol_g.prob_input, 1000, rng
+)
+
+print(first_order)
+print(total_effect)
+```
+
+The method code did not change at all; only the function name did.
+Every built-in function in UQTestFuns shares the same interface,
+so a method designed for one should work for all of them.
+See the full list of {ref}`built-in functions <test-functions:available>`
+
+---
+
+## Summary
+
+In this tutorial, you implemented a Monte-Carlo method to estimate
+the first-order and total-effect Sobol' indices and tried it out
+on the Ishigami function from UQTestFuns.
+Because the Ishigami function's indices are known in closed form,
+you could verify the implementation directly:
+the estimates converged to the exact analytical values as the sample size grew.
+
+This is the role a UQTestFuns test function plays:
+a known, well-documented problem against which
+you can develop and verify your own sensitivity analysis method
+before applying it to a real (possibly much more expensive) computational model.
+There, the challenge is to figure out the importance (or non-importance)
+of the input variables, qualitatively or quantitatively,
+with as few model evaluations as possible.
 
 ## References
 
