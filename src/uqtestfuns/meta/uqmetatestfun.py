@@ -148,16 +148,6 @@ class UQMetaTestFun:
             prob_input = ProbInput(testfun_specs.inputs)
             # Assign the realized spec as a parameter
             parameters = Parameters({"spec": testfun_specs})
-            # parameters = FunParams(
-            #     declared_parameters=[
-            #         {
-            #             "keyword": "spec",
-            #             "value": testfun_specs,
-            #             "type": UQTestFunSpec,
-            #             "description": None,
-            #         },
-            #     ],
-            # )
 
             return UQTestFun(
                 evaluate=evaluate,
@@ -173,16 +163,6 @@ class UQMetaTestFun:
             prob_input = ProbInput(testfun_specs[i].inputs)
             # Assign the realized spec as a parameter
             parameters = Parameters({"spec": testfun_specs[i]})
-            # parameters = FunParams(
-            #     declared_parameters=[
-            #         {
-            #             "keyword": "spec",
-            #             "value": testfun_specs[i],
-            #             "type": UQTestFunSpec,
-            #             "description": None,
-            #         },
-            #     ],
-            # )
 
             sample.append(
                 UQTestFun(
