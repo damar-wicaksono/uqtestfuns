@@ -10,7 +10,7 @@ from uqtestfuns.core.prob_input.utils import SUPPORTED_MARGINALS
 
 
 def _id_distribution(distribution):
-    return f"{distribution:<12}"
+    return f"{distribution:>12}"
 
 
 @pytest.fixture(params=SUPPORTED_MARGINALS, ids=_id_distribution)
@@ -83,3 +83,12 @@ def test_str(marginal: Marginal):
     name = marginal.name
     if name is not None:
         assert name in my_str
+
+
+def test_repr_round_trip(marginal: Marginal):
+    """Test that the repr of a Marginal instance can be round-tripped."""
+    my_repr = repr(marginal)
+    marginal_from_repr = eval(my_repr)
+
+    # Assertion
+    assert marginal_from_repr == marginal
