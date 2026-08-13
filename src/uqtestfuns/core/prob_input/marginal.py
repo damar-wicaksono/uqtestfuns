@@ -392,7 +392,7 @@ class Marginal:
         # Get the value of the constructor arguments
         attrs = {
             "distribution": self.distribution,
-            "parameters": self.parameters,
+            "parameters": self.parameters.tolist(),
             "name": self.name,
             "description": self.description,
         }
