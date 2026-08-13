@@ -152,3 +152,39 @@ def get_icdf_values(
     )
 
     return out
+
+
+def get_display_name(distribution: str) -> str:
+    """Get the display name of the distribution.
+
+    Parameters
+    ----------
+    distribution : str
+        Name of the distribution.
+
+    Returns
+    -------
+    str
+        Display name of the distribution.
+    """
+    distribution_module = get_distribution_module(distribution)
+
+    return distribution_module.DISPLAY_NAME
+
+
+def get_parameter_names(distribution: str) -> Tuple[str]:
+    """Get the parameter names of the distribution.
+
+    Parameters
+    ----------
+    distribution : str
+        Name of the distribution.
+
+    Returns
+    -------
+    Tuple[str]
+        Parameter names of the distribution.
+    """
+    distribution_module = get_distribution_module(distribution)
+
+    return distribution_module.PARAM_NAMES

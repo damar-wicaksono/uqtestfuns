@@ -16,8 +16,9 @@ from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "exponential"
-
+DISPLAY_NAME = "Exp"
 NUM_PARAMS = 1
+PARAM_NAMES = ("lambda",)
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:

@@ -19,8 +19,9 @@ from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "trunc-gumbel"
-
+DISPLAY_NAME = "Trunc-Gumbel"
 NUM_PARAMS = 4
+PARAM_NAMES = ("mu", "beta", "a", "b")
 
 
 def _get_parameters(
