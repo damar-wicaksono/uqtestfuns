@@ -16,8 +16,9 @@ from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "triangular"
-
+DISPLAY_NAME = "Triangular"
 NUM_PARAMS = 3
+PARAM_NAMES = ("a", "b", "c")
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:

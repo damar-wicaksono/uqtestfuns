@@ -19,8 +19,9 @@ from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "gumbel"
-
+DISPLAY_NAME = "Gumbel"
 NUM_PARAMS = 2
+PARAM_NAMES = ("mu", "beta")
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:
