@@ -4,6 +4,7 @@ Test module for UQTestFun class, a generic class for generic UQ test function.
 
 import numpy as np
 import pytest
+import re
 
 from typing import Callable, Optional
 from typing_extensions import TypedDict
@@ -19,7 +20,7 @@ class UQTestFunArgs(TypedDict):
     evaluate: Callable
     prob_input: ProbInput
     parameters: Optional[Parameters]
-    name: str
+    name: str | None
 
 
 @pytest.fixture(params=[True, False], ids=["w/_parameters", "w/o_parameters"])
@@ -33,14 +34,16 @@ def uqtestfun(request):
 
     if request.param:
         parameters = Parameters({"p": 10.0})
+        name = "TestFunction"
     else:
         parameters = None
+        name = None
 
     my_args: UQTestFunArgs = {
         "evaluate": evaluate,
         "prob_input": ProbInput(input_marginals),
         "parameters": parameters,
-        "name": "TestFunction",
+        "name": name,
     }
 
     uqtestfun_instance = UQTestFun(**my_args)
@@ -81,15 +84,17 @@ def test_str(uqtestfun):
     s = str(uqtestfun_instance)
 
     name = uqtestfun_instance.name
-    if name is None:
-        name = "N/A"
+    # if name is None:
+    #     name = "N/A"
     description = uqtestfun_instance.description
-    if description is None:
-        description = "N/A"
+    # if description is None:
+    #     description = "N/A"
 
     # Assertions
-    assert name in s
-    assert description in s
+    if name is None:
+        assert not re.search(r"^Name\s*:", s, re.MULTILINE)
+    if description is None:
+        assert not re.search(r"^Description\s*:", s, re.MULTILINE)
     assert str(uqtestfun_instance.input_dimension) in s
     assert str(uqtestfun_instance.output_dimension) in s
     assert str(uqtestfun_instance.parameters is not None) in s

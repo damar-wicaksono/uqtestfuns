@@ -189,10 +189,16 @@ class UQTestFun:
 
     def __str__(self) -> str:
         """Return a human-readable summary of the UQ test function."""
-        table = f"Name          : {self.name or 'N/A'}\n"
-        table += f"Description   : {self.description or 'N/A'}\n"
-        table += f"Input dim.    : {self.input_dimension}\n"
+        table = f"Input dim.    : {self.input_dimension}\n"
         table += f"Output dim.   : {self.output_dimension}\n"
+        description_ = self.description
+
+        if description_ is not None:
+            table = f"Description   : {description_}\n" + table
+        name_ = self.name
+
+        if name_ is not None:
+            table = f"Name          : {name_}\n" + table
 
         if self._parameters is not None:
             _params = True
