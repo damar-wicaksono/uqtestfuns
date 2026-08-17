@@ -404,6 +404,7 @@ class ProbInput:
             rows,
             headers=header_names,
             colalign=col_alignment,
+            maxcolwidths=[None, None, None, 50],
             disable_numparse=True,
         )
 
