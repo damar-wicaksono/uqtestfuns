@@ -167,14 +167,14 @@ class Marginal:
         """
         return self._upper
 
-    # --- Public methods
-    def display(self) -> str:
+    @property
+    def notation(self) -> str:
         """Display the distribution formula.
 
         Returns
         -------
         str
-            The distribution formula, e.g., "Normal(mu=0.0, sigma=1.0)".
+            The distribution notation, e.g., "Normal(mu=0.0, sigma=1.0)".
         """
         display_name = get_display_name(self.distribution)
         param_names = get_parameter_names(self.distribution)
@@ -183,10 +183,11 @@ class Marginal:
             f"{name}={value:.6g}"
             for name, value in zip(param_names, self.parameters, strict=True)
         ]
-        distribution = f"{display_name}({', '.join(items)})"
+        notation_ = f"{display_name}({', '.join(items)})"
 
-        return distribution
+        return notation_
 
+    # --- Public methods
     def pdf(self, xx: Union[float, np.ndarray]) -> np.ndarray:
         """Compute the probability density function of the distribution.
 
@@ -374,11 +375,10 @@ class Marginal:
             The human-readable summary of the instance.
         """
         name = self.name
-        distribution = self.display()
         if name is None:
-            return distribution
+            return self.notation
 
-        return f"{name} ~ {distribution}"
+        return f"{name} ~ {self.notation}"
 
     def __repr__(self) -> str:
         """Return the unambiguous string representation of the instance.

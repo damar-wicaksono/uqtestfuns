@@ -15,7 +15,7 @@ import numpy as np
 from tabulate import tabulate
 from typing import Any, List, Optional, Sequence, Tuple, Union
 
-from uqtestfuns.core.prob_input.marginal import FIELD_NAMES, Marginal
+from uqtestfuns.core.prob_input.marginal import Marginal
 
 __all__ = ["ProbInput"]
 
@@ -361,36 +361,49 @@ class ProbInput:
 
         return f"{class_name}({attrs_str})"
 
-    def __str__(self):
-        """Return a human-readable string representation of the instance."""
-        if self.name is None or self.name == "":
+    def __str__(self) -> str:
+        """Return a human-readable string representation of the instance.
+
+        Returns
+        -------
+        str
+            The tabulated summary of the probabilistic input
+            and its constituent marginals.
+        """
+        name = self.name
+        if name is None or name == "":
             table = f"Dimension : {self.dimension}\n"
         else:
-            table = f"Name      : {self.name}\n"
+            table = f"Name      : {name}\n"
             table += f"Dimension : {self.dimension}\n"
         table += "Marginals :\n\n"
 
-        # Get the header names
-        header_names = [name.capitalize() for name in FIELD_NAMES]
-        header_names.insert(0, "No.")
+        # Check if the description is empty for all marginals
+        empty_description = all(not m.description for m in self.marginals)
 
         # Get the values for each field as a list
         rows = []
         for i, m in enumerate(self.marginals):
-            row: List[Any] = [i + 1]
-            for field_name in FIELD_NAMES:
-                attr_value = getattr(m, field_name)
-                if attr_value is None:
-                    attr_value = "-"
-                row.append(attr_value)
+            row: List[Any] = [
+                i + 1,
+                m.name,
+                m.notation,
+            ]
+            # Append description if one is available
+            if not empty_description:
+                row.append(m.description or "-")
             rows.append(row)
 
-        # Create a table of marginals details
+        # Create a table of marginals
+        header_names = ["No.", "Variable", "Distribution"]
+        col_alignment = ["center", "center", "left"]
+        if not empty_description:
+            header_names.append("Description")
+            col_alignment.append("left")
         table += tabulate(
             rows,
             headers=header_names,
-            colalign=["center" for _ in range(len(header_names) - 1)]
-            + ["left"],
+            colalign=col_alignment,
             disable_numparse=True,
         )
 

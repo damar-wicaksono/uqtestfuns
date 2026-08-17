@@ -628,7 +628,7 @@ class TestPrint:
         prob_input = ProbInput(marginals)
 
         # Assertion
-        assert str(prob_input).count("   -") == dimension
+        assert "Description" not in str(prob_input)
 
 
 class TestValidation:
