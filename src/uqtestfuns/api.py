@@ -4,21 +4,14 @@ from typing import Dict, List, Optional, Union
 
 from tabulate import tabulate as tbl
 
-from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 from uqtestfuns.core.parameters import Parameters
-from uqtestfuns.core.uqtestfun import UQTestFun
+from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 from uqtestfuns.core.registry import get_registry
 from uqtestfuns.core.registry.entries import UQTestFunInfo
+from uqtestfuns.core.uqtestfun import UQTestFun
+from uqtestfuns.global_settings import SUPPORTED_TAGS
 
-from .helpers import _verify_input_args
-
-SUPPORTED_TAGS = (
-    "sensitivity",
-    "optimization",
-    "metamodeling",
-    "reliability",
-    "integration",
-)
+__all__ = ["list_functions"]
 
 
 def create(
@@ -86,106 +79,6 @@ def create(
         return factory(input_dimension, **kwargs)
     else:
         return factory(**kwargs)
-
-
-def list_parameters(
-    name: str,
-    show: str = "all",
-    *,
-    parameters_id: str | None = None,
-):
-    """Display parameter information for a UQ test function.
-
-    This function prints information about the parameters of a specified
-    test function, including parameter keywords and available parameter sets.
-
-    Parameters
-    ----------
-    name : str
-        The name of the test function to query.
-    show : str, optional
-        Controls which information to display. Options are:
-        - 'all': Display both parameter keywords and available sets.
-        - 'keywords': Display only parameter keywords.
-        - 'sets': Display only available parameter sets.
-        Default is 'all'.
-    parameters_id : str, optional
-        Identifier for a specific parameter set. If specified, only the
-        keywords for that parameter set are shown (show is set to 'keywords').
-        If None, uses the default parameter set. Default is None.
-
-    Returns
-    -------
-    None
-        This function prints directly to stdout and does not return a value.
-    """
-
-    # Get the test function information
-    reg = get_registry()
-    info = reg[name]
-
-    # Skip if the function is not parameterized
-    if info.default_parameters_id is None:
-        print(f"\n{name} has no parameters.")
-        return
-
-    header = f"Parameters for {name}"
-    print(f"\n{header}")
-    print("=" * len(header))
-
-    # Get default parameter, if not specified
-    if parameters_id is None:
-        parameters_id = info.default_parameters_id
-    else:
-        show = "keywords"
-
-    parameters_keywords = info.parameters_keywords[parameters_id]
-
-    # Print the tabulated keyword descriptions
-    if show in ("all", "keywords"):
-        headers = ["No", "Name", "Type", "Description"]
-        rows = [
-            [
-                i + 1,
-                k,
-                "callable" if v["type"] is callable else v["type"].__name__,
-                v["description"] or "—",
-            ]
-            for i, (k, v) in enumerate(parameters_keywords.items())
-        ]
-        print("\nKeywords:")
-
-        out = tbl(
-            rows,
-            headers=headers,
-            tablefmt="simple",
-            colalign=("center", "center", "center", "left"),
-            maxcolwidths=[None, None, None, 50],
-            disable_numparse=True,
-        )
-
-        print(out)
-
-    if show in ("all", "sets"):
-        available_ids = info.available_parameters_ids
-        headers = ["No", "ID", "Description"]
-        rows = [
-            [i + 1, param_id, desc or "—"]
-            for i, (param_id, desc) in enumerate(available_ids.items())
-        ]
-        print("\nAvailable sets:")
-
-        out = tbl(
-            rows,
-            headers=headers,
-            tablefmt="simple",
-            colalign=("center", "left", "left"),
-            maxcolwidths=[None, None, 50],
-            disable_numparse=True,
-        )
-        out += f"\nDefault: {info.default_parameters_id}"
-
-        print(out)
 
 
 def list_functions(
@@ -293,7 +186,7 @@ def list_functions(
         filtered[name] = entry
 
     if not tabulate:
-        return sorted(name + "()" for name in filtered)
+        return sorted(name for name in filtered)
 
     if not filtered:
         return None
@@ -351,3 +244,202 @@ def list_functions(
     print(table)
 
     return None
+
+
+def list_parameters(
+    name: str,
+    show: str = "all",
+    *,
+    parameters_id: str | None = None,
+):
+    """Display parameter information for a UQ test function.
+
+    This function prints information about the parameters of a specified
+    test function, including parameter keywords and available parameter sets.
+
+    Parameters
+    ----------
+    name : str
+        The name of the test function to query.
+    show : str, optional
+        Controls which information to display. Options are:
+        - 'all': Display both parameter keywords and available sets.
+        - 'keywords': Display only parameter keywords.
+        - 'sets': Display only available parameter sets.
+        Default is 'all'.
+    parameters_id : str, optional
+        Identifier for a specific parameter set. If specified, only the
+        keywords for that parameter set are shown (show is set to 'keywords').
+        If None, uses the default parameter set. Default is None.
+
+    Returns
+    -------
+    None
+        This function prints directly to stdout and does not return a value.
+    """
+
+    # Get the test function information
+    reg = get_registry()
+    info = reg[name]
+
+    # Skip if the function is not parameterized
+    if info.default_parameters_id is None:
+        print(f"\n{name} has no parameters.")
+        return
+
+    header = f"Parameters for {name}"
+    print(f"\n{header}")
+    print("=" * len(header))
+
+    # Get default parameter, if not specified
+    if parameters_id is None:
+        parameters_id = info.default_parameters_id
+    else:
+        show = "keywords"
+
+    parameters_keywords = info.parameters_keywords[parameters_id]
+
+    # Print the tabulated keyword descriptions
+    if show in ("all", "keywords"):
+        headers = ["No", "Name", "Type", "Description"]
+        rows = [
+            [
+                i + 1,
+                k,
+                "callable" if v["type"] is callable else v["type"].__name__,
+                v["description"] or "—",
+            ]
+            for i, (k, v) in enumerate(parameters_keywords.items())
+        ]
+        print("\nKeywords:")
+
+        out = tbl(
+            rows,
+            headers=headers,
+            tablefmt="simple",
+            colalign=("center", "center", "center", "left"),
+            maxcolwidths=[None, None, None, 50],
+            disable_numparse=True,
+        )
+
+        print(out)
+
+    if show in ("all", "sets"):
+        available_ids = info.available_parameters_ids
+        headers = ["No", "ID", "Description"]
+        rows = [
+            [i + 1, param_id, desc or "—"]
+            for i, (param_id, desc) in enumerate(available_ids.items())
+        ]
+        print("\nAvailable sets:")
+
+        out = tbl(
+            rows,
+            headers=headers,
+            tablefmt="simple",
+            colalign=("center", "left", "left"),
+            maxcolwidths=[None, None, 50],
+            disable_numparse=True,
+        )
+        out += f"\nDefault: {info.default_parameters_id}"
+
+        print(out)
+
+
+def _verify_input_args(
+    input_dimension: Optional[Union[str, int]] = None,
+    tag: Optional[str] = None,
+    output_dimension: Optional[int] = None,
+    parameterized: Optional[bool] = None,
+    tabulate: bool = True,
+) -> None:
+    """Verify the input arguments.
+
+    Parameters
+    ----------
+    input_dimension : Optional[Union[str, int]]
+        The number of input dimension to filter the list of test functions.
+        For variable dimension (i.e., M-dimensional test functions),
+        use the string "M".
+    tag : Optional[str]
+        The application tag to filter the list of test functions.
+        Supported tags: "metamodeling", "sensitivity", "optimization",
+        "reliability".
+    output_dimension : int, optional
+        The number of output dimension to filter the list of test functions.
+    parameterized : bool, optional
+        The flag based on whether the test function is parameterized to filter
+        the list of test functions.
+    tabulate : bool, optional
+        The flag whether to print a table on the console or a list
+        of the available functions (each in fully-qualified class name).
+
+    Raises
+    ------
+    ValueError
+        If ``input_dimension`` is not a positive integer or the string "M".
+        If ``tag`` is not one of the supported tags.
+        If ``output_dimension`` is not a positive integer.
+    TypeError
+        If ``input_dimension`` is not either an integer, string, or NoneType.
+        If ``tag`` is not a string.
+        If ``output_dimension`` is not an integer, string, or NoneType.
+        If ``parameterized`` is not a bool.
+        If ``tabulate`` is not a bool.
+    """
+    # --- Parse 'input_dimension'
+    if not isinstance(input_dimension, (int, str, type(None))):
+        raise TypeError(
+            f"Invalid type for input dimension! "
+            f"Expected either an integer or a string. "
+            f"Got instead {type(input_dimension)}."
+        )
+    if input_dimension is not None and isinstance(input_dimension, str):
+        if input_dimension.lower() != "m":
+            raise ValueError(
+                f"Invalid value ({input_dimension}) for input dimension! "
+                f"Either a positive integer or 'M' to indicate "
+                f"a variable-dimension test function."
+            )
+    if input_dimension is not None and isinstance(input_dimension, int):
+        if input_dimension <= 0:
+            raise ValueError(
+                f"Invalid value ({input_dimension}) for input dimension! "
+                f"Either a positive integer or 'M' to indicate "
+                f"a variable-dimension test function."
+            )
+
+    # --- Parse 'tag'
+    if not isinstance(tag, (str, type(None))):
+        raise TypeError(f"Tag argument must be of str type! Got {type(tag)}.")
+    if tag is not None and tag not in SUPPORTED_TAGS:
+        raise ValueError(
+            f"Tag {tag!r} is not supported. Use one of {SUPPORTED_TAGS}!"
+        )
+
+    # --- Parse 'input_dimension'
+    if not isinstance(output_dimension, (int, type(None))):
+        raise TypeError(
+            f"Invalid type for output dimension! "
+            f"Expected either an integer or a string. "
+            f"Got instead {type(output_dimension)}."
+        )
+    if output_dimension is not None:
+        if output_dimension <= 0:
+            raise ValueError(
+                f"Invalid value ({output_dimension}) for output dimension! "
+                f"Must be a positive integer."
+            )
+
+    # --- Parse 'parameterized'
+    if not isinstance(parameterized, (bool, type(None))):
+        raise TypeError(
+            f"'parameterized' argument must be of bool type! "
+            f"Got {type(parameterized)}."
+        )
+
+    # --- Parse 'tabulate'
+    if not isinstance(tabulate, (bool, type(None))):
+        raise TypeError(
+            f"'tabulate' argument must be of bool type! Got {type(tabulate)}."
+        )
