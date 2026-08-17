@@ -11,12 +11,11 @@ the published source; call `.copy()` to obtain an editable instance.
 from __future__ import annotations
 
 import numpy as np
-import textwrap
 
-from collections.abc import Mapping, Iterator
+from collections.abc import Iterator
 from copy import copy, deepcopy
 from tabulate import tabulate
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Mapping, Optional, Sized
 
 __all__ = ["Parameters"]
 
@@ -64,10 +63,10 @@ class Parameters(Mapping):
 
         # --- Process the keyword descriptions
         kw_desc = dict(keyword_descriptions or {})
-        stray = set(kw_desc) - set(self._values.keys())
+        stray = set(kw_desc) - set(self._values)
         if stray:
             raise ValueError(
-                f"Keyword descriptions for unknown parameters: {stray}"
+                f"Keyword descriptions for unknown parameters: {sorted(stray)}"
             )
 
         self._keyword_descriptions = {
@@ -240,17 +239,27 @@ class Parameters(Mapping):
         return f"{class_name}({attrs_str})"
 
     def __str__(self):
-        """Return a human-readable string representation of the instance."""
-        if self.name is None or self.name == "":
-            table = "Values :\n\n"
-        else:
-            table = f"Name   : {self.name}\n"
-            table += "Values :\n\n"
+        """Return a human-readable string representation of the instance.
 
-        # Get the header names
-        field_names = ["Keyword", "Value", "Type", "Description"]
-        header_names = [name.capitalize() for name in field_names]
-        header_names.insert(0, "No.")
+        Returns
+        -------
+        str
+            The tabulated summary of the parameter values.
+        """
+        name = self.name
+        if name is None or name == "":
+            table = "Values :"
+        else:
+            table = f"Name   : {name}\n"
+            table += "Values :"
+
+        if not self._values:
+            return table + " (no parameters)"
+
+        table += "\n\n"
+
+        # Create the header names
+        header_names = ["No", "Keyword", "Value", "Description"]
 
         # Get the values for each field as a list
         rows = _create_list(self._values, self._keyword_descriptions)
@@ -258,8 +267,8 @@ class Parameters(Mapping):
         table += tabulate(
             rows,
             headers=header_names,
-            colalign=("center", "center", "center", "center", "left"),
-            maxcolwidths=[None, None, None, None, 30],
+            colalign=("center", "center", "center", "left"),
+            maxcolwidths=[None, None, None, 30],
             disable_numparse=True,
         )
 
@@ -270,43 +279,75 @@ def _create_list(
     values: Dict[str, Any],
     descriptions: Dict[str, Optional[str]],
 ) -> List[List[str]]:
-    """Build table rows from parameter values and descriptions.
+    """Build the table rows from parameter values and descriptions.
 
     Parameters
     ----------
     values : Dict[str, Any]
-        Dictionary of parameter names and their values.
-    descriptions : Dict[str, str]
-        Dictionary mapping parameter names to descriptions.
+        The parameter keywords and their values.
+    descriptions : Dict[str, Optional[str]]
+        The parameter keywords and their descriptions. A missing or
+        empty description is rendered as a dash.
 
     Returns
     -------
     List[List[str]]
-        List of rows containing the row number, parameter name,
-        formatted value, and description.
+        The rows, each containing the row number, the keyword, the
+        summarized value, and the description.
     """
-
-    def format_value(val) -> str:
-        if isinstance(val, np.ndarray):
-            return f"{val.shape} array"
-        if isinstance(val, float):
-            return f"{val:g}"
-        return str(val)
 
     list_values = []
     for i, (parameter, value) in enumerate(values.items(), start=1):
-        desc = textwrap.fill(descriptions.get(parameter) or "-", width=57)
         list_values.append(
             [
                 str(i),
                 parameter,
-                format_value(value),
-                type(value).__name__,
-                desc,
+                _format_value(value),
+                descriptions.get(parameter) or "-",
             ]
         )
 
     return list_values
+
+
+def _format_value(value: Any) -> str:
+    """Summarize a parameter value for tabulated display.
+
+    Scalars are shown literally; containers are summarized by shape or
+    size. The summary orients the reader and is not meant to be read
+    back as data.
+
+    Parameters
+    ----------
+    value : Any
+        The parameter value to summarize.
+
+    Returns
+    -------
+    str
+        The summary of the value.
+    """
+    if value is None:
+        return "None"
+    # bool must precede int; bool is a subclass of int
+    if isinstance(value, bool):
+        return str(value)
+    if isinstance(value, (int, np.integer)):
+        return str(value)
+    if isinstance(value, str):
+        return repr(value)
+    if isinstance(value, (float, np.floating)):
+        return f"{value:.6g}"
+    if isinstance(value, np.ndarray):
+        return f"{value.shape} array"
+    if isinstance(value, Mapping):
+        num_keys = len(value)
+        suffix = "key" if num_keys == 1 else "keys"
+        return f"{type(value).__name__}[{num_keys} {suffix}]"
+    if isinstance(value, Sized):
+        return f"{type(value).__name__}[{len(value)}]"
+
+    return type(value).__name__
 
 
 class ParametersProtectedError(TypeError):
