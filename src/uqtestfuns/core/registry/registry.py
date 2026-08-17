@@ -168,6 +168,9 @@ class Registry:
         KeyError
             If the function name is not found in the registry.
         """
+        if key not in self._infos:
+            raise KeyError(f"Test function '{key!r}' not available")
+
         return self._infos[key]
 
     def get_factory(self, name: str):
@@ -186,15 +189,7 @@ class Registry:
         -------
         Callable
             A factory function that creates UQTestFun instances.
-
-        Raises
-        ------
-        KeyError
-            If the test function name is not found in the registry.
         """
-        if name not in self:
-            raise KeyError(f"Test function '{name}' not available")
-
         if name not in self._factories:
             info = self._infos[name]
             spec = parse_spec(info.spec_path, self._pkg_root)
