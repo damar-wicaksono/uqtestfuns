@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Literal, Optional, overload, Union
 
 from tabulate import tabulate as tbl
 
@@ -11,7 +11,7 @@ from uqtestfuns.core.registry.entries import UQTestFunInfo
 from uqtestfuns.core.uqtestfun import UQTestFun
 from uqtestfuns.global_settings import SUPPORTED_TAGS
 
-__all__ = ["list_functions"]
+__all__ = ["create", "list_functions", "list_parameters"]
 
 
 def create(
@@ -246,12 +246,29 @@ def list_functions(
     return None
 
 
+@overload
 def list_parameters(
     name: str,
-    show: str = "all",
     *,
-    parameters_id: str | None = None,
-):
+    tabulate: Literal[True],
+    tablefmt: str,
+) -> None: ...
+
+
+@overload
+def list_parameters(
+    name: str,
+    *,
+    tabulate: Literal[False],
+) -> List[str]: ...
+
+
+def list_parameters(
+    name: str,
+    *,
+    tabulate: bool = True,
+    tablefmt: str = "simple",
+) -> Optional[List[str]]:
     """Display parameter information for a UQ test function.
 
     This function prints information about the parameters of a specified
@@ -261,89 +278,58 @@ def list_parameters(
     ----------
     name : str
         The name of the test function to query.
-    show : str, optional
-        Controls which information to display. Options are:
-        - 'all': Display both parameter keywords and available sets.
-        - 'keywords': Display only parameter keywords.
-        - 'sets': Display only available parameter sets.
-        Default is 'all'.
-    parameters_id : str, optional
-        Identifier for a specific parameter set. If specified, only the
-        keywords for that parameter set are shown (show is set to 'keywords').
-        If None, uses the default parameter set. Default is None.
+    tabulate : bool, optional
+        If ``True``, print results as a formatted table and return ``None``.
+        If ``False``, return a sorted list of parameter set names.
+        Default is ``True``.
+    tablefmt : str, optional
+        Format for the table output when ``tabulate`` is True. Follows the
+        formats supported by the ``tabulate`` library. Default is 'simple'.
 
     Returns
     -------
-    None
-        This function prints directly to stdout and does not return a value.
+    None or List[str]
+        If ``tabulate`` is ``True`` the function prints the result directly
+        to stdout. If ``tabulate`` is ``False``, it returns a sorted list of
+        parameter set names for the given function.
     """
 
     # Get the test function information
     reg = get_registry()
     info = reg[name]
 
+    if not tabulate:
+        return sorted(info.available_parameters_ids.keys())
+
     # Skip if the function is not parameterized
     if info.default_parameters_id is None:
         print(f"\n{name} has no parameters.")
-        return
+        return None
 
     header = f"Parameters for {name}"
     print(f"\n{header}")
     print("=" * len(header))
 
-    # Get default parameter, if not specified
-    if parameters_id is None:
-        parameters_id = info.default_parameters_id
-    else:
-        show = "keywords"
+    available_ids = info.available_parameters_ids
+    headers = ["No", "ID", "Description"]
+    rows = [
+        [i + 1, param_id, desc or "—"]
+        for i, (param_id, desc) in enumerate(available_ids.items())
+    ]
 
-    parameters_keywords = info.parameters_keywords[parameters_id]
+    out = tbl(
+        rows,
+        headers=headers,
+        tablefmt=tablefmt,
+        colalign=("center", "left", "left"),
+        maxcolwidths=[None, None, 50],
+        disable_numparse=True,
+    )
+    out += f"\nDefault: {info.default_parameters_id}"
 
-    # Print the tabulated keyword descriptions
-    if show in ("all", "keywords"):
-        headers = ["No", "Name", "Type", "Description"]
-        rows = [
-            [
-                i + 1,
-                k,
-                "callable" if v["type"] is callable else v["type"].__name__,
-                v["description"] or "—",
-            ]
-            for i, (k, v) in enumerate(parameters_keywords.items())
-        ]
-        print("\nKeywords:")
+    print(out)
 
-        out = tbl(
-            rows,
-            headers=headers,
-            tablefmt="simple",
-            colalign=("center", "center", "center", "left"),
-            maxcolwidths=[None, None, None, 50],
-            disable_numparse=True,
-        )
-
-        print(out)
-
-    if show in ("all", "sets"):
-        available_ids = info.available_parameters_ids
-        headers = ["No", "ID", "Description"]
-        rows = [
-            [i + 1, param_id, desc or "—"]
-            for i, (param_id, desc) in enumerate(available_ids.items())
-        ]
-        print("\nAvailable sets:")
-
-        out = tbl(
-            rows,
-            headers=headers,
-            tablefmt="simple",
-            colalign=("center", "left", "left"),
-            maxcolwidths=[None, None, 50],
-            disable_numparse=True,
-        )
-        out += f"\nDefault: {info.default_parameters_id}"
-
-        print(out)
+    return None
 
 
 def _verify_input_args(
