@@ -12,12 +12,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A `Registry` class that auto-scans `test_functions/` at import time,
   parsing YAML specification files into lightweight registry entries
   for function discovery without importing any Python modules eagerly.
+- `list_functions()` now supports filtering by `input_dimension`,
+  `output_dimension`, `parameterized`, and `tag`, and can render its
+  output as a grid or HTML table (`tablefmt`) or return a plain list of
+  function names (`tabulate=False`).
+- `list_parameters(name)`, the companion to `list_functions()` for
+  browsing a function's available parameter sets: `tabulate=True`
+  (default) prints a table of parameter-set IDs and descriptions along
+  with the default ID; `tabulate=False` returns a sorted list of bare
+  IDs usable directly as `uqtf.<Name>(*, parameters_id=<id>)` or
+  `uqtf.create(<Name>, *, parameters_id=<id>)`.
 
 ### Changed
 
 - The internal implementation of `ProbInput` has been consolidated onto
   the modernized, registry-oriented implementation; the previous
   implementation has been removed. The import path is unchanged.
+- `list_functions()` is now implemented directly on top of the
+  `Registry` instead of walking `UQTestFunABC` subclasses; `helpers.py`
+  has been removed with `api.py` now the sole home for user-facing
+  discovery functions.
+- The string representation of `ProbInput` now tabulates its marginals
+  (variable, distribution, parameters), including a description column
+  only when at least one marginal has a description; `Marginal`'s
+  `display()` method has been renamed to the `notation` property.
+- The string representation of `Marginal` now includes parameter names
+  alongside their values, closer to standard mathematical notation.
+- The string representation of `Parameters` now summarizes each value
+  in a dedicated Value column, recognizing containers via their
+  abstract base classes (so any sized object is summarized by length)
+  and adding explicit handling for mappings, strings, and NumPy scalar
+  types; an empty `Parameters` instance no longer prints a bare header.
+- `UQTestFun`'s string representation now omits `name` and
+  `description` when they are `None` instead of showing a placeholder.
+- `Marginal.__repr__()` now calls `.tolist()` on `parameters` so that
+  `repr()` output round-trips correctly.
+
+### Fixed
+
+- Looking up an unknown function name in the registry now raises a
+  `KeyError` with a consistent, informative message instead of an
+  unhandled exception.
 
 ### Removed
 
@@ -32,6 +67,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   equivalent named parameter-set model, with sets sourced from the
   registry now protected (read-only) to preserve their correspondence
   with the published source; use `.copy()` to get an editable instance.
+- The unused `utils.py` module, including `create_canonical_uniform_input`,
+  has been removed.
 
 ## [0.6.0] - 2025-01-21
 
