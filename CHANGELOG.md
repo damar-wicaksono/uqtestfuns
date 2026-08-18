@@ -14,8 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for function discovery without importing any Python modules eagerly.
 - `list_functions()` now supports filtering by `input_dimension`,
   `output_dimension`, `parameterized`, and `tag`, and can render its
-  output as a grid or HTML table (`tablefmt`) or return a plain list of
-  function names (`tabulate=False`).
+  output as a table in any `tabulate`-supported format (`tablefmt`) or
+  return a plain list of bare function names (`tabulate=False`).
 - `list_parameters(name)`, the companion to `list_functions()` for
   browsing a function's available parameter sets: `tabulate=True`
   (default) prints a table of parameter-set IDs and descriptions along
@@ -32,6 +32,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `Registry` instead of walking `UQTestFunABC` subclasses; `helpers.py`
   has been removed with `api.py` now the sole home for user-facing
   discovery functions.
+- **Breaking:** `list_functions(tablefmt="html")` no longer returns an
+  HTML string as a special case; `tabulate=True` now always prints the
+  table and returns `None`, regardless of `tablefmt`.
+- **Breaking:** `list_functions(tabulate=False)` now returns bare
+  function names instead of constructor-style strings with a `"()"`
+  suffix, so results compose directly with `create()`/`getattr()`; the
+  `"()"` suffix still appears in the printed table's Constructor
+  column.
 - The string representation of `ProbInput` now tabulates its marginals
   (variable, distribution, parameters), including a description column
   only when at least one marginal has a description; `Marginal`'s

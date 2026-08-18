@@ -1,3 +1,15 @@
+"""Public API for creating and discovering UQ test functions.
+
+This module provides the main user-facing entry points for working with the
+built-in UQTestFuns registry. It exposes utilities to instantiate
+test functions by name, inspect the available function catalog,
+list the available probabilistic input specifications,
+and list predefined parameter sets for parameterized functions.
+
+The functions in this module are thin convenience wrappers around the registry
+system.
+"""
+
 from __future__ import annotations
 
 from typing import Dict, List, Literal, Optional, overload, Union
@@ -81,14 +93,50 @@ def create(
         return factory(**kwargs)
 
 
+@overload
 def list_functions(
     input_dimension: Optional[Union[str, int]] = None,
     output_dimension: Optional[int] = None,
     parameterized: Optional[bool] = None,
     tag: Optional[str] = None,
+    *,
+    tabulate: Literal[True] = True,
+    tablefmt: str = "grid",
+) -> None: ...
+
+
+@overload
+def list_functions(
+    input_dimension: Optional[Union[str, int]] = None,
+    output_dimension: Optional[int] = None,
+    parameterized: Optional[bool] = None,
+    tag: Optional[str] = None,
+    *,
+    tabulate: Literal[False],
+) -> List[str]: ...
+
+
+@overload
+def list_functions(
+    input_dimension: Optional[Union[str, int]] = None,
+    output_dimension: Optional[int] = None,
+    parameterized: Optional[bool] = None,
+    tag: Optional[str] = None,
+    *,
     tabulate: bool = True,
     tablefmt: str = "grid",
-) -> Optional[Union[List[str], str]]:
+) -> Optional[List[str]]: ...
+
+
+def list_functions(
+    input_dimension: Optional[Union[str, int]] = None,
+    output_dimension: Optional[int] = None,
+    parameterized: Optional[bool] = None,
+    tag: Optional[str] = None,
+    *,
+    tabulate: bool = True,
+    tablefmt: str = "grid",
+) -> Optional[List[str]]:
     """List available UQ test functions with optional filtering.
 
     This function queries the registry and returns a list of available
@@ -116,22 +164,20 @@ def list_functions(
         'integration'. If None, no filtering by tag is applied.
         Default is None.
     tabulate : bool, optional
-        If True, print results as a formatted table and return None. If False,
-        return a sorted list of function constructor names. Default is True.
+        If ``True``, print results as a formatted table and return ``None``.
+        If ``False``, return a sorted list of function names.
+        Default is ``True``.
     tablefmt : str, optional
-        Format for the table output when `tabulate` is True. Follows the
-        formats supported by the `tabulate` library (e.g., 'grid', 'html',
-        'latex'). Default is 'grid'.
+        Format for the table output when ``tabulate`` is True. Follows the
+        formats supported by the `tabulate` library (e.g., 'grid', 'simple',
+        'github'). Default is 'grid'.
 
     Returns
     -------
-    None, list of str, or str
-        - If `tabulate` is True and `tablefmt` is not 'html': prints the table
-          and returns None.
-        - If `tabulate` is True and `tablefmt` is 'html': returns the table
-          as an HTML string.
-        - If `tabulate` is False: returns a sorted list of function constructor
-          names with parentheses (e.g., ['FunctionName()', ...]).
+    None or List[str]
+        - If ``tabulate`` is ``True``: prints the table and returns ``None``.
+        - If ``tabulate`` is ``False``: returns a sorted list of qualified
+          function names (e.g., ['FunctionName1', ...]).
         - If no functions match the filters: returns None
           (when `tabulate` is True) or an empty list
           (when `tabulate` is False).
@@ -140,7 +186,7 @@ def list_functions(
     ------
     ValueError
         If `tag` is not one of the supported tags, or if `input_dimension` or
-        `output_dimension` contains invalid values.
+        `output_dimension` contain invalid values.
     TypeError
         If any parameter is provided with an incorrect type.
 
@@ -158,11 +204,6 @@ def list_functions(
     _verify_input_args(
         input_dimension, tag, output_dimension, parameterized, tabulate
     )
-
-    if tag is not None and tag not in SUPPORTED_TAGS:
-        raise ValueError(
-            f"Tag {tag!r} is not supported. Choose from {SUPPORTED_TAGS}."
-        )
 
     # Filter entries
     filtered: Dict[str, UQTestFunInfo] = {}
@@ -213,16 +254,14 @@ def list_functions(
         entry = filtered[name]
         row: List[str] = [str(i + 1), name + "()"]
         if show_input_dim:
-            if entry.variable_dimension:
+            entry_input_dimension = entry.input_dimension
+            if entry_input_dimension is None:
                 dim_str = "M"
             else:
-                dim_str = str(entry.input_dimension)
+                dim_str = str(entry_input_dimension)
             row.append(dim_str)
         if show_output_dim:
-            if entry.output_dimension is None:
-                output_dim = "1"
-            else:
-                output_dim = str(entry.output_dimension)
+            output_dim = str(entry.output_dimension)
             row.append(output_dim)
         if show_param:
             row.append(str(bool(entry.available_parameters_ids)))
@@ -238,9 +277,6 @@ def list_functions(
         maxcolwidths=[None, None] + [20] * (len(headers) - 3) + [30],
     )
 
-    if tablefmt == "html":
-        return table
-
     print(table)
 
     return None
@@ -250,7 +286,7 @@ def list_functions(
 def list_parameters(
     name: str,
     *,
-    tabulate: Literal[True],
+    tabulate: Literal[True] = True,
     tablefmt: str,
 ) -> None: ...
 
