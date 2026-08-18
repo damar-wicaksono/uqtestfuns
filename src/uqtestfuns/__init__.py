@@ -18,7 +18,7 @@ from .meta import UQMetaFunSpec
 from .meta import UQMetaTestFun
 
 from . import api
-from .api import create, list_functions, list_parameters
+from .api import create, list_functions, list_inputs, list_parameters
 
 if sys.version_info >= (3, 8):
     from importlib import metadata
@@ -39,6 +39,7 @@ __all__ = [
     "api",
     "create",
     "list_functions",
+    "list_inputs",
     "list_parameters",
 ]
 

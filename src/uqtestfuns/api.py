@@ -12,7 +12,7 @@ system.
 
 from __future__ import annotations
 
-from typing import Dict, List, Literal, Optional, overload, Union
+from typing import Dict, List, Literal, Mapping, Optional, overload, Union
 
 from tabulate import tabulate as tbl
 
@@ -23,7 +23,7 @@ from uqtestfuns.core.registry.entries import UQTestFunInfo
 from uqtestfuns.core.uqtestfun import UQTestFun
 from uqtestfuns.global_settings import SUPPORTED_TAGS
 
-__all__ = ["create", "list_functions", "list_parameters"]
+__all__ = ["create", "list_functions", "list_inputs", "list_parameters"]
 
 
 def create(
@@ -283,6 +283,69 @@ def list_functions(
 
 
 @overload
+def list_inputs(
+    name: str,
+    *,
+    tabulate: Literal[True] = True,
+    tablefmt: str = "simple",
+) -> None: ...
+
+
+@overload
+def list_inputs(
+    name: str,
+    *,
+    tabulate: Literal[False],
+) -> List[str]: ...
+
+
+def list_inputs(
+    name: str,
+    *,
+    tabulate: bool = True,
+    tablefmt: str = "simple",
+) -> Optional[List[str]]:
+    """List all available probabilistic input specifications of a function.
+
+    Parameters
+    ----------
+    name : str
+        The name of the test function to query.
+    tabulate : bool, optional
+        If ``True``, print results as a formatted table and return ``None``.
+        If ``False``, return a sorted list of input specification names.
+        Default is ``True``.
+    tablefmt : str, optional
+        Format for the table output when ``tabulate`` is True. Follows the
+        formats supported by the ``tabulate`` library. Default is 'simple'.
+
+    Returns
+    -------
+    None or List[str]
+        If ``tabulate`` is ``True`` the function prints the result directly
+        to stdout. If ``tabulate`` is ``False``, it returns a sorted list of
+        input specification names for the given function.
+    """
+
+    # Get the test function information
+    reg = get_registry()
+    info = reg[name]
+
+    if not tabulate:
+        return sorted(info.available_input_ids.keys())
+
+    out = _create_table(
+        info.available_input_ids,
+        info.default_input_id,
+        tablefmt,
+    )
+
+    print(out)
+
+    return None
+
+
+@overload
 def list_parameters(
     name: str,
     *,
@@ -305,7 +368,7 @@ def list_parameters(
     tabulate: bool = True,
     tablefmt: str = "simple",
 ) -> Optional[List[str]]:
-    """Display parameter information for a UQ test function.
+    """List all available parameter sets of a UQ test function.
 
     This function prints information about the parameters of a specified
     test function, including parameter keywords and available parameter sets.
@@ -342,26 +405,12 @@ def list_parameters(
         print(f"\n{name} has no parameters.")
         return None
 
-    header = f"Parameters for {name}"
-    print(f"\n{header}")
-    print("=" * len(header))
-
-    available_ids = info.available_parameters_ids
-    headers = ["No", "ID", "Description"]
-    rows = [
-        [i + 1, param_id, desc or "—"]
-        for i, (param_id, desc) in enumerate(available_ids.items())
-    ]
-
-    out = tbl(
-        rows,
-        headers=headers,
-        tablefmt=tablefmt,
-        colalign=("center", "left", "left"),
-        maxcolwidths=[None, None, 50],
-        disable_numparse=True,
+    # Create a string table
+    out = _create_table(
+        info.available_parameters_ids,
+        info.default_parameters_id,
+        tablefmt,
     )
-    out += f"\nDefault: {info.default_parameters_id}"
 
     print(out)
 
@@ -465,3 +514,29 @@ def _verify_input_args(
         raise TypeError(
             f"'tabulate' argument must be of bool type! Got {type(tabulate)}."
         )
+
+
+def _create_table(
+    available_ids: Mapping[str, str],
+    default_id: str,
+    tablefmt: str,
+) -> str:
+    """Create a string table of available inputs or parameter sets."""
+
+    headers = ["No", "ID", "Description"]
+    rows = [
+        [i + 1, variant_id, desc or "—"]
+        for i, (variant_id, desc) in enumerate(available_ids.items())
+    ]
+
+    out = tbl(
+        rows,
+        headers=headers,
+        tablefmt=tablefmt,
+        colalign=("center", "left", "left"),
+        maxcolwidths=[None, None, 50],
+        disable_numparse=True,
+    )
+    out += f"\nDefault: {default_id}"
+
+    return out

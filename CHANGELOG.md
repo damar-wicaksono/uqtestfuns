@@ -22,6 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   with the default ID; `tabulate=False` returns a sorted list of bare
   IDs usable directly as `uqtf.<Name>(*, parameters_id=<id>)` or
   `uqtf.create(<Name>, *, parameters_id=<id>)`.
+- `list_inputs(name)`, the analog to `list_parameters()` for browsing
+  a function's available probabilistic input specifications:
+  `tabulate=True` (default) prints a table of input-spec IDs and
+  descriptions along with the default ID; `tabulate=False` returns a
+  sorted list of bare IDs usable directly as
+  `uqtf.create(<Name>, input_id=<id>)`.
 
 ### Changed
 
