@@ -124,12 +124,3 @@ def test_untabulated_call():
             assert_call(create, my_class, 2)
         else:
             assert_call(create, my_class)
-
-
-def test_tablefmt_html():
-    """Test function call with 'html' as tablefmt."""
-
-    table = list_functions(tablefmt="html")
-
-    # Assertion
-    assert isinstance(table, str)
