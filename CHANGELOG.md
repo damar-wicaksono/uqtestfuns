@@ -46,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   suffix, so results compose directly with `create()`/`getattr()`; the
   `"()"` suffix still appears in the printed table's Constructor
   column.
-- The string representation of `ProbInput` now tabulates its marginals
+T- The string representation of `ProbInput` now tabulates its marginals
   (variable, distribution, parameters), including a description column
   only when at least one marginal has a description; `Marginal`'s
   `display()` method has been renamed to the `notation` property.
@@ -66,7 +66,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Looking up an unknown function name in the registry now raises a
   `KeyError` with a consistent, informative message instead of an
-  unhandled exception.
+  unhandled exception, including a "did you mean ...?" suggestion when
+  the name looks like a typo of a known one.
 
 ### Removed
 
