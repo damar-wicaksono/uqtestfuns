@@ -12,7 +12,7 @@
 |  [`dev`](https://github.com/damar-wicaksono/uqtestfuns/tree/dev) (latest)  | ![build](https://img.shields.io/github/actions/workflow/status/damar-wicaksono/uqtestfuns/main.yml?branch=dev&style=flat-square) [![codecov](https://img.shields.io/codecov/c/github/damar-wicaksono/uqtestfuns/dev?logo=CodeCov&style=flat-square&token=Y6YQEPJ1TT)](https://app.codecov.io/gh/damar-wicaksono/uqtestfuns/tree/dev) [![Docs](https://readthedocs.org/projects/uqtestfuns/badge/?version=latest&style=flat-square)](https://uqtestfuns.readthedocs.io/en/latest/?badge=latest)    |
 
 <!--One paragraph description-->
-UQTestFuns is an open-source Python3 library of test functions commonly used
+UQTestFuns is an open-source Python library of test functions commonly used
 within the applied uncertainty quantification (UQ) community.
 Specifically, the package provides:
 
@@ -128,13 +128,15 @@ $ pip install uqtestfuns
 Alternatively, you can also install the latest version from the source:
 
 ```bash
-pip install git+https://github.com/damar-wicaksono/uqtestfuns.git
+$ pip install git+https://github.com/damar-wicaksono/uqtestfuns.git
 ```
 
 > **NOTE**: UQTestFuns is currently work in progress,
 > therefore interfaces are subject to change.
 
 It's a good idea to install the package in an isolated virtual environment.
+See the [documentation](https://uqtestfuns.readthedocs.io/en/latest/getting-started/obtaining-and-installing.html)
+for Python version requirements and more detailed instructions.
 
 ## Getting help
 

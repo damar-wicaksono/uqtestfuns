@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the UQTestFuns project is documented in this file.
+All notable changes to the UQTestFuns project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -46,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   suffix, so results compose directly with `create()`/`getattr()`; the
   `"()"` suffix still appears in the printed table's Constructor
   column.
-T- The string representation of `ProbInput` now tabulates its marginals
+- The string representation of `ProbInput` now tabulates its marginals
   (variable, distribution, parameters), including a description column
   only when at least one marginal has a description; `Marginal`'s
   `display()` method has been renamed to the `notation` property.
@@ -61,6 +61,10 @@ T- The string representation of `ProbInput` now tabulates its marginals
   `description` when they are `None` instead of showing a placeholder.
 - `Marginal.__repr__()` now calls `.tolist()` on `parameters` so that
   `repr()` output round-trips correctly.
+- The documentation landing page (`docs/index.md`) and README's opening
+  description have been condensed into a single tagline, with the
+  navigation cards' tone unified; a comma splice and a malformed plural
+  were also fixed along the way.
 
 ### Fixed
 
