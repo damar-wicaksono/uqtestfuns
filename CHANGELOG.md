@@ -68,6 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   minimum Python requirement, install guidance, and a verification step.
 - The tutorials index page now points to the installation guide as a
   prerequisite.
+- Citation instructions have been simplified in README and `CITATION.cff`
+  now includes a preferred citation for the JOSS paper.
 
 ### Fixed
 

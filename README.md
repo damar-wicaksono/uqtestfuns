@@ -160,46 +160,11 @@ before making a pull request.
 
 ## Citing UQTestFuns
 
-If you use this package in your research or projects, please consider citing
-both the associated paper and the Zenodo archive (for the specific version
-used).
-
-### Citing the paper (JOSS)
-
-The citation of the paper associated with this package is:
-
-```bibtex
-@article{Wicaksono2023,
-  author    = {Wicaksono, Damar and Hecht, Michael},
-  title     = {{UQTestFuns}: A {Python3} library of uncertainty quantification ({UQ}) test functions},
-  journal   = {Journal of Open Source Software},
-  year      = {2023},
-  volume    = {8},
-  number    = {90},
-  doi       = {10.21105/joss.05671},
-}
-```
-
-### Citing a specific version (Zenodo)
-
-To ensure reproducibility, cite the exact version of the package you used.
-Each release is archived on Zenodo with a unique DOI; find and use the DOI
-for the version you used at [Zenodo].
-
-The citation for the current public version is:
-
-```bibtex
-@software{UQTestFuns_0_6_0,
-  author       = {Wicaksono, Damar and Hecht, Michael},
-  title        = {{UQTestFuns: A Python3 Library of Uncertainty Quantification (UQ) Test Functions}},
-  month        = jan,
-  year         = 2025,
-  publisher    = {Zenodo},
-  version      = {v0.6.0},
-  doi          = {10.5281/zenodo.14710452},
-  url          = {https://doi.org/10.5281/zenodo.14710452}
-}
-```
+If you use this package in your research, please cite both the paper and
+the software archive (see the JOSS and DOI badges above).
+For the exact BibTeX entries,
+including the version-specific [Zenodo](https://zenodo.org/records/14710452) citation,
+see the [documentation](https://uqtestfuns.readthedocs.io/en/latest/getting-started/citing.html).
 
 ## Credits and contributors
 
@@ -222,5 +187,3 @@ led by Michael Hecht ([HZDR/CASUS](https://www.casus.science/)) at CASUS.
 
 <!--License-->
 UQTestFuns is released under the [MIT License](LICENSE).
-
-[Zenodo]: https://zenodo.org/search?q=parent.id%3A7701903&f=allversions%3Atrue&l=list&p=1&s=10&sort=version

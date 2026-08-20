@@ -4,7 +4,8 @@ If you use this package in your research or projects, please consider citing
 both the associated paper and the Zenodo archive (for the specific version
 used).
 
-The citation of the paper associated with this package is:
+The paper associated with this package, [published in JOSS](https://doi.org/10.21105/joss.05671),
+can be cited as follows:
 
 ```bibtex
 @article{Wicaksono2023,
@@ -15,6 +16,7 @@ The citation of the paper associated with this package is:
   volume    = {8},
   number    = {90},
   doi       = {10.21105/joss.05671},
+  url       = {https://doi.org/10.21105/joss.05671}
 }
 ```
 
@@ -37,4 +39,13 @@ The citation for the current public version is:
 }
 ```
 
-[Zenodo]: https://zenodo.org/search?q=parent.id%3A7701903&f=allversions%3Atrue&l=list&p=1&s=10&sort=version
+## Citing a specific test function
+
+In addition to citing UQTestFuns itself, please also cite the original
+source of any test function(s) you use.
+Each function's documentation page includes a reference to the appropriate citation
+(for example, the {ref}`Borehole function <test-functions:borehole>` cites
+Harper and Gupta, 1983). See the {ref}`list of available functions
+<test-functions:available>` to find a specific page.
+
+[Zenodo]: https://zenodo.org/records/14710452
