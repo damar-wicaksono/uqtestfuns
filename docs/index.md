@@ -1,31 +1,20 @@
 # Welcome to the UQTestFuns documentation!
 
-UQTestFuns is an open-source Python3 library of test functions commonly used
-within the applied uncertainty quantification (UQ) community.
-Specifically, the package provides:
+UQTestFuns is an open-source Python library of test functions for the
+applied uncertainty quantification (UQ) community: one consistent
+interface, minimal dependencies (NumPy and SciPy only), and each function's
+probabilistic input specification bundled in, so you don't have to
+reimplement it yourself.
 
-- an implementation _with minimal dependencies_ (i.e., NumPy and SciPy) and
-  _a common interface_ of many test functions available in the UQ literature
-- a _single entry point_ collecting test functions _and_ their probabilistic
-  input specifications in a single Python package
-- an _opportunity for an open-source contribution_, supporting
-  the implementation of new test functions or posting reference results.
-
-UQTestFuns aims to save the researchers' and developers' time from having to
-reimplement many of the commonly used test functions (and the corresponding
-probabilistic input specifications) from the UQ literature themselves.
-More background information regarding UQ test functions and UQTestFuns
-can be found {ref}`here <getting-started:about-uq-test-functions>`.
 
 ::::{grid}
 :gutter: 2
 
 :::{grid-item-card} Getting Started
 :text-align: center
-New to, but ready to use, UQTestFuns?
-You can check out the tutorials!
-Need some background info first?
-Check out the what & why of these test functions.
+New to UQTestFuns? Start with the tutorials.
+For background on what these test functions are
+and why they exist, see the introduction.
 +++
 ```{button-ref} getting-started:tutorials
 :ref-type: myst
@@ -37,17 +26,17 @@ To the UQTestFuns Tutorials
 :ref-type: myst
 :color: primary
 :outline:
-About UQ Test Functions
+To the Introduction
 ```
 :::
 
 :::{grid-item-card} User Guide
 :text-align: center
 
-Browse through all the available test functions in UQTestFuns;
-they are crudely classified into their usage in typical UQ analyses.
-Need a reference on how to define a probabilistic input model,
-there's a dedicated section on that!
+Browse the full list of available test functions,
+grouped by their typical use in UQ analyses.
+For defining a probabilistic input model,
+see the dedicated reference section.
 +++
 ```{button-ref} test-functions:available
 :ref-type: myst
@@ -71,8 +60,8 @@ To the Probabilistic Input Modeling
 
 :::{grid-item-card} API Reference
 :text-align: center
-The API reference guide contains a detailed description of high-level entities
-(functions, classes, methods, and properties) included in UQTestFuns.
+The API reference guide has the full detail on high-level entities
+(functions, classes, methods, and properties) in UQTestFuns.
 +++
 ```{button-ref} api-reference:overview
 :ref-type: myst
@@ -85,9 +74,9 @@ To the API Reference
 
 :::{grid-item-card} Contributor's Guide
 :text-align: center
-If you're interested in extending UQTestFuns, be it adding a new test function,
-a new distribution, or a new reference results in the docs,
-be sure to check out the Contributor's Guide.
+If you're interested in extending UQTestFuns, be it adding new test functions,
+new distributions, or new reference results,
+see the Contributor's Guide.
 +++
 ```{button-ref} development:overview
 :ref-type: myst
