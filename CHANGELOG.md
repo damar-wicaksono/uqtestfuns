@@ -62,9 +62,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Marginal.__repr__()` now calls `.tolist()` on `parameters` so that
   `repr()` output round-trips correctly.
 - The documentation landing page (`docs/index.md`) and README's opening
-  description have been condensed into a single tagline, with the
-  navigation cards' tone unified; a comma splice and a malformed plural
-  were also fixed along the way.
+  description have been condensed for readability, with the navigation
+  cards' tone unified.
+- The "Obtaining and Installing" docs page has been clarified with the
+  minimum Python requirement, install guidance, and a verification step.
 
 ### Fixed
 
