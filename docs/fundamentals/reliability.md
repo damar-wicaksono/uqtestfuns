@@ -15,34 +15,31 @@ kernelspec:
 (fundamentals:reliability)=
 # Test Functions for Reliability Analysis
 
-The table below listed the available test functions typically used
+The table below lists the available test functions typically used
 in the comparison of reliability analysis methods.
 
-|                                                        Name                                                        | Input Dimension |       Constructor       |
-|:------------------------------------------------------------------------------------------------------------------:|:---------------:|:-----------------------:|
-|                          {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`                           |        2        |   `CantileverBeam2D `   |
-|                         {ref}`Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`                         |        2        |  `CircularPipeCrack()`  |
-|                          {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`                          |        2        |  `ConvexFailDomain()`   |
-|                    {ref}`Katsuki and Frangopol (1994) Four-Branch <test-functions:four-branch>`                    |        2        |     `FourBranch()`      |
-|                                   {ref}`Gayton Hat <test-functions:gayton-hat>`                                    |        2        |      `GaytonHat()`      |
-|                              {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`                               |        2        |     `HyperSphere()`     |
-|                    {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`                     |        2        |    `RSCircularBar()`    |
-|             {ref}`Verma et al. (2015) RS Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`              |        2        | `RSCircularPipeCrack()` |
-| {ref}`Der Kiureghian and De Stefano (1990) RS Damped Oscillator <test-functions:rs-damped-oscillator-reliability>` |        8        | `RSDampedOscillator()`  |
-|                          {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                           |        2        |     `RSQuadratic()`     |
-|           {ref}`Du and Sudjianto (2004) RS Speed Reducer Shaft <test-functions:rs-speed-reducer-shaft>`            |        5        | `RSSpeedReducerShaft()` |
-|                          {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`                           |        6        | `UndampedOscillator()`  |
+|            Name             | Input Dimension |                                                     Description                                                      |
+|:---------------------------:|:---------------:|:--------------------------------------------------------------------------------------------------------------------:|
+|    ``CantileverBeam2D``     |        2        |                           {ref}`Cantilever Beam (2D) <test-functions:cantilever-beam-2d>`                            |
+|    ``ConvexFailDomain``     |        2        |                           {ref}`Convex Failure Domain <test-functions:convex-fail-domain>`                           |
+|       ``FourBranch``        |        2        |                     {ref}`Katsuki and Frangopol (1994) Four-Branch <test-functions:four-branch>`                     |
+|        ``GaytonHat``        |        2        |                                    {ref}`Gayton Hat <test-functions:gayton-hat>`                                     |
+|       ``HyperSphere``       |        2        |                               {ref}`Hyper-sphere Bound <test-functions:hyper-sphere>`                                |
+|      ``RSCircularBar``      |        2        |                     {ref}`Verma et al. (2015) RS Circular Bar <test-functions:rs-circular-bar>`                      |
+|   ``RSCircularPipeCrack``   |        2        |              {ref}`Verma et al. (2015) RS Circular Pipe Crack <test-functions:rs-circular-pipe-crack>`               |
+|   ``RSDampedOscillator``    |        8        |  {ref}`Der Kiureghian and De Stefano (1990) RS Damped Oscillator <test-functions:rs-damped-oscillator-reliability>`  |
+|       ``RSQuadratic``       |        2        |                           {ref}`Waarts (2000) RS Quadratic <test-functions:rs-quadratic>`                            |
+|   ``RSSpeedReducerShaft``   |        5        |            {ref}`Du and Sudjianto (2004) RS Speed Reducer Shaft <test-functions:rs-speed-reducer-shaft>`             |
+|   ``UndampedOscillator``    |        6        |                           {ref}`Undamped Oscillator <test-functions:undamped-oscillator>`                            |
 
 In a Python terminal, you can list all the available functions relevant
-for metamodeling applications using ``list_functions()`` and filter the results
-using the ``tag`` parameter:
+for reliability analysis applications using ``list_functions()``
+and filter the results using the ``tag`` parameter:
 
-```{code-cell} ipython3
-:tags: ["output_scroll"]
-
+```python
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tag="reliability", tablefmt="html")
+uqtf.list_functions(tag="reliability")
 ```
 
 ## About reliability analysis
@@ -51,7 +48,7 @@ Consider a system whose performance is defined by a _performance function_[^lsf]
 $g$ whose values, in turn, depend on:
 
 - $\boldsymbol{x}_p$: the (uncertain) input variables of the underlying computational model $\mathcal{M}$
-- $\boldsymbol{x}_s$: additional (uncertain) input variables that affects
+- $\boldsymbol{x}_s$: additional (uncertain) input variables that affect
   the performance of the system, but not part of inputs to $\mathcal{M}$ 
 - $\boldsymbol{p}$: an additional set of _deterministic_ parameters of the system
 
@@ -86,7 +83,7 @@ the system is in safe state if the maximum temperature
 does not exceed the regulatory limit.
 ```
 
-**Reliability analysis**[^rare-event] concerns with estimating
+**Reliability analysis**[^rare-event] is concerned with estimating
 the failure probability of a system with a given performance function $g$. 
 For a given joint probability density function (PDF) $f_{\boldsymbol{X}}$
 of the uncertain input variables $\boldsymbol{X} = \{ \boldsymbol{X}_p, \boldsymbol{X}_s \}$,
@@ -119,6 +116,7 @@ accurately with as few function/model evaluations as possible.
 
 import numpy as np
 import matplotlib.pyplot as plt
+import uqtestfuns as uqtf
 
 my_fun = uqtf.RSCircularPipeCrack()
 rng = np.random.default_rng(237324)

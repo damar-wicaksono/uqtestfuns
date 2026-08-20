@@ -25,10 +25,10 @@ regardless of their typical applications.
 |    ``Alemazkoor2D``     |        2        |                       {ref}`Alemazkoor and Meidani (2018) 2D <test-functions:alemazkoor-2d>`                       |
 |    ``Alemazkoor20D``    |       20        |                      {ref}`Alemazkoor and Meidani (2018) 20D <test-functions:alemazkoor-20d>`                      |
 |      ``Borehole``       |        8        |                                     {ref}`Borehole <test-functions:borehole>`                                      |
-|    ``Bratley1992a``     |        M        |                             {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`                              |
-|    ``Bratley1992b``     |        M        |                             {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`                              |
-|    ``Bratley1992c``     |        M        |                             {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`                              |
-|    ``Bratley1992d``     |        M        |                             {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`                              |
+|      ``BratleyA``       |        M        |                             {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`                              |
+|      ``BratleyB``       |        M        |                             {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`                              |
+|      ``BratleyC``       |        M        |                             {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`                              |
+|      ``BratleyD``       |        M        |                             {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`                              |
 |  ``CantileverBeam2D``   |        2        |          {ref}` Rajashekhar and Ellingwood (1993) Cantilever Beam 2D <test-functions:cantilever-beam-2d>`          |
 |       ``Cheng2D``       |        2        |                             {ref}`Cheng and Sandu (2010) 2D <test-functions:cheng2d>`                              |
 |      ``CoffeeCup``      |        2        |                         {ref}`Tennøe et al. (2018) Coffee Cup <test-functions:coffee-cup>`                         |
@@ -96,17 +96,14 @@ regardless of their typical applications.
 |       ``Sulfur``        |        9        |                            {ref}`Charlson et al. (1992) Sulfur <test-functions:sulfur>`                            |
 | ``UndampedOscillator``  |        6        |                {ref}`Gayton et al. (2003) Undamped Oscillator <test-functions:undamped-oscillator>`                |
 |      ``Webster2D``      |        2        |                            {ref}`Webster et al. (1996) 2D <test-functions:webster-2d>`                             |
-|       ``Welch2D``       |       20        |                             {ref}`Welch et al. (1992) 20D <test-functions:welch1992>`                              |
+|      ``Welch20D``       |       20        |                             {ref}`Welch et al. (1992) 20D <test-functions:welch1992>`                              |
 |     ``WingWeight``      |       10        |                      {ref}`Forrester et al. (2008) Wing Weight <test-functions:wing-weight>`                       |
 
 In a Python terminal, you can list all the available functions
-along with the corresponding constructor using ``list_functions()``
-(shown below in the HTML format):
+along with the corresponding constructor using ``list_functions()``:
 
-```{code-cell} ipython3
-:tags: ["output_scroll"]
-
+```python
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tablefmt="html")
+uqtf.list_functions()
 ```

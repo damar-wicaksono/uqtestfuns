@@ -15,51 +15,50 @@ kernelspec:
 (fundamentals:sensitivity)=
 # Test Functions for Sensitivity Analysis
 
-The table below listed the available test functions typically used
+The table below lists the available test functions typically used
 in the comparison of sensitivity analysis methods.
 
-|                                              Name                                              | Input Dimension |       Constructor       |
-|:----------------------------------------------------------------------------------------------:|:---------------:|:-----------------------:|
-|                           {ref}`Borehole <test-functions:borehole>`                            |        8        |      `Borehole()`       |
-|                   {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`                    |        M        |    `Bratley1992a()`     |
-|                   {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`                    |        M        |    `Bratley1992b()`     |
-|                   {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`                    |        M        |    `Bratley1992c()`     |
-|                   {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`                    |        M        |    `Bratley1992d()`     |
-|                  {ref}`Damped Oscillator <test-functions:damped-oscillator>`                   |        7        |  `DampedOscillator()`   |
-|                              {ref}`Flood <test-functions:flood>`                               |        8        |        `Flood()`        |
-|                       {ref}`Friedman (6D) <test-functions:friedman-6d>`                        |        6        |     `Friedman6D()`      |
-|                  {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`                   |        M        |   `GenzCornerPeak()`    |
-|                {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>`                 |        M        |  `GenzDiscontinuous()`  |
-|                           {ref}`Ishigami <test-functions:ishigami>`                            |        3        |      `Ishigami()`       |
-| {ref}`Linkletter et al. (2006) Decreasing Coefficients <test-functions:linkletter-dec-coeffs>` |       10        | `LinkletterDecCoeffs()` |
-|            {ref}`Linkletter et al. (2006) Inert <test-functions:linkletter-inert>`             |       10        |   `LinkletterInert()`   |
-|           {ref}`Linkletter et al. (2006) Linear <test-functions:linkletter-linear>`            |       10        |  `LinkletterLinear()`   |
-|             {ref}`Linkletter et al. (2006) Sine <test-functions:linkletter-sine>`              |       10        |   `LinkletterSine()`    |
-|                         {ref}`Moon (2010) 3D <test-functions:moon3d>`                          |        3        |       `Moon3D()`        |
-|                    {ref}`Morris et al. (2006) <test-functions:morris2006>`                     |        M        |     `Morris2006()`      |
-|                        {ref}`OTL Circuit <test-functions:otl-circuit>`                         |     6 / 20      |     `OTLCircuit()`      |
-|                        {ref}`Piston Simulation <test-functions:piston>`                        |     7 / 20      |       `Piston()`        |
-|                  {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`                   |        3        |     `Portfolio3D()`     |
-|                     {ref}`SaltelliLinear <test-functions:saltelli-linear>`                     |        M        |   `SaltelliLinear()`    |
-|                            {ref}`Sobol'-G <test-functions:sobol-g>`                            |        M        |       `SobolG()`        |
-|                         {ref}`Sobol'-G* <test-functions:sobol-g-star>`                         |        M        |     `SobolGStar()`      |
-|                      {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                      |        M        |    `SobolLevitan()`     |
-|            {ref}`Constantine et al. (2015) Solar Cell <test-functions:solar-cell>`             |        5        |      `SolarCell()`      |
-|                  {ref}`Charlson et al. (1992) Sulfur <test-functions:sulfur>`                  |        9        |       `Sulfur()`        |
-|                     {ref}`Welch et al. (1992) <test-functions:welch1992>`                      |       20        |      `Welch1992()`      |
-|                        {ref}`Wing Weight <test-functions:wing-weight>`                         |       10        |     `WingWeight()`      |
+|           Name           | Input Dimension  |                                                    Description                                                    |
+|:------------------------:|:----------------:|:-----------------------------------------------------------------------------------------------------------------:|
+|       ``Borehole``       |        8         |                                     {ref}`Borehole <test-functions:borehole>`                                     |
+|       ``BratleyA``       |        M         |                             {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`                             |
+|       ``BratleyB``       |        M         |                             {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`                             |
+|       ``BratleyC``       |        M         |                             {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`                             |
+|       ``BratleyD``       |        M         |                             {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`                             |
+|   ``DampedOscillator``   |        7         |                            {ref}`Damped Oscillator <test-functions:damped-oscillator>`                            |
+|        ``Flood``         |        8         |                                        {ref}`Flood <test-functions:flood>`                                        |
+|      ``Friedman6D``      |        6         |                                 {ref}`Friedman (6D) <test-functions:friedman-6d>`                                 |
+|    ``GenzCornerPeak``    |        M         |                            {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`                            |
+|  ``GenzDiscontinuous``   |        M         |                          {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>`                          |
+|       ``Ishigami``       |        3         |                                     {ref}`Ishigami <test-functions:ishigami>`                                     |
+| ``LinkletterDecCoeffs``  |        10        |          {ref}`Linkletter et al. (2006) Decreasing Coefficients <test-functions:linkletter-dec-coeffs>`           |
+|   ``LinkletterInert``    |        10        |                      {ref}`Linkletter et al. (2006) Inert <test-functions:linkletter-inert>`                      |
+|   ``LinkletterLinear``   |        10        |                     {ref}`Linkletter et al. (2006) Linear <test-functions:linkletter-linear>`                     |
+|    ``LinkletterSine``    |        10        |                       {ref}`Linkletter et al. (2006) Sine <test-functions:linkletter-sine>`                       |
+|        ``Moon3D``        |        3         |                                   {ref}`Moon (2010) 3D <test-functions:moon3d>`                                   |
+|       ``MorrisM``        |        M         |                              {ref}`Morris et al. (2006) <test-functions:morris2006>`                              |
+|      ``OTLCircuit``      |        6         |                               {ref}`OTL Circuit (6D) <test-functions:otl-circuit>`                                |
+|    ``OTLCircuit20D``     |        20        |                             {ref}`OTL Circuit (20D) <test-functions:otl-circuit-20d>`                             |
+|        ``Piston``        |        7         |                               {ref}`Piston Simulation (7D) <test-functions:piston>`                               |
+|      ``Piston20D``       |        20        |                            {ref}`Piston Simulation (20D) <test-functions:piston-20d>`                             |
+|     ``Portfolio3D``      |        3         |                            {ref}`Simple Portfolio Model <test-functions:portfolio-3d>`                            |
+|    ``SaltelliLinear``    |        M         |                              {ref}`SaltelliLinear <test-functions:saltelli-linear>`                               |
+|        ``SobolG``        |        M         |                                     {ref}`Sobol'-G <test-functions:sobol-g>`                                      |
+|      ``SobolGStar``      |        M         |                                  {ref}`Sobol'-G* <test-functions:sobol-g-star>`                                   |
+|     ``SobolLevitan``     |        M         |                               {ref}`Sobol'-Levitan <test-functions:sobol-levitan>`                                |
+|      ``SolarCell``       |        5         |                      {ref}`Constantine et al. (2015) Solar Cell <test-functions:solar-cell>`                      |
+|        ``Sulfur``        |        9         |                           {ref}`Charlson et al. (1992) Sulfur <test-functions:sulfur>`                            |
+|       ``Welch20D``       |        20        |                             {ref}`Welch et al. (1992) 20D <test-functions:welch1992>`                             |
+|      ``WingWeight``      |        10        |                                  {ref}`Wing Weight <test-functions:wing-weight>`                                  |
 
 In a Python terminal, you can list all the available functions relevant
-for metamodeling applications using ``list_functions()``
-and filter the results  using the ``tag`` parameter
-(shown below in the HTML format):
+for sensitivity analysis applications using ``list_functions()``
+and filter the results  using the ``tag`` parameter:
 
-```{code-cell} ipython3
-:tags: ["output_scroll"]
-
+```python
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tag="sensitivity", tablefmt="html")
+uqtf.list_functions(tag="sensitivity")
 ```
 
 ## About sensitivity analysis
@@ -75,17 +74,17 @@ by the uncertainty of the inputs.
 While understanding the input-output relationship is valuable on its own[^model-building],
 sensitivity analysis often focuses on more practical tasks, including:
 
-- **Identifying of input variables that primarily drives the output uncertainty**:
+- **Identifying input variables that primarily drive the output uncertainty**:
   This knowledge enables _factor prioritization_, where efforts are concentrated
   on reducing the uncertainty of the most influential inputs (if possible)
   to significantly decrease the uncertainty of the outputs
-- **Identifying of non-influential input variables**:
+- **Identifying non-influential input variables**:
   This knowledge enables _factor fixing/screening_, where non-influential
   inputs are fixed to arbitrary value without 
   affecting significantly (or at all) the uncertainty of the outputs.
   In essence, factor fixing reduces the dimensionality of the problem.
 
-Sensitivity analysis within the UQ framework are typically carried out in
+Sensitivity analysis within the UQ framework is typically carried out in
 a black-box manner, relying solely on model evaluations at carefully
 selected input points.
 The goal is then to achieve the aforementioned tasks with as few model

@@ -15,32 +15,56 @@ kernelspec:
 (fundamentals:integration)=
 # Test Functions for Numerical Integration
 
-The table below listed the available test functions typically used
+The table below lists the available test functions typically used
 in the testing and comparison of numerical integration method.
 
-|                              Name                               | Input Dimension |      Constructor       |
-|:---------------------------------------------------------------:|:---------------:|:----------------------:|
-|    {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`    |        M        |    `Bratley1992a()`    |
-|    {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`    |        M        |    `Bratley1992b()`    |
-|    {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`    |        M        |    `Bratley1992c()`    |
-|    {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`    |        M        |    `Bratley1992d()`    |
-|    {ref}`Genz (Continuous) <test-functions:genz-continuous>`    |        M        |   `GenzContinuous()`   |
-|   {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`   |        M        |   `GenzCornerPeak()`   |
-| {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>` |        M        | `GenzDiscontinuous()`  |
-|      {ref}`Genz (Gaussian) <test-functions:genz-gaussian>`      |        M        |    `GenzGaussian()`    |
-|   {ref}`Genz (Oscillatory) <test-functions:genz-oscillatory>`   |        M        |  `GenzOscillatory()`   |
-|  {ref}`Genz (Product Peak) <test-functions:genz-product-peak>`  |        M        |  `GenzProductPeak()`   |
-|            {ref}`Sobol'-G <test-functions:sobol-g>`             |        M        |       `SobolG()`       |
-|      {ref}`Welch et al. (1992) <test-functions:welch1992>`      |       20        |     `Welch1992()`      |
+|          Name          | Input Dimension |                            Description                             |
+|:----------------------:|:---------------:|:------------------------------------------------------------------:|
+|      ``BratleyA``      |        M        |     {ref}`Bratley et al. (1992) A <test-functions:bratley-a>`      |
+|      ``BratleyB``      |        M        |     {ref}`Bratley et al. (1992) B <test-functions:bratley-b>`      |
+|      ``BratleyC``      |        M        |     {ref}`Bratley et al. (1992) C <test-functions:bratley-c>`      |
+|      ``BratleyD``      |        M        |     {ref}`Bratley et al. (1992) D <test-functions:bratley-d>`      |
+|   ``GenzContinuous``   |        M        |     {ref}`Genz (Continuous) <test-functions:genz-continuous>`      |
+|   ``GenzCornerPeak``   |        M        |    {ref}`Genz (Corner Peak) <test-functions:genz-corner-peak>`     |
+| ``GenzDiscontinuous``  |        M        |  {ref}`Genz (Discontinuous) <test-functions:genz-discontinuous>`   |
+|    ``GenzGaussian``    |        M        |       {ref}`Genz (Gaussian) <test-functions:genz-gaussian>`        |
+|  ``GenzOscillatory``   |        M        |    {ref}`Genz (Oscillatory) <test-functions:genz-oscillatory>`     |
+|  ``GenzProductPeak``   |        M        |   {ref}`Genz (Product Peak) <test-functions:genz-product-peak>`    |
+|       ``SobolG``       |        M        |              {ref}`Sobol'-G <test-functions:sobol-g>`              |
+|      ``Welch20D``      |       20        |     {ref}`Welch et al. (1992) 20D <test-functions:welch1992>`      |
 
 In a Python terminal, you can list all the available functions relevant
-for metamodeling applications using ``list_functions()`` and filter the results
-using the ``tag`` parameter:
+for integration applications using ``list_functions()``
+and filter the results using the ``tag`` parameter:
 
-```{code-cell} ipython3
-:tags: ["output_scroll"]
-
+```python
 import uqtestfuns as uqtf
 
-uqtf.list_functions(tag="integration", tablefmt="html")
+uqtf.list_functions(tag="integration")
+```
+
+## About integration
+
+Two of the other analyses in this framework are themselves integration
+problems in disguise. The failure probability $P_f$ in
+{ref}`reliability analysis <fundamentals:reliability>` is defined as an
+integral of the joint {term}`PDF` over the (implicitly defined) failure domain,
+and variance-based sensitivity measures in
+{ref}`sensitivity analysis <fundamentals:sensitivity>` are moments of
+$\mathcal{M}$ computed as integrals over the input distribution
+{cite}`Sobol1993`. Framing these as integration problems opens them up to a
+common set of numerical techniques, from classical quadrature to Monte
+Carlo and its variants.
+
+What sets UQTestFuns' integration test functions apart from the rest of the
+collection is that their integrals over the input domain are (usually) known
+analytically. This makes them suited for benchmarking the accuracy of a
+numerical integration scheme directly, rather than only comparing methods
+against each other {cite}`Genz1984`.
+
+## References
+
+```{bibliography}
+:style: unsrtalpha
+:filter: docname in docnames
 ```
