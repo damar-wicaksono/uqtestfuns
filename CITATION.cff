@@ -16,6 +16,24 @@ authors:
     family-names: Hecht
     affiliation: CASUS/HZDR
     orcid: 'https://orcid.org/0000-0001-9214-8253'
+preferred-citation:
+  type: article
+  authors:
+    - given-names: Damar
+      family-names: Wicaksono
+      affiliation: CASUS/HZDR
+      orcid: 'https://orcid.org/0000-0001-8587-7730'
+    - given-names: Michael
+      family-names: Hecht
+      affiliation: CASUS/HZDR
+      orcid: 'https://orcid.org/0000-0001-9214-8253'
+  title: "UQTestFuns: A Python3 library of uncertainty quantification (UQ) test functions"
+  journal: "Journal of Open Source Software"
+  year: 2023
+  volume: 8
+  issue: 90
+  doi: 10.21105/joss.05671
+  url: 'https://doi.org/10.21105/joss.05671'
 identifiers:
   - type: doi
     value: 10.5281/zenodo.14710452
