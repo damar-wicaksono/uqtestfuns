@@ -70,6 +70,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   prerequisite.
 - Citation instructions have been simplified in README and `CITATION.cff`
   now includes a preferred citation for the JOSS paper.
+- The `docs/fundamentals/` pages have been overhauled: corrected function
+  tables, added the missing narrative sections, and unified the table
+  format across all five pages.
 
 ### Fixed
 
