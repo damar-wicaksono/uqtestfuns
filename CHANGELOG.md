@@ -66,6 +66,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   cards' tone unified.
 - The "Obtaining and Installing" docs page has been clarified with the
   minimum Python requirement, install guidance, and a verification step.
+- The tutorials index page now points to the installation guide as a
+  prerequisite.
 
 ### Fixed
 

@@ -2,6 +2,9 @@
 # UQTestFuns Tutorials
 
 These tutorials are recommended as an introduction to UQTestFuns.
+They assume you've already followed
+[Obtaining and Installing](obtaining-and-installing.md); pick the row below
+that matches what you want to do.
 
 | If you want to...                                                      | Go to...                                                                            |
 |------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
