@@ -51,7 +51,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   only when at least one marginal has a description; `Marginal`'s
   `display()` method has been renamed to the `notation` property.
 - The string representation of `Marginal` now includes parameter names
-  alongside their values, closer to standard mathematical notation.
+  alongside their values and spells out full distribution names (e.g.,
+  `Exponential`, `Uniform`) rather than abbreviations, closer to standard
+  mathematical notation.
 - The string representation of `Parameters` now summarizes each value
   in a dedicated Value column, recognizing containers via their
   abstract base classes (so any sized object is summarized by length)
@@ -80,6 +82,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `KeyError` with a consistent, informative message instead of an
   unhandled exception, including a "did you mean ...?" suggestion when
   the name looks like a typo of a known one.
+- Corrected wrong ICDF formulas on several marginal distribution
+  documentation pages (Gumbel, normal, truncated normal, truncated
+  Gumbel).
 
 ### Removed
 

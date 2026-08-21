@@ -194,10 +194,10 @@ parts:
     chapters:
       - file: prob-input/overview
         title: Overview
-      - file: prob-input/preliminaries
-        title: Preliminaries
-      - file: prob-input/univariate-random-variable
-        title: Univariate Random Variable
+      - file: prob-input/concepts-and-notations
+        title: Concepts and Notations
+      - file: prob-input/marginal-distribution
+        title: Marginal Distribution
       - file: prob-input/probabilistic-input
         title: Probabilistic Input Model
       - file: prob-input/available

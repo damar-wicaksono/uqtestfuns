@@ -34,7 +34,7 @@ The table below summarizes some important aspects of the distribution.
 |  **{term}`Support`** | $\mathcal{D}_X = (-\infty, \infty)$                                                                                               |
 |      **{term}`PDF`** | $f_X (x; \mu, \beta) = \frac{1}{\beta} \exp{- \left[ \frac{x - \mu}{\beta} + \exp{-\left(\frac{x - \mu}{\beta} \right)} \right]}$ |
 |      **{term}`CDF`** | $F_X (x; \mu, \beta) = \exp{-\left[ \exp{- \left(\frac{x - \mu}{\beta} \right)} \right]}$                                         |
-|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \beta) = \mu + \beta \ln{(\ln{x})}$                                                                            |
+|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \beta) = \mu - \beta \ln{(-\ln{x})}$                                                                           |
 
 The plots of probability density functions (PDFs),
 sample histogram (of $5'000$ points),

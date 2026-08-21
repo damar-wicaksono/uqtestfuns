@@ -11,7 +11,7 @@ from .utils import postprocess_icdf, verify_param_nums
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "uniform"
-DISPLAY_NAME = "Unif"
+DISPLAY_NAME = "Uniform"
 NUM_PARAMS = 2
 PARAM_NAMES = ("a", "b")
 

@@ -13,14 +13,19 @@ kernelspec:
 ---
 
 (prob-input:marginal-distribution)=
-# Creating a One-Dimensional Marginal Distribution
+# Creating a (One-Dimensional) Marginal Distribution
 
-A probabilistic input to a UQ test function consists of input variables
-each of which is a (univariate) random variable.
-Therefore, the starting point of defining a (possibly multivariate)
+A probabilistic input to a UQ test function consists of input variables, 
+each of which is a random variable.
+Therefore, the starting point of defining a (possibly multi-dimensional)
 probabilistic input is defining the distribution
 for each of the constituent random variables.
 This page explains how such a marginal distribution can be created in UQTestFuns.
+
+```{note}
+See {ref}`Probabilistic Input Modeling <prob-input:overview>` for how this
+maps onto the general concepts of random variables and random vectors.
+```
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
@@ -28,21 +33,21 @@ import numpy as np
 import uqtestfuns as uqtf
 ```
 
-Suppose we would like to define one-dimensional triangular marginal distribution
+Suppose we are to define a triangular probability distribution
 for random variable $X$:
 
 $$
-X \sim \mathcal{T}_r(a, b, c)
+X \sim \mathcal{T}_r(a=3.0, b=5.0, c=4.0)
 $$
 
 where $a$, $b$, and $c$ are the parameters of the triangular distribution.
 These parameters correspond to the lower bound, the upper bound,
-and the mid-point of the distribution. 
-For this particular example, we set these values to $3.0$, $5.0$, and $4.0$.
+and the mid-point of the distribution, respectively.
 
-## A ``Marginal`` instance
+## A `Marginal` instance
 
-A univariate random variable is represented in UQTestFuns by the ``Marginal`` class.
+A univariate random variable, or marginal distribution, is represented in
+UQTestFuns by the {ref}`Marginal <api_reference_marginal_distribution>` class.
 To create an instance of the class, you need to pass the following arguments:
 
 - `distribution`: the chosen univariate distribution (one from this {ref}`list <prob-input:available-marginal-distributions>`)
@@ -59,14 +64,18 @@ my_rand_var = uqtf.Marginal(
     name="X",
     description="My random variable",
 )
-my_rand_var
 ```
 
-The variable `my_rand_var` now stores an instance
-of a univariate random variable distributed as triangular
+The variable `my_rand_var` now stores an instance of a marginal
+distribution (a triangular-distributed univariate random variable)
 with the specified parameters.
+You can print the instance to the terminal to verify it:
 
-An instance of ``Marginal`` exposes the following properties:
+```{code-cell} ipython3
+print(my_rand_var)
+```
+
+An instance of `Marginal` exposes the following properties:
 
 |    Property    |                                              Description                                               |
 |:--------------:|:------------------------------------------------------------------------------------------------------:|
@@ -79,19 +88,20 @@ An instance of ``Marginal`` exposes the following properties:
 
 and methods:
 
-|            Method             |                                     Description                                      |
-|:-----------------------------:|:------------------------------------------------------------------------------------:|
-|           `cdf(xx)`           |         compute the cumulative distribution function on a set of values `xx`         |
-|           `pdf(xx)`           |           compute the probability density function on a set of values `xx`           |
-|          `icdf(xx)`           |     compute the inverse cumulative distribution function on a set of values `xx`     |
-|   `get_sample(sample_size)`   |               get a sample of size `sample_size` from the distribution               |
-| `transform_sample(xx, other)` | transform a set of sample values `xx` (of this distribution) to `other` distribution |
+|               Method                |                                      Description                                      |
+|:-----------------------------------:|:-------------------------------------------------------------------------------------:|
+|              `cdf(xx)`              |         compute the cumulative distribution function on a set of values `xx`          |
+|              `pdf(xx)`              |           compute the probability density function on a set of values `xx`            |
+|             `icdf(xx)`              |     compute the inverse cumulative distribution function on a set of values `xx`      |
+| `get_sample(sample_size, rng=None)` |   get a sample of size `sample_size` from the distribution with a NumPy PRNG[^prng]   |
+|     `transform_to(xx, target)`      | transform a set of sample values `xx` (of this distribution) to `target` distribution |
 
 Let's go through each one of these methods.
 
 ## Computing the CDF values
 
-The CDF values for a set of sample values in $\mathcal{D}_X$ can be computed using the `cdf()` method.
+The CDF values for a set of sample values in $\mathcal{D}_X$ can be computed
+using the `cdf()` method.
 Suppose we want to evaluate the CDF of the distribution on its support:
 
 ```{code-cell} ipython3
@@ -188,7 +198,7 @@ plt.gcf().set_dpi(150)
 
 ## Transforming a sample
 
-The `transform_sample()` method facilitates the transformation
+The `transform_to()` method facilitates the transformation
 between a sample generated from one distribution to another.
 
 Let's suppose, complementary to the random variable $X$ we define
@@ -202,7 +212,7 @@ In other words, the variable $Y$ is a standard normal random variable.
 The sample from $X$ can be transformed to $Y$ as follows:
 
 ```{code-cell} ipython3
-xx_sample_2 = my_rand_var.transform_sample(xx_sample, my_rand_var_2)
+xx_sample_2 = my_rand_var.transform_to(xx_sample, my_rand_var_2)
 ```
 
 The histogram of the transformed sample is shown below.
@@ -232,14 +242,14 @@ the lower and upper bounds.
 In the case of the above triangular distribution,
 its support is $\mathcal{D}_X = [3.0, 5.0]$ (the lower and upper bounds are $3.0$ and $5.0$, respectively).
 Such a distribution is _supported on a bounded interval_;
-specifically, the distribution is bounded from the right (below) and left (above).
+specifically, the distribution is bounded both below and above.
 
 Consider, on the other hand, the standard normal distribution.
 Its support is, strictly speaking, $\mathcal{D}_X = (-\infty, \infty)$.
 This is an example of distributions that are supported on the whole real line;
 it is neither bounded from below nor from above.
 
-The properties of a ``Marginal`` instance include among other things,
+The properties of a `Marginal` instance include, among other things,
 `lower` (lower bound) and `upper` (upper bound).
 For the triangular distribution defined above, the lower and upper bounds are indeed:
 
@@ -266,6 +276,7 @@ from both sides at these values,
 we are consciously ignoring the values whose probabilities are at most $10^{-16}$.
 This is an acceptable assumption in typical engineering applications.
 
-[^random-variable]: A random variable is neither random
-(it's uncertain, yes, but that does not necessarily mean the colloquial "random" or "completely unpredictable")
-nor a variable (it's a function).
+[^prng]: The `rng` argument accepts either a NumPy `numpy.random.Generator`
+instance directly or an integer used as a seed to construct one. If
+omitted, a fresh, unseeded generator is used, so consecutive calls without
+an explicit `rng` are not reproducible.
