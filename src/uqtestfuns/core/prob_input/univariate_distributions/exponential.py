@@ -16,7 +16,7 @@ from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "exponential"
-DISPLAY_NAME = "Exp"
+DISPLAY_NAME = "Exponential"
 NUM_PARAMS = 1
 PARAM_NAMES = ("lambda",)
 

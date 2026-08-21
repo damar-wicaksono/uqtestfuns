@@ -37,7 +37,7 @@ The table below summarizes some important aspects of the distribution.
 |  **{term}`Support`** | $\mathcal{D}_X = [a, b]$                                                                                                                                                                                                                                          |
 |      **{term}`PDF`** | $f_X (x; \mu, \sigma, a, b) = \begin{cases} \frac{1}{F_{\mathrm{Gumbel}}(b; \mu, \sigma) - F_{\mathrm{Gumbel}}(a; \mu, \sigma)} f_{\mathrm{Gumbel}}(x; \mu, \sigma) & x \in [a, b]\\ 0.0 & x \notin [a, b] \end{cases}$                                           |
 |      **{term}`CDF`** | $F_X (x; \mu, \sigma, a, b) = \begin{cases} 0.0 & x < a \\ \frac{F_{\mathrm{Gumbel}}(x; \mu, \sigma) - F_{\mathrm{Gumbel}}(a; \mu, \sigma)}{F_{\mathrm{Gumbel}}(b; \mu, \sigma) - F_{\mathrm{Gumbel}}(a; \mu, \sigma)} & x \in [a, b] \\ 1.0 & x > b \end{cases}$ |
-|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \beta, a, b) = \left(F_{\mathrm{Gumbel}}(b; \mu, \sigma) - F_{\mathrm{Gumbel}}(a; \mu, \sigma)\right) x + F_{\mathrm{Gumbel}}(a; \mu, \sigma)$                                                                                                 |
+|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \beta, a, b) = F^{-1}_{\mathrm{Gumbel}}\left[\left(F_{\mathrm{Gumbel}}(b; \mu, \sigma) - F_{\mathrm{Gumbel}}(a; \mu, \sigma)\right) x + F_{\mathrm{Gumbel}}(a; \mu, \sigma)\right]$                                                           |
 
 In the table above, $f_{\mathrm{Gumbel}}$, $F_{\mathrm{Gumbel}}$,
 and $F^{-1}_{\mathrm{Gumbel}}$ are the probability density,
