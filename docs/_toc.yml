@@ -227,10 +227,14 @@ parts:
     chapters:
       - file: api/overview
         title: Overview
+      - file: api/create
+        title: Create
       - file: api/list-functions
         title: List Functions
-      - file: api/uqtestfun-abc
-        title: UQTestFunABC
+      - file: api/list-parameters
+        title: List Parameters
+      - file: api/list-inputs
+        title: List Inputs
       - file: api/uqtestfun
         title: UQTestFun
       - file: api/probinput
@@ -243,6 +247,8 @@ parts:
     chapters:
       - file: development/overview
         title: Overview
+      - file: development/how-it-works
+        title: How It's Organized
       - file: development/setting-up-dev-env
         title: Development Environment
       - file: development/adding-test-function-implementation
