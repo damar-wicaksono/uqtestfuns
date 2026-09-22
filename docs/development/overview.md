@@ -44,7 +44,7 @@ we'll sure appreciate it!
 Before doing so, though,
 be sure to check out the guides on:
 
-- {ref}`how UQTestFuns works <development:how-it-works>`
+- {ref}`how UQTestFuns works and how it is organized internally <development:how-it-works>`
 - {ref}`setting up development environment <development:setting-up-dev-env>`
 - {ref}`adding a new test function implementation <development:adding-test-function-implementation>`
 - {ref}`adding a new test function documentation <development:adding-test-function-docs>`
