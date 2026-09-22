@@ -12,14 +12,14 @@ process up further, mapping where the pieces actually live.
 (development:how-it-works:flow)=
 ## From YAML to a UQTestFun instance
 
-Every built-in test function is described by a YAML specification file
-under `src/uqtestfuns/test_functions/` (e.g., `borehole.yaml`), paired
-with a Python module of the same name (`borehole.py`) that supplies only
-the evaluation logic. The YAML file declares everything else: the
-function's name, description, tags, input dimensions, one or more
-probabilistic input specifications (each a list of marginal
-distributions), and, if the function is parameterized, one or more
-parameter sets.
+Most built-in test functions are described by a YAML specification file
+under `src/uqtestfuns/test_functions/` (e.g., `borehole.yaml`) and an
+evaluation module (e.g., `borehole.py`) that supplies the evaluation logic.
+The YAML file declares everything else: the function's name, description, tags,
+the function's name, description, tags, input dimensions, one or more
+probabilistic input specifications (whose marginals may be an explicit
+list, a reusable template, or a factory), and, if the function is
+parameterized, one or more parameter sets.
 
 Getting from such a pair to a usable instance takes three stages:
 
