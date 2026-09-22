@@ -202,8 +202,8 @@ doesn't apply; the full schema reference covers those.
 
 ### Declaring the input space
 
-Declare Branin's two input variables under `inputs`, keyed by a
-citation-style ID matching the reference in `branin.py`'s docstring.
+Declare Branin's two input variables under `inputs`, using a unique ID
+for this input specification (here, `Dixon1978`).
 Each variable is one entry in a `marginals` list, in the same order
 `evaluate()` expects them as `xx`'s columns:
 
@@ -258,10 +258,10 @@ The keyword names here (`a`, `b`, `c`, `r`, `s`, `t`) must exactly
 match `evaluate()`'s parameter arguments.
 
 ```{note}
-The same applies to `default_parameters`: a top-level key naming which
-parameter set is used by default, needed only when a function declares
-more than one set. Branin only has one set here, so it can be omitted
-too.
+The same applies to `default_parameters`: a key under
+`parameters` naming which parameter set is used by default, needed only
+when a function declares more than one set. Branin only has one set here,
+so it can be omitted too.
 ```
 
 ## Step 3: Sanity check
