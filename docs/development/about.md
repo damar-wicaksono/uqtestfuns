@@ -4,7 +4,7 @@
 UQTestFuns is an homage to the
 [Virtual Library of Simulation Experiments: Test Functions and Datasets] (VLSE).
 
-For many years this site has been very useful in providing
+For many years this site has been invaluable in providing
 the uncertainty quantification (UQ) community 
 with test functions and datasets from the literature.
 It is very well organized, describing each of the test functions
@@ -51,7 +51,7 @@ on how to contribute to it, fixing broken things, and adding new stuff&mdash;be
 it a new test function, new reference values, or a better description.
 
 We hope UQTestFuns can be useful for the UQ community,
-just as the [VLSE] has been very useful to us.
+just as the [VLSE] has been invaluable to us.
 
 ## About us
 
@@ -103,9 +103,9 @@ Michael Hecht
 
 ## Sponsors
 
-The Minterpy project is partly funded by the Center for Advanced Systems Understanding
+The UQTestFuns project is partly funded by the Center for Advanced Systems Understanding
 ([CASUS][CASUS_]) which is financed by Germany's Federal Ministry of Education and Research
-([BMBF][BMBF_]) and by the Saxony Ministry for Science, Culture and Tourism
+([BMBF][BMBF_]) and by the Saxony Ministry for Science, Culture, and Tourism
 ([SMWK][SMWK_]).
 Funding is provided through tax funds based on the budget approved
 by the Saxony State Parliament.

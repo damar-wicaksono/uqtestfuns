@@ -17,6 +17,9 @@ pick one, and work on it!
 
 We expect all contributors to follow our {ref}`development:code-of-conduct`.
 
+For the project's background, motivation, and team, see
+{ref}`development:about-uqtestfuns`.
+
 ## Requesting a new test function
 
 If you're missing a particular test function in UQTestFuns,
@@ -27,9 +30,9 @@ You can fully describe the function you'd like along with the formula,
 probabilistic input specification, the context of the application
 (metamodeling, sensitivity analysis, reliability analysis, etc.)
 and the source in the literature.
-When possible write down also the reference results.
+When possible, write down also the reference results.
 
-Or you can simply tell us about the source of the test function in the literature.
+Or you can tell us about the source of the test function in the literature.
 The source is indeed the most important part of requesting a new test function.
 All test functions that are included in UQTestFuns have clear references in the literature.
 
@@ -41,6 +44,7 @@ we'll sure appreciate it!
 Before doing so, though,
 be sure to check out the guides on:
 
+- {ref}`how UQTestFuns works <development:how-it-works>`
 - {ref}`setting up development environment <development:setting-up-dev-env>`
 - {ref}`adding a new test function implementation <development:adding-test-function-implementation>`
 - {ref}`adding a new test function documentation <development:adding-test-function-docs>`
