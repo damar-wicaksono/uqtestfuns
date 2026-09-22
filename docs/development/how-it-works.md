@@ -16,10 +16,9 @@ Most built-in test functions are described by a YAML specification file
 under `src/uqtestfuns/test_functions/` (e.g., `borehole.yaml`) and an
 evaluation module (e.g., `borehole.py`) that supplies the evaluation logic.
 The YAML file declares everything else: the function's name, description, tags,
-the function's name, description, tags, input dimensions, one or more
-probabilistic input specifications (whose marginals may be an explicit
-list, a reusable template, or a factory), and, if the function is
-parameterized, one or more parameter sets.
+input dimensions, one or more probabilistic input specifications
+(whose marginals may be an explicit list, a reusable template, or a factory),
+and, if the function is parameterized, one or more parameter sets.
 
 Getting from such a pair to a usable instance takes three stages:
 
@@ -34,25 +33,29 @@ Getting from such a pair to a usable instance takes three stages:
 2. **Factory creation**, at the first lookup of a name. Looking up a
    name, whether through `uqtestfuns.create("Borehole")` or the
    shorthand `uqtestfuns.Borehole()` (both resolve through the same
-   registry lookup), parses that specification in full, imports the
-   paired Python module to get the evaluation function, and builds a
-   factory specific to that entry. The factory is cached, so a given
-   function pays for this once.
+   registry lookup), parses that specification in full 
+   and builds a factory specific to that entry.
+   The factory is cached, so a given function pays for this once.
 3. **Instantiation**, when the factory is called. The factory composes
-   the parts into a `UQTestFun` instance: a `ProbInput` built from the
-   selected input specification, and a `Parameters` set if the function
-   declares any. Both default to what the specification declares, and
-   callers who want one of the other available sets pick it here, which
-   is what `list_inputs()` and `list_parameters()` are for.
+   the parts into a `UQTestFun` instance: It imports the paired Python module
+   to get the evaluation function,
+   a `ProbInput` built from the selected input specification,
+   and a `Parameters` set if the function declares any.
+
+   Both default to what the specification declares,
+   and callers who want one of the other available sets pick it here,
+   which is what `list_inputs()` and `list_parameters()` are for.
 
 This lazy pipeline keeps importing `uqtestfuns` reasonably lightweight
 as the number of built-in functions grows, and lets `list_functions()`,
 `list_parameters()`, and `list_inputs()` report on the built-ins without
-constructing any of them. The last two stages are rarely visible as
-separate steps, since `uqtestfuns.Borehole()` builds the factory and
-calls it in one expression, but the boundary between them is where a
-malformed specification surfaces, and where the second construction of
-a function saves the work of the first.
+constructing any of them.
+
+The last two stages are rarely visible as separate steps,
+since, for example, `uqtestfuns.Borehole()` builds the factory and
+calls the factory in one expression, but the boundary between them is
+where a malformed specification surfaces,
+and where the second construction of a function saves the work of the first.
 
 (development:how-it-works:layout)=
 ## Package layout
@@ -107,8 +110,12 @@ always exactly one specification file per test function, though,
 since that file is what the registry keys on.
 ```
 
-To summarize: the YAML specification and its Python module live in
-`test_functions/`; scanning, parsing, and the factory all happen in
-`core/registry/`; the constructed `UQTestFun`, `ProbInput`, `Marginal`,
-and `Parameters` objects are defined also in `core/`; and `api.py` is
-where that whole pipeline gets triggered from.
+---
+
+As a summary, here are the places where things live:
+
+- `test_functions/` holds each specification and its Python module.
+- `core/registry/` does the scanning, the parsing, and the factory.
+- `core/` defines what comes out of them: `UQTestFun`, `ProbInput`,
+  `Marginal`, and `Parameters`.
+- `api.py` is where the whole pipeline gets triggered from.

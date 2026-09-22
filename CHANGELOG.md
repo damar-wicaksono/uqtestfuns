@@ -75,6 +75,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `docs/fundamentals/` pages have been overhauled: corrected function
   tables, added the missing narrative sections, and unified the table
   format across all five pages.
+- The `docs/prob-input/` section has been overhauled: settled terminology
+  between random variables/vectors and marginal distributions/
+  probabilistic inputs, fixed a broken method call and several broken
+  cross-references, and renamed two pages for clarity.
+- The `docs/api/` reference chapter has been rewritten to describe the
+  current registry-based architecture instead of the removed class
+  hierarchy, and gained new pages for `create()`, `list_parameters()`,
+  and `list_inputs()`.
+- Added a `development/how-it-works.md` page to the Contributor's Guide
+  covering the registry/YAML pipeline and where its pieces live in the
+  codebase, and fixed a copy-pasted project name in
+  `development/about.md`.
+- The `development/adding-test-function-implementation.md` guide has
+  been rewritten to describe the current YAML+Python workflow instead
+  of the removed ABC-based one.
 
 ### Fixed
 

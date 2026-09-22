@@ -248,7 +248,7 @@ parts:
       - file: development/overview
         title: Overview
       - file: development/how-it-works
-        title: How It's Organized
+        title: How UQTestFuns Works
       - file: development/setting-up-dev-env
         title: Development Environment
       - file: development/adding-test-function-implementation
