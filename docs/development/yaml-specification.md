@@ -209,7 +209,7 @@ core of what makes it a *UQ* test function,
 because without uncertain inputs it's just an ordinary function.
 
 Each entry in `inputs` is a named input specification containing a
-`description` and a `marginals` definition.
+`marginals` definition and, optionally, a `description`.
 The inputs section of the {ref}`OTLCircuit <test-functions:otl-circuit>`
 specification appears below, with two of its six marginals included:
 
@@ -577,8 +577,8 @@ def get_aa_saltelli1995_2(input_dimension: int) -> np.ndarray:
 ```
 
 The factory function follows the same contract as a marginals factory:
-`input_dimension` is injected as the first positional argument only if
-it appears in the function's signature; otherwise the factory is called
+`input_dimension` is injected as the first positional argument only when the
+first parameter is named `input_dimension`; otherwise the factory is called
 with none.
 
 ### `default_parameters`
@@ -604,9 +604,11 @@ for its three marginals' bounds:
 parameters: [$(-pi), $(pi)]
 ```
 
-Without the `$()` delimiter, `pi` would just be the literal string
-`"pi"`, not the constant. The three supported named constants are
-`pi`, `e`, and `inf`, all case-sensitive (`$(Pi)` doesn't work).
+For a numeric field such as a marginal's `parameters`, omitting `$()` leaves
+`pi` as a string and validation fails; it is not interpreted as the constant.
+For generic parameter values, an unwrapped `pi` remains a literal string.
+The three supported named constants are `pi`, `e`, and `inf`, all case-sensitive
+(`$(Pi)` doesn't work).
 
 `$()` isn't limited to bare constants.
 It can also evaluate a basic arithmetic expression
@@ -657,8 +659,8 @@ silently failing or executing arbitrary code.
 
 ## Quick reference
 
-Copy-paste the following skeleton (showing every available field)
-as a starting point:
+Use the following skeleton as a starting point; it shows the top-level
+fields and the available `marginals` shapes:
 
 ```yaml
 # --- The preamble ---
