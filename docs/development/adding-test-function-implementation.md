@@ -163,12 +163,10 @@ With `branin.py` in place, the next step is telling UQTestFuns about the
 function: its name, its input space, and its parameters. This goes in
 a YAML file with the same stem, `branin.yaml`, in the same directory.
 
-This section only covers what Branin itself needs.
-
-<!-- TODO: once the YAML specification reference page exists, add a
-sentence here pointing to it for the full schema (the different ways
-to declare marginals, parameter-value expressions, shared inputs
-across function families, and so on). -->
+This section only covers what Branin itself needs. For the full
+schema, the different ways to declare marginals, parameter-value
+expressions, shared inputs across function families, and so on, see
+the {ref}`development:yaml-specification`.
 
 ### Declaring the function
 

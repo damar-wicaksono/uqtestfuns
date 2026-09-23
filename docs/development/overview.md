@@ -47,6 +47,7 @@ be sure to check out the guides on:
 - {ref}`how UQTestFuns works and how it is organized internally <development:how-it-works>`
 - {ref}`setting up development environment <development:setting-up-dev-env>`
 - {ref}`adding a new test function implementation <development:adding-test-function-implementation>`
+  (see the {ref}`YAML specification reference <development:yaml-specification>` for the full schema)
 - {ref}`adding a new test function documentation <development:adding-test-function-docs>`
 - {ref}`making a pull request <development:making-a-pull-request>`
 - In case the univariate distribution types are not yet available:

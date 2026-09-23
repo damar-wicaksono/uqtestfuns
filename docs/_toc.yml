@@ -253,6 +253,8 @@ parts:
         title: Development Environment
       - file: development/adding-test-function-implementation
         title: Test Function Implementation
+      - file: development/yaml-specification
+        title: YAML Specification Reference
       - file: development/adding-test-function-docs
         title: Test Function Docs
       - file: development/making-a-pull-request
