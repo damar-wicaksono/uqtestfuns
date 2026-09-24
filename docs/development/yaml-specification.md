@@ -266,20 +266,25 @@ variable can be described differently across specifications. In
 Borehole, `rw` and `r` are normal/lognormal-distributed in
 `Harper1983`, but uniform-distributed in `Morris1993`.
 
-### Shared inputs across function families
+### Pointing `inputs` at a separate file
 
-When multiple related functions share the same input specification,
-point `inputs` at a separate file instead of duplicating the block in
-every function's spec. The `genz/` family does this: all six
-Genz functions (e.g., {ref}`Genz Continuous <test-functions:genz-continuous>`)
-declare
+`inputs` doesn't have to be a mapping written inline in the spec: it
+can also be a string naming another YAML file that holds the actual
+input specifications. This is particularly useful for a family of
+related functions that all use the same input specification. See
+{ref}`Function families <development:yaml-specification:function-families>`
+below for the fuller pattern.
+
+{ref}`Genz Continuous <test-functions:genz-continuous>`'s spec, for
+instance, declares
 
 ```yaml
 inputs: inputs.yaml
 ```
 
-which points at `inputs.yaml` in the same directory. The content of the file
-starts directly at the ID level (and not wrapped in another `inputs:` key):
+which points at `inputs.yaml` in the same directory, shared by all
+six Genz functions. The content of the file starts directly at the ID
+level (and not wrapped in another `inputs:` key):
 
 ```yaml
 Genz1984:
@@ -298,7 +303,7 @@ scanning, so `inputs.yaml` itself never gets registered as a function
 in its own right. A file is treated as a shared input spec, not a
 function, if its name matches one of these patterns:
 
-- `inputs.yaml`, the default name for a family's shared input spec
+- `inputs.yaml`, the default name for a shared input spec
 - `inputs_<suffix>.yaml`, for example `inputs_ishigami.yaml`
 - `<prefix>_inputs.yaml`, for example `sobol_g_inputs.yaml`
 
@@ -541,8 +546,8 @@ itself be a `$()` expression instead of a bare number, covered in
 {ref}`Named constants and expressions <development:yaml-specification:named-constants>`
 below.
 
-When a value must be computed by more complex logic, however,
-use a factory instead as in the case of complex marginals: a dictionary
+When a value must be computed by more complex logic, use a factory,
+the same mechanism used for complex marginals: a dictionary
 containing a `factory` key is resolved to a callable, while a
 dictionary without one is treated as a literal.
 {ref}`Sobol' G <test-functions:sobol-g>`'s `sobol_g.yaml` exemplifies:
@@ -577,9 +582,9 @@ def get_aa_saltelli1995_2(input_dimension: int) -> np.ndarray:
 ```
 
 The factory function follows the same contract as a marginals factory:
-`input_dimension` is injected as the first positional argument only when the
-first parameter is named `input_dimension`; otherwise the factory is called
-with none.
+`input_dimension` is injected as the first positional argument only if
+the function's own first parameter is named `input_dimension`;
+otherwise the factory is called with none.
 
 ### `default_parameters`
 
@@ -591,6 +596,90 @@ when `sets` contains more than one parameter set, like
 Ishigami's example above, which has two (`Ishigami1991` and
 `Sobol1999`) and therefore needs `default_parameters: Ishigami1991` to
 say which one applies by default.
+
+(development:yaml-specification:function-families)=
+## Function families
+
+Some publications introduce several closely related test functions
+together, for instance the six integrand shapes in Genz (1984) (e.g.,
+{ref}`Genz Continuous <test-functions:genz-continuous>`, one of the
+six) or the six related surfaces in Franke (1979) (e.g.,
+{ref}`Franke 1 <test-functions:franke-1>`, one of the six). UQTestFuns
+groups a family like
+this into its own subpackage under `test_functions/`, with one shared
+`evaluate.py` module and, typically, one shared `inputs.yaml`, since
+family members usually share the same input specification too.
+
+Consider the `genz/` directory, which holds the entire Genz family:
+
+```text
+test_functions/genz/
+├── __init__.py
+├── evaluate.py                <- One evaluation function per family member
+├── inputs.yaml                <- Shared input specification
+├── genz_continuous.yaml
+├── genz_corner_peak.yaml
+├── genz_discontinuous.yaml
+├── genz_gaussian.yaml
+├── genz_oscillatory.yaml
+└── genz_product_peak.yaml
+```
+
+`genz_continuous.yaml` shows all three sharing mechanisms in a single
+spec: `evaluate` points at a function inside the shared module,
+`inputs` points at the shared file, and even the parameter factories
+point back into that same module:
+
+```yaml
+name: GenzContinuous
+description: >-
+  M-dimensional continuous but non-differentiable function from Genz (1984)
+tags:
+  - integration
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs: inputs.yaml
+
+evaluate: evaluate.continuous
+
+parameters:
+  keyword_descriptions:
+    aa: Shape parameters (larger = more difficult integration)
+    bb: Offset parameters (minimal effect on integration difficulty)
+  sets:
+    Genz1984:
+      aa:
+        factory: evaluate.get_aa_genz1984
+      bb:
+        factory: evaluate.get_bb_genz1984
+      description: >-
+        Constant shape and offset parameters from Genz (1984)
+```
+
+`evaluate.py` itself just collects one function per family member
+under the same module:
+
+```python
+def continuous(xx: np.ndarray, aa: np.ndarray, bb: np.ndarray) -> np.ndarray:
+    ...
+
+def corner_peak(xx: np.ndarray, aa: np.ndarray) -> np.ndarray:
+    ...
+```
+
+Nothing about this is a special case in the schema itself. A family is
+just several ordinary specs that happen to point `evaluate` and
+`inputs` (and, optionally, `factory`) at shared files instead of
+duplicating them per function. Grouping them into a subpackage is a
+convention for keeping functions from the same source together, not a
+requirement. Each member could just as well be a separate top-level
+file. Sharing an input specification isn't what defines a family
+either; the three Dette functions come from one paper but have
+different input domains, so each keeps its own `inputs` block inline
+instead of a shared `inputs.yaml`.
 
 (development:yaml-specification:named-constants)=
 ## Named constants and expressions

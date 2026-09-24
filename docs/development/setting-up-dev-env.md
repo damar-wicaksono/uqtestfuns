@@ -25,7 +25,7 @@ set up multiple remotes for your repository.
 Add an upstream repository that points to the main UQTestFuns repository:
 
 ```bash
-git remote add upstream https://github.com/damar-wicaksonop/uqtestfuns
+git remote add upstream https://github.com/damar-wicaksono/uqtestfuns
 ```
 
 This way you have access to the main repository.
@@ -70,10 +70,10 @@ you should be able to see the following directory structure:
 .
 ├── .github/                <- The GitHub actions specifications.
 ├── .gitignore              <- List of ignored files/directories if `git add/commit`
-├── .readthedocs.yml        <- Configuration for readthedocs
-├── AUTHORS.md              <- List of developers and maintainers
+├── .readthedocs.yaml       <- Configuration for readthedocs
+├── AUTHORS.md              <- List of authors and contributors
 ├── CODE-OF-CONDUCT.md      <- Code of conduct adopted by the project.
-├── CONTRIBUTING.md         <- (Brif) contribution guidelines
+├── CONTRIBUTING.md         <- (Brief) contribution guidelines
 ├── docs                    <- The docs (*.md or *.rst files)
 ├── LICENSE                 <- The license file
 ├── MANIFEST.in             <- Keep track of (minimal) source distribution files
@@ -83,7 +83,6 @@ you should be able to see the following directory structure:
 ├── src
 │   └── uqtestfuns          <- Actual Python package where the main functionality goes
 └── tests                   <- Test suite which can be run with `pytest`
-
 ```
 
 ## Virtual environments
@@ -226,7 +225,7 @@ Here is what the directory structure should look like:
 ├───prob-input/                    <- Probabilistic input modeling
 │   │   ...
 │   │
-│   └───univariate-distributions/  <- Docs for each univariate distribution
+│   └───marginal-distributions/    <- Docs for each univariate distribution
 │
 └───test-functions/                <- Docs for each UQ test function
 ``` 

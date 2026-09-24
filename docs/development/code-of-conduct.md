@@ -16,7 +16,7 @@ We, as contributors and maintainers of UQTestFuns,
 pledge to make participation in our project and community a harassment-free
 experience for everyone, regardless of age, body size, visible or invisible disability,
 ethnicity, sex characteristics, gender identity and expression, level of experience, education,
-socio-economic status, nationality, personal appearance, race, case, color, religion, or
+socio-economic status, nationality, personal appearance, race, caste, color, religion, or
 sexual identity and orientation.
 
 We pledge to act and interact in ways that contribute to an open,
@@ -62,11 +62,19 @@ its online documentation, as well as at all UQTestFuns events, whether online or
 
 We encourage members of the UQTestFuns community to resolve issues on their own whenever possible.
 An instance of abusive, harassing, or otherwise unacceptable behavior may be reported
-to the project maintainers for enforcement at **still pending**.
+for enforcement by contacting the project maintainers listed on the
+{ref}`About page <development:about-uqtestfuns:maintainers>` directly through GitHub.
+
+```{note}
+We understand that this is not an ideal setup. At this stage of the
+project, there's no independent committee to fall back on, so reports
+go to the same people responsible for enforcement, even if the report
+concerns a maintainer themselves.
+```
 
 All complaints will be reviewed and investigated promptly and fairly.
-All project maintainers are obligated to respect the privacy and security of the reporter
-of any incident.
+All project maintainers are obligated to respect the privacy
+and security of the reporter of any incident.
 
 ## Attribution
 
