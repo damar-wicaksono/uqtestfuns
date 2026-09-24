@@ -71,6 +71,7 @@ an institute of the Helmholtz-Zentrum Dresden-Rossendorf ([HZDR](https://www.hzd
 
 ::::
 
+(development:about-uqtestfuns:maintainers)=
 ### Project maintainers
 
 Project maintainers are the current main developers responsible for UQTestFuns

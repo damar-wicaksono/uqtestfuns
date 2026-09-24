@@ -86,10 +86,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a `development/how-it-works.md` page to the Contributor's Guide
   covering the registry/YAML pipeline and where its pieces live in the
   codebase, and fixed a copy-pasted project name in
-  `development/about.md`.
+  `development/about.md`. Later revised for tone and clarity, and
+  fixed an ambiguity in the `test_functions/` description that could
+  be read as implying family functions (e.g., `franke/`, `genz/`)
+  share a single YAML spec, when each member actually keeps its own
+  and only the Python module and input specification are shared.
 - The `development/adding-test-function-implementation.md` guide has
   been rewritten to describe the current YAML+Python workflow instead
   of the removed ABC-based one.
+- Added a `development/yaml-specification.md` reference page covering
+  the full YAML specification schema, cross-referenced from
+  `development/adding-test-function-implementation.md` and the
+  Contributor's Guide overview.
+- The `development/adding-test-function-docs.md` guide has been
+  brought up to date: fixed several factual errors (a false claim
+  about `ProbInput`'s HTML output, a stale bibliography style, a wrong
+  file extension, a LaTeX formula bug, a missing parameter label) and
+  reworded throughout for clarity and consistency.
+- Fixed a typo'd upstream remote URL and two stale directory-tree
+  entries in `development/setting-up-dev-env.md`.
+- Added an `AUTHORS.md` file at the repo root listing the project's
+  author and contributors.
+- The `development/making-a-pull-request.md` guide now covers `mypy`
+  alongside `flake8`/`black`, closing a gap where the type-checking CI
+  gate was never mentioned; also cleaned up terminology and repeated
+  wording throughout.
+- The `development/adding-marginal-distribution.md` guide has been
+  brought up to date: fixed a wrong file path, a missing `.py`
+  extension, a PDF/CDF notation collision, and stale example code;
+  documented two module-level variables (`DISPLAY_NAME`,
+  `PARAM_NAMES`) that were required but never mentioned; added an
+  explanation of why unbounded distributions clip to a finite
+  numerical bound; and added a missing final step for adding the
+  distribution's own documentation page.
+- Fixed a typo in `development/code-of-conduct.md`'s pledge text
+  ("case" -> "caste") and filled in its previously-unset enforcement
+  contact, now routed through `development/about.md`'s maintainers
+  section instead of a personal email address, with a note
+  acknowledging the limits of that setup for a project without an
+  independent enforcement committee.
+- `getting-started/tutorial-built-in-functions.md` now covers choosing
+  a published input specification with `input_id`/`list_inputs()`,
+  mirroring the existing coverage of `parameters_id`/`list_parameters()`.
+- Tidied `development/overview.md`: fixed a garbled typo, a missing
+  "to", "code base" -> "codebase", and reordered the opening
+  contribution list to match the order of the sections below it.
 
 ### Fixed
 
