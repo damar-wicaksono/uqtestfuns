@@ -173,6 +173,25 @@ assert np.array_equal(
 )
 ```
 
+### Choosing a published input specification
+
+Some functions ship with more than one published probabilistic input
+specification. {ref}`Borehole <test-functions:borehole>`, for
+instance, has two: one from {cite}`Harper1983` and one from
+{cite}`Morris1993`. You can select one by name at construction with
+`input_id`:
+
+```{code-cell} ipython3
+my_borehole = uqtf.Borehole(input_id="Morris1993")
+```
+
+To see which specifications are available for a function, use
+`list_inputs`, which also lists the current default:
+
+```{code-cell} ipython3
+uqtf.list_inputs("Borehole")
+```
+
 ## Transforming a sample into the function domain
 
 Some UQ methods produce sample points in a hypercube domain
