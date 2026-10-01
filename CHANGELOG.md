@@ -131,6 +131,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tidied `development/overview.md`: fixed a garbled typo, a missing
   "to", "code base" -> "codebase", and reordered the opening
   contribution list to match the order of the sections below it.
+- `development/yaml-specification.md` gained a "Function families"
+  section documenting the subpackage/shared-`evaluate.py`/shared-
+  `inputs.yaml` pattern used by `genz/`, `franke/`, and others
+  (previously undocumented); the existing "Shared inputs across
+  function families" section was reframed around the general
+  capability of pointing `inputs` at a separate file, with the family
+  use case now a cross-reference rather than the main framing.
+- Condensed `CONTRIBUTING.md`: removed Installation/Testing/
+  Documentation sections that duplicated `docs/development/`'s guides
+  (and had drifted from them, e.g., a stale "six main sections"
+  listing and a broken Markdown link), replacing them with links into
+  the Contributor's Guide. Brought the repo-root `CODE-OF-CONDUCT.md`
+  back in sync with `docs/development/code-of-conduct.md`. Added `uv`
+  as a third option alongside `venv`/`conda` in
+  `development/setting-up-dev-env.md` for creating an environment and
+  installing the package.
 
 ### Fixed
 
@@ -211,12 +227,12 @@ UQTestFuns now includes 75 test functions.
   for metamodeling exercise.
 - The 8-dimensional robot arm function for metamodeling exercises.
 
-## Changed
+### Changed
 
 - The function `Gramacy1DSine` has been renamed to `GramacySine` for
   conciseness and consistency with the other sine-based functions.
 
-## Fixed
+### Fixed
 
 - Assigning an integer value to `rng_seed` property of `ProbInput` now
   correctly reset the RNG with the assigned seed number.

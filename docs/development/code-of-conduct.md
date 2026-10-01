@@ -63,7 +63,7 @@ its online documentation, as well as at all UQTestFuns events, whether online or
 We encourage members of the UQTestFuns community to resolve issues on their own whenever possible.
 An instance of abusive, harassing, or otherwise unacceptable behavior may be reported
 for enforcement by contacting the project maintainers listed on the
-{ref}`About page <development:about-uqtestfuns:maintainers>` directly through GitHub.
+[README](https://github.com/damar-wicaksono/uqtestfuns/blob/dev/README.md) directly.
 
 ```{note}
 We understand that this is not an ideal setup. At this stage of the

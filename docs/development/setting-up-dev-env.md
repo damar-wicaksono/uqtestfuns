@@ -97,9 +97,11 @@ Do this before you install the package.
 
 There are many ways of setting up a virtual environment within the Python community.
 Below we give examples using [`venv`](https://docs.python.org/3/tutorial/venv.html)
-the built-in virtual environment manager for Python
-as well as [`conda`](https://conda.io/projects/conda/en/latest/index.html)
-a popular open-source package and environment management system.
+the built-in virtual environment manager for Python,
+[`conda`](https://conda.io/projects/conda/en/latest/index.html)
+a popular open-source package and environment management system,
+and [`uv`](https://docs.astral.sh/uv/), a fast, Rust-based package and
+project manager that can replace both `pip` and `venv`.
 
 We assume that all the example commands given below are executed from the UQTestFuns
 root source directory.
@@ -154,6 +156,34 @@ The following assumed that you've successfully installed `conda` in your system:
     $ conda deactivate
     ```
 
+### Using `uv`
+
+You may also create a virtual environment via
+[`uv`](https://docs.astral.sh/uv/), which creates and manages
+environments the same way `venv` does, just faster:
+
+1. Create a virtual environment:
+
+   ```bash
+   $ uv venv <your_venv_name>
+   ```
+
+   Replace `<your_venv_name>` with an environment name of your choice.
+
+2. Activate the environment you just created:
+
+    ```bash
+    $ source <your_venv_name>/bin/activate
+    ```
+
+    as before replace `<your_venv_name>` with the environment name.
+
+3. To deactivate the virtual environment, type:
+
+    ```bash
+    $ deactivate
+    ```
+
 ## Installing UQTestFuns from the source
 
 To install UQTestFuns, we recommend using [pip](https://pip.pypa.io/en/stable/)
@@ -167,6 +197,13 @@ $ pip install -e .[all,dev,docs]
 where the flag `-e` means the package is directly linked to the Python site-packages.
 The options `[all,dev,docs]` refer to the requirements defined
 in the `options.extras_require` section in `setup.cfg`.
+
+If you created your environment with `uv`, use `uv pip install` instead,
+a drop-in, faster replacement:
+
+```bash
+$ uv pip install -e .[all,dev,docs]
+```
 
 ## Testing
 
