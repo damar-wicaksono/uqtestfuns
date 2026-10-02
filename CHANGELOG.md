@@ -15,7 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `list_functions()` now supports filtering by `input_dimension`,
   `output_dimension`, `parameterized`, and `tag`, and can render its
   output as a table in any `tabulate`-supported format (`tablefmt`) or
-  return a plain list of bare function names (`tabulate=False`).
+  return a plain list of bare function names (`tabulate=False`). Which
+  columns the table displays is controlled independently via a
+  `columns` argument (`'default'`, `'all'`, `'compact'` presets, or a
+  custom sequence of column names/aliases), rather than being an
+  implicit side effect of which filters are passed.
 - `list_parameters(name)`, the companion to `list_functions()` for
   browsing a function's available parameter sets: `tabulate=True`
   (default) prints a table of parameter-set IDs and descriptions along
@@ -147,6 +151,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   as a third option alongside `venv`/`conda` in
   `development/setting-up-dev-env.md` for creating an environment and
   installing the package.
+- Refreshed `README.md`, whose examples and claims had drifted since
+  the YAML-architecture migration: corrected the `list_functions()`
+  table and the `UQTestFun`/`ProbInput` example output to match their
+  current string representations, corrected the dependency list to
+  include `pyyaml` and `tabulate`, fixed a case-mismatched
+  `CONTRIBUTING.md` link and a missing GitHub Issues link, switched
+  the Python-version badge to track PyPI automatically, pointed to
+  `CITATION.cff` in the citing section, and updated the Credits
+  section for the project's current maintainership. Applied the
+  matching dependency-list fix to `docs/index.md` and a stale
+  "Python3" mention in `CITATION.cff`.
 
 ### Fixed
 
