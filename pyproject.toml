@@ -67,6 +67,38 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--cov", "--strict-markers"]
+xfail_strict = true
+
+[tool.coverage.run]
+source = ["uqtestfuns"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.coverage.paths]
+source = ["src/uqtestfuns", "*/site-packages/uqtestfuns"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_unused_configs = true
+show_error_context = true
+pretty = true
+namespace_packages = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "uqtestfuns.meta.metaspec",
+    "test_uqmetaspec",
+    "test_uqmetatestfun",
+]
+ignore_errors = true
+
 [tool.ruff]
 line-length = 79
 target-version = "py310"
