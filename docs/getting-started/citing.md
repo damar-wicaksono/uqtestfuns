@@ -21,23 +21,9 @@ can be cited as follows:
 ```
 
 To ensure reproducibility, cite the exact version of the package you used.
-Each release is archived on Zenodo with a unique DOI; find and use the DOI
-for the version you used at [Zenodo].
-
-The citation for the current public version is:
-
-```bibtex
-@software{UQTestFuns_0_6_0,
-  author       = {Wicaksono, Damar and Hecht, Michael},
-  title        = {{UQTestFuns: A Python3 Library of Uncertainty Quantification (UQ) Test Functions}},
-  month        = jan,
-  year         = 2025,
-  publisher    = {Zenodo},
-  version      = {v0.6.0},
-  doi          = {10.5281/zenodo.14710452},
-  url          = {https://doi.org/10.5281/zenodo.14710452}
-}
-```
+Every release is archived on [Zenodo], which assigns each version its own
+DOI; the citation details (BibTeX, APA, and other formats) for whichever
+version you used are available there directly.
 
 ## Citing a specific test function
 
@@ -48,4 +34,4 @@ Each function's documentation page includes a reference to the appropriate citat
 Harper and Gupta, 1983). See the {ref}`list of available functions
 <test-functions:available>` to find a specific page.
 
-[Zenodo]: https://zenodo.org/records/14710452
+[Zenodo]: https://doi.org/10.5281/zenodo.7701903
