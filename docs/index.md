@@ -2,7 +2,7 @@
 
 UQTestFuns is an open-source Python library of test functions for the
 applied uncertainty quantification (UQ) community: one consistent
-interface, minimal dependencies (NumPy and SciPy only), and each function's
+interface, minimal dependencies (NumPy, SciPy, PyYAML, and tabulate), and each function's
 probabilistic input specification bundled in, so you don't have to
 reimplement it yourself.
 

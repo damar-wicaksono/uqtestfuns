@@ -147,6 +147,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   as a third option alongside `venv`/`conda` in
   `development/setting-up-dev-env.md` for creating an environment and
   installing the package.
+- Refreshed `README.md`, whose examples and claims had drifted since
+  the YAML-architecture migration: corrected the `list_functions()`
+  table and the `UQTestFun`/`ProbInput` example output to match their
+  current string representations, corrected the dependency list to
+  include `pyyaml` and `tabulate`, fixed a case-mismatched
+  `CONTRIBUTING.md` link and a missing GitHub Issues link, switched
+  the Python-version badge to track PyPI automatically, pointed to
+  `CITATION.cff` in the citing section, and updated the Credits
+  section for the project's current maintainership. Applied the
+  matching dependency-list fix to `docs/index.md` and a stale
+  "Python3" mention in `CITATION.cff`.
 
 ### Fixed
 

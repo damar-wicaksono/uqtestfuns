@@ -42,7 +42,7 @@ repository-code: 'https://github.com/damar-wicaksono/uqtestfuns'
 url: 'https://uqtestfuns.readthedocs.io/en/latest/'
 repository-artifact: 'https://pypi.org/project/uqtestfuns/'
 abstract: >-
-  UQTestFuns is an open-source Python3 library of test
+  UQTestFuns is an open-source Python library of test
   functions commonly used within the uncertainty
   quantification (UQ) community. The package aims to provide
   an implementation with minimal dependencies and a common interface
