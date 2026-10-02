@@ -224,6 +224,33 @@ $ pytest
 
 from within the UQTestFuns source directory.
 
+## Formatting, linting, and type checking
+
+UQTestFuns uses [Ruff](https://docs.astral.sh/ruff/) for both code
+formatting and linting, and [mypy](https://mypy-lang.org/) for static
+type checking. All three are included if you installed UQTestFuns
+using either the `[dev]` or `[all]` option.
+
+To check formatting without modifying any files:
+
+```bash
+$ ruff format --check src tests
+```
+
+Drop `--check` to have Ruff reformat the files in place.
+
+To lint the codebase:
+
+```bash
+$ ruff check src tests
+```
+
+To run the type checker:
+
+```bash
+$ mypy --ignore-missing-imports src tests
+```
+
 ## Building the documentation
 
 Building the docs from the source requires additional dependencies.

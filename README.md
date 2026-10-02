@@ -1,7 +1,7 @@
 # UQTestFuns
 [![JOSS](https://img.shields.io/badge/JOSS-10.21105/joss.05671-brightgreen?style=flat-square)](https://doi.org/10.21105/joss.05671)
 [![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.7701903-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.7701903)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Python](https://img.shields.io/pypi/pyversions/uqtestfuns?style=flat-square)](https://pypi.org/project/uqtestfuns/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
 [![PyPI](https://img.shields.io/pypi/v/uqtestfuns?style=flat-square)](https://pypi.org/project/uqtestfuns/)
