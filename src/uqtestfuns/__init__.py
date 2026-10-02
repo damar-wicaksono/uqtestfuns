@@ -2,8 +2,6 @@
 This is the package init for UQTestFuns.
 """
 
-import sys
-
 from .core import Marginal
 from .core import ProbInput
 from .core import UQTestFun
@@ -20,10 +18,7 @@ from .meta import UQMetaTestFun
 from . import api
 from .api import create, list_functions, list_inputs, list_parameters
 
-if sys.version_info >= (3, 8):
-    from importlib import metadata
-else:  # pragma: no cover
-    import importlib_metadata as metadata
+from importlib import metadata
 
 __version__ = metadata.version("uqtestfuns")
 
