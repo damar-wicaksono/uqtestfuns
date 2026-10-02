@@ -123,9 +123,10 @@ jobs:
       - build_sdist
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          pattern: "*"
+          merge-multiple: true
           path: ./dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
