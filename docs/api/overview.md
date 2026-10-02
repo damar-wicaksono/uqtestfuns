@@ -44,7 +44,8 @@ both routes go through the same underlying registry.
 Three companion functions help with discovery:
 
 - {ref}`list_functions() <api_reference_list_functions>` lists all
-  built-in test functions, optionally filtered by dimension or tag.
+  built-in test functions, optionally filtered by dimension or tag,
+  with the displayed columns controlled separately via `columns`.
 - {ref}`list_parameters(name) <api_reference_list_parameters>` lists the
   available parameter sets for a given function.
 - {ref}`list_inputs(name) <api_reference_list_inputs>` lists the

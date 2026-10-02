@@ -12,7 +12,17 @@ system.
 
 from __future__ import annotations
 
-from typing import Dict, List, Literal, Mapping, Optional, overload, Union
+from typing import (
+    Any,
+    Dict,
+    List,
+    Literal,
+    Mapping,
+    Optional,
+    Sequence,
+    Union,
+    overload,
+)
 
 from tabulate import tabulate as tbl
 
@@ -93,6 +103,141 @@ def create(
         return factory(**kwargs)
 
 
+COLUMN_DEFINITIONS: Dict[str, Dict[str, Any]] = {
+    "no": {
+        "header": "No.",
+        "align": "center",
+        "maxcolwidth": None,
+        "extractor": lambda idx, name, entry: str(idx + 1),
+    },
+    "constructor": {
+        "header": "Constructor",
+        "align": "left",
+        "maxcolwidth": None,
+        "extractor": lambda idx, name, entry: f"{name}()",
+    },
+    "input": {
+        "header": "# Input",
+        "align": "center",
+        "maxcolwidth": 20,
+        "extractor": lambda idx, name, entry: (
+            "M"
+            if (entry.variable_dimension or entry.input_dimension is None)
+            else str(entry.input_dimension)
+        ),
+    },
+    "output": {
+        "header": "# Output",
+        "align": "center",
+        "maxcolwidth": 20,
+        "extractor": lambda idx, name, entry: str(entry.output_dimension),
+    },
+    "param": {
+        "header": "Param.",
+        "align": "center",
+        "maxcolwidth": 20,
+        "extractor": lambda idx, name, entry: bool(
+            entry.available_parameters_ids
+        ),
+    },
+    "application": {
+        "header": "Application",
+        "align": "left",
+        "maxcolwidth": 20,
+        "extractor": lambda idx, name, entry: ", ".join(entry.tags),
+    },
+    "description": {
+        "header": "Description",
+        "align": "left",
+        "maxcolwidth": 30,
+        "extractor": lambda idx, name, entry: entry.description,
+    },
+}
+
+COLUMN_PRESETS: Dict[str, List[str]] = {
+    "default": ["no", "constructor", "input", "application", "description"],
+    "all": [
+        "no",
+        "constructor",
+        "input",
+        "output",
+        "param",
+        "application",
+        "description",
+    ],
+    "compact": ["no", "constructor", "input"],
+}
+
+COLUMN_ALIASES: Dict[str, str] = {
+    "no": "no",
+    "name": "constructor",
+    "constructor": "constructor",
+    "input": "input",
+    "input_dim": "input",
+    "input_dimension": "input",
+    "# input": "input",
+    "# inputs": "input",
+    "output": "output",
+    "output_dim": "output",
+    "output_dimension": "output",
+    "# output": "output",
+    "# outputs": "output",
+    "param": "param",
+    "parameterized": "param",
+    "parameters": "param",
+    "param.": "param",
+    "params": "param",
+    "tag": "application",
+    "tags": "application",
+    "application": "application",
+    "desc": "description",
+    "description": "description",
+}
+
+
+def _resolve_columns(columns: Union[str, Sequence[str]]) -> List[str]:
+    """Resolve a column preset or sequence of column ident to set keys."""
+    if isinstance(columns, str):
+        col_key = columns.lower().strip()
+        if col_key in COLUMN_PRESETS:
+            return list(COLUMN_PRESETS[col_key])
+        if col_key in COLUMN_ALIASES:
+            return [COLUMN_ALIASES[col_key]]
+        valid_presets = ", ".join(f"{p!r}" for p in sorted(COLUMN_PRESETS))
+        valid_cols = ", ".join(f"{c!r}" for c in sorted(set(COLUMN_ALIASES)))
+        raise ValueError(
+            f"Unknown columns preset or column identifier {columns!r}. "
+            f"Supported presets: {valid_presets}. "
+            f"Supported column identifiers: {valid_cols}."
+        )
+
+    if not isinstance(columns, (list, tuple, Sequence)):
+        raise TypeError(
+            f"'columns' argument must be of str or Sequence[str] type! "
+            f"Got {type(columns)}."
+        )
+
+    resolved_cols: List[str] = []
+    for col in columns:
+        if not isinstance(col, str):
+            raise TypeError(
+                f"Column names in 'columns' must be strings! "
+                f"Got {col!r} of type {type(col)}."
+            )
+        col_key = col.lower().strip()
+        if col_key not in COLUMN_ALIASES:
+            valid_cols = ", ".join(
+                f"{c!r}" for c in sorted(set(COLUMN_ALIASES))
+            )
+            raise ValueError(
+                f"Unknown column identifier {col!r}. "
+                f"Supported column identifiers: {valid_cols}."
+            )
+        resolved_cols.append(COLUMN_ALIASES[col_key])
+
+    return resolved_cols
+
+
 @overload
 def list_functions(
     input_dimension: Optional[Union[str, int]] = None,
@@ -100,6 +245,7 @@ def list_functions(
     parameterized: Optional[bool] = None,
     tag: Optional[str] = None,
     *,
+    columns: Union[str, Sequence[str]] = "default",
     tabulate: Literal[True] = True,
     tablefmt: str = "grid",
 ) -> None: ...
@@ -112,6 +258,7 @@ def list_functions(
     parameterized: Optional[bool] = None,
     tag: Optional[str] = None,
     *,
+    columns: Union[str, Sequence[str]] = "default",
     tabulate: Literal[False],
 ) -> List[str]: ...
 
@@ -123,6 +270,7 @@ def list_functions(
     parameterized: Optional[bool] = None,
     tag: Optional[str] = None,
     *,
+    columns: Union[str, Sequence[str]] = "default",
     tabulate: bool = True,
     tablefmt: str = "grid",
 ) -> Optional[List[str]]: ...
@@ -134,6 +282,7 @@ def list_functions(
     parameterized: Optional[bool] = None,
     tag: Optional[str] = None,
     *,
+    columns: Union[str, Sequence[str]] = "default",
     tabulate: bool = True,
     tablefmt: str = "grid",
 ) -> Optional[List[str]]:
@@ -163,6 +312,12 @@ def list_functions(
         'sensitivity', 'optimization', 'metamodeling', 'reliability', or
         'integration'. If None, no filtering by tag is applied.
         Default is None.
+    columns : str or Sequence[str], optional
+        Columns to display in the table. Can be a preset name
+        ('default', 'all', 'compact') or a sequence of column names/aliases
+        (e.g., ['name', 'input', 'output', 'param', 'tags', 'description']).
+        Default is 'default', i.e.,
+        ["no", "constructor", "input", "application", "description"].
     tabulate : bool, optional
         If ``True``, print results as a formatted table and return ``None``.
         If ``False``, return a sorted list of function names.
@@ -185,25 +340,30 @@ def list_functions(
     Raises
     ------
     ValueError
-        If `tag` is not one of the supported tags, or if `input_dimension` or
-        `output_dimension` contain invalid values.
+        If `tag` is not one of the supported tags, if `input_dimension` or
+        `output_dimension` contain invalid values, or if `columns` specifies
+        an unknown preset or column identifier.
     TypeError
         If any parameter is provided with an incorrect type.
 
     Notes
     -----
-    The table columns displayed depend on the filtering criteria:
-    - '# Input' column is shown unless `input_dimension` is specified.
-    - '# Output' column is shown only if `output_dimension` is specified.
-    - 'Param.' column is shown only if `parameterized` is specified.
-    - 'Application' column is shown unless `tag` is specified.
+    Row filtering criteria (``input_dimension``, ``output_dimension``,
+    ``parameterized``, and ``tag``) determine which functions are included
+    in the output, while ``columns`` controls which metadata fields
+    are displayed in the table columns.
     """
 
     entries = get_registry().entries
 
     _verify_input_args(
-        input_dimension, tag, output_dimension, parameterized, tabulate
+        input_dimension,
+        tag,
+        output_dimension,
+        parameterized,
+        tabulate,
     )
+    resolved_cols = _resolve_columns(columns)
 
     # Filter entries
     filtered: Dict[str, UQTestFunInfo] = {}
@@ -233,48 +393,27 @@ def list_functions(
         return None
 
     # Build table rows
-    headers = ["No.", "Constructor"]
-    show_input_dim = input_dimension is None
-    show_output_dim = output_dimension is not None
-    show_param = parameterized is not None
-    show_tags = tag is None
-
-    if show_input_dim:
-        headers.append("# Input")
-    if show_output_dim:
-        headers.append("# Output")
-    if show_param:
-        headers.append("Param.")
-    if show_tags:
-        headers.append("Application")
-    headers.append("Description")
+    headers = [COLUMN_DEFINITIONS[col]["header"] for col in resolved_cols]
+    colalign = [COLUMN_DEFINITIONS[col]["align"] for col in resolved_cols]
+    maxcolwidths = [
+        COLUMN_DEFINITIONS[col]["maxcolwidth"] for col in resolved_cols
+    ]
 
     rows = []
     for i, name in enumerate(sorted(filtered)):
         entry = filtered[name]
-        row: List[str] = [str(i + 1), name + "()"]
-        if show_input_dim:
-            entry_input_dimension = entry.input_dimension
-            if entry_input_dimension is None:
-                dim_str = "M"
-            else:
-                dim_str = str(entry_input_dimension)
-            row.append(dim_str)
-        if show_output_dim:
-            output_dim = str(entry.output_dimension)
-            row.append(output_dim)
-        if show_param:
-            row.append(str(bool(entry.available_parameters_ids)))
-        if show_tags:
-            row.append(", ".join(entry.tags))
-        row.append(entry.description)
+        row: List[str] = [
+            COLUMN_DEFINITIONS[col]["extractor"](i, name, entry)
+            for col in resolved_cols
+        ]
         rows.append(row)
 
     table = tbl(
         rows,
         headers=headers,
         tablefmt=tablefmt,
-        maxcolwidths=[None, None] + [20] * (len(headers) - 3) + [30],
+        colalign=colalign,
+        maxcolwidths=maxcolwidths,
     )
 
     print(table)
@@ -488,7 +627,7 @@ def _verify_input_args(
             f"Tag {tag!r} is not supported. Use one of {SUPPORTED_TAGS}!"
         )
 
-    # --- Parse 'input_dimension'
+    # --- Parse 'output_dimension'
     if not isinstance(output_dimension, (int, type(None))):
         raise TypeError(
             f"Invalid type for output dimension! "
