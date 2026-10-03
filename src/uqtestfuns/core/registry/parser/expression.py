@@ -139,8 +139,7 @@ def resolve_numeric(value: str | float | int) -> float | int:
 
     if not _is_expression(value):
         raise SpecValidationError(
-            f"Unrecognized string value: {value!r}, "
-            f"numeric value is expected."
+            f"Unrecognized string value: {value!r}, numeric value is expected."
         )
 
     value = value[2:-1].strip()

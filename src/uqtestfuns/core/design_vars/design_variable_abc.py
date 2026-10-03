@@ -13,7 +13,6 @@ __all__ = ["DesignVariableABC"]
 
 
 class DesignVariableABC(ABC):
-
     _rng: Optional[np.random.Generator] = None
     _rng_seed: Optional[int] = None
 

@@ -620,7 +620,7 @@ class TestPrint:
         for i in range(dimension):
             marginals.append(
                 Marginal(
-                    name=f"X{i+1}",
+                    name=f"X{i + 1}",
                     distribution="uniform",
                     parameters=[0.0, 1.0],
                 )

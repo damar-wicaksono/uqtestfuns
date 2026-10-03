@@ -87,7 +87,7 @@ def _evaluate_test_function(xx: np.ndarray, spec: UQTestFunSpec) -> np.ndarray:
         n_way = effects_tuples[key]
         coeffs = effects_coeffs[key]
 
-        for dim_indices, coeff in zip(n_way, coeffs):
+        for dim_indices, coeff in zip(n_way, coeffs, strict=True):
             yy[:] += coeff * np.prod(basis_vals[:, dim_indices], axis=1)
 
     return yy

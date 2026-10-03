@@ -86,7 +86,6 @@ def evaluate(
         solve_ivp_kwargs = {}
 
     for i in range(len(xx)):
-
         # Get the realization of uncertain inputs
         kappa = xx[i, 0]
         temp_amb = xx[i, 1]
