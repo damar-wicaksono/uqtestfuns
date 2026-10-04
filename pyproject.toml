@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "uqtestfuns"
@@ -48,6 +48,7 @@ dev = [
     "types-PyYAML",
     "types-tabulate",
     "types-setuptools",
+    "scipy-stubs",
 ]
 docs = [
     "jupyter-book<2.0.0",
@@ -60,12 +61,6 @@ all = [
     "uqtestfuns[dev]",
     "uqtestfuns[docs]",
 ]
-
-[tool.setuptools]
-include-package-data = true
-
-[tool.setuptools.packages.find]
-where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

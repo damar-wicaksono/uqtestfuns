@@ -17,34 +17,32 @@ and the corresponding tests should be a single PR.
 ## Before making a pull request
 
 To ensure a minimum coding standard, we use
-[Flake8](https://github.com/PyCQA/flake8) as our code linter,
-[Black](https://github.com/psf/black) as our code formatter, and
-[mypy](https://mypy-lang.org/) for static type checking. All three are
-made available if you installed the package with `pip` using the
+[Ruff](https://docs.astral.sh/ruff/) as our code linter and formatter, and
+[mypy](https://mypy-lang.org/) for static type checking. Both are
+made available if you installed the package with `uv` using the
 `dev` or `all` extra. Make sure you run them on the updated code
 before you make a pull request.
 
-Execute `flake8` from the source root directory:
+Check code formatting with Ruff from the source root directory:
 
 ```bash
-$ flake8 src tests
+$ uv run ruff format --check src tests
+```
+
+and fix any formatting issues that it raised.
+
+Run the linter:
+
+```bash
+$ uv run ruff check src tests
 ```
 
 and fix any issues that it raised.
 
-We usually avoid allowing Black to directly modify the source code.
-Instead, we ask it to check and make the recommendations and run it as follows:
-
-```bash
-$ black --check --diff src tests
-```
-
-Fix any formatting issues that Black raised manually.
-
 Execute `mypy` from the source root directory:
 
 ```bash
-$ mypy --ignore-missing-imports src tests
+$ uv run mypy src tests
 ```
 
 and fix any type errors that it raised.

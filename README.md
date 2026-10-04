@@ -1,6 +1,6 @@
 # UQTestFuns
 [![JOSS](https://img.shields.io/badge/JOSS-10.21105/joss.05671-brightgreen?style=flat-square)](https://doi.org/10.21105/joss.05671)
-[![DOI](http://img.shields.io/badge/DOI-10.5281/zenodo.7701903-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.7701903)
+[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.7701903-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.7701903)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Python](https://img.shields.io/pypi/pyversions/uqtestfuns?style=flat-square)](https://pypi.org/project/uqtestfuns/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
@@ -153,12 +153,14 @@ before making a pull request.
 
 ## Citing UQTestFuns
 
-If you use this package in your research, please cite both the paper and
-the software archive (see the JOSS and DOI badges above), or use the
-citation metadata in [`CITATION.cff`](CITATION.cff).
-For the exact BibTeX entries,
-including the version-specific [Zenodo](https://zenodo.org/records/14710452) citation,
-see the [documentation](https://uqtestfuns.readthedocs.io/en/latest/getting-started/citing.html).
+If you use this package in your research, please cite both
+the [paper](https://doi.org/10.21105/joss.05671) and
+the [software archive](https://doi.org/10.5281/zenodo.7701903),
+or use the citation metadata in [`CITATION.cff`](CITATION.cff).
+The [documentation](https://uqtestfuns.readthedocs.io/en/latest/getting-started/citing.html)
+provides a ready-to-use BibTeX entry for the paper, guidance on citing
+the specific version you used, and instructions on citing individual
+test functions.
 
 ## Credits and contributors
 

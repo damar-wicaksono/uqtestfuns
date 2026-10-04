@@ -162,6 +162,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   section for the project's current maintainership. Applied the
   matching dependency-list fix to `docs/index.md` and a stale
   "Python3" mention in `CITATION.cff`.
+- Consolidated the project's build and development tooling from
+  `setup.cfg` + setuptools + tox + black + flake8 into a single
+  `pyproject.toml`, using Hatchling as the build backend, `uv` for
+  environment/dependency management, and Ruff for formatting and
+  linting. Also fixes stale `.pyc` files bloating published
+  wheels/sdists: Hatchling's `.gitignore`-aware file selection
+  replaces the hand-maintained `MANIFEST.in` that caused it.
+- `README.md`'s DOI badge and the docs' citation guidance now point
+  to Zenodo's concept DOI (always the latest archived version)
+  instead of a version-specific record, so they no longer need
+  updating at every release.
+- The CI workflow's `typecheck` job no longer passes
+  `--ignore-missing-imports` to `mypy`; missing type stubs for
+  dependencies are now surfaced as errors rather than silently
+  suppressed.
 
 ### Fixed
 
@@ -172,6 +187,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Corrected wrong ICDF formulas on several marginal distribution
   documentation pages (Gumbel, normal, truncated normal, truncated
   Gumbel).
+- The GitHub Actions release workflow's `publish` job had a broken
+  artifact handoff (mismatched names and an incompatible action
+  version between its upload and download steps) that would have
+  made any release tag push fail to publish to PyPI.
 
 ### Removed
 

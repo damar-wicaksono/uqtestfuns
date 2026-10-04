@@ -76,10 +76,8 @@ you should be able to see the following directory structure:
 ├── CONTRIBUTING.md         <- (Brief) contribution guidelines
 ├── docs                    <- The docs (*.md or *.rst files)
 ├── LICENSE                 <- The license file
-├── MANIFEST.in             <- Keep track of (minimal) source distribution files
-├── pyproject.toml          <- Specification build requirements
+├── pyproject.toml          <- Project metadata, dependencies, and tool configuration
 ├── README.md               <- The top-level README
-├── setup.cfg               <- Declarative configuration of your project
 ├── src
 │   └── uqtestfuns          <- Actual Python package where the main functionality goes
 └── tests                   <- Test suite which can be run with `pytest`
@@ -196,7 +194,7 @@ $ pip install -e .[all,dev,docs]
 
 where the flag `-e` means the package is directly linked to the Python site-packages.
 The options `[all,dev,docs]` refer to the requirements defined
-in the `options.extras_require` section in `setup.cfg`.
+in the `[project.optional-dependencies]` section in `pyproject.toml`.
 
 If you created your environment with `uv`, use `uv pip install` instead,
 a drop-in, faster replacement:
