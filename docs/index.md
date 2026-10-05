@@ -1,3 +1,5 @@
+# UQTestFuns documentation
+
 <div align="center">
   <img src="_static/logo-light-tagline.png" alt="UQTestFuns" width="100%" class="only-light">
   <img src="_static/logo-dark-tagline.png" alt="UQTestFuns" width="100%" class="only-dark">
