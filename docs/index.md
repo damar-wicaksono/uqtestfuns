@@ -1,4 +1,19 @@
+```{raw} html
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.querySelector(
+        '.sidebar-toggle.primary-toggle, [data-bs-target="#bd-docs-nav"]'
+    );
+    if (btn) btn.click();
+});
+</script>
+```
+
+<div style="visibility: hidden; margin: -2.5em;">
+
 # UQTestFuns documentation
+
+</div>
 
 <div align="center">
   <img src="_static/logo-light-tagline.png" alt="UQTestFuns" width="100%" class="only-light">
