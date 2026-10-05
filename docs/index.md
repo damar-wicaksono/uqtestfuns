@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     if (window.innerWidth < 992) return;
     var btn = document.querySelector('.sidebar-toggle.primary-toggle, [data-bs-target="#bd-docs-nav"]');
-    if (btn && btn.getAttribute('aria-expanded') !== 'false') btn.click();Wia
+    if (btn && btn.getAttribute('aria-expanded') !== 'false') btn.click();
 });
 </script>
 ```
