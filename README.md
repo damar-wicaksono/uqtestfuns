@@ -9,6 +9,7 @@
 
 [![JOSS](https://img.shields.io/badge/JOSS-10.21105/joss.05671-brightgreen?style=flat-square)](https://doi.org/10.21105/joss.05671)
 [![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.7701903-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.7701903)
+[![Hatch](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pypa/hatch/master/docs/assets/badge/v0.json)](https://github.com/pypa/hatch)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Python](https://img.shields.io/pypi/pyversions/uqtestfuns?style=flat-square)](https://pypi.org/project/uqtestfuns/)
 [![License](https://img.shields.io/github/license/damar-wicaksono/uqtestfuns?style=flat-square)](https://choosealicense.com/licenses/mit/)
