@@ -76,10 +76,8 @@ you should be able to see the following directory structure:
 ├── CONTRIBUTING.md         <- (Brief) contribution guidelines
 ├── docs                    <- The docs (*.md or *.rst files)
 ├── LICENSE                 <- The license file
-├── MANIFEST.in             <- Keep track of (minimal) source distribution files
-├── pyproject.toml          <- Specification build requirements
+├── pyproject.toml          <- Project metadata, dependencies, and tool configuration
 ├── README.md               <- The top-level README
-├── setup.cfg               <- Declarative configuration of your project
 ├── src
 │   └── uqtestfuns          <- Actual Python package where the main functionality goes
 └── tests                   <- Test suite which can be run with `pytest`
@@ -196,7 +194,7 @@ $ pip install -e .[all,dev,docs]
 
 where the flag `-e` means the package is directly linked to the Python site-packages.
 The options `[all,dev,docs]` refer to the requirements defined
-in the `options.extras_require` section in `setup.cfg`.
+in the `[project.optional-dependencies]` section in `pyproject.toml`.
 
 If you created your environment with `uv`, use `uv pip install` instead,
 a drop-in, faster replacement:
@@ -223,6 +221,33 @@ $ pytest
 ```
 
 from within the UQTestFuns source directory.
+
+## Formatting, linting, and type checking
+
+UQTestFuns uses [Ruff](https://docs.astral.sh/ruff/) for both code
+formatting and linting, and [mypy](https://mypy-lang.org/) for static
+type checking. All three are included if you installed UQTestFuns
+using either the `[dev]` or `[all]` option.
+
+To check formatting without modifying any files:
+
+```bash
+$ ruff format --check src tests
+```
+
+Drop `--check` to have Ruff reformat the files in place.
+
+To lint the codebase:
+
+```bash
+$ ruff check src tests
+```
+
+To run the type checker:
+
+```bash
+$ mypy --ignore-missing-imports src tests
+```
 
 ## Building the documentation
 

@@ -165,7 +165,7 @@ class ProbInput:
 
         xx_trans = np.empty(xx.shape)
         # Independence copula, transform marginal by marginal
-        zipped_marginals = zip(self.marginals, target_.marginals)
+        zipped_marginals = zip(self.marginals, target_.marginals, strict=True)
         for i, (m_self, m_target) in enumerate(zipped_marginals):
             xx_trans[:, i] = m_self.transform_to(xx[:, i], m_target)
 
@@ -342,7 +342,11 @@ class ProbInput:
         if self.dimension != other.dimension:
             return False
 
-        for m_self, m_other in zip(self.marginals, other.marginals):
+        for m_self, m_other in zip(
+            self.marginals,
+            other.marginals,
+            strict=True,
+        ):
             if m_self != m_other:
                 return False
 

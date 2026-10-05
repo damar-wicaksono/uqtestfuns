@@ -248,7 +248,6 @@ def _parse_marginals_list(marginals: list) -> List[MarginalSpec]:
     parsed_marginals: List[MarginalSpec] = []
 
     for marginal in marginals:
-
         if "repeat" in marginal:
             # Filter 'repeat' keyword
             base_marginal = {

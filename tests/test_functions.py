@@ -38,7 +38,6 @@ def assert_equal(f1: UQTestFun, f2: UQTestFun) -> None:
     f1_params = f1.parameters
     f2_params = f2.parameters
     if f1_params is not None and f2_params is not None:
-
         assert isinstance(f1.name, str)
         assert isinstance(f1_params.name, str)
         if "SobolGStar" in f1.name and "Saltelli2010" in f1_params.name:
@@ -46,7 +45,11 @@ def assert_equal(f1: UQTestFun, f2: UQTestFun) -> None:
             assert True
             return
 
-        for v_1, v_2 in zip(f1_params.values(), f2_params.values()):
+        for v_1, v_2 in zip(
+            f1_params.values(),
+            f2_params.values(),
+            strict=True,
+        ):
             if isinstance(v_1, np.ndarray) and isinstance(v_2, np.ndarray):
                 assert np.array_equal(v_1, v_2)
             else:
@@ -73,7 +76,6 @@ def test_factory_metadata(builtin_name: str, info: UQTestFunInfo):
 
 
 class TestConstruction:
-
     def test_props_fixed_dim(self, builtin_name: str, info: UQTestFunInfo):
         """Test the properties of a fixed-dimension UQ test function."""
         if info.variable_dimension:
@@ -254,7 +256,6 @@ class TestConstruction:
 
 
 class TestCall:
-
     def test_call(self, builtin_name: str, info: UQTestFunInfo):
         """Test calling an instance of built-in UQ test function."""
 
@@ -308,7 +309,6 @@ class TestCall:
 
 
 class TestStr:
-
     def test_str(self, builtin_name: str, info: UQTestFunInfo):
         """Test the __str__() method of a test function instance."""
         input_dim = info.input_dimension
