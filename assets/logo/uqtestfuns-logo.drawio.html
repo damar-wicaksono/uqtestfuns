@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-1efc5338-8a41-4030-823f-22084dcb02a1/styles.css">
+  <script src="_ds/industry-1efc5338-8a41-4030-823f-22084dcb02a1/_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; }
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;600&family=Archivo:wght@400;800&display=swap');
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:var(--color-bg); padding:56px 40px; display:flex; flex-direction:column; gap:48px; align-items:center;">
+
+  <h1 style="font-size:14px; letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent-700); margin:0;">UQTestFuns — logo</h1>
+
+  <!-- Primary lockup: mark + wordmark -->
+  <div id="art-primary" class="blueprint" style="display:flex; align-items:center; gap:12px; padding:24px 32px; background:var(--color-bg);">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <div style="position:relative; width:96px; height:96px; flex:none; border:1px solid var(--color-divider);">
+      <div style="position:absolute; left:0; right:0; bottom:14px; height:1px; background:var(--color-divider);"></div>
+      <img src="assets/ishigami-accent.png" alt="" style="position:absolute; inset:10px 6px 14px 6px; width:calc(100% - 12px); height:calc(100% - 24px); object-fit:contain; object-position:bottom;">
+    </div>
+    <div style="display:flex; flex-direction:column; line-height:1;">
+      <span style="font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:42px; color:var(--color-text); letter-spacing:-0.01em;">UQTest<span style="color:var(--color-accent-700);">Funs</span></span>
+      <span style="font-family:var(--font-body); font-size:12px; letter-spacing:0.02em; color:color-mix(in srgb, var(--color-text) 55%, transparent); margin-top:4px;">test functions for uncertainty quantification</span>
+    </div>
+  </div>
+
+  <!-- Variants row -->
+  <div style="display:flex; gap:32px; flex-wrap:wrap; justify-content:center;">
+
+    <!-- Stacked -->
+    <div id="art-stacked" class="blueprint" style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:28px 36px; background:var(--color-bg);">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="position:relative; width:56px; height:56px; border:1px solid var(--color-divider);">
+        <div style="position:absolute; left:0; right:0; bottom:8px; height:1px; background:var(--color-divider);"></div>
+        <img src="assets/ishigami-accent.png" alt="" style="position:absolute; inset:6px 4px 8px 4px; width:calc(100% - 8px); height:calc(100% - 14px); object-fit:contain; object-position:bottom;">
+      </div>
+      <span style="font-family:var(--font-heading); font-weight:600; font-size:22px; color:var(--color-text);">UQTest<span style="color:var(--color-accent-700);">Funs</span></span>
+    </div>
+
+    <!-- Icon only -->
+    <div id="art-icon" class="blueprint" style="display:flex; align-items:center; justify-content:center; padding:28px; background:var(--color-bg);">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="position:relative; width:72px; height:72px; border:1px solid var(--color-divider);">
+        <div style="position:absolute; left:0; right:0; bottom:10px; height:1px; background:var(--color-divider);"></div>
+        <img src="assets/ishigami-accent.png" alt="" style="position:absolute; inset:8px 5px 10px 5px; width:calc(100% - 10px); height:calc(100% - 18px); object-fit:contain; object-position:bottom;">
+      </div>
+    </div>
+
+    <!-- On dark accent (social/favicon check) -->
+    <div id="art-dark" style="display:flex; align-items:center; justify-content:center; padding:28px; background:var(--color-accent-900); border:1px solid var(--color-divider);">
+      <img src="assets/ishigami-accent300.png" alt="" style="width:72px; height:72px; object-fit:contain; object-position:bottom;">
+    </div>
+  </div>
+
+  <!-- README export: light bg -->
+  <div id="readme-light" style="display:flex; align-items:flex-end; gap:14px; padding:24px 32px; background:#ffffff;">
+    <img src="assets/ishigami-accent.png" alt="" style="width:72px; height:72px; flex:none; object-fit:contain; object-position:bottom;">
+    <div style="display:flex; flex-direction:column; line-height:1; position:relative; top:-8px;">
+      <span style="font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:34px; color:#1d1f20; letter-spacing:-0.01em;">UQTest<span style="color:var(--color-accent-700);">Funs</span></span>
+      <span style="font-family:var(--font-body); font-size:12px; letter-spacing:0.02em; color:#555; margin-top:4px;">test functions for uncertainty quantification</span>
+    </div>
+  </div>
+
+  <!-- README export: dark bg -->
+  <div id="readme-dark" style="display:flex; align-items:flex-end; gap:14px; padding:24px 32px; background:var(--color-accent-900);">
+    <img src="assets/ishigami-accent300.png" alt="" style="width:72px; height:72px; flex:none; object-fit:contain; object-position:bottom;">
+    <div style="display:flex; flex-direction:column; line-height:1; position:relative; top:-8px;">
+      <span style="font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:34px; color:#f2f2f3; letter-spacing:-0.01em;">UQTest<span style="color:var(--color-accent-300);">Funs</span></span>
+      <span style="font-family:var(--font-body); font-size:12px; letter-spacing:0.02em; color:#a9b4bd; margin-top:4px;">test functions for uncertainty quantification</span>
+    </div>
+  </div>
+
+  <!-- README export: light bg, no tagline -->
+  <div id="readme-light-notag" style="display:flex; align-items:flex-end; gap:14px; padding:24px 32px; background:#ffffff;">
+    <img src="assets/ishigami-accent.png" alt="" style="width:72px; height:72px; flex:none; object-fit:contain; object-position:bottom;">
+    <span style="font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:34px; color:#1d1f20; letter-spacing:-0.01em; line-height:1; position:relative; top:-6px;">UQTest<span style="color:var(--color-accent-700);">Funs</span></span>
+  </div>
+
+  <!-- README export: dark bg, no tagline -->
+  <div id="readme-dark-notag" style="display:flex; align-items:flex-end; gap:14px; padding:24px 32px; background:var(--color-accent-900);">
+    <img src="assets/ishigami-accent300.png" alt="" style="width:72px; height:72px; flex:none; object-fit:contain; object-position:bottom;">
+    <span style="font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:34px; color:#f2f2f3; letter-spacing:-0.01em; line-height:1; position:relative; top:-6px;">UQTest<span style="color:var(--color-accent-300);">Funs</span></span>
+  </div>
+
+  <!-- Black & white -->
+  <div id="art-bw" class="blueprint" style="display:flex; align-items:center; gap:12px; padding:24px 32px; background:#ffffff; border-color:#000;">
+    <i class="corner tl" style="color:#000;"></i><i class="corner tr" style="color:#000;"></i><i class="corner bl" style="color:#000;"></i><i class="corner br" style="color:#000;"></i>
+    <div style="position:relative; width:96px; height:96px; border:1px solid #000;">
+      <div style="position:absolute; left:0; right:0; bottom:14px; height:1px; background:#000;"></div>
+      <img src="assets/ishigami-black.png" alt="" style="position:absolute; inset:10px 6px 14px 6px; width:calc(100% - 12px); height:calc(100% - 24px); object-fit:contain; object-position:bottom;">
+    </div>
+    <div style="display:flex; flex-direction:column; line-height:1;">
+      <span style="font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:42px; color:#000; letter-spacing:-0.01em;">UQTestFuns</span>
+      <span style="font-family:var(--font-body); font-size:12px; letter-spacing:0.02em; color:#555; margin-top:4px;">test functions for uncertainty quantification</span>
+    </div>
+  </div>
+
+  <p style="max-width:480px; text-align:center; font-size:13px; color:color-mix(in srgb, var(--color-text) 55%, transparent); margin:0;">
+    The mark traces the Ishigami output histogram — the two sharp, needle-like spikes rising out of a broad bell body, the signature shape you get pushing a plain uniform input through this package's best-known nonlinear function. Set in the system's blueprint frame with corner registration marks.
+  </p>
+
+
+
+</x-dc>
+</body>
+</html>

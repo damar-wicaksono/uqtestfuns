@@ -3,7 +3,6 @@
 
 title: UQTestFuns
 author: Damar Wicaksono
-logo: logo.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -40,3 +39,11 @@ sphinx:
     - 'sphinx.ext.intersphinx'
     - 'sphinx_proof'
     - 'sphinxcontrib.mermaid'
+  config:
+    html_static_path:
+      - _static
+    html_favicon: _static/favicon.ico
+    html_theme_options:
+      logo:
+        image_light: _static/logo-light.png
+        image_dark: _static/logo-dark.png

@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- A project logo with light and dark variants, a tagline variant for the
+  README and documentation landing page, an icon variant, and a favicon.
+  Exported assets live in `docs/_static/`; the draw.io source and
+  supporting materials are in `assets/logo/`.
+- A `## Logo` section in `docs/development/about.md` describing the
+  design and crediting the tools used.
 - A `Registry` class that auto-scans `test_functions/` at import time,
   parsing YAML specification files into lightweight registry entries
   for function discovery without importing any Python modules eagerly.
@@ -177,6 +183,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `--ignore-missing-imports` to `mypy`; missing type stubs for
   dependencies are now surfaced as errors rather than silently
   suppressed.
+- The documentation landing page (`docs/index.md`) now displays
+  the logo with tagline as a hero image with dark/light theme support;
+  the generic "Welcome to..." heading has been removed.
+- The docs navbar now shows theme-aware light and dark logo variants,
+  configured via `html_theme_options` in `docs/_config.yml`; the
+  favicon is also set.
+- `README.md` now displays the logo with tagline at the top with
+  dark/light theme support via the `<picture>` element; the citation
+  section now links to the paper and software archive directly in
+  the text and accurately describes what the documentation provides.
+- `docs/development/making-a-pull-request.md` updated to reflect the
+  current Ruff-based toolchain, replacing stale Flake8/Black
+  instructions and removing the `--ignore-missing-imports` flag from
+  the documented `mypy` command.
 
 ### Fixed
 
@@ -191,6 +211,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   artifact handoff (mismatched names and an incompatible action
   version between its upload and download steps) that would have
   made any release tag push fail to publish to PyPI.
+- A stale cross-reference in `docs/test-functions/damped-oscillator.md`
+  pointed to the old label `test-functions:damped-oscillator-reliability`
+  instead of the current `test-functions:rs-damped-oscillator-reliability`
+  after the function was renamed to `RSDampedOscillator`.
 
 ### Removed
 

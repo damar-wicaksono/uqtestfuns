@@ -53,6 +53,18 @@ it a new test function, new reference values, or a better description.
 We hope UQTestFuns can be useful for the UQ community,
 just as the [VLSE] has been invaluable to us.
 
+## Logo
+
+The UQTestFuns logo shows the output distribution of one of the package's
+test functions[^which] with respect to its input distribution.
+That shape is the core idea of the whole endeavor:
+propagate the input uncertainty through a model and see what comes out.
+
+The logo was designed iteratively with Claude (Anthropic), working from
+a histogram generated with UQTestFuns itself. The wordmark is set in
+[IBM Plex Mono](https://github.com/IBM/plex), licensed under the
+SIL Open Font License 1.1.
+
 ## About us
 
 UQTestFuns is developed and maintained by a small team at the Center for
@@ -96,7 +108,7 @@ or help attract and secure funding for the research.
 :padding: 1
 
 :::{grid-item}
-[![Hecht](https://gitlab.hzdr.de/uploads/-/system/user/avatar/454/avatar.png?width=90)](https://sites.google.com/view/prof-dr-michael-hecht/home)
+<a href="https://sites.google.com/view/prof-dr-michael-hecht/home"><img src="../_static/hecht.png" width="90"></a>
 </br>
 Michael Hecht
 :::
@@ -132,6 +144,8 @@ by the Saxony State Parliament.
 
 ::::
 
+
+[^which]: *Can you guess {ref}`which one <test-functions:ishigami>`?*
 
 [Virtual Library of Simulation Experiments: Test Functions and Datasets]: https://www.sfu.ca/~ssurjano/
 [VLSE]: https://www.sfu.ca/~ssurjano/

@@ -1,4 +1,12 @@
-# UQTestFuns
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/_static/logo-dark-tagline.png">
+    <img src="docs/_static/logo-light-tagline.png" alt="UQTestFuns" width="550">
+  </picture>
+</div>
+
+---
+
 [![JOSS](https://img.shields.io/badge/JOSS-10.21105/joss.05671-brightgreen?style=flat-square)](https://doi.org/10.21105/joss.05671)
 [![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.7701903-blue.svg?style=flat-square)](https://doi.org/10.5281/zenodo.7701903)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)

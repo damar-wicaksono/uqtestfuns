@@ -1,4 +1,11 @@
-# Welcome to the UQTestFuns documentation!
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="_static/logo-dark-tagline.png">
+    <img src="_static/logo-light-tagline.png" alt="UQTestFuns" width="100%">
+  </picture>
+</div>
+
+<br>
 
 UQTestFuns is an open-source Python library of test functions for the
 applied uncertainty quantification (UQ) community: one consistent
