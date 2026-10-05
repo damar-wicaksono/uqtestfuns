@@ -1,8 +1,6 @@
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="_static/logo-dark-tagline.png">
-    <img src="_static/logo-light-tagline.png" alt="UQTestFuns" width="100%">
-  </picture>
+  <img src="_static/logo-light-tagline.png" alt="UQTestFuns" width="100%" class="only-light">
+  <img src="_static/logo-dark-tagline.png" alt="UQTestFuns" width="100%" class="only-dark">
 </div>
 
 <br>
