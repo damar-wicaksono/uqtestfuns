@@ -21,11 +21,11 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The function is a simple one-dimensional, scalar-valued test function.
-It was featured in {cite}`Currin1988` as an example introducing Gaussian
-process metamodeling method.
+The test function from {cite}`Currin1988` (`CurrinSine` for short) is a
+one-dimensional sine function used as an example for Gaussian process
+metamodeling.
 
-A plot of the function is shown below..
+A plot of the function is shown below.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
@@ -43,7 +43,7 @@ plt.plot(xx, yy, color="#8da0cb")
 plt.scatter(xx_train, yy_train, color="#8da0cb")
 plt.grid()
 plt.xlabel("$x$")
-plt.ylabel("$\mathcal{M}(x)$")
+plt.ylabel(r"$\mathcal{M}(x)$")
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
@@ -100,14 +100,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-my_testfun.prob_input.reset_rng(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000, 42)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(X)$");
+plt.xlabel(r"$\mathcal{M}(X)$");
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```

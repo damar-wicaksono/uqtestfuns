@@ -34,6 +34,8 @@ from .utils import (
     get_pdf_values,
     get_cdf_values,
     get_icdf_values,
+    get_display_name,
+    get_parameter_names,
 )
 
 __all__ = ["Marginal"]
@@ -164,6 +166,26 @@ class Marginal:
           bound, the density values are always zero.
         """
         return self._upper
+
+    @property
+    def notation(self) -> str:
+        """Display the distribution formula.
+
+        Returns
+        -------
+        str
+            The distribution notation, e.g., "Normal(mu=0.0, sigma=1.0)".
+        """
+        display_name = get_display_name(self.distribution)
+        param_names = get_parameter_names(self.distribution)
+
+        items = [
+            f"{name}={value:.6g}"
+            for name, value in zip(param_names, self.parameters, strict=True)
+        ]
+        notation_ = f"{display_name}({', '.join(items)})"
+
+        return notation_
 
     # --- Public methods
     def pdf(self, xx: Union[float, np.ndarray]) -> np.ndarray:
@@ -344,6 +366,20 @@ class Marginal:
 
         return True
 
+    def __str__(self) -> str:
+        """Return a human-readable summary of the Marginal instance.
+
+        Returns
+        -------
+        str
+            The human-readable summary of the instance.
+        """
+        name = self.name
+        if name is None:
+            return self.notation
+
+        return f"{name} ~ {self.notation}"
+
     def __repr__(self) -> str:
         """Return the unambiguous string representation of the instance.
 
@@ -356,7 +392,7 @@ class Marginal:
         # Get the value of the constructor arguments
         attrs = {
             "distribution": self.distribution,
-            "parameters": self.parameters,
+            "parameters": self.parameters.tolist(),
             "name": self.name,
             "description": self.description,
         }

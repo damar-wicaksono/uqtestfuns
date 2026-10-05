@@ -14,8 +14,10 @@ The Registry class acts as a container that:
 - Prevents duplicate function registrations
 """
 
+import difflib
+
 from pathlib import Path
-from typing import Dict, Callable
+from typing import Dict, Callable, Optional
 
 from uqtestfuns.core.registry.entries import UQTestFunInfo
 from uqtestfuns.core.registry.factory import make_factory
@@ -168,6 +170,13 @@ class Registry:
         KeyError
             If the function name is not found in the registry.
         """
+        if key not in self._infos:
+            msg = f"Test function {key!r} not available."
+            matches = _suggest_name(key, self._infos.keys())
+            if matches is not None:
+                msg += f" Did you mean {matches!r}?"
+            raise KeyError(msg)
+
         return self._infos[key]
 
     def get_factory(self, name: str):
@@ -190,13 +199,10 @@ class Registry:
         Raises
         ------
         KeyError
-            If the test function name is not found in the registry.
+            If the function name is not found in the registry.
         """
-        if name not in self:
-            raise KeyError(f"Test function '{name}' not available")
-
         if name not in self._factories:
-            info = self._infos[name]
+            info = self[name]
             spec = parse_spec(info.spec_path, self._pkg_root)
             factory = make_factory(spec, info)
             self._factories[name] = factory
@@ -229,3 +235,9 @@ def is_inputs_yaml(filename: str) -> bool:
         or (filename.startswith("inputs_") and filename.endswith(".yaml"))
         or filename == "inputs.yaml"
     )
+
+
+def _suggest_name(name: str, candidates) -> Optional[str]:
+    matches = difflib.get_close_matches(name, candidates, n=1, cutoff=0.6)
+
+    return matches[0] if matches else None

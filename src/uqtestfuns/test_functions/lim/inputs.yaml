@@ -1,0 +1,10 @@
+Lim2002:
+  description: Input domain from Lim et al. (2002)
+  marginals:
+    - name: x1
+      distribution: uniform
+      parameters: [0.0, 1.0]
+    - name: x2
+      distribution: uniform
+      parameters: [0.0, 1.0]
+  copulas: null

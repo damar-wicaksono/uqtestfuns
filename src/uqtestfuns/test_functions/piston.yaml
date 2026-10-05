@@ -1,0 +1,43 @@
+name: Piston
+description: Piston simulation model from Ben-Ari and Steinberg (2007)
+tags:
+  - metamodeling
+  - sensitivity
+
+dimensions:
+  input: 7
+  output: 1
+
+inputs:
+  BenAri2007:
+    description: Input model from Ben-Ari and Steinberg (2007)
+    marginals:
+      - name: M
+        distribution: uniform
+        parameters: [30.0, 60.0]
+        description: Piston weight [kg]
+      - name: S
+        distribution: uniform
+        parameters: [0.005, 0.020]
+        description: Piston surface area [m^2]
+      - name: V0
+        distribution: uniform
+        parameters: [0.002, 0.010]
+        description: Initial gas volume [m^3]
+      - name: k
+        distribution: uniform
+        parameters: [1000.0, 5000.0]
+        description: Spring coefficient [N/m]
+      - name: P0
+        distribution: uniform
+        parameters: [90000.0, 110000.0]
+        description: Atmospheric pressure [N/m^2]
+      - name: Ta
+        distribution: uniform
+        parameters: [290.0, 296.0]
+        description: Ambient temperature [K]
+      - name: T0
+        distribution: uniform
+        parameters: [340.0, 360.0]
+        description: Filling gas temperature [K]
+    copulas: null

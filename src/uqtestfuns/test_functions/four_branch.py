@@ -4,7 +4,7 @@ Module with an implementation of the four-branch test function.
 The two-dimensional four-branch function introduced in [1] is a reliability
 benchmark problem (see, for instance, [2], [3], [4], [5]).
 The test function describes the failure of a series system with four distinct
-performance function components.
+performance function parts.
 
 References
 ----------
@@ -34,71 +34,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["FourBranch"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Katsuki1994": {
-        "function_id": "FourBranch",
-        "description": (
-            "Input model for the four-branch function "
-            "from Katsuki and Frangopol (1994)"
-        ),
-        "marginals": [
-            {
-                "name": "X1",
-                "distribution": "normal",
-                "parameters": [0, 1],
-                "description": None,
-            },
-            {
-                "name": "X2",
-                "distribution": "normal",
-                "parameters": [0, 1],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
-
-
-AVAILABLE_PARAMETERS: FunParamSpecs = {
-    "Katsuki1994": {
-        "function_id": "FourBranch",
-        "description": (
-            "Parameter set for the Four-branch function from Katsuki and "
-            "Frangopol (1994)"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "p",
-                "value": 3.5 * np.sqrt(2),
-                "type": float,
-                "description": None,
-            },
-        ],
-    },
-    "Schueremans2005": {
-        "function_id": "FourBranch",
-        "description": (
-            "Parameter set for the Four-branch function from Schueremans "
-            "(2005)"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "p",
-                "value": 6.0 / np.sqrt(2),
-                "type": float,
-                "description": None,
-            },
-        ],
-    },
-}
-
 
 def evaluate(xx: np.ndarray, p: float) -> np.ndarray:
     """Evaluate the four-branch function on a set of input values.
@@ -106,16 +41,15 @@ def evaluate(xx: np.ndarray, p: float) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        A two-Dimensional input values given by an N-by-2 array
-        where N is the number of input values.
+        An ``(N, 2)`` array of input values where ``N`` is the number of
+        evaluation points.
     p : float
         The parameter of the test function; a single float.
 
     Returns
     -------
     np.ndarray
-        The output of the test function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
+        A one-dimensional array of length ``N`` containing the function output.
     """
 
     # Compute the performance function components
@@ -135,17 +69,3 @@ def evaluate(xx: np.ndarray, p: float) -> np.ndarray:
     yy = np.vstack((yy_1, yy_2, yy_3, yy_4))
 
     return np.min(yy, axis=0)
-
-
-class FourBranch(UQTestFunFixDimABC):
-    """A concrete implementation of the four-branch test function."""
-
-    _tags = ["reliability"]
-    _description = (
-        "Series system reliability from Katsuki and Frangopol (1994)"
-    )
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = AVAILABLE_PARAMETERS
-    _default_parameters_id = "Schueremans2005"
-
-    evaluate = staticmethod(evaluate)  # type: ignore

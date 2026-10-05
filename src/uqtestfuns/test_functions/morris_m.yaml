@@ -1,0 +1,28 @@
+name: MorrisM
+description: >-
+  M-Dimensional test function with controllable important inputs
+  from Morris et al. (2006)
+tags:
+  - sensitivity
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs:
+  Morris2006:
+    description: >-
+      Independent uniform random variables from Morris et al. (2006)
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      name: X_$idx
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    p: Number of important input variables
+  sets:
+    Morris2006:
+      p: 5
+      description: Morris et al. (2006) investigated p = 1 to 10 for M = 30

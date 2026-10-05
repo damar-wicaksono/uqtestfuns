@@ -7,12 +7,10 @@ function discovery and instantiation.
 """
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
-
 from pathlib import Path
-from typing_extensions import TypedDict
+from typing import Any, Dict, List, Optional, TypedDict
 
-from .specs import CallableSpec, UQInputSpec, UQParametersSpec
+from .specs import CallableSpec, InputVariants, ParametersVariants
 
 
 class KeywordInfo(TypedDict):
@@ -104,23 +102,22 @@ class UQTestFunSpec:
     including the evaluation callable, input configurations, and optional
     parameter configurations.
 
-    Parameters
+    Attributes
     ----------
     name : str
         Unique identifier for the test function.
     evaluate : CallableSpec
         Specification of the callable that evaluates the test function,
         including module path and function name.
-    inputs : Dict[str, UQInputSpec]
+    inputs : InputVariants
         Mapping of input IDs to their complete specifications, including
         marginal distributions and other input-related metadata.
-    parameters : Optional[Dict[str, UQParametersSpec]], optional
-        Mapping of parameter IDs to their complete specifications
-        (default is None). Used for test functions that support
-        multiple parameter configurations.
+    parameters : Optional[ParametersVariants]
+        Mapping of parameter IDs to their complete specifications.
+        Used for test functions that support multiple parameter configurations.
     """
 
     name: str
     evaluate: CallableSpec
-    inputs: Dict[str, UQInputSpec]
-    parameters: Optional[Dict[str, UQParametersSpec]]
+    inputs: InputVariants
+    parameters: Optional[ParametersVariants]

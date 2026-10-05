@@ -9,7 +9,7 @@ Notes
 
 import numpy as np
 
-from uqtestfuns.test_functions import Franke2, Franke4, Franke5, Franke6
+from uqtestfuns import Franke2, Franke4, Franke5, Franke6
 
 
 def test_franke2():
@@ -28,8 +28,7 @@ def test_franke2():
     # Assertion: The maximum is known
     assert np.isclose(yy_ref, my_fun(xx))
 
-    xx_test = my_fun.prob_input.get_sample(100000)
-    yy_test = my_fun(xx_test)
+    yy_test = my_fun.get_sample(100000)
 
     # Assertion: The maximum is indeed a maximum
     assert np.all(yy_test <= yy_ref)
@@ -45,8 +44,7 @@ def test_franke4():
     # Assertion: The maximum is known
     assert np.isclose(yy_ref, franke_fun(xx))
 
-    xx_test = franke_fun.prob_input.get_sample(100000)
-    yy_test = franke_fun(xx_test)
+    yy_test = franke_fun.get_sample(100000)
 
     # Assertion: The maximum is indeed a maximum
     assert np.all(yy_test <= yy_ref)
@@ -62,8 +60,7 @@ def test_franke5():
     # Assertion: The maximum is known
     assert np.isclose(yy_ref, franke_fun(xx))
 
-    xx_test = franke_fun.prob_input.get_sample(100000)
-    yy_test = franke_fun(xx_test)
+    yy_test = franke_fun.get_sample(100000)
 
     # Assertion: The maximum is indeed a maximum
     assert np.all(yy_test <= yy_ref)
@@ -79,8 +76,7 @@ def test_franke6():
     # Assertion: The maximum is known
     assert np.isclose(yy_ref, franke_fun(xx))
 
-    xx_test = franke_fun.prob_input.get_sample(100000)
-    yy_test = franke_fun(xx_test)
+    yy_test = franke_fun.get_sample(100000)
 
     # Assertion: The maximum is indeed a maximum
     assert np.all(yy_test <= yy_ref)

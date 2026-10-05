@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:coffee-cup)=
-# Cooling Coffee Cup Model
+# Cooling Coffee Cup Model from Tennøe et al. (2018)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,30 +21,26 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The cooling coffee cup model simulates the temperature evolution of a coffee
-cup as it cools to an ambient temperature by solving an initial value problem
-As a UQ test function, the model is expressed as a two-dimensional,
-vector-valued function.
+The cooling coffee cup model (`CoffeeCup`) simulates the temperature evolution
+of a coffee cup as it cools to an ambient temperature by solving an initial
+value problem. As a UQ test function, the model is expressed as a
+two-dimensional, vector-valued function. It appeared in {cite}`Tennoee2018`
+and {cite}`Richardson2020` as an introductory example for metamodeling.
 
-The model appeared in {cite}`Tennoee2018, Richardson2020`
-as an introductory example for metamodeling.
-
-Some realizations of the temperature evolutions are shown in figure below.
+Some realizations of the temperature evolutions are shown in the figure below.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
 
 my_fun = uqtf.CoffeeCup()
-my_fun.prob_input.reset_rng(237324)
 num_sample = 20
-xx = my_fun.prob_input.get_sample(num_sample)
+xx = my_fun.prob_input.get_sample(num_sample, 237324)
 
 yy = my_fun(xx)
-t_e = my_fun.parameters["t_e"]
-n_ts = my_fun.parameters["n_ts"]
+t_e = 200.0
+n_ts = 150
 tt = np.linspace(0, t_e, n_ts)
 
-# --- Create temperature evolution
 for i in range(len(xx)):
     plt.plot(tt, yy[i, :], color="#8da0cb", alpha=0.5)
 plt.grid()
@@ -87,7 +83,8 @@ $$
 
 where $\kappa$ is the thermal conductivity of the cup.
 
-The test function is the solution to the IVP:
+The test function is the solution to the IVP evaluated at $n_{ts} = 150$
+evenly spaced time points over $[0, t_e]$ with $t_e = 200$ s:
 
 $$
 \mathcal{M}(\boldsymbol{x}; \boldsymbol{p}) = \left( T(t_i; \boldsymbol{x}, \boldsymbol{p}) \right), \; i = 0, \ldots, n_{ts},
@@ -95,10 +92,10 @@ $$
 
 where:
 
-- $\boldsymbol{x} = \left( \kappa, T_{\text{amb}} \right)$ is a two-dimensional
-  vector of uncertain input variables, defined further below.
-- $\boldsymbol{p} = \{ T_0, t_e, n_{ts} \}$ is a set of fixed parameters
-  of the problem, also defined further below.
+- $\boldsymbol{x} = \left( \kappa, T_{\text{amb}} \right)$ is a
+  two-dimensional vector of uncertain input variables, defined further below.
+- $\boldsymbol{p} = \{ T_0 \}$ is the initial temperature of the coffee cup,
+  defined further below.
 
 ## Probabilistic input
 
@@ -124,21 +121,11 @@ print(my_testfun.parameters)
 
 The IVP described above is solved numerically using
 [`solve_ivp()`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html)
-fro SciPy with its default method and parameter values.
-
-The default parameter values for these methods can be overridden by providing
-a dictionary with new parameter values.
-
-For example, to change the method used to solve the IVP:
-
-```python
-fun.parameters.add("solve_ivp", {"method": "RK23"})  # 'solve_ivp' as the parameter keyword
-```
+from SciPy with its default method and parameter values.
 
 ```{note}
-In this example, `method` is acceptable keyword-named argument for `solve_ivp()`;
-indeed, the key-value pairs specified for the parameters of `solve_ivp()`
-must be recognized by the method.
+The default solver settings can be overridden by defining a custom parameter
+set with a non-null ``solve_ivp_kwargs`` value and passing it at instantiation.
 ```
 
 ## References

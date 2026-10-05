@@ -1,0 +1,7 @@
+Linkletter2006:
+  description: Input domain from Linkletter et al. (2006)
+  marginals:
+    distribution: uniform
+    parameters: [0.0, 1.0]
+    name: x_$idx
+  copulas: null

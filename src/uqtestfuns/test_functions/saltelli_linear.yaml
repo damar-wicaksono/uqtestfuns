@@ -1,0 +1,19 @@
+name: SaltelliLinear
+description: >-
+  M-dimensional linear function with index-scaled uniform inputs
+  from Saltelli et al. (2008)
+tags:
+  - sensitivity
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs:
+  Saltelli2008:
+    description: >-
+      Independent uniform variables with index-scaled ranges
+      from Saltelli et al. (2008)
+    marginals:
+      factory: create_marginals
+    copulas: null

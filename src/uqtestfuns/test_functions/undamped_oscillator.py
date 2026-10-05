@@ -5,9 +5,8 @@ The undamped oscillator function is a six-dimensional, scalar-valued test
 function that models a non-linear, undamped, single-degree-of-freedom, forced
 oscillating mechanical system.
 This function is frequently used as a test function for reliability analysis
-methods (see [1] through [6]). Additionally, in [7], the function is employed
-as a test function for metamodeling exercises.
-
+methods (see [1] through [6]). It is also used in [7] as a test function
+for metamodeling exercises
 
 1. C. G. Bucher and U. Bourgund, “A fast and efficient response surface
    approach for structural reliability problems,” Structural Safety, vol. 7,
@@ -34,160 +33,13 @@ as a test function for metamodeling exercises.
    with time-demanding numerical models,” Reliability Engineering &
    System Safety, vol. 111, pp. 232–240, 2013.
    DOI: 10.1016/j.ress.2012.10.008.
-8. N. Lüthen, S. Marelli, and B. Sudret, “Sparse Polynomial Chaos Expansions:
+7. N. Lüthen, S. Marelli, and B. Sudret, “Sparse Polynomial Chaos Expansions:
    Literature Survey and Benchmark,” SIAM/ASA Journal of Uncertainty
    Quantification, vol. 9, no. 2, pp. 593–649, 2021.
    DOI: 10.1137/20M1315774
 """
 
 import numpy as np
-
-from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["UndampedOscillator"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Gayton2003": {
-        "function_id": "UndampedOscillator",
-        "description": (
-            "Input model for the undamped non-linear oscillator "
-            "from Gayton et al. (2003) (Table 9)"
-        ),
-        "marginals": [
-            {
-                "name": "m",
-                "distribution": "normal",
-                "parameters": [1.0, 0.05],
-                "description": "Mass",
-            },
-            {
-                "name": "c1",
-                "distribution": "normal",
-                "parameters": [1.0, 0.10],
-                "description": "Spring (1) constant",
-            },
-            {
-                "name": "c2",
-                "distribution": "normal",
-                "parameters": [0.1, 0.01],
-                "description": "Spring (2) constant",
-            },
-            {
-                "name": "r",
-                "distribution": "normal",
-                "parameters": [0.5, 0.05],
-                "description": "Length of restoring force",
-            },
-            {
-                "name": "F1",
-                "distribution": "normal",
-                "parameters": [1.0, 0.2],
-                "description": "Pulse load",
-            },
-            {
-                "name": "t1",
-                "distribution": "normal",
-                "parameters": [1.0, 0.2],
-                "description": "Duration of the pulse load",
-            },
-        ],
-        "copulas": None,
-    },
-    "Echard2013-1": {
-        "function_id": "UndampedOscillator",
-        "description": (
-            "Input model for the undamped non-linear oscillator "
-            "from Echard et al. (2013) (Table 4, F1 = 0.6)"
-        ),
-        "marginals": [
-            {
-                "name": "m",
-                "distribution": "normal",
-                "parameters": [1.0, 0.05],
-                "description": "Mass",
-            },
-            {
-                "name": "c1",
-                "distribution": "normal",
-                "parameters": [1.0, 0.10],
-                "description": "Spring (1) constant",
-            },
-            {
-                "name": "c2",
-                "distribution": "normal",
-                "parameters": [0.1, 0.01],
-                "description": "Spring (2) constant",
-            },
-            {
-                "name": "r",
-                "distribution": "normal",
-                "parameters": [0.5, 0.05],
-                "description": "Length of restoring force",
-            },
-            {
-                "name": "F1",
-                "distribution": "normal",
-                "parameters": [0.6, 0.1],
-                "description": "Pulse load",
-            },
-            {
-                "name": "t1",
-                "distribution": "normal",
-                "parameters": [1.0, 0.2],
-                "description": "Duration of the pulse load",
-            },
-        ],
-        "copulas": None,
-    },
-    "Echard2013-2": {
-        "function_id": "UndampedOscillator",
-        "description": (
-            "Input model for the undamped non-linear oscillator "
-            "from Echard et al. (2013) (Table 4, F1 = 0.45)"
-        ),
-        "marginals": [
-            {
-                "name": "m",
-                "distribution": "normal",
-                "parameters": [1.0, 0.05],
-                "description": "Mass",
-            },
-            {
-                "name": "c1",
-                "distribution": "normal",
-                "parameters": [1.0, 0.10],
-                "description": "Spring (1) constant",
-            },
-            {
-                "name": "c2",
-                "distribution": "normal",
-                "parameters": [0.1, 0.01],
-                "description": "Spring (2) constant",
-            },
-            {
-                "name": "r",
-                "distribution": "normal",
-                "parameters": [0.5, 0.05],
-                "description": "Length of restoring force",
-            },
-            {
-                "name": "F1",
-                "distribution": "normal",
-                "parameters": [0.45, 0.45 / 6],
-                "description": "Pulse load",
-            },
-            {
-                "name": "t1",
-                "distribution": "normal",
-                "parameters": [1.0, 0.2],
-                "description": "Duration of the pulse load",
-            },
-        ],
-        "copulas": None,
-    },
-}
 
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
@@ -196,7 +48,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        A two-dimensional input values given by N-by-6 arrays
+        An ``(N, 6)`` array of input values,
         where N is the number of input values.
 
     Returns
@@ -214,15 +66,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     yy = term_1 - np.abs(term_2 * term_3)
 
     return yy
-
-
-class UndampedOscillator(UQTestFunFixDimABC):
-    """A concrete implementation of the undamped oscillator test function."""
-
-    _tags = ["reliability", "metamodeling"]
-    _description = "Undamped, non-linear, single DOF oscillator"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-    _default_input_id = "Gayton2003"
-
-    evaluate = staticmethod(evaluate)  # type: ignore

@@ -2,6 +2,7 @@
 Test suite for the Parameters class.
 """
 
+import copy
 import numpy as np
 import pytest
 
@@ -67,6 +68,13 @@ class TestConstruction:
         params = Parameters({})
         assert len(params) == 0
         assert not params
+
+    def test_inconsistent(self):
+        """Test the construction of Parameters with inconsistent kwargs."""
+        values = {"a": 1, "b": 2}
+        descriptions = {"a": "Description A", "c": "Description C"}
+        with pytest.raises(ValueError):
+            _ = Parameters(values, keyword_descriptions=descriptions)
 
 
 class TestDescribe:
@@ -160,14 +168,97 @@ class TestPrint:
 
     def test_str_various_data_types(self):
         """Test __str__ with various data types for values and descriptions."""
-        array_value = np.array([1, 2, 3])
         values = {
             "a": 42,
             "b": "test",
             "c": 1.5,
-            "d": array_value,
+            "d": np.array([1, 2, 3]),
+            "e": None,
+            "f": True,
+            "g": (1, 2, 3),
+            "h": {"opt": 5},
+            "i": {"opt": 5, "opt_1": 10},
+            "j": object,
         }
         params = Parameters(values)
+        str_params = str(params)
+
+        # Assertions
+        assert f"{params['a']}" in str_params
+        assert f"{params['b']}" in str_params
+        assert f"{params['c']}" in str_params
+        assert f"{params['d'].shape} array" in str_params
+        assert "None" in str_params
+        assert f"{params['f']}" in str_params
+        assert f"tuple[{len(params['g'])}]" in str_params
+        assert f"dict[{len(params['h'])} key]" in str_params
+        assert f"dict[{len(params['i'])} keys]" in str_params
+        assert f"{type(params['j']).__name__}" in str_params
+
+    def test_str_empty(self):
+        """Test __str__ with empty parameter values."""
+        params = Parameters({})
 
         # Assertion
-        assert f"{array_value.shape} array" in str(params)
+        assert "(no parameters)" in str(params)
+
+
+class TestCopy:
+    """Test the copy functionality of Parameters class."""
+
+    def test_shallow(self, num_params):
+        """Test making shallow copy."""
+        # Create a test instance
+        values, descriptions = create_values(num_params)
+        values["mutable"] = [[1, 2], [3, 4]]
+        name_ori = "original"
+        params = Parameters(values, name_ori, descriptions)
+
+        # Create a copy
+        params_cp = copy.copy(params)
+        # Mutate mutable nested value
+        params_cp["mutable"][0].append(99)
+
+        # Assertions
+        assert params.name == name_ori
+        assert params is not params_cp
+        assert params_cp["mutable"] == params["mutable"]
+
+    def test_deep_with_name(self, num_params):
+        """Test making deep copy with a new name."""
+        # Create a test instance
+        values, descriptions = create_values(num_params)
+        values["mutable"] = [[1, 2], [3, 4]]
+        name_ori = "original"
+        params = Parameters(values, name_ori, descriptions)
+
+        # Create a deep copy
+        name_cp = "copy"
+        params_cp = params.copy(name_cp)
+        # Mutate mutable nested value
+        params_cp["mutable"][0].append(99)
+
+        # Assertions
+        assert params.name == name_ori
+        assert params_cp.name == name_cp
+        assert params is not params_cp
+        assert params_cp["mutable"] != params["mutable"]
+
+    def test_deep_without_name(self, num_params):
+        """Test making deep copy without a new name."""
+        # Create a test instance
+        values, descriptions = create_values(num_params)
+        values["mutable"] = [[1, 2], [3, 4]]
+        name_ori = "original"
+        params = Parameters(values, name_ori, descriptions)
+
+        # Create a deep copy
+        params_cp = params.copy()
+        # Mutate mutable nested value
+        params_cp["mutable"][0].append(99)
+
+        # Assertions
+        assert params.name == name_ori
+        assert params_cp.name is None
+        assert params is not params_cp
+        assert params_cp["mutable"] != params["mutable"]

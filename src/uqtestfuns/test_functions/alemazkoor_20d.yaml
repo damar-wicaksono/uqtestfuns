@@ -1,0 +1,21 @@
+name: Alemazkoor20D
+description: >-
+  High-dimensional high-degree polynomial from Alemazkoor and Meidani (2018)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 20
+  output: 1
+
+evaluate: alemazkoor.evaluate_20d
+
+inputs:
+  Alemazkoor2018:
+    description: >-
+      Probabilistic input model from Alemazkoor and Meidani (2018)
+    marginals:
+      name: X$idx
+      distribution: uniform
+      parameters: [-1.0, 1.0]
+    copulas: null

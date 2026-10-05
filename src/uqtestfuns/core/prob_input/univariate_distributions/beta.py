@@ -28,8 +28,9 @@ from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "beta"
-
+DISPLAY_NAME = "Beta"
 NUM_PARAMS = 4
+PARAM_NAMES = ("alpha", "beta", "a", "b")
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:
@@ -58,7 +59,7 @@ def verify_parameters(parameters: ARRAY_FLOAT) -> None:
     # Check validity of values
     if parameters[0] <= 0.0 or parameters[1] <= 0.0:
         raise ValueError(
-            f"The shape parameters {parameters[0]} and {parameters[1]}"
+            f"The shape parameters {parameters[0]} and {parameters[1]} "
             f"must be larger than 0.0 (positive)!"
         )
 

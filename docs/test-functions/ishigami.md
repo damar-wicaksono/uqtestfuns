@@ -21,10 +21,11 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Ishigami test function is a three-dimensional scalar-valued function.
-First introduced in {cite}`Ishigami1991` in the context of sensitivity analysis,
-the function has been revisited many times in the same context
-(see for instances {cite}`Sobol1999, Sudret2008, Marrel2009`).
+The Ishigami function (`Ishigami`) is a three-dimensional scalar-valued
+function introduced in {cite}`Ishigami1991`
+in the context of sensitivity analysis.
+It has since been revisited many times in the same context
+(see, for instance, {cite}`Sobol1999, Sudret2008, Marrel2009`).
 
 ## Test function instance
 
@@ -103,14 +104,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -133,14 +132,13 @@ analytical values.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-my_testfun.prob_input.reset_rng(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], dtype=int)
 mean_estimates = np.empty(len(sample_sizes))
 var_estimates = np.empty(len(sample_sizes))
 
 for i, sample_size in enumerate(sample_sizes):
-    xx_test = my_testfun.prob_input.get_sample(sample_size)
-    yy_test = my_testfun(xx_test)
+    yy_test = my_testfun.get_sample(sample_size, rng)
     mean_estimates[i] = np.mean(yy_test)
     var_estimates[i] = np.var(yy_test)
 

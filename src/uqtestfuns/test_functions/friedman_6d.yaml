@@ -1,0 +1,20 @@
+name: Friedman6D
+description: Six-dimensional function with one inert input from Friedman et al. (1983)
+tags:
+  - metamodeling
+  - sensitivity
+
+dimensions:
+  input: 6
+  output: 1
+
+evaluate: friedman.evaluate
+
+inputs:
+  Friedman1983:
+    description: Input domain from Friedman et al. (1983)
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      name: x_$idx
+    copulas: null

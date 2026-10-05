@@ -9,13 +9,13 @@ Notes
 
 import numpy as np
 
-from uqtestfuns.test_functions import Piston
+from uqtestfuns import Piston, Piston20D
 
 
 def test_inert_inputs():
     """Test whether the inputs from 'Moon' specification are indeed inert."""
-    piston_ben_ari = Piston(input_id="BenAri2007")
-    piston_moon = Piston(input_id="Moon2010")
+    piston_ben_ari = Piston()
+    piston_moon = Piston20D()
 
     # Assert that the ProbInput is correctly attached
     assert piston_ben_ari.prob_input is not None

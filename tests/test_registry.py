@@ -1,5 +1,6 @@
 import pytest
 
+from uqtestfuns.core.registry.entries import UQTestFunInfo
 from uqtestfuns.core.registry.registry import Registry, is_inputs_yaml
 from uqtestfuns.core.registry.parser import SpecValidationError
 
@@ -52,6 +53,18 @@ class TestScan:
         with pytest.raises(KeyError):
             _ = registry["invalid_key"]
 
+    def test_getitem_invalid_suggestion(self):
+        """Test getting an invalid entry from the registry with suggestion."""
+        registry = Registry(PKG_ROOT)
+        registry.scan(VALID_YAML_DIR)
+
+        with pytest.raises(KeyError) as excinfo:
+            _ = registry["ActiveInert15D"]  # See VALID_YAML_DIR
+
+        # Assertions
+        assert "Did you mean" in str(excinfo.value)
+        assert "ActiveInert10D" in str(excinfo.value)
+
     def test_duplicate_keys(self):
         """Test that duplicate keys are not allowed."""
         registry = Registry(PKG_ROOT)
@@ -60,3 +73,12 @@ class TestScan:
         with pytest.raises(SpecValidationError):
             # Rescan the same directory
             registry.scan(VALID_YAML_DIR)
+
+    def test_values(self):
+        """Test getting the values from the registry."""
+        registry = Registry(PKG_ROOT)
+        registry.scan(VALID_YAML_DIR)
+
+        # Assertion
+        for value in registry.values():
+            assert isinstance(value, UQTestFunInfo)

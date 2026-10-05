@@ -25,7 +25,7 @@ set up multiple remotes for your repository.
 Add an upstream repository that points to the main UQTestFuns repository:
 
 ```bash
-git remote add upstream https://github.com/damar-wicaksonop/uqtestfuns
+git remote add upstream https://github.com/damar-wicaksono/uqtestfuns
 ```
 
 This way you have access to the main repository.
@@ -70,20 +70,17 @@ you should be able to see the following directory structure:
 .
 ├── .github/                <- The GitHub actions specifications.
 ├── .gitignore              <- List of ignored files/directories if `git add/commit`
-├── .readthedocs.yml        <- Configuration for readthedocs
-├── AUTHORS.md              <- List of developers and maintainers
+├── .readthedocs.yaml       <- Configuration for readthedocs
+├── AUTHORS.md              <- List of authors and contributors
 ├── CODE-OF-CONDUCT.md      <- Code of conduct adopted by the project.
-├── CONTRIBUTING.md         <- (Brif) contribution guidelines
+├── CONTRIBUTING.md         <- (Brief) contribution guidelines
 ├── docs                    <- The docs (*.md or *.rst files)
 ├── LICENSE                 <- The license file
-├── MANIFEST.in             <- Keep track of (minimal) source distribution files
-├── pyproject.toml          <- Specification build requirements
+├── pyproject.toml          <- Project metadata, dependencies, and tool configuration
 ├── README.md               <- The top-level README
-├── setup.cfg               <- Declarative configuration of your project
 ├── src
 │   └── uqtestfuns          <- Actual Python package where the main functionality goes
 └── tests                   <- Test suite which can be run with `pytest`
-
 ```
 
 ## Virtual environments
@@ -98,9 +95,11 @@ Do this before you install the package.
 
 There are many ways of setting up a virtual environment within the Python community.
 Below we give examples using [`venv`](https://docs.python.org/3/tutorial/venv.html)
-the built-in virtual environment manager for Python
-as well as [`conda`](https://conda.io/projects/conda/en/latest/index.html)
-a popular open-source package and environment management system.
+the built-in virtual environment manager for Python,
+[`conda`](https://conda.io/projects/conda/en/latest/index.html)
+a popular open-source package and environment management system,
+and [`uv`](https://docs.astral.sh/uv/), a fast, Rust-based package and
+project manager that can replace both `pip` and `venv`.
 
 We assume that all the example commands given below are executed from the UQTestFuns
 root source directory.
@@ -155,6 +154,34 @@ The following assumed that you've successfully installed `conda` in your system:
     $ conda deactivate
     ```
 
+### Using `uv`
+
+You may also create a virtual environment via
+[`uv`](https://docs.astral.sh/uv/), which creates and manages
+environments the same way `venv` does, just faster:
+
+1. Create a virtual environment:
+
+   ```bash
+   $ uv venv <your_venv_name>
+   ```
+
+   Replace `<your_venv_name>` with an environment name of your choice.
+
+2. Activate the environment you just created:
+
+    ```bash
+    $ source <your_venv_name>/bin/activate
+    ```
+
+    as before replace `<your_venv_name>` with the environment name.
+
+3. To deactivate the virtual environment, type:
+
+    ```bash
+    $ deactivate
+    ```
+
 ## Installing UQTestFuns from the source
 
 To install UQTestFuns, we recommend using [pip](https://pip.pypa.io/en/stable/)
@@ -167,7 +194,14 @@ $ pip install -e .[all,dev,docs]
 
 where the flag `-e` means the package is directly linked to the Python site-packages.
 The options `[all,dev,docs]` refer to the requirements defined
-in the `options.extras_require` section in `setup.cfg`.
+in the `[project.optional-dependencies]` section in `pyproject.toml`.
+
+If you created your environment with `uv`, use `uv pip install` instead,
+a drop-in, faster replacement:
+
+```bash
+$ uv pip install -e .[all,dev,docs]
+```
 
 ## Testing
 
@@ -187,6 +221,33 @@ $ pytest
 ```
 
 from within the UQTestFuns source directory.
+
+## Formatting, linting, and type checking
+
+UQTestFuns uses [Ruff](https://docs.astral.sh/ruff/) for both code
+formatting and linting, and [mypy](https://mypy-lang.org/) for static
+type checking. All three are included if you installed UQTestFuns
+using either the `[dev]` or `[all]` option.
+
+To check formatting without modifying any files:
+
+```bash
+$ ruff format --check src tests
+```
+
+Drop `--check` to have Ruff reformat the files in place.
+
+To lint the codebase:
+
+```bash
+$ ruff check src tests
+```
+
+To run the type checker:
+
+```bash
+$ mypy --ignore-missing-imports src tests
+```
 
 ## Building the documentation
 
@@ -226,7 +287,7 @@ Here is what the directory structure should look like:
 ├───prob-input/                    <- Probabilistic input modeling
 │   │   ...
 │   │
-│   └───univariate-distributions/  <- Docs for each univariate distribution
+│   └───marginal-distributions/    <- Docs for each univariate distribution
 │
 └───test-functions/                <- Docs for each UQ test function
 ``` 

@@ -1,11 +1,16 @@
 (fundamentals:overview)=
 # Uncertainty Quantification Framework
 
-Consider a computational model that is represented as an $M$-dimensional
+```{margin}
+For a gentler, example-driven introduction to what UQ test functions are,
+see {ref}`About UQ Test Functions <getting-started:about-uq-test-functions>`.
+```
+
+Consider a computational model represented as an $M$-dimensional
 black-box function:
 
 $$
-\mathcal{M}: \boldsymbol{x} \in \mathcal{D}_{\boldsymbol{X}} \subseteq \mathbb{R}^M \mapsto \boldsymbol{y} = \mathcal{M}(\boldsymbol{x}) \subseteq \mathbb{R}^P,
+\mathcal{M}: \boldsymbol{x} \in \mathcal{D}_{\boldsymbol{X}} \subseteq \mathbb{R}^M \to \boldsymbol{y} = \mathcal{M}(\boldsymbol{x}) \subseteq \mathbb{R}^P,
 $$
 
 where $\mathcal{D}_{\boldsymbol{X}}$, $\boldsymbol{y}$, $P$ denote
@@ -34,8 +39,13 @@ by a random vector equipped with a joint probability density function
 (PDF)
 
 $$
-f_{\boldsymbol{X}}: \boldsymbol{x} \in \mathcal{D}_{\boldsymbol{X}} \subseteq \mathbb{R}^M \mapsto \mathbb{R}.
+f_{\boldsymbol{X}}: \boldsymbol{x} \in \mathcal{D}_{\boldsymbol{X}} \subseteq \mathbb{R}^M \to \mathbb{R}.
 $$
+
+```{note}
+See {ref}`Probabilistic Input Modeling <prob-input:overview>` for how this
+is specified in UQTestFuns.
+```
 
 Subsequently, the uncertainties of the input variables are propagated through
 the computational model $\mathcal{M}$. As a result, the quantity of interest
@@ -61,8 +71,22 @@ Additionally, many global sensitivity analysis problems reduce to solving
 an {ref}`integration <fundamentals:integration>` problem, which explains the
 extra category.
 For completeness, UQTestFuns also includes test functions commonly
-used for benchmarking testing
+used for benchmarking and testing
 {ref}`optimization <fundamentals:optimization>` methods.
+
+## From framework to UQTestFuns
+
+This framework maps directly onto {ref}`three objects <api-reference:overview>`.
+The computational model $\mathcal{M}$ is a {ref}`UQTestFun <api_reference_uqtestfun>` instance,
+called directly to evaluate $\boldsymbol{y} = \mathcal{M}(\boldsymbol{x})$.
+The probabilistic input $f_{\boldsymbol{X}}$ is a
+{ref}`ProbInput <api_reference_probabilistic_input>` instance,
+composed of one-dimensional {ref}`Marginal <api_reference_marginal_distribution>`
+distributions. Sampling $\boldsymbol{X} \sim f_{\boldsymbol{X}}$ is
+`get_sample()`.
+
+See the {ref}`Create Built-in Test Functions <getting-started:tutorial-built-in-functions>`
+tutorial for a hands-on walkthrough of using these objects in code.
 
 ## References
 

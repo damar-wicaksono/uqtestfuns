@@ -2,11 +2,14 @@
 # Available One-Dimensional Marginal Distributions
 
 The table below lists all the available one-dimensional marginal distribution
-types used to construct ``Marginal`` instances.
-``Marginal`` instances are used to represent the one-dimensional marginals
-of a (possibly, multivariate) probabilistic input model.
+types used to construct `Marginal` instances.
+`Marginal` instances are used to represent the one-dimensional marginals
+of a (possibly, multi-dimensional) probabilistic input model.
+The `parameters` argument follows the order shown in the Mathematical
+Notation column below; for instance, `parameters=[alpha, beta, a, b]` for
+the Beta distribution.
 
-|                                        Name                                         | Keyword value for `distribution` |                     Notation                      |             Support              | Number of parameters |
+|                                    Distribution                                     | Keyword value for `distribution` |                Mathematical Notation              |             Support              | Number of parameters |
 |:-----------------------------------------------------------------------------------:|:--------------------------------:|:-------------------------------------------------:|:--------------------------------:|:--------------------:|
 |                {ref}`Beta <prob-input:marginal-distributions:beta>`                 |             `"beta"`             |       $\mathrm{Beta}(\alpha, \beta, a, b)$        | $[a, b], \; a, b \in \mathbb{R}$ |          4           |
 |         {ref}`Exponential <prob-input:marginal-distributions:exponential>`          |         `"exponential"`          |              $\mathcal{E}(\lambda)$               |          $[0, \infty)$           |          1           |

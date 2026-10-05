@@ -1,0 +1,13 @@
+name: Franke5
+description: >-
+  (5th) Franke function with a steep Gaussian hill from Franke (1979)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+evaluate: evaluate.franke_5
+
+inputs: inputs.yaml

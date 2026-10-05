@@ -1,0 +1,22 @@
+name: ConvexFailDomain
+description: >-
+  Convex failure domain reliability problem from Borri and Speranzini (1997)
+tags:
+  - reliability
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Borri1997:
+    description: >-
+      Probabilistic input model from Borri and Speranzini (1997)
+    marginals:
+      - name: X1
+        distribution: normal
+        parameters: [0.0, 1.0]
+      - name: X2
+        distribution: normal
+        parameters: [0.0, 1.0]
+    copulas: null

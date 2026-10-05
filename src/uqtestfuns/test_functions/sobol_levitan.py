@@ -30,40 +30,22 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import FunParamSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
 
-__all__ = ["SobolLevitan"]
+def get_bb_sobol1999_1(input_dimension: int) -> np.ndarray:
+    """Create importance coefficients Sobol' and Levitan (1999) example 6.1.
 
+    Originally defined for M = 6. Truncated for smaller dimensions;
+    extrapolated with 0.9 for larger dimensions.
 
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Sobol1999": {
-        "function_id": "SobolLevitan",
-        "description": (
-            "Probabilistic input model for the Sobol'-Levitan function "
-            "from Sobol' and Levitan (1999)"
-        ),
-        "marginals": [
-            {
-                "name": "X",
-                "distribution": "uniform",
-                "parameters": [0.0, 1.0],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
+    Parameters
+    ----------
+    input_dimension : int
+        The number of input variables.
 
-
-def _get_bb_sobol_1999_1(input_dimension: int) -> np.ndarray:
-    """Construct the coefficients from Sobol' and Levitan (1999) 6D case.
-
-    Notes
-    -----
-    - In [1], an input dimension of 6 was used. If the input dimension is less
-      than 6, the parameters array is truncated; if the input dimension exceed
-      10, the parameters are is extrapolated.
+    Returns
+    -------
+    np.ndarray
+        An array of importance coefficients of length ``input_dimension``.
     """
     bb = np.array([1.5, 0.9, 0.9, 0.9, 0.9, 0.9])
 
@@ -74,14 +56,21 @@ def _get_bb_sobol_1999_1(input_dimension: int) -> np.ndarray:
     return bb[:input_dimension]
 
 
-def _get_bb_sobol_1999_2(input_dimension: int) -> np.ndarray:
-    """Construct the coefficients from Sobol' and Levitan (1999) 20D case.
+def get_bb_sobol1999_2(input_dimension: int) -> np.ndarray:
+    """Create importance coefficients Sobol' and Levitan (1999) example 6.2.
 
-    Notes
-    -----
-    - In [1], an input dimension of 20 was used. If the input dimension is less
-      than 20, the parameters array is truncated; if the input dimension exceed
-      20, the parameters are is extrapolated.
+    Originally defined for M = 20. Truncated for smaller dimensions;
+    extrapolated with 0.4 for larger dimensions.
+
+    Parameters
+    ----------
+    input_dimension : int
+        The number of input variables.
+
+    Returns
+    -------
+    np.ndarray
+        An array of importance coefficients of length ``input_dimension``.
     """
     bb_1 = 0.6 * np.ones(10)
     bb_2 = 0.4 * np.ones(10)
@@ -94,14 +83,21 @@ def _get_bb_sobol_1999_2(input_dimension: int) -> np.ndarray:
     return bb[:input_dimension]
 
 
-def _get_bb_moon_2012_1(input_dimension: int) -> np.ndarray:
-    """Construct the coefficients from Moon et al. (2012) base case.
+def get_bb_moon2012_1(input_dimension: int) -> np.ndarray:
+    """Create importance coefficients for Moon et al. (2012) base case.
 
-    Notes
-    -----
-    - In [1], an input dimension of 20 was used. If the input dimension is less
-      than 20, the parameters array is truncated; if the input dimension exceed
-      20, the parameters are is extrapolated.
+    Originally defined for M = 20 in [2]. Truncated for smaller dimensions;
+    extrapolated with 0.0 for larger dimensions.
+
+    Parameters
+    ----------
+    input_dimension : int
+        The number of input variables.
+
+    Returns
+    -------
+    np.ndarray
+        An array of importance coefficients of length ``input_dimension``.
     """
     bb = np.array(
         [
@@ -135,95 +131,29 @@ def _get_bb_moon_2012_1(input_dimension: int) -> np.ndarray:
     return bb[:input_dimension]
 
 
-AVAILABLE_PARAMETERS: FunParamSpecs = {
-    "Sobol1999-1": {
-        "function_id": "SobolLevitan",
-        "description": (
-            "Parameter set for the M-dimensional function from "
-            "Sobol' and Levitan (1999), 6D case"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "bb",
-                "value": _get_bb_sobol_1999_1,
-                "type": np.ndarray,
-                "description": "Coefficients 'b'",
-            },
-            {
-                "keyword": "c0",
-                "value": 0.0,
-                "type": float,
-                "description": "Constant term",
-            },
-        ],
-    },
-    "Sobol1999-2": {
-        "function_id": "SobolLevitan",
-        "description": (
-            "Parameter set for the M-dimensional function from "
-            "Sobol' and Levitan (1999), 20D case"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "bb",
-                "value": _get_bb_sobol_1999_2,
-                "type": np.ndarray,
-                "description": "Coefficients 'b'",
-            },
-            {
-                "keyword": "c0",
-                "value": 0.0,
-                "type": float,
-                "description": "Constant term",
-            },
-        ],
-    },
-    "Moon2012-1": {
-        "function_id": "SobolLevitan",
-        "description": (
-            "Parameter set for the M-dimensional function from "
-            "Moon et al. (2012), base case"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "bb",
-                "value": _get_bb_moon_2012_1,
-                "type": np.ndarray,
-                "description": "Coefficients 'b'",
-            },
-            {
-                "keyword": "c0",
-                "value": 0.0,
-                "type": float,
-                "description": "Constant term",
-            },
-        ],
-    },
-}
-
-
-DEFAULT_PARAMETERS_SELECTION = "Sobol1999-1"
-
-
 def evaluate(xx: np.ndarray, bb: np.ndarray, c0: float) -> np.ndarray:
-    """Evaluate the Sobol'-Levitan test function
+    """Evaluate the Sobol'-Levitan function on a set of input values.
 
     Parameters
     ----------
     xx : np.ndarray
-        M-Dimensional input values given by an N-by-M array where
-        N is the number of input values.
+        An ``(N, M)`` array of input values where ``N`` is the number of
+        evaluation points and ``M`` is the input dimension.
     bb : np.ndarray
-        The coefficients of the function which control the importance of each
-        input variable.
+        An array of importance coefficients of length ``M``; larger values
+        indicate more influential input variables.
     c0 : float
-        The constant term of the function.
+        Constant shift term; affects the mean but not the sensitivity indices.
 
     Returns
     -------
     np.ndarray
-        The output of the test function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
+        A one-dimensional array of length ``N`` containing the function output.
+
+    Notes
+    -----
+    - When ``bb[i] == 0``, the term ``(exp(b) - 1) / b`` is singular but
+      its limit as ``b -> 0`` is ``1.0``, which is used instead.
     """
     input_dim = xx.shape[1]
     ii = 1.0
@@ -238,15 +168,3 @@ def evaluate(xx: np.ndarray, bb: np.ndarray, c0: float) -> np.ndarray:
     yy = np.exp(np.sum(bb * xx, axis=1)) - ii + c0
 
     return yy
-
-
-class SobolLevitan(UQTestFunVarDimABC):
-    """An implementation of the M-dimensional Sobol'-Levitan function."""
-
-    _tags = ["sensitivity"]
-    _description = "Test function from Sobol' and Levitan (1999)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = AVAILABLE_PARAMETERS
-    _default_parameters_id = DEFAULT_PARAMETERS_SELECTION
-
-    evaluate = staticmethod(evaluate)  # type: ignore

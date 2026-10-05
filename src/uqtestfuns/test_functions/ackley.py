@@ -22,60 +22,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
-from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-
-__all__ = ["Ackley"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Ackley1987": {
-        "function_id": "Ackley",
-        "description": (
-            "Search domain for the Ackley function from Ackley (1987)"
-        ),
-        "marginals": [
-            {
-                "name": "X",
-                "distribution": "uniform",
-                "parameters": [-32.768, 32.768],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    }
-}
-
-
-AVAILABLE_PARAMETERS: FunParamSpecs = {
-    "Ackley1987": {
-        "function_id": "Ackley",
-        "description": (
-            "Parameter set for the Ackley function from Ackley (1987)"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "a",
-                "value": 20.0,
-                "type": float,
-                "description": "Height of the ridges surrounding the minimum",
-            },
-            {
-                "keyword": "b",
-                "value": 0.2,
-                "type": float,
-                "description": "Decay rate of the Euclidean distance",
-            },
-            {
-                "keyword": "c",
-                "value": 2 * np.pi,
-                "type": float,
-                "description": "Scaling constant for the cosine term",
-            },
-        ],
-    },
-}
-
 
 def evaluate(xx: np.ndarray, a: float, b: float, c: float) -> np.ndarray:
     """Evaluate the Ackley function on a set of input values.
@@ -108,14 +54,3 @@ def evaluate(xx: np.ndarray, a: float, b: float, c: float) -> np.ndarray:
     yy = term_1 + term_2 + a + np.exp(1)
 
     return yy
-
-
-class Ackley(UQTestFunVarDimABC):
-    """A concrete implementation of the M-dimensional Ackley test function."""
-
-    _tags = ["optimization", "metamodeling"]
-    _description = "Optimization test function from Ackley (1987)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = AVAILABLE_PARAMETERS
-
-    evaluate = staticmethod(evaluate)  # type: ignore

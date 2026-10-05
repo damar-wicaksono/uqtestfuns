@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:mclain-s2)=
-# McLain S2 Function
+# Steep-hill Surface Function from McLain (1974)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,9 +21,9 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The McLain S2 function is a two-dimensional scalar-valued function.
-The function was introduced in {cite}`McLain1974` as a test function for
-procedures to construct contours from a given set of points.
+The McLain S2 function is a two-dimensional function introduced
+in {cite}`McLain1974` in the context of drawing contours from scattered data.
+The resulting surface models a steep hill rising from a plain.
 
 ```{note}
 The McLain's test functions are a set of five two-dimensional functions 
@@ -63,9 +63,9 @@ axs_1.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_1.set_xlabel("$x_1$", fontsize=14)
-axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_xlabel(r"$x_1$", fontsize=14)
+axs_1.set_ylabel(r"$x_2$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_1.set_title("Surface plot of McLain S2", fontsize=14)
 
 # Contour
@@ -73,8 +73,8 @@ axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
 axs_2.set_title("Contour plot of McLain S2", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -85,9 +85,7 @@ fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
 
-As shown in the plots above, the resulting surface resembles a steep hill
-rising from a plain. The location of the peak is at $(5.0, 5.0)$
-and with the maximum height of $1.0$.
+The location of the peak is at $(5.0, 5.0)$ and a maximum height of $1.0$.
 
 ```{note}
 The McLain S2 function appeared in a modified form in the report 
@@ -145,13 +143,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

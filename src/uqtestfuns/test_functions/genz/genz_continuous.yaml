@@ -1,0 +1,26 @@
+name: GenzContinuous
+description: >-
+  M-dimensional continuous but non-differentiable function from Genz (1984)
+tags:
+  - integration
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs: inputs.yaml
+
+evaluate: evaluate.continuous
+
+parameters:
+  keyword_descriptions:
+    aa: Shape parameters (larger = more difficult integration)
+    bb: Offset parameters (minimal effect on integration difficulty)
+  sets:
+    Genz1984:
+      aa:
+        factory: evaluate.get_aa_genz1984
+      bb:
+        factory: evaluate.get_bb_genz1984
+      description: >-
+        Constant shape and offset parameters from Genz (1984)

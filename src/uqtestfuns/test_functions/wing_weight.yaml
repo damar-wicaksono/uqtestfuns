@@ -1,0 +1,55 @@
+name: WingWeight
+description: Wing weight model from Forrester et al. (2008)
+tags:
+  - metamodeling
+  - sensitivity
+
+dimensions:
+  input: 10
+  output: 1
+
+inputs:
+  Forrester2008:
+    description: Input domain from Forrester et al. (2008)
+    marginals:
+      - name: Sw
+        distribution: uniform
+        parameters: [150.0, 200.0]
+        description: Wing area [ft^2]
+      - name: Wfw
+        distribution: uniform
+        parameters: [220.0, 300.0]
+        description: Weight of fuel in the wing [lb]
+      - name: A
+        distribution: uniform
+        parameters: [6.0, 10.0]
+        description: Aspect ratio [-]
+      - name: Lambda
+        distribution: uniform
+        parameters: [-10.0, 10.0]
+        description: Quarter-chord sweep [degrees]
+      - name: q
+        distribution: uniform
+        parameters: [16.0, 45.0]
+        description: Dynamic pressure at cruise [lb/ft^2]
+      - name: lambda
+        distribution: uniform
+        parameters: [0.5, 1.0]
+        description: Taper ratio [-]
+      - name: tc
+        distribution: uniform
+        parameters: [0.08, 0.18]
+        description: Aerofoil thickness to chord ratio [-]
+      - name: Nz
+        distribution: uniform
+        parameters: [2.5, 6.0]
+        description: Ultimate load factor [-]
+      - name: Wdg
+        distribution: uniform
+        parameters: [1700.0, 2500.0]
+        description: Flight design gross weight [lb]
+      - name: Wp
+        distribution: uniform
+        parameters: [0.025, 0.08]
+        description: Paint weight [lb/ft^2]
+    copulas: null

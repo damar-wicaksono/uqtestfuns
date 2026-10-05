@@ -1,0 +1,30 @@
+name: RSCircularBar
+description: Circular bar RS reliability problem from Verma et al. (2015)
+tags:
+  - reliability
+
+dimensions:
+  input: 2
+  output: 1
+
+inputs:
+  Verma2015:
+    description: Probabilistic input model from Verma et al. (2015)
+    marginals:
+      - name: Y
+        distribution: normal
+        parameters: [250.0, 25.0]
+        description: Material yield strength [MPa]
+      - name: F
+        distribution: normal
+        parameters: [70.0, 7.0]
+        description: Axial force [kN]
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    bar_diameter: Diameter of the circular bar [mm]
+  sets:
+    Verma2015:
+      bar_diameter: 25.0
+      description: Parameter set from Verma et al. (2015)

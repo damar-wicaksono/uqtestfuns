@@ -1,5 +1,8 @@
 name: Testing and packaging
 
+permissions:
+  contents: read
+
 on:
   - push
 
@@ -8,130 +11,97 @@ jobs:
     name: Check code formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
-          python-version: "3.10"
-      - name: Install tox
-        run: python -m pip install tox
-      - name: Run black
-        run: tox -e format
+          python-version: "3.14"
+      - name: Run ruff format check
+        run: uv run --extra dev ruff format --check src tests
   lint:
     name: Check code linting
     runs-on: ubuntu-latest
     steps:
-       - uses: actions/checkout@v4
-       - uses: actions/setup-python@v5
-         with:
-            python-version: "3.10"
-       - name: Install tox
-         run: python -m pip install tox
-       - name: Run flake8
-         run: tox -e lint
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: "3.14"
+      - name: Run ruff check
+        run: uv run --extra dev ruff check src tests
   typecheck:
     name: Static type checking
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
-          python-version: "3.10"
-      - name: Install tox
-        run: python -m pip install tox
+          python-version: "3.14"
       - name: Run mypy
-        run: tox -e typecheck
+        run: uv run --extra dev mypy src tests
   test:
     name: Test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python:
-          - version: "3.7"
-            toxenv: "py37"
-          - version: "3.8"
-            toxenv: "py38"
-          - version: "3.9"
-            toxenv: "py39"
-          - version: "3.11"
-            toxenv: "py311"
-          - version: "3.12"
-            toxenv: "py312"
-          - version: "3.13"
-            toxenv: "py313"
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4.0.0
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
-          python-version: ${{ matrix.python.version }}
-      - name: Install tox
-        run: python -m pip install tox
+          python-version: ${{ matrix.python-version }}
       - name: Run pytest
-        run: tox -e ${{ matrix.python.toxenv }}
+        run: uv run --extra dev pytest
   coverage:
-    name: Test (on Python 3.10) w/ coverage to CodeCov
+    name: Test (on Python 3.14) w/ coverage to CodeCov
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
-          python-version: "3.10"
-      - name: Install tox
-        run: python -m pip install tox
-      - name: Run pytest
-        run: tox -e "py310" -- --cov-report=xml --cov-report=term
+          python-version: "3.14"
+      - name: Run pytest with coverage
+        run: uv run --extra dev pytest --cov-report=xml --cov-report=term
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-  build_wheels:
-    name: Build wheels on Ubuntu latest
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: true
+  build:
+    name: Build sdist and wheel
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
           python-version: "3.10"
-      - name: Install build
-        run: python -m pip install build
-      - name: Build wheels
-        run: python -m build --wheel
-      - uses: actions/upload-artifact@v4
+      - name: Build sdist, then wheel from the sdist
+        run: uv build
+      - name: Check metadata
+        run: uvx twine check --strict dist/*
+      - uses: actions/upload-artifact@v7
         with:
-          path: ./dist/*.whl
-          name: wheel
-
-  build_sdist:
-    name: Build source distribution on Ubuntu latest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-      - name: Install build
-        run: python -m pip install build
-      - name: Build wheels
-        run: python -m build --sdist
-      - uses: actions/upload-artifact@v4
-        with:
-          path: ./dist/*.tar.gz
-          name: sdist
+          name: dist
+          path: dist/
+          if-no-files-found: error
   publish:
     name: Publish package
-    if: startsWith(github.event.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     needs:
       - format
       - lint
       - typecheck
       - test
       - coverage
-      - build_wheels
-      - build_sdist
+      - build
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/uqtestfuns/
+    permissions:
+      id-token: write
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v8
         with:
-          name: artifact
-          path: ./dist/
+          name: dist
+          path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}

@@ -4,7 +4,7 @@
 UQTestFuns is an homage to the
 [Virtual Library of Simulation Experiments: Test Functions and Datasets] (VLSE).
 
-For many years this site has been very useful in providing
+For many years this site has been invaluable in providing
 the uncertainty quantification (UQ) community 
 with test functions and datasets from the literature.
 It is very well organized, describing each of the test functions
@@ -51,7 +51,19 @@ on how to contribute to it, fixing broken things, and adding new stuff&mdash;be
 it a new test function, new reference values, or a better description.
 
 We hope UQTestFuns can be useful for the UQ community,
-just as the [VLSE] has been very useful to us.
+just as the [VLSE] has been invaluable to us.
+
+## Logo
+
+The UQTestFuns logo shows the output distribution of one of the package's
+test functions[^which] with respect to its input distribution.
+That shape is the core idea of the whole endeavor:
+propagate the input uncertainty through a model and see what comes out.
+
+The logo was designed iteratively with Claude (Anthropic), working from
+a histogram generated with UQTestFuns itself. The wordmark is set in
+[IBM Plex Mono](https://github.com/IBM/plex), licensed under the
+SIL Open Font License 1.1.
 
 ## About us
 
@@ -71,6 +83,7 @@ an institute of the Helmholtz-Zentrum Dresden-Rossendorf ([HZDR](https://www.hzd
 
 ::::
 
+(development:about-uqtestfuns:maintainers)=
 ### Project maintainers
 
 Project maintainers are the current main developers responsible for UQTestFuns
@@ -95,7 +108,7 @@ or help attract and secure funding for the research.
 :padding: 1
 
 :::{grid-item}
-[![Hecht](https://gitlab.hzdr.de/uploads/-/system/user/avatar/454/avatar.png?width=90)](https://sites.google.com/view/prof-dr-michael-hecht/home)
+<a href="https://sites.google.com/view/prof-dr-michael-hecht/home"><img src="../_static/hecht.png" alt="Michael Hecht" width="90"></a>
 </br>
 Michael Hecht
 :::
@@ -103,9 +116,9 @@ Michael Hecht
 
 ## Sponsors
 
-The Minterpy project is partly funded by the Center for Advanced Systems Understanding
+The UQTestFuns project is partly funded by the Center for Advanced Systems Understanding
 ([CASUS][CASUS_]) which is financed by Germany's Federal Ministry of Education and Research
-([BMBF][BMBF_]) and by the Saxony Ministry for Science, Culture and Tourism
+([BMBF][BMBF_]) and by the Saxony Ministry for Science, Culture, and Tourism
 ([SMWK][SMWK_]).
 Funding is provided through tax funds based on the budget approved
 by the Saxony State Parliament.
@@ -131,6 +144,8 @@ by the Saxony State Parliament.
 
 ::::
 
+
+[^which]: *Can you guess {ref}`which one <test-functions:ishigami>`?*
 
 [Virtual Library of Simulation Experiments: Test Functions and Datasets]: https://www.sfu.ca/~ssurjano/
 [VLSE]: https://www.sfu.ca/~ssurjano/

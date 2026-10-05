@@ -13,17 +13,14 @@ kernelspec:
 ---
 
 (test-functions:friedman-6d)=
-# Six-dimensional (6D) Friedman Function
+# Six-dimensional Function from Friedman et al. (1983)
 
-The 6D Friedman function (or `Friedman6D` function for short) is
-a six-dimensional (including one dummy variable) scalar-valued function.
-The function features a combination of non-linearity and variable interaction.
-
-It was originally used in {cite}`Friedman1983` as a test function for testing
-a spline approximation method.
-In {cite}`Sun2022` and {cite}`Horiguchi2021` (albeit in a modified form)
-the function was employed as a test function in the context of
-sensitivity analysis.
+The `Friedman6D` function is a nominally six-dimensional function
+introduced in {cite}`Friedman1983` as a test function
+for spline approximation methods.
+Only the first five input variables are active; the sixth is inert.
+It was later used in {cite}`Sun2022` and {cite}`Horiguchi2021` (in a modified
+form) for sensitivity analysis.
 
 ```{note}
 The function was later extended to ten dimension by incorporating four
@@ -64,7 +61,7 @@ where $x$ is defined below. Notice that the sixth input variable is inert.
 ## Probabilistic input
 
 Based on {cite}`Friedman1983`, the probabilistic input model
-for the function consists of two independent random variables as shown below.
+for the function consists of six independent random variables as shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -84,13 +81,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:alemazkoor-20d)=
-# Twenty-dimensional Function from Alemazkoor and Meidani (2018)
+# Twenty-dimensional Low-Degree Polynomial from Alemazkoor and Meidani (2018)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,12 +21,12 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The 20-dimensional test function from {cite}`Alemazkoor2018`
-(or `Alemazkoor20D` for short) is a polynomial function that features 
-low-degree of interactions (i.e., $2$) between the input variables
-(i.e., high in dimension but of low-degree).
-It was used as a test function for
-a metamodeling exercise (i.e., sparse polynomial chaos expansion).
+The test function from {cite}`Alemazkoor2018` (`Alemazkoor20D` for short)
+is a twenty-dimensional polynomial of total degree 2.
+It was used as a benchmark for sparse polynomial chaos expansion metamodeling,
+as the counterpart to {ref}`Alemazkoor2D <test-functions:alemazkoor-2d>`:
+where that function is low-dimensional with high polynomial degree,
+this one is high-dimensional with low degree.
 
 ## Test function instance
 
@@ -58,11 +58,11 @@ Based on {cite}`Alemazkoor2018`, the probabilistic input model
 for the function consists of twenty independent random variables
 as shown in the table below.
 
-|   No.    |   Name   | Distribution | Parameters  | Description |
-|:--------:|:--------:|:------------:|:-----------:|:-----------:|
-|    1     |  $x_1$   |   uniform    | [-1.0, 1.0] |     N/A     |
-| $\vdots$ | $\vdots$ |   $\vdots$   |  $\vdots$   |  $\vdots$   |
-|    20    | $x_{20}$ |   uniform    | [-1.0, 1.0] |     N/A     |
+```{code-cell} ipython3
+:tags: [hide-input, output_scroll]
+
+print(my_testfun.prob_input)
+```
 
 ## Reference results
 
@@ -76,13 +76,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

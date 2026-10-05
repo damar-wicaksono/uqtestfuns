@@ -8,6 +8,7 @@ from uqtestfuns.core.registry.entries import (
     UQTestFunSpec,
     KeywordInfo,
 )
+from uqtestfuns.core.registry.specs import InputVariants
 from .evaluate import parse_evaluate
 from .inputs import parse_inputs
 from .parameters import parse_parameters
@@ -92,7 +93,7 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
             )
 
     # --- Output dimension (optional with default value)
-    output_dimension = dimensions.get("output_dimension", 1)
+    output_dimension = dimensions.get("output", 1)
 
     # --- File references
     spec_path = yaml_file.resolve()
@@ -130,7 +131,7 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
             )
 
         # -- Collect available parameter set IDs and their descriptions
-        keyword_descriptions = parameters.get("keywords", {})
+        keyword_descriptions = parameters.get("keyword_descriptions", {})
         available_parameter_ids = {
             k: v.get("description") for k, v in available_sets.items()
         }
@@ -226,18 +227,33 @@ def parse_spec(spec_file: Path, pkg_root: Path) -> UQTestFunSpec:
     # Parse the "evaluate" section and return a CallableSpec
     evaluate = parse_evaluate(data.get("evaluate"), spec_file, pkg_root)
 
-    # Parse the "inputs" section and return a dictionary of UQInputSpec
+    # Parse the "inputs" section
     inputs = parse_inputs(data["inputs"], spec_file, pkg_root)
 
-    # Parse the "parameters" section & return a dictionary of UQParametersSpec
-    if "parameters" not in data:
-        parameters = None
+    # Get the default input ID
+    if len(inputs) > 1:
+        default_input = data["default_input"]
     else:
-        parameters = parse_parameters(data["parameters"], spec_file, pkg_root)
+        default_input = next(iter(inputs))
+
+    input_specs = InputVariants(
+        by_id=inputs,
+        default_id=default_input,
+    )
+
+    # Parse the "parameters" section
+    if "parameters" not in data:
+        parameters_specs = None
+    else:
+        parameters_specs = parse_parameters(
+            data["parameters"],
+            spec_file,
+            pkg_root,
+        )
 
     return UQTestFunSpec(
         name=name,
         evaluate=evaluate,
-        inputs=inputs,
-        parameters=parameters,
+        inputs=input_specs,
+        parameters=parameters_specs,
     )

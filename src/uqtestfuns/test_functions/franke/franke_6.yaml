@@ -1,0 +1,13 @@
+name: Franke6
+description: >-
+  (6th) Franke function with a spherical surface from Franke (1979)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+evaluate: evaluate.franke_6
+
+inputs: inputs.yaml

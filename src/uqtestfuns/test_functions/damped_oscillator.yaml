@@ -1,0 +1,59 @@
+name: DampedOscillator
+description: >-
+  Damped oscillator model from Igusa and Der Kiureghian (1985)
+tags:
+  - metamodeling
+  - sensitivity
+
+dimensions:
+  input: 7
+  output: 1
+
+inputs:
+  DerKiureghian1991:
+    description: >-
+      Probabilistic input model for the damped oscillator model
+      from Der Kiureghian and De Stefano (1991)
+    marginals:
+      - name: Mp
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(1.5, 0.1 * 1.5))
+          - $(lognormal_sigma(1.5, 0.1 * 1.5))
+        description: Primary mass
+      - name: Ms
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.01, 0.1 * 0.01))
+          - $(lognormal_sigma(0.01, 0.1 * 0.01))
+        description: Secondary mass
+      - name: Kp
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(1.0, 0.2 * 1.0))
+          - $(lognormal_sigma(1.0, 0.2 * 1.0))
+        description: Primary spring stiffness
+      - name: Ks
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.01, 0.2 * 0.01))
+          - $(lognormal_sigma(0.01, 0.2 * 0.01))
+        description: Secondary spring stiffness
+      - name: Zeta_p
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.05, 0.4 * 0.05))
+          - $(lognormal_sigma(0.05, 0.4 * 0.05))
+        description: Primary damping ratio
+      - name: Zeta_s
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(0.02, 0.5 * 0.02))
+          - $(lognormal_sigma(0.02, 0.5 * 0.02))
+        description: Secondary damping ratio
+      - name: S0
+        distribution: lognormal
+        parameters:
+          - $(lognormal_mu(100.0, 0.1 * 100.0))
+          - $(lognormal_sigma(100.0, 0.1 * 100.0))
+        description: White noise base acceleration

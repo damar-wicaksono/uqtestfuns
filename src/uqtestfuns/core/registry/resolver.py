@@ -22,7 +22,7 @@ from .specs import (
 from uqtestfuns.core.prob_input.marginal import Marginal
 from uqtestfuns.core.parameters import Parameters
 from uqtestfuns.core.registry.parser import SpecValidationError
-from uqtestfuns.core.prob_input.probabilistic_input_new import ProbInput
+from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 from uqtestfuns.core.registry.parser.utils import substitute_idx
 
 
@@ -208,6 +208,7 @@ def resolve_parameters(
         name=name,
         keyword_descriptions=kw_descriptions,
         values=values,
+        _protected=True,  # This parameter instance is protected
     )
 
 

@@ -23,8 +23,8 @@ import uqtestfuns as uqtf
 
 The 2D function introduced in {cite}`Webster1996` is a polynomial function.
 It was used to illustrate the construction of a polynomial chaos expansion
-metamodel (via stochastic collocation)
-having uncertain (random) input variables.
+metamodel via stochastic collocation
+with uncertain (random) input variables.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
@@ -67,7 +67,7 @@ axs_1.plot_surface(
 )
 axs_1.set_xlabel("$x_1$", fontsize=14)
 axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_1.set_title("Surface plot of Webster 2D", fontsize=14)
 
 # Contour
@@ -135,13 +135,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

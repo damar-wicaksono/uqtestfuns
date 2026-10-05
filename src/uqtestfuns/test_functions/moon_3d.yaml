@@ -1,0 +1,23 @@
+name: Moon3D
+description: Three-dimensional sensitivity analysis function from Moon (2010)
+tags:
+  - sensitivity
+
+dimensions:
+  input: 3
+  output: 1
+
+inputs:
+  Moon2010:
+    description: Three independent uniform random variables on [0, 1] from Moon (2010)
+    marginals:
+      - name: X1
+        distribution: uniform
+        parameters: [0.0, 1.0]
+      - name: X2
+        distribution: uniform
+        parameters: [0.0, 1.0]
+      - name: X3
+        distribution: uniform
+        parameters: [0.0, 1.0]
+    copulas: null

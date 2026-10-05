@@ -23,95 +23,6 @@ References
 
 import numpy as np
 
-from copy import deepcopy
-
-from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["Piston"]
-
-
-# Marginals specification from [1]
-MARGINALS_BENARI2007: MarginalSpecs = [
-    {
-        "name": "M",
-        "distribution": "uniform",
-        "parameters": [30.0, 60.0],
-        "description": "Piston weight [kg]",
-    },
-    {
-        "name": "S",
-        "distribution": "uniform",
-        "parameters": [0.005, 0.020],
-        "description": "Piston surface area [m^2]",
-    },
-    {
-        "name": "V0",
-        "distribution": "uniform",
-        "parameters": [0.002, 0.010],
-        "description": "Initial gas volume [m^3]",
-    },
-    {
-        "name": "k",
-        "distribution": "uniform",
-        "parameters": [1000.0, 5000.0],
-        "description": "Spring coefficient [N/m]",
-    },
-    {
-        "name": "P0",
-        "distribution": "uniform",
-        "parameters": [90000.0, 110000.0],
-        "description": "Atmospheric pressure [N/m^2]",
-    },
-    {
-        "name": "Ta",
-        "distribution": "uniform",
-        "parameters": [290.0, 296.0],
-        "description": "Ambient temperature [K]",
-    },
-    {
-        "name": "T0",
-        "distribution": "uniform",
-        "parameters": [340.0, 360.0],
-        "description": "Filling gas temperature [K]",
-    },
-]
-
-# Marginals specification from [2]
-MARGINALS_MOON2010 = [deepcopy(_) for _ in MARGINALS_BENARI2007]
-for i in range(13):
-    MARGINALS_MOON2010.append(
-        {
-            "name": f"Inert {i+1}",
-            "distribution": "uniform",
-            "parameters": [100.0, 200.0],
-            "description": "Inert input [-]",
-        }
-    )
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "BenAri2007": {
-        "function_id": "Piston",
-        "description": (
-            "Probabilistic input model for the Piston simulation model "
-            "from Ben-Ari and Steinberg (2007)."
-        ),
-        "marginals": MARGINALS_BENARI2007,
-        "copulas": None,
-    },
-    "Moon2010": {
-        "function_id": "Piston",
-        "description": (
-            "Probabilistic input model for the Piston simulation model "
-            "from Moon (2010)."
-        ),
-        "marginals": MARGINALS_MOON2010,
-        "copulas": None,
-    },
-}
-
-DEFAULT_INPUT_SELECTION = "BenAri2007"
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the Piston simulation test function on a set of input values.
@@ -119,7 +30,7 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        (At least) 6-dimensional input values given by N-by-6 arrays
+        (At least) 7-dimensional input values given by N-by-M arrays
         where N is the number of input values.
 
     Returns
@@ -159,15 +70,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     )
 
     return cc
-
-
-class Piston(UQTestFunFixDimABC):
-    """A concrete implementation of the Piston simulation test function."""
-
-    _tags = ["metamodeling", "sensitivity"]
-    _description = "Piston simulation model from Ben-Ari and Steinberg (2007)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-    _default_input_id = DEFAULT_INPUT_SELECTION
-
-    evaluate = staticmethod(evaluate)  # type: ignore

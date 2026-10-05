@@ -146,7 +146,7 @@ $$
 and
 
 $$
-\Phi^{-1}(x) = \sqrt{2} \mathrm{erf}(2 x - 1).
+\Phi^{-1}(x) = \sqrt{2} \mathrm{erf}^{-1}(2 x - 1).
 $$
 
 

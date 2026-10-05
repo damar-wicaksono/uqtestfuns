@@ -8,7 +8,8 @@ validation with required keys.
 
 import re
 
-from typing import Any, Dict, Iterable
+from typing import Any, Dict, Iterable, Union
+from uqtestfuns.core.registry.specs import ParametersSection
 
 
 class SpecValidationError(Exception):
@@ -94,7 +95,7 @@ def validate_callable_string(callable_string: str) -> None:
 
 
 def validate_required_keys(
-    data: dict,
+    data: Union[dict, ParametersSection],
     required_keys: Iterable[str],
     context: str,
 ) -> None:

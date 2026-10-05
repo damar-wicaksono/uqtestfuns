@@ -1,0 +1,31 @@
+name: Ackley
+description: Optimization test function from Ackley (1987)
+tags:
+  - optimization
+  - metamodeling
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs:
+  Ackley1987:
+    description: Search domain from Ackley (1987)
+    marginals:
+      distribution: uniform
+      parameters: [-32.768, 32.768]
+      name: X$idx
+
+parameters:
+
+  keyword_descriptions:
+    a: Height of the ridges surrounding the minimum
+    b: Decay rate of the Euclidean distance
+    c: Scaling constant for the cosine term
+
+  sets:
+    Ackley1987:
+      description: Parameter set from Ackley (1987)
+      a: 20.0
+      b: 0.2
+      c: $(2 * pi)
