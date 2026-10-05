@@ -108,7 +108,7 @@ or help attract and secure funding for the research.
 :padding: 1
 
 :::{grid-item}
-<a href="https://sites.google.com/view/prof-dr-michael-hecht/home"><img src="../_static/hecht.png" width="90"></a>
+<a href="https://sites.google.com/view/prof-dr-michael-hecht/home"><img src="../_static/hecht.png" alt="Michael Hecht" width="90"></a>
 </br>
 Michael Hecht
 :::
