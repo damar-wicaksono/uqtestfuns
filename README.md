@@ -1,7 +1,7 @@
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/_static/logo-dark-tagline.png">
-    <img src="docs/_static/logo-light-tagline.png" alt="UQTestFuns" width="550">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/damar-wicaksono/uqtestfuns/main/docs/_static/logo-dark-tagline.png">
+    <img src="https://raw.githubusercontent.com/damar-wicaksono/uqtestfuns/main/docs/_static/logo-light-tagline.png" alt="UQTestFuns" width="550">
   </picture>
 </div>
 
