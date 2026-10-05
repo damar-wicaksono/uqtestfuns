@@ -33,7 +33,7 @@ and has been used in the context of reliability analysis
 (see, for instance, {cite}`DerKiureghian1991, Dubourg2011`).
 
 ```{note}
-The {ref}`reliability analysis variant <test-functions:damped-oscillator-reliability>`
+The {ref}`reliability analysis variant <test-functions:rs-damped-oscillator-reliability>`
 differs from this base model. Used in the context of reliability analysis,
 the model also includes additional parameters of a capacity factor and
 load such that the performance function can be computed.

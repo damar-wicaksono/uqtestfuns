@@ -1,4 +1,25 @@
-# Welcome to the UQTestFuns documentation!
+```{raw} html
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.innerWidth < 992) return;
+    var btn = document.querySelector('.sidebar-toggle.primary-toggle, [data-bs-target="#bd-docs-nav"]');
+    if (btn && btn.getAttribute('aria-expanded') !== 'false') btn.click();
+});
+</script>
+```
+
+<div style="visibility: hidden; margin: -2.5em;">
+
+# UQTestFuns documentation
+
+</div>
+
+<div align="center">
+  <img src="_static/logo-light-tagline.png" alt="UQTestFuns" width="100%" class="only-light">
+  <img src="_static/logo-dark-tagline.png" alt="UQTestFuns" width="100%" class="only-dark">
+</div>
+
+<br>
 
 UQTestFuns is an open-source Python library of test functions for the
 applied uncertainty quantification (UQ) community: one consistent
