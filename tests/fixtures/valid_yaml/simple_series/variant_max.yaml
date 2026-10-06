@@ -1,0 +1,14 @@
+name: SeriesMax
+description: Maximum variant of the series family
+tags:
+  - reliability
+
+dimensions:
+  input: 3
+  output: 1
+
+evaluate: evaluate.max_eval
+
+inputs: inputs.yaml
+
+default_input: Wide

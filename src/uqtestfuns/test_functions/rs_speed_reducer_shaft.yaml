@@ -1,0 +1,38 @@
+name: RSSpeedReducerShaft
+description: >-
+  Reliability of a shaft in a speed reducer from Du and Sudjianto (2004)
+tags:
+  - reliability
+
+dimensions:
+  input: 5
+  output: 1
+
+inputs:
+  Du2004:
+    description: >-
+      Probabilistic input model for the speed reducer shaft problem
+      from Du and Sudjianto (2004)
+    marginals:
+      - name: D
+        distribution: normal
+        parameters: [39, 0.1]
+        description: Shaft diameter [mm]
+      - name: L
+        distribution: normal
+        parameters: [400, 0.1]
+        description: Shaft span [mm]
+      - name: F
+        distribution: gumbel
+        parameters:
+          - $(gumbel_max_mu(1500, 350))  # Location parameter from mean=1500 N, std=350 N
+          - $(gumbel_max_beta(350))      # Scale parameter from std=350 N
+        description: External force [N]
+      - name: T
+        distribution: normal
+        parameters: [250, 35]
+        description: Torque [Nm]
+      - name: S
+        distribution: uniform
+        parameters: [70, 80]
+        description: Strength [MPa]

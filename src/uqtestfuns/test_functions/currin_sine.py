@@ -15,30 +15,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["CurrinSine"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Currin1988": {
-        "function_id": "CurrinSine",
-        "description": (
-            "Input model for the Sine function from Currin et al. (1988)"
-        ),
-        "marginals": [
-            {
-                "name": "x",
-                "distribution": "uniform",
-                "parameters": [0.0, 1.0],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the sine fcn from Currin et al (1988) on a set of input values.
@@ -58,14 +34,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     yy = np.sin(2 * np.pi * (xx[:, 0] - 0.1))
 
     return yy
-
-
-class CurrinSine(UQTestFunFixDimABC):
-    """A concrete implementation of the sine fcn from Currin et al (1988)."""
-
-    _tags = ["metamodeling"]
-    _description = "Sine function from Currin et al. (1988)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-
-    evaluate = staticmethod(evaluate)  # type: ignore

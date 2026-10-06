@@ -1,0 +1,86 @@
+name: SobolG
+description: >-
+  M-dimensional sensitivity analysis test function from Saltelli and Sobol' (1995)
+tags:
+  - sensitivity
+  - integration
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs:
+  Saltelli1995:
+    description: >-
+      Independent uniform random variables from Saltelli and Sobol' (1995)
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      name: X_$idx
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    aa: Importance coefficients (smaller = more influential)
+  sets:
+    Saltelli1995-1:
+      aa:
+        factory: get_aa_saltelli1995_1
+      description: >-
+        All input variables are equally important;
+        example 1 from Saltelli and Sobol' (1995)
+    Saltelli1995-2:
+      aa:
+        factory: get_aa_saltelli1995_2
+      description: >-
+        First two inputs most important, third moderately important,
+        rest non-influential; example 2 from Saltelli and Sobol' (1995)
+    Saltelli1995-3:
+      aa:
+        factory: get_aa_saltelli1995_3
+      description: >-
+        Importance decreasing with variable index;
+        example 3 from Saltelli and Sobol' (1995)
+    Sobol1998-1:
+      aa:
+        factory: get_aa_sobol1998_1
+      description: >-
+        Supremum grows exponentially at 2^M;
+        choice 1 from Sobol' (1998)
+    Sobol1998-2:
+      aa:
+        factory: get_aa_sobol1998_2
+      description: >-
+        Supremum grows exponentially at 1.5^M;
+        choice 2 from Sobol' (1998)
+    Sobol1998-3:
+      aa:
+        factory: get_aa_sobol1998_3
+      description: >-
+        Supremum grows linearly at 1 + M/2;
+        choice 3 from Sobol' (1998)
+    Sobol1998-4:
+      aa:
+        factory: get_aa_sobol1998_4
+      description: >-
+        Supremum bounded at 1.0;
+        choice 4 from Sobol' (1998)
+    Kucherenko2011-2a:
+      aa:
+        factory: get_aa_kucherenko2011_2a
+      description: >-
+        First two inputs important, rest non-influential;
+        problem 2A from Kucherenko et al. (2011)
+    Kucherenko2011-3b:
+      aa:
+        factory: get_aa_kucherenko2011_3b
+      description: >-
+        Supremum grows exponentially at 1.13^M;
+        problem 3B from Kucherenko et al. (2011)
+    Sun2022:
+      aa:
+        factory: get_aa_sun2022
+      description: >-
+        First four inputs with varying importance, rest non-influential;
+        Section 3.2 from Sun et al. (2022)
+  default_parameters: Saltelli1995-3

@@ -37,7 +37,7 @@ The table below summarizes some important aspects of the distribution.
 |  **{term}`Support`** | $\mathcal{D}_X = [a, b]$                                                                                                                                                                                                           |
 |      **{term}`PDF`** | $f_X (x; \mu, \sigma, a, b) = \begin{cases} \frac{1}{\Phi(\frac{b - \mu}{\sigma}) - \Phi(\frac{a - \mu}{\sigma})} \frac{1}{\sigma} \phi\left(\frac{x - \mu}{\sigma}\right) & x \in [a, b] \\ 0.0 & x \notin [a, b] \end{cases}$    |
 |      **{term}`CDF`** | $F_X (x; \mu, \sigma, a, b) = \begin{cases} 0.0 & x < a \\ \frac{\Phi(\frac{x - \mu}{\sigma}) - \Phi(\frac{a - \mu}{\sigma})}{\Phi(\frac{b - \mu}{\sigma}) - \Phi(\frac{a - \mu}{\sigma})} & x \in [a, b] \\ 1.0 & x > b \end{cases}$ |
-|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \sigma, a, b) = \mu + \sigma \Phi^{-1} \left[ \left(\Phi\left(\frac{b - \mu}{\sigma}\right) - \Phi\left(\frac{a - \mu}{\sigma}\right)\right) x + \Phi\left(\frac{x - a}{\sigma}\right) \right]$                 |
+|     **{term}`ICDF`** | $F^{-1}_X (x; \mu, \sigma, a, b) = \mu + \sigma \Phi^{-1} \left[ \left(\Phi\left(\frac{b - \mu}{\sigma}\right) - \Phi\left(\frac{a - \mu}{\sigma}\right)\right) x + \Phi\left(\frac{a - \mu}{\sigma}\right) \right]$                 |
 
 In the table above, $\phi$, $\Phi$, and $\Phi^{-1}$ are the probability density,
 the cumulative and the inverse cumulative distribution functions 

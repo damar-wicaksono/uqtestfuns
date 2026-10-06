@@ -16,8 +16,9 @@ from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "triangular"
-
+DISPLAY_NAME = "Triangular"
 NUM_PARAMS = 3
+PARAM_NAMES = ("a", "b", "c")
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:
@@ -216,7 +217,7 @@ def icdf(
     """
     mid_point = parameters[2]
     mid_point_quantile = (mid_point - lower_bound) / (
-        (upper_bound - lower_bound)
+        upper_bound - lower_bound
     )
     idx_below_mid = np.logical_and(xx >= 0.0, xx <= mid_point_quantile)
     idx_above_mid = np.logical_and(xx > mid_point_quantile, xx <= 1.0)

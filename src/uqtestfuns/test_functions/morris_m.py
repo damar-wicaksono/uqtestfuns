@@ -1,0 +1,72 @@
+"""
+This module implements the Morris function from Morris et al. (2006).
+
+The Morris function is an M-dimensional, scalar-valued function commonly used
+as a test function for sensitivity analysis.
+It first appeared in [1], and has been revisited multiple times
+in the literature in similar contexts, e.g., [2], [3].
+
+The function features a parameter that dictates the number of important
+input variables. The remaining input variables are inert. Furthermore,
+all sensitivity indices of the important variables have
+the same Sobol' sensitivity indices.
+
+References
+----------
+
+1. M. D. Morris, L. M. Moore, and M. D. McKay, “Sampling plans based on
+   balanced incomplete block designs for evaluating the importance of
+   computer model inputs,” Journal of Statistical Planning and Inference,
+   vol. 136, no. 9, pp. 3203–3220, 2006.
+   DOI: 10.1016/j.jspi.2005.01.001
+2. X. Sun, B. Croke, A. Jakeman, S. Roberts, "Benchmarking Active Subspace
+   methods of global sensitivity analysis against variance-based Sobol’
+   and Morris methods with established test functions," Environmental Modelling
+   & Software, vol. 149, p. 105310, 2022.
+   DOI: 10.1016/j.envsoft.2022.105310
+3. A. Horiguchi, M. T. Pratola, and T. J. Santner, “Assessing variable activity
+   for Bayesian regression trees,” Reliability Engineering & System Safety,
+   vol. 207, p. 107391, 2021,
+   DOI: 10.1016/j.ress.2020.107391
+"""
+
+import numpy as np
+
+
+def evaluate(xx: np.ndarray, p: int) -> np.ndarray:
+    """Evaluate the Morris et al. (2006) function on a set of input values.
+
+    Parameters
+    ----------
+    xx : np.ndarray
+        An ``(N, M)`` array of input values where ``N`` is the number of
+        evaluation points and ``M`` is the input dimension.
+    p : int
+        The number of important input variables. If ``p > M``, all input
+        variables are treated as important.
+
+    Returns
+    -------
+    np.ndarray
+        A one-dimensional array of length ``N`` containing the function output.
+    """
+    input_dim = xx.shape[1]
+    if p > input_dim:
+        p = input_dim
+
+    alpha = np.sqrt(12) - 6 * np.sqrt(0.1 * (p - 1))
+
+    term_1 = alpha * np.sum(xx[:, :p], axis=1)
+    if p == 1:
+        return term_1
+
+    beta = 12 / np.sqrt(10 * (p - 1))
+    term_2 = np.zeros(len(xx))
+    for i in range(p - 1):
+        ip1 = i + 1
+        term_2[:] += xx[:, i] * np.sum(xx[:, ip1:p], axis=1)
+    term_2 *= beta
+
+    yy = term_1 + term_2
+
+    return yy

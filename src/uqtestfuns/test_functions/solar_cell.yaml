@@ -1,0 +1,53 @@
+name: SolarCell
+description: >-
+  Five-dimensional single-diode solar cell model from Constantine et al. (2015)
+tags:
+  - metamodeling
+  - sensitivity
+
+dimensions:
+  input: 5
+  output: 1
+
+inputs:
+  Constantine2015:
+    description: >-
+      Probabilistic input model for the single-diode solar cell model
+      from Constantine et al. (2015)
+    marginals:
+      - name: Isc
+        distribution: uniform
+        parameters: [0.05989, 0.23958]
+        description: Short-circuit current [A]
+      - name: log_Is
+        distribution: uniform
+        parameters: [$(log(2.2e-11)), $(log(2.2e-7))]
+        description: (log) Diode reverse saturation current [A]
+      - name: n
+        distribution: uniform
+        parameters: [1.0, 2.0]
+        description: Ideality factor [-]
+      - name: Rs
+        distribution: uniform
+        parameters: [0.16625, 0.66500]
+        description: Series resistance [Ohm]
+      - name: Rp
+        distribution: uniform
+        parameters: [93.75, 375.00]
+        description: Parallel (shunt) resistance [Ohm]
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    n_s: Number of cells connected in series [-]
+    v_th: Thermal voltage at 25 degrees C [V]
+    root_kwargs: Keyword arguments passed to scipy.optimize.root
+    minimize_kwargs: Keyword arguments passed to scipy.optimize.minimize
+  sets:
+    Constantine2015:
+      n_s: 1
+      v_th: 0.02585
+      root_kwargs: null
+      minimize_kwargs: null
+      description: >-
+        Default parameter set from Constantine et al. (2015)

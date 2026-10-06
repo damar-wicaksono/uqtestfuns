@@ -1,0 +1,45 @@
+name: SobolLevitan
+description: >-
+  M-dimensional exponential sensitivity analysis test function
+  from Sobol' and Levitan (1999)
+tags:
+  - sensitivity
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs:
+  Sobol1999:
+    description: >-
+      Independent uniform random variables from Sobol' and Levitan (1999)
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      name: X_$idx
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    bb: Importance coefficients (larger = more influential)
+    c0: Constant shift term (affects mean but not sensitivity indices)
+  default_parameters: Sobol1999-1
+  sets:
+    Sobol1999-1:
+      bb:
+        factory: get_bb_sobol1999_1
+      c0: 0.0
+      description: >-
+        Originally six-dimensional; example 6.1 from Sobol' and Levitan (1999)
+    Sobol1999-2:
+      bb:
+        factory: get_bb_sobol1999_2
+      c0: 0.0
+      description: >-
+        Originally 20-dimensional; example 6.2 from Sobol' and Levitan (1999)
+    Moon2012-1:
+      bb:
+        factory: get_bb_moon2012_1
+      c0: 0.0
+      description: >-
+        Originally 20-dimensional; base case from Moon et al. (2012)

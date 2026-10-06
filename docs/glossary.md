@@ -5,6 +5,8 @@
 CDF
     Cumulative distribution function, denoted by $F_X(x; \circ)$ where $\circ$
     is a placeholder for the distribution parameter(s).
+    
+    See {ref}`the relevant section in Concepts and Notations <prob-input:concepts-and-notations:cdf>` for more details.
 
 DS
     Directional sampling
@@ -27,6 +29,8 @@ ICDF
     ICDF is also known as the _quantile function_
     or _percent point function_.
 
+    See {ref}`the relevant section in Concepts and Notations <prob-input:concepts-and-notations:icdf>` for more details.
+
 IS
     Importance sampling
 
@@ -36,6 +40,8 @@ MCS
 PDF
     Probability density function, denoted by $f_X(x; \circ)$ where $\circ$
     is a placeholder for the distribution parameter(s).
+
+    See {ref}`the relevant section in Concepts and Notations <prob-input:concepts-and-notations:pdf>` for more details.
 
 SORM
     Second-order reliability method

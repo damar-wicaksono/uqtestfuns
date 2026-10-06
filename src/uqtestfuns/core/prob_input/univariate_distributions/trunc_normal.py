@@ -43,8 +43,9 @@ from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "trunc-normal"
-
+DISPLAY_NAME = "Trunc-Normal"
 NUM_PARAMS = 4
+PARAM_NAMES = ("mu", "sigma", "a", "b")
 
 
 def _get_parameters(

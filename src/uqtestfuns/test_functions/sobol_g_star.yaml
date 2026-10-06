@@ -1,0 +1,91 @@
+name: SobolGStar
+description: >-
+  M-dimensional modified Sobol'-G sensitivity analysis test function
+  from Saltelli et al. (2010)
+tags:
+  - sensitivity
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs:
+  Saltelli2010:
+    description: >-
+      Independent uniform random variables from Saltelli et al. (2010)
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      name: X_$idx
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    aa: Importance coefficients (smaller = more influential)
+    delta: Shift parameters (cancels in moments and sensitivity indices)
+    alpha: Curvature parameters (controls convexity of each term)
+  default_parameters: Azzini2021
+  sets:
+    Saltelli2010-1:
+      aa:
+        factory: get_aa_saltelli2010_a
+      delta:
+        factory: get_delta_saltelli2010
+      alpha:
+        factory: get_alpha_saltelli2010_a
+      description: >-
+        Low effective dimension; test case 1 from Saltelli et al. (2010)
+    Saltelli2010-2:
+      aa:
+        factory: get_aa_saltelli2010_b
+      delta:
+        factory: get_delta_saltelli2010
+      alpha:
+        factory: get_alpha_saltelli2010_a
+      description: >-
+        High effective dimension; test case 2 from Saltelli et al. (2010)
+    Saltelli2010-3:
+      aa:
+        factory: get_aa_saltelli2010_a
+      delta:
+        factory: get_delta_saltelli2010
+      alpha:
+        factory: get_alpha_saltelli2010_b
+      description: >-
+        Concave version of test case 1; test case 3 from Saltelli et al. (2010)
+    Saltelli2010-4:
+      aa:
+        factory: get_aa_saltelli2010_b
+      delta:
+        factory: get_delta_saltelli2010
+      alpha:
+        factory: get_alpha_saltelli2010_b
+      description: >-
+        Concave version of test case 2; test case 4 from Saltelli et al. (2010)
+    Saltelli2010-5:
+      aa:
+        factory: get_aa_saltelli2010_a
+      delta:
+        factory: get_delta_saltelli2010
+      alpha:
+        factory: get_alpha_saltelli2010_c
+      description: >-
+        Convex version of test case 1; test case 5 from Saltelli et al. (2010)
+    Saltelli2010-6:
+      aa:
+        factory: get_aa_saltelli2010_b
+      delta:
+        factory: get_delta_saltelli2010
+      alpha:
+        factory: get_alpha_saltelli2010_c
+      description: >-
+        Convex version of test case 2; test case 6 from Saltelli et al. (2010)
+    Azzini2021:
+      aa:
+        factory: get_aa_saltelli2010_a
+      delta:
+        factory: get_delta_azzini2021
+      alpha:
+        factory: get_alpha_saltelli2010_b
+      description: >-
+        M = 10, alpha = 0.5, delta = 0.5 (fixed); from Azzini and Rosati (2021)

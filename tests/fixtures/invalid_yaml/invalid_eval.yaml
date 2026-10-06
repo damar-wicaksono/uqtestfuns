@@ -1,0 +1,16 @@
+name: CommonEvalVarInputNoParams
+description: "Variable-dimension function, multiple inputs, no parameter"
+tags: [metamodeling]
+
+dimensions:
+  input: variable
+  output: 1
+
+evaluate: test.common.compute
+
+inputs:
+  DefaultInput:
+    description: "Default input"
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]

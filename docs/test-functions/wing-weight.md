@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:wing-weight)=
-# Wing Weight Function
+# Wing Weight Model from Forrester et al. (2008)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,10 +21,10 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Wing Weight test function {cite}`Forrester2008` is a 10-dimensional
-scalar-valued function.
-The function has been used as a test function in the context of metamodeling
-{cite}`Zuhal2020` and optimization {cite}`Forrester2008`.
+The `WingWeight` function is a ten-dimensional function
+introduced in {cite}`Forrester2008` for metamodeling
+and optimization exercises.
+It models the weight of a light aircraft wing.
 
 ## Test function instance
 
@@ -55,7 +55,7 @@ is the vector of input variables defined below.
 ## Probabilistic input
 
 Based on {cite}`Forrester2008`, the probabilistic input model for the Wing
-Weight function consists of eight independent uniform random variables with 
+Weight function consists of ten independent uniform random variables with 
 ranges shown in the table below.
 
 ```{code-cell} ipython3
@@ -64,10 +64,10 @@ ranges shown in the table below.
 print(my_testfun.prob_input)
 ```
 
-## Reference Results
+## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -76,14 +76,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000, 42)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 ### Moments estimation
@@ -95,14 +93,13 @@ the output mean and variance with increasing sample sizes.
 :tags: [hide-input]
 
 # --- Compute the mean and variance estimate
-np.random.seed(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7], dtype=int)
 mean_estimates = np.empty(len(sample_sizes))
 var_estimates = np.empty(len(sample_sizes))
 
 for i, sample_size in enumerate(sample_sizes):
-    xx_test = my_testfun.prob_input.get_sample(sample_size)
-    yy_test = my_testfun(xx_test)
+    yy_test = my_testfun.get_sample(sample_size, rng)
     mean_estimates[i] = np.mean(yy_test)
     var_estimates[i] = np.var(yy_test)
 

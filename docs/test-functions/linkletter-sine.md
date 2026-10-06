@@ -21,15 +21,16 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The function is a ten-dimensional, scalar-valued function.
-Only the first two input variables are active, while the rest is inert.
-The function was used in {cite}`Linkletter2006` to demonstrate a variable
-selection method (i.e., sensitivity analysis)
+The `LinkletterSine` function is a nominally ten-dimensional function
+introduced in {cite}`Linkletter2006` to demonstrate variable selection
 in the context of Gaussian process metamodeling.
+Only the first two input variables are active,
+with very different effects on the output; the remaining eight are inert.
 
 ```{note}
-Linkletter et al. {cite}`Linkletter2006` introduced four ten-dimensional
-analytical test functions with some of the input variables inert.
+Linkletter et al. {cite}`Linkletter2006` introduced four _nominally_
+ten-dimensional analytical test functions
+with some of the input variables inert.
 They are used to demonstrate a variable selection method (i.e., screening)
 in the context of Gaussian process metamodeling:
 
@@ -77,9 +78,9 @@ axs_1.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_1.set_xlabel("$x_1$", fontsize=14)
-axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_xlabel(r"$x_1$", fontsize=14)
+axs_1.set_ylabel(r"$x_2$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_1.set_title("Surface plot of LinkletterSine", fontsize=14)
 
 # Contour
@@ -87,8 +88,8 @@ axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma", levels=10,
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
 axs_2.set_title("Contour plot of LinkletterSine", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -98,7 +99,6 @@ axs_2.axis('scaled')
 fig.tight_layout(pad=4.0)
 plt.gcf().set_dpi(75);
 ```
-
 
 ## Test function instance
 
@@ -162,14 +162,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-my_testfun.prob_input.reset_rng(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000, 42)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(X)$");
+plt.xlabel(r"$\mathcal{M}(X)$");
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```

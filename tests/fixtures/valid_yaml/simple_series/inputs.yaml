@@ -1,0 +1,30 @@
+Narrow:
+  description: Narrow uniform inputs
+  marginals:
+    - name: X1
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      description: First variable
+    - name: X2
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      description: Second variable
+    - name: X3
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      description: Third variable
+Wide:
+  description: Wide uniform inputs
+  marginals:
+    - name: X1
+      distribution: uniform
+      parameters: [-10.0, 10.0]
+      description: First variable
+    - name: X2
+      distribution: uniform
+      parameters: [-10.0, 10.0]
+      description: Second variable
+    - name: X3
+      distribution: uniform
+      parameters: [-10.0, 10.0]
+      description: Third variable

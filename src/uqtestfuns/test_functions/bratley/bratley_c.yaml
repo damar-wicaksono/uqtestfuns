@@ -1,0 +1,13 @@
+name: BratleyC
+description: Product-of-chebyshev-polynomials function from Bratley et al. (1992)
+tags:
+  - integration
+  - sensitivity
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs: inputs.yaml
+
+evaluate: evaluate.bratley_c

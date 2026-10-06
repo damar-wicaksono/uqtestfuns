@@ -13,10 +13,10 @@ kernelspec:
 ---
 
 (test-functions:damped-cosine)=
-# One-dimensional (1D) Damped Cosine Function
+# One-dimensional Damped Cosine Function from Santner et al. (2018)
 
-The 1D damped cosine function from Santner et al. {cite}`Santner2018` is
-a scalar-valued test function for metamodeling exercises.
+The `DampedCosine` function is a one-dimensional function introduced
+in {cite}`Santner2018` as a test function for metamodeling exercises.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -39,7 +39,7 @@ yy = my_testfun(xx)
 plt.plot(xx, yy, color="#8da0cb")
 plt.grid()
 plt.xlabel("$x$")
-plt.ylabel("$\mathcal{M}(x)$")
+plt.ylabel(r"$\mathcal{M}(x)$")
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
@@ -91,14 +91,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(X)$");
+plt.xlabel(r"$\mathcal{M}(X)$");
 plt.gcf().tight_layout(pad=3.0)
 plt.gcf().set_dpi(150);
 ```
@@ -111,15 +109,14 @@ the output mean and variance with increasing sample sizes.
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
+rng = np.random.default_rng(42)
 sample_sizes = np.array([1e1, 1e2, 1e3, 1e4, 1e5, 1e6], dtype=int)
 mean_estimates = np.empty((len(sample_sizes), 50))
 var_estimates = np.empty((len(sample_sizes), 50))
 
 for i, sample_size in enumerate(sample_sizes):
     for j in range(50):
-        xx_test = my_testfun.prob_input.get_sample(sample_size)
-        yy_test = my_testfun(xx_test)
+        yy_test = my_testfun.get_sample(sample_size, rng)
         mean_estimates[i, j] = np.mean(yy_test)
         var_estimates[i, j] = np.var(yy_test)
 

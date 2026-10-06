@@ -3,12 +3,12 @@
 
 title: UQTestFuns
 author: Damar Wicaksono
-logo: logo.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
   execute_notebooks: force
+  timeout: 300
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -19,18 +19,6 @@ latex:
 bibtex_bibfiles:
   - references.bib
 
-# Information about where the book exists on the web
-repository:
-  url: https://github.com/damar-wicaksono/uqtestfuns  # Online location of your book
-  path_to_book: docs  # Optional path to your book, relative to the repository root
-  branch: main  # Which branch of the repository should be used when creating links (optional)
-
-# Add GitHub buttons to your book
-# See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
-html:
-  use_issues_button: true
-  use_repository_button: true
-
 # Sphinx-related settings
 sphinx:
   extra_extensions:
@@ -38,3 +26,17 @@ sphinx:
     - 'sphinx.ext.napoleon'
     - 'sphinx.ext.intersphinx'
     - 'sphinx_proof'
+    - 'sphinxcontrib.mermaid'
+  config:
+    copyright: "2023–2026"
+    html_static_path:
+      - _static
+    html_favicon: _static/favicon.ico
+    html_theme_options:
+      logo:
+        image_light: _static/logo-light.png
+        image_dark: _static/logo-dark.png
+      repository_url: https://github.com/damar-wicaksono/uqtestfuns
+      repository_branch: dev
+      use_repository_button: true
+      use_issues_button: true

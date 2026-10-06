@@ -1,0 +1,19 @@
+name: CurrinSine
+description: >-
+  One-dimensional sine function from Currin et al. (1988)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 1
+  output: 1
+
+inputs:
+  Currin1988:
+    description: >-
+      Probabilistic input model from Currin et al. (1988)
+    marginals:
+      - name: x
+        distribution: uniform
+        parameters: [0.0, 1.0]
+    copulas: null

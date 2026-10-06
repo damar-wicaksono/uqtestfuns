@@ -1,0 +1,19 @@
+name: Friedman10D
+description: Ten-dimensional function with five inert inputs from Friedman (1991)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 10
+  output: 1
+
+evaluate: friedman.evaluate
+
+inputs:
+  Friedman1991:
+    description: Input domain from Friedman (1991)
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]
+      name: x_$idx
+    copulas: null

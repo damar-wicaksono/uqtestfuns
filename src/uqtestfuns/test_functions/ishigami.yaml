@@ -1,0 +1,40 @@
+name: Ishigami
+description: Ishigami function from Ishigami and Homma (1991)
+tags:
+  - sensitivity
+
+dimensions:
+  input: 3
+  output: 1
+
+inputs:
+  Ishigami1991:
+    description: >- 
+      Independent uniform random variables from Ishigami and Homma (1991)
+    marginals:
+      - name: X1
+        distribution: uniform
+        parameters: [$(-pi), $(pi)]
+      - name: X2
+        distribution: uniform
+        parameters: [$(-pi), $(pi)]
+      - name: X3
+        distribution: uniform
+        parameters: [$(-pi), $(pi)]
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    a: X2 main effect amplitude
+    b: X1-X3 interaction amplitude
+  sets:
+    Ishigami1991:
+      a: 7.0
+      b: 0.1
+      description: Parameter set from Ishigami and Homma (1991)
+    Sobol1999:
+      a: 7.0
+      b: 0.05
+      description: Parameter set from Sobol' and Levitan (1999)
+
+  default_parameters: Ishigami1991

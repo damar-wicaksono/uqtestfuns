@@ -1,0 +1,16 @@
+name: NotCallable
+description: The identifier exists but is not a callable
+tags: [metamodeling]
+
+dimensions:
+  input: variable
+  output: 1
+
+evaluate: common.number
+
+inputs:
+  DefaultInput:
+    description: "Default input"
+    marginals:
+      distribution: uniform
+      parameters: [0.0, 1.0]

@@ -1,0 +1,11 @@
+name: InvalidInputsRecursive
+description: Specification with redirected inputs file that redirects back to itself
+tags: [metamodeling]
+
+dimensions:
+  input: variable
+  output: 1
+
+evaluate: common.evaluate
+
+inputs: recursive_inputs.yaml

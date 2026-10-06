@@ -21,10 +21,11 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The test function is a five-dimensional, scalar-valued function that models
-the maximum power of a single-diode solar cell. The function was used in
-{cite}`Constantine2015` to demonstrate the active subspace method for
-input dimension reduction and sensitivity analysis.
+The `SolarCell` model is a five-dimensional scalar-valued function
+that models the maximum power of a single-diode solar cell.
+It was used in {cite}`Constantine2015` to demonstrate
+the active subspace method for input dimension reduction
+and sensitivity analysis.
 
 For a given voltage, the corresponding current is defined implicitly.
 The plot below (left) displays 15 current-voltage curves from 15 different
@@ -36,9 +37,8 @@ the maximum cell power; the power curves are shown in the right plot.
 :tags: [remove-input]
 
 my_fun = uqtf.SolarCell()
-my_fun.prob_input.reset_rng(237324)
 num_sample = 15
-xx = my_fun.prob_input.get_sample(num_sample)
+xx = my_fun.prob_input.get_sample(num_sample, 237324)
 
 n_s = my_fun.parameters["n_s"]
 v_th = my_fun.parameters["v_th"]
@@ -53,6 +53,7 @@ def compute_ii(vv, xx, ns, v_th):
                 x,
                 n_s,
                 v_th,
+                {},
             ).squeeze()
 
     return ii
@@ -64,6 +65,8 @@ pp_max, vv_max = uqtf.test_functions.solar_cell.compute_power_max(
     xx,
     n_s,
     v_th,
+    {},
+    {},
 )
 ii_max = np.array(
     [
@@ -72,6 +75,7 @@ ii_max = np.array(
             xx[k],
             n_s,
             v_th,
+            {},
         ).squeeze()
         for k in range(num_sample)
     ]
@@ -125,7 +129,7 @@ print(my_testfun)
 ## Description
 
 The model predicts the maximum power of a single-diode solar cell defined
-in the following formula:
+in the following formula[^location]:
 
 $$
 \mathcal{M}(\boldsymbol{x}; \boldsymbol{p}) = \max_{I, V}  I(V; \boldsymbol{x}, \boldsymbol{p}) V,
@@ -133,7 +137,7 @@ $$
 
 where the current ($I$) is defined implicitly as a function of the voltage ($V$),
 input variables $\boldsymbol{x}$ and parameters $\boldsymbol{p}$.
-The implicit relationshow is described by the following equation:
+The implicit relationship is described by the following equation:
 
 $$
 I(V; \boldsymbol{x}, \boldsymbol{p}) = I_L - I_S \left( \exp{\left( \frac{V + I R_S}{n_S \, n \, V_{\text{th}}} \right) } - 1 \right) - \frac{V + I R_S}{R_P},
@@ -172,8 +176,8 @@ print(my_testfun.parameters)
 
 ## Reference results
 
-This section provides several reference results of typical UQ analyses involving
-the test function.
+This section provides several reference results of typical UQ analyses
+involving the test function.
 
 ### Sample histogram
 
@@ -182,13 +186,12 @@ Shown below is the histogram of the output based on $1000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(1000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(1000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -206,25 +209,7 @@ using the following methods:
   is computed on-the-fly during the iteration).
 
 The default parameter values for these methods can be overridden by providing
-a dictionary with new parameter values. For example:
-
-To override the tolerance value for `root()`:
-
-```python
-fun.parameters.add("root", {"tol": 1e-12})  # 'root' as the parameter keyword
-```
-
-To override the tolerance value for `minimize()`:
-
-```python
-fun.parameters.add("minimize", {"tol": 1e-12})  # 'minimize' as the parameter keyword
-```
-
-```{note}
-In this example, `tol` is acceptable keyword-named argument for both `root()`
-and `minimize()`; indeed, the key-value pairs specified for the parameters
-`root` and `minimize` must be recognized by the respective methods.
-```
+a dictionary with new parameter values.
 
 ## References
 

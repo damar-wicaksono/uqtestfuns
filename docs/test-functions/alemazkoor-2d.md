@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:alemazkoor-2d)=
-# Two-dimensional Function from Alemazkoor and Meidani (2018)
+# Two-dimensional High-Degree Polynomial from Alemazkoor and Meidani (2018)
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,13 +21,11 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The test function from {cite}`Alemazkoor2018` (or `Alemazkoor2D` for short)
-is a two-dimensional polynomial function.
-It was used as a test function for
-a metamodeling exercise (i.e., sparse polynomial chaos expansion).
-The function features a low-dimensional polynomial function (two-dimensional)
-with a high degree (a total degree of $20$); in other words, the function
-is low in dimension but of high-degree.
+The test function from {cite}`Alemazkoor2018` (`Alemazkoor2D` for short)
+is a two-dimensional polynomial of total degree $20$.
+It was used as a benchmark for sparse polynomial chaos expansion (PCE)
+metamodeling in the original paper, specifically to study the regime
+of low dimension paired with high polynomial degree.
 
 The surface and contour plots of the `Alemazkoor2D` function are shown below.
 
@@ -58,9 +56,9 @@ axs_1.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_1.set_xlabel("$x_1$", fontsize=14)
-axs_1.set_ylabel("$x_2$", fontsize=14)
-axs_1.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_1.set_xlabel(r"$x_1$", fontsize=14)
+axs_1.set_ylabel(r"$x_2$", fontsize=14)
+axs_1.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_1.set_title("Surface plot of Alemazkoor2D", fontsize=14)
 
 # Contour
@@ -68,8 +66,8 @@ axs_2 = plt.subplot(122)
 cf = axs_2.contourf(
     mesh_2d[0], mesh_2d[1], yy_2d.reshape(1000, 1000).T, cmap="plasma"
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
 axs_2.set_title("Contour plot of Alemazkoor2D", fontsize=14)
 divider = make_axes_locatable(axs_2)
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -96,7 +94,7 @@ print(my_testfun)
 
 ## Description
 
-The `Alemazkoor2D` function is defined as follows:
+The `Alemazkoor2D` function is defined as follows[^location]:
 
 $$
 \mathcal{M}(\boldsymbol{x}) = \sum_{i = 1}^{5} x_1^{2i} x_2^{2i}
@@ -128,13 +126,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

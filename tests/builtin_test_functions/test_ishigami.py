@@ -10,10 +10,12 @@ Notes
 import numpy as np
 import pytest
 
-from uqtestfuns import Ishigami
+from uqtestfuns import Ishigami, get_registry
 
 # Test for different parameters to the Ishigami function
-available_parameters = list(Ishigami.available_parameters.keys())
+available_parameters = list(
+    get_registry()["Ishigami"].available_parameters_ids.keys()
+)
 
 
 @pytest.fixture(params=available_parameters)
@@ -70,5 +72,5 @@ def test_different_parameters(param_selection):
 
 def test_wrong_param_selection():
     """Test a wrong selection of the parameters."""
-    with pytest.raises(KeyError):
+    with pytest.raises(ValueError):
         Ishigami(parameters_id="marelli1")

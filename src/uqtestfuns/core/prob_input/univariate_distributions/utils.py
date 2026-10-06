@@ -4,14 +4,12 @@ Utility module for univariate distribution calculations.
 
 import numpy as np
 
-from ....global_settings import ARRAY_FLOAT
-
 
 def postprocess_icdf(
-    xx: ARRAY_FLOAT,
+    xx: np.ndarray,
     lower_bound: float,
     upper_bound: float,
-) -> ARRAY_FLOAT:
+) -> np.ndarray:
     """Postprocess the computed ICDF values.
 
     The postprocessing ensures that the output is an array and always
@@ -19,7 +17,7 @@ def postprocess_icdf(
 
     Parameters
     ----------
-    xx : ARRAY_FLOAT
+    xx : np.ndarray
         The raw ICDF values of a distribution computed either from a built-in
         function or a re-parameterization of the SciPy implementation.
     lower_bound : float
@@ -31,21 +29,11 @@ def postprocess_icdf(
 
     Return
     ------
-    ARRAY_FLOAT
+    np.ndarray
         The post-processed ICDF values.
     """
-    # A scalar output
-    if xx.ndim == 0:
-        if xx < lower_bound:
-            xx = np.asarray(lower_bound)
-        if xx > upper_bound:
-            xx = np.asarray(upper_bound)
-
-        xx = np.asarray(xx)
-
-    else:
-        xx[xx < lower_bound] = lower_bound
-        xx[xx > upper_bound] = upper_bound
+    xx[xx < lower_bound] = lower_bound
+    xx[xx > upper_bound] = upper_bound
 
     return xx
 

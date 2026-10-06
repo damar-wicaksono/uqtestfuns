@@ -1,11 +1,241 @@
 # Changelog
 
-All notable changes to the UQTestFuns project is documented in this file.
+All notable changes to the UQTestFuns project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.7.0] - 2026-10-06
+
+### Added
+
+- A project logo with light and dark variants, a tagline variant for the
+  README and documentation landing page, an icon variant, and a favicon.
+  Exported assets live in `docs/_static/`; the draw.io source and
+  supporting materials are in `assets/logo/`.
+- A `## Logo` section in `docs/development/about.md` describing the
+  design and crediting the tools used.
+- A `Registry` class that auto-scans `test_functions/` at import time,
+  parsing YAML specification files into lightweight registry entries
+  for function discovery without importing any Python modules eagerly.
+- `list_functions()` now supports filtering by `input_dimension`,
+  `output_dimension`, `parameterized`, and `tag`, and can render its
+  output as a table in any `tabulate`-supported format (`tablefmt`) or
+  return a plain list of bare function names (`tabulate=False`). Which
+  columns the table displays is controlled independently via a
+  `columns` argument (`'default'`, `'all'`, `'compact'` presets, or a
+  custom sequence of column names/aliases), rather than being an
+  implicit side effect of which filters are passed.
+- `list_parameters(name)`, the companion to `list_functions()` for
+  browsing a function's available parameter sets: `tabulate=True`
+  (default) prints a table of parameter-set IDs and descriptions along
+  with the default ID; `tabulate=False` returns a sorted list of bare
+  IDs usable directly as `uqtf.<Name>(*, parameters_id=<id>)` or
+  `uqtf.create(<Name>, *, parameters_id=<id>)`.
+- `list_inputs(name)`, the analog to `list_parameters()` for browsing
+  a function's available probabilistic input specifications:
+  `tabulate=True` (default) prints a table of input-spec IDs and
+  descriptions along with the default ID; `tabulate=False` returns a
+  sorted list of bare IDs usable directly as
+  `uqtf.create(<Name>, input_id=<id>)`.
+
+### Changed
+
+- The internal implementation of `ProbInput` has been consolidated onto
+  the modernized, registry-oriented implementation; the previous
+  implementation has been removed. The import path is unchanged.
+- `list_functions()` is now implemented directly on top of the
+  `Registry` instead of walking `UQTestFunABC` subclasses; `helpers.py`
+  has been removed with `api.py` now the sole home for user-facing
+  discovery functions.
+- **Breaking:** `list_functions(tablefmt="html")` no longer returns an
+  HTML string as a special case; `tabulate=True` now always prints the
+  table and returns `None`, regardless of `tablefmt`.
+- **Breaking:** `list_functions(tabulate=False)` now returns bare
+  function names instead of constructor-style strings with a `"()"`
+  suffix, so results compose directly with `create()`/`getattr()`; the
+  `"()"` suffix still appears in the printed table's Constructor
+  column.
+- The string representation of `ProbInput` now tabulates its marginals
+  (variable, distribution, parameters), including a description column
+  only when at least one marginal has a description; `Marginal`'s
+  `display()` method has been renamed to the `notation` property.
+- The string representation of `Marginal` now includes parameter names
+  alongside their values and spells out full distribution names (e.g.,
+  `Exponential`, `Uniform`) rather than abbreviations, closer to standard
+  mathematical notation.
+- The string representation of `Parameters` now summarizes each value
+  in a dedicated Value column, recognizing containers via their
+  abstract base classes (so any sized object is summarized by length)
+  and adding explicit handling for mappings, strings, and NumPy scalar
+  types; an empty `Parameters` instance no longer prints a bare header.
+- `UQTestFun`'s string representation now omits `name` and
+  `description` when they are `None` instead of showing a placeholder.
+- `Marginal.__repr__()` now calls `.tolist()` on `parameters` so that
+  `repr()` output round-trips correctly.
+- The documentation landing page (`docs/index.md`) and README's opening
+  description have been condensed for readability, with the navigation
+  cards' tone unified.
+- The "Obtaining and Installing" docs page has been clarified with the
+  minimum Python requirement, install guidance, and a verification step.
+- The tutorials index page now points to the installation guide as a
+  prerequisite.
+- Citation instructions have been simplified in README and `CITATION.cff`
+  now includes a preferred citation for the JOSS paper.
+- The `docs/fundamentals/` pages have been overhauled: corrected function
+  tables, added the missing narrative sections, and unified the table
+  format across all five pages.
+- The `docs/prob-input/` section has been overhauled: settled terminology
+  between random variables/vectors and marginal distributions/
+  probabilistic inputs, fixed a broken method call and several broken
+  cross-references, and renamed two pages for clarity.
+- The `docs/api/` reference chapter has been rewritten to describe the
+  current registry-based architecture instead of the removed class
+  hierarchy, and gained new pages for `create()`, `list_parameters()`,
+  and `list_inputs()`.
+- Added a `development/how-it-works.md` page to the Contributor's Guide
+  covering the registry/YAML pipeline and where its pieces live in the
+  codebase, and fixed a copy-pasted project name in
+  `development/about.md`. Later revised for tone and clarity, and
+  fixed an ambiguity in the `test_functions/` description that could
+  be read as implying family functions (e.g., `franke/`, `genz/`)
+  share a single YAML spec, when each member actually keeps its own
+  and only the Python module and input specification are shared.
+- The `development/adding-test-function-implementation.md` guide has
+  been rewritten to describe the current YAML+Python workflow instead
+  of the removed ABC-based one.
+- Added a `development/yaml-specification.md` reference page covering
+  the full YAML specification schema, cross-referenced from
+  `development/adding-test-function-implementation.md` and the
+  Contributor's Guide overview.
+- The `development/adding-test-function-docs.md` guide has been
+  brought up to date: fixed several factual errors (a false claim
+  about `ProbInput`'s HTML output, a stale bibliography style, a wrong
+  file extension, a LaTeX formula bug, a missing parameter label) and
+  reworded throughout for clarity and consistency.
+- Fixed a typo'd upstream remote URL and two stale directory-tree
+  entries in `development/setting-up-dev-env.md`.
+- Added an `AUTHORS.md` file at the repo root listing the project's
+  author and contributors.
+- The `development/making-a-pull-request.md` guide now covers `mypy`
+  alongside `flake8`/`black`, closing a gap where the type-checking CI
+  gate was never mentioned; also cleaned up terminology and repeated
+  wording throughout.
+- The `development/adding-marginal-distribution.md` guide has been
+  brought up to date: fixed a wrong file path, a missing `.py`
+  extension, a PDF/CDF notation collision, and stale example code;
+  documented two module-level variables (`DISPLAY_NAME`,
+  `PARAM_NAMES`) that were required but never mentioned; added an
+  explanation of why unbounded distributions clip to a finite
+  numerical bound; and added a missing final step for adding the
+  distribution's own documentation page.
+- Fixed a typo in `development/code-of-conduct.md`'s pledge text
+  ("case" -> "caste") and filled in its previously-unset enforcement
+  contact, now routed through `development/about.md`'s maintainers
+  section instead of a personal email address, with a note
+  acknowledging the limits of that setup for a project without an
+  independent enforcement committee.
+- `getting-started/tutorial-built-in-functions.md` now covers choosing
+  a published input specification with `input_id`/`list_inputs()`,
+  mirroring the existing coverage of `parameters_id`/`list_parameters()`.
+- Tidied `development/overview.md`: fixed a garbled typo, a missing
+  "to", "code base" -> "codebase", and reordered the opening
+  contribution list to match the order of the sections below it.
+- `development/yaml-specification.md` gained a "Function families"
+  section documenting the subpackage/shared-`evaluate.py`/shared-
+  `inputs.yaml` pattern used by `genz/`, `franke/`, and others
+  (previously undocumented); the existing "Shared inputs across
+  function families" section was reframed around the general
+  capability of pointing `inputs` at a separate file, with the family
+  use case now a cross-reference rather than the main framing.
+- Condensed `CONTRIBUTING.md`: removed Installation/Testing/
+  Documentation sections that duplicated `docs/development/`'s guides
+  (and had drifted from them, e.g., a stale "six main sections"
+  listing and a broken Markdown link), replacing them with links into
+  the Contributor's Guide. Brought the repo-root `CODE-OF-CONDUCT.md`
+  back in sync with `docs/development/code-of-conduct.md`. Added `uv`
+  as a third option alongside `venv`/`conda` in
+  `development/setting-up-dev-env.md` for creating an environment and
+  installing the package.
+- Refreshed `README.md`, whose examples and claims had drifted since
+  the YAML-architecture migration: corrected the `list_functions()`
+  table and the `UQTestFun`/`ProbInput` example output to match their
+  current string representations, corrected the dependency list to
+  include `pyyaml` and `tabulate`, fixed a case-mismatched
+  `CONTRIBUTING.md` link and a missing GitHub Issues link, switched
+  the Python-version badge to track PyPI automatically, pointed to
+  `CITATION.cff` in the citing section, and updated the Credits
+  section for the project's current maintainership. Applied the
+  matching dependency-list fix to `docs/index.md` and a stale
+  "Python3" mention in `CITATION.cff`.
+- Consolidated the project's build and development tooling from
+  `setup.cfg` + setuptools + tox + black + flake8 into a single
+  `pyproject.toml`, using Hatchling as the build backend, `uv` for
+  environment/dependency management, and Ruff for formatting and
+  linting. Also fixes stale `.pyc` files bloating published
+  wheels/sdists: Hatchling's `.gitignore`-aware file selection
+  replaces the hand-maintained `MANIFEST.in` that caused it.
+- `README.md`'s DOI badge and the docs' citation guidance now point
+  to Zenodo's concept DOI (always the latest archived version)
+  instead of a version-specific record, so they no longer need
+  updating at every release.
+- The CI workflow's `typecheck` job no longer passes
+  `--ignore-missing-imports` to `mypy`; missing type stubs for
+  dependencies are now surfaced as errors rather than silently
+  suppressed.
+- The documentation landing page (`docs/index.md`) now displays
+  the logo with tagline as a hero image with dark/light theme support;
+  the generic "Welcome to..." heading has been removed.
+- The docs navbar now shows theme-aware light and dark logo variants,
+  configured via `html_theme_options` in `docs/_config.yml`; the
+  favicon is also set.
+- `README.md` now displays the logo with tagline at the top with
+  dark/light theme support via the `<picture>` element; the citation
+  section now links to the paper and software archive directly in
+  the text and accurately describes what the documentation provides.
+- `docs/development/making-a-pull-request.md` updated to reflect the
+  current Ruff-based toolchain, replacing stale Flake8/Black
+  instructions and removing the `--ignore-missing-imports` flag from
+  the documented `mypy` command.
+
+### Fixed
+
+- Looking up an unknown function name in the registry now raises a
+  `KeyError` with a consistent, informative message instead of an
+  unhandled exception, including a "did you mean ...?" suggestion when
+  the name looks like a typo of a known one.
+- Corrected wrong ICDF formulas on several marginal distribution
+  documentation pages (Gumbel, normal, truncated normal, truncated
+  Gumbel).
+- The GitHub Actions release workflow's `publish` job had a broken
+  artifact handoff (mismatched names and an incompatible action
+  version between its upload and download steps) that would have
+  made any release tag push fail to publish to PyPI.
+- A stale cross-reference in `docs/test-functions/damped-oscillator.md`
+  pointed to the old label `test-functions:damped-oscillator-reliability`
+  instead of the current `test-functions:rs-damped-oscillator-reliability`
+  after the function was renamed to `RSDampedOscillator`.
+- Fixed a nested square root bug in the Piston function's documented
+  formula for volume *V*, which differed from the original
+  Ben-Ari & Steinberg (2007) paper.
+
+### Removed
+
+- `ProbInput.reset_rng()` and the `rng_seed` property have been removed.
+  Sampling is now stateless: pass a seed or `numpy.random.Generator`
+  directly to `get_sample(rng=...)` instead of resetting RNG state on
+  the instance.
+- The abstract-base-class system (`UQTestFunBareABC`, `UQTestFunABC`,
+  `UQTestFunVarDimABC`, `UQTestFunFixDimABC`) has been removed
+  following the new YAML-based architecture.
+- `FunParams` has been removed in favor of `Parameters`, which offers an
+  equivalent named parameter-set model, with sets sourced from the
+  registry now protected (read-only) to preserve their correspondence
+  with the published source; use `.copy()` to get an editable instance.
+- The unused `utils.py` module, including `create_canonical_uniform_input`,
+  has been removed.
 
 ## [0.6.0] - 2025-01-21
 
@@ -60,12 +290,12 @@ UQTestFuns now includes 75 test functions.
   for metamodeling exercise.
 - The 8-dimensional robot arm function for metamodeling exercises.
 
-## Changed
+### Changed
 
 - The function `Gramacy1DSine` has been renamed to `GramacySine` for
   conciseness and consistency with the other sine-based functions.
 
-## Fixed
+### Fixed
 
 - Assigning an integer value to `rng_seed` property of `ProbInput` now
   correctly reset the RNG with the assigned seed number.
@@ -327,6 +557,7 @@ First public release of UQTestFuns.
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
 [Unreleased]: https://github.com/damar-wicaksono/uqtestfuns/compare/main...dev
+[0.7.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.4.0...v0.4.1

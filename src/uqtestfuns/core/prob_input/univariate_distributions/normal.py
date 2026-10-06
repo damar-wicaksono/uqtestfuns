@@ -16,8 +16,9 @@ from .utils import verify_param_nums, postprocess_icdf
 from ....global_settings import ARRAY_FLOAT
 
 DISTRIBUTION_NAME = "normal"
-
+DISPLAY_NAME = "Normal"
 NUM_PARAMS = 2
+PARAM_NAMES = ("mu", "sigma")
 
 
 def verify_parameters(parameters: ARRAY_FLOAT) -> None:

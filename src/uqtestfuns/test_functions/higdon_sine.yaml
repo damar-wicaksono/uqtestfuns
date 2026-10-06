@@ -1,0 +1,17 @@
+name: HigdonSine
+description: One-dimensional sine function from Higdon (2002)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 1
+  output: 1
+
+inputs:
+  Higdon2002:
+    description: Input domain from Higdon (2002)
+    marginals:
+      - name: x
+        distribution: uniform
+        parameters: [1.0, 10.0]
+    copulas: null

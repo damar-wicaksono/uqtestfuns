@@ -23,87 +23,6 @@ References
 
 import numpy as np
 
-from copy import deepcopy
-
-from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["OTLCircuit"]
-
-
-MARGINALS_BENARI2007: MarginalSpecs = [
-    {
-        "name": "Rb1",
-        "distribution": "uniform",
-        "parameters": [50.0, 150.0],
-        "description": "Resistance b1 [kOhm]",
-    },
-    {
-        "name": "Rb2",
-        "distribution": "uniform",
-        "parameters": [25.0, 70.0],
-        "description": "Resistance b2 [kOhm]",
-    },
-    {
-        "name": "Rf",
-        "distribution": "uniform",
-        "parameters": [0.5, 3.0],
-        "description": "Resistance f [kOhm]",
-    },
-    {
-        "name": "Rc1",
-        "distribution": "uniform",
-        "parameters": [1.2, 2.5],
-        "description": "Resistance c1 [kOhm]",
-    },
-    {
-        "name": "Rc2",
-        "distribution": "uniform",
-        "parameters": [0.25, 1.20],
-        "description": "Resistance c2 [kOhm]",
-    },
-    {
-        "name": "beta",
-        "distribution": "uniform",
-        "parameters": [50.0, 300.0],
-        "description": "Current gain [A]",
-    },
-]
-
-MARGINALS_MOON2010 = [deepcopy(_) for _ in MARGINALS_BENARI2007]
-for i in range(14):
-    MARGINALS_MOON2010.append(
-        {
-            "name": f"Inert {i+1}",
-            "distribution": "uniform",
-            "parameters": [100.0, 200.0],
-            "description": "Inert input [-]",
-        },
-    )
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "BenAri2007": {
-        "function_id": "OTLCircuit",
-        "description": (
-            "Probabilistic input model for the OTL Circuit function "
-            "from Ben-Ari and Steinberg (2007)."
-        ),
-        "marginals": MARGINALS_BENARI2007,
-        "copulas": None,
-    },
-    "Moon2010": {
-        "function_id": "OTLCircuit",
-        "description": (
-            "Probabilistic input model for the OTL Circuit function "
-            "from Moon (2010)."
-        ),
-        "marginals": MARGINALS_MOON2010,
-        "copulas": None,
-    },
-}
-
-DEFAULT_INPUT_SELECTION = "BenAri2007"
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the OTL circuit test function on a set of input values.
@@ -111,15 +30,15 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     xx : np.ndarray
-        (At least) 6-dimensional input values given by N-by-6 arrays
-        where N is the number of input values.
+        An ``(N, M)`` array of input values where ``M >= 6``
+        and ``N`` is the number of input values.
 
     Returns
     -------
     np.ndarray
         The output of the OTL circuit test function,
         i.e., the mid-point voltage in Volt.
-        The output is a one-dimensional array of length N.
+        The output is a one-dimensional array of length ``N``.
 
     Notes
     -----
@@ -146,19 +65,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     vm = term_1 + term_2 + term_3
 
     return vm
-
-
-class OTLCircuit(UQTestFunFixDimABC):
-    """A concrete implementation of the OTL circuit test function."""
-
-    _tags = ["metamodeling", "sensitivity"]
-    _default_input_dimension = 6
-    _description = (
-        "Output transformerless (OTL) circuit model "
-        "from Ben-Ari and Steinberg (2007)"
-    )
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-    _default_input_id = DEFAULT_INPUT_SELECTION
-
-    evaluate = staticmethod(evaluate)  # type: ignore

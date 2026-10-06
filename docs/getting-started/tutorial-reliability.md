@@ -15,16 +15,22 @@ kernelspec:
 (getting-started:tutorial-reliability)=
 # Tutorial: Test a Reliability Analysis Method
 
-UQTestFuns includes several test functions from the literature employed
-in a reliability analysis exercise.
+UQTestFuns includes several test functions from the literature used
+in reliability analysis.
 In this tutorial, you'll implement a method to estimate the failure probability
-of a computational model and test the implementation using a test function
-available in UQTestFuns.
+of a computational model and try it out on a test function from UQTestFuns.
 
-By the end of this tutorial, you'll get an idea how a function from UQTestFuns
-is used to test a reliability analysis method.
+By the end, you'll understand how a UQTestFuns function lets you
+test a reliability analysis method.
+A reliability problem asks what is the probability a system fails
+under uncertain inputs,
+so it is well-posed once those inputs' distribution is fixed;
+each UQTestFuns function comes with one.
+For the cantilever beam problem used here,
+the literature also provides published estimates of the failure probability,
+giving you reference values to check against.
 
-```{code-cell} ipython3
+```{code-cell}
 import numpy as np
 import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
@@ -32,16 +38,16 @@ import uqtestfuns as uqtf
 
 ## Reliability analysis
 
-Consider a system whose performance is defined by a _performance function_[^lsf]
-$g$ whose values, in turn, depend on:
+Consider a system whose performance is defined by a *performance function*[^lsf] $g$.
+Its value depends on:
 
-- $\boldsymbol{x}_p$: the (uncertain) input variables
-  of an underlying computational model $\mathcal{M}$
-- $\boldsymbol{x}_s$: additional (uncertain) input variables that affects
-  the performance of the system, but not part of inputs to $\mathcal{M}$ 
-- $\boldsymbol{p}$: an additional set of _deterministic_ parameters of the system
+- $\boldsymbol{x}_p$: the (uncertain) input variables to an underlying 
+  computational model $\mathcal{M}$;
+- $\boldsymbol{x}_s$: additional (uncertain) input variables that affect
+  the system's performance but are not arguments of $\mathcal{M}$;
+- $\boldsymbol{p}$: a set of *deterministic* parameters of the system.
 
-Combining these variables and parameters as an input to the performance function $g$:
+These combine into the performance function as
 
 $$
 g(\boldsymbol{x}; \boldsymbol{p}) = g(\mathcal{M}(\boldsymbol{x}_p), \boldsymbol{x}_s; \boldsymbol{p}),
@@ -49,90 +55,91 @@ $$
 
 where $\boldsymbol{x} = \{ \boldsymbol{x}_p, \boldsymbol{x}_s \}$.
 
-The system is said to be in _failure state_ if and only if
-$g(\boldsymbol{x}; \boldsymbol{p}) \leq 0$;
-the set of all values $\{ \boldsymbol{x}, \boldsymbol{p} \}$
+The system is in a *failure state* if and only if $g(\boldsymbol{x}; \boldsymbol{p}) \leq 0$;
+the set of all values ${ \boldsymbol{x}, \boldsymbol{p} }$
 such that $g(\boldsymbol{x}; \boldsymbol{p}) \leq 0$
-is called the _failure domain_.
+is called the *failure domain*.
 
-Conversely, the system is said to be in _safe state_
+Conversely, the system is in a *safe state*
 if and only if $g(\boldsymbol{x}; \boldsymbol{p}) > 0$;
-the set of all values $\{ \boldsymbol{x}, \boldsymbol{p} \}$
-such that $g(\boldsymbol{x}; \boldsymbol{p}) > 0$
-is called the _safe domain_.
+the set of all values ${ \boldsymbol{x}, \boldsymbol{p} }$
+such that $g(\boldsymbol{x}; \boldsymbol{p}) > 0$ is called the *safe domain*.
 
 ### Failure probability
 
-_Reliability analysis_[^rare-event] concerns with estimating
-the failure probability of a system with a given performance function $g$. 
+*Reliability analysis*[^rare-event] is concerned with estimating
+the failure probability of a system with a given performance function $g$.
 For a given joint probability density function (PDF) $f_{\boldsymbol{X}}$
 of the uncertain input variables $\boldsymbol{X} = \{ \boldsymbol{X}_p, \boldsymbol{X}_s \}$,
-the failure probability $P_f$ of the system is defined
-as follows {cite}`Sudret2012, Verma2015`:
+the failure probability $P_f$ is defined as {cite}`Sudret2012, Verma2015`:
 
 $$
-P_f \equiv \mathbb{P}[g(\boldsymbol{X}; \boldsymbol{p}) \leq 0] = \int_{\{ \boldsymbol{x} | g(\boldsymbol{x}; \boldsymbol{p}) \leq 0 \}} f_{\boldsymbol{X}} (\boldsymbol{x}) \, \; d\boldsymbol{x}.
+P_f \equiv \mathbb{P}[g(\boldsymbol{X}; \boldsymbol{p}) \leq 0] = \int_{\{ \boldsymbol{x} \, \mid \, g(\boldsymbol{x}; \boldsymbol{p}) \leq 0 \}} f_{\boldsymbol{X}} (\boldsymbol{x}) \, d\boldsymbol{x}.
 $$
 
-Evaluating the above integral is, in general, non-trivial because the domain
-of integration is only provided implicitly and the number of dimensions may
-be large.
+Evaluating this integral is generally non-trivial:
+the integration domain is given only implicitly,
+and the dimension may be high.
 
 ### Monte-Carlo estimation
 
 ```{warning}
 The Monte-Carlo method implemented below is one of the most straightforward
-and robust approach to estimate (small) failure probability.
-However, the method is rarely used for practical applications due to its
-high computational cost.
-It is used here in this tutorial simply as an illustration. 
-Numerous methods have been developed to efficiently and accurately estimate
-the failure probability of a computational model.
+and robust approaches for estimating a (small) failure probability.
+It is rarely used in practice, however, because of its high computational cost,
+and it appears here purely as an illustration.
+Numerous methods have been developed to estimate a failure probability
+more efficiently and accurately.
 ```
 
-The failure probability of a computational model given probabilistic inputs
-may be directly estimated using a Monte-Carlo simulation.
-Such a method is straightforward to implement though potentially computationally
-expensive as the chance of observing a failure event in a typical reliability
-analysis problem is very small.
+The failure probability of a computational model with probabilistic inputs
+can be estimated directly by Monte-Carlo simulation.
 
-An alternative formulation of the failure probability following
-{cite}`Beck2015` that aligns well with Monte-Carlo simulation is given below:
+The method is straightforward to implement but potentially expensive:
+in a typical reliability problem,
+the chance of observing a failure event is very small
+and thus large sample size must be generated.
 
-$$
-Pf \equiv \mathbb{P}[g(\boldsymbol{X}; \boldsymbol{p}) \leq 0] = \int_{\mathcal{D}_{\boldsymbol{X}}} \mathbb{I}[g(\boldsymbol{x} \leq 0)] f_{\boldsymbol{X}} (\boldsymbol{x}) \, d\boldsymbol{x},
-$$
-where $\mathbb{I}[g(\boldsymbol{x}; \boldsymbol{p}) \leq 0]$ is the indicator function such that:
+An alternative formulation of the failure probability,
+following {cite}`Beck2015` and well suited to Monte-Carlo simulation,
+is given below:
 
 $$
-\mathbb{I}[g(\boldsymbol{x}; \boldsymbol{p}) \leq 0] =
-  \begin{cases}
-    1, g(\boldsymbol{x}; \boldsymbol{p}) \leq 0 \\
-    0, g(\boldsymbol{x}; \boldsymbol{p}) > 0. \\
-  \end{cases}
+P_f \equiv \mathbb{P}[g(\boldsymbol{X}; \boldsymbol{p}) \leq 0] = \int_{\mathcal{D}_{\boldsymbol{X}}} \mathbb{I}[g(\boldsymbol{x}; \boldsymbol{p}) \leq 0] \, f_{\boldsymbol{X}} (\boldsymbol{x}) , d\boldsymbol{x},
 $$
 
-The Monte-Carlo estimate of the failure probability is given as follows:
+where $\mathbb{I}[g(\boldsymbol{x}; \boldsymbol{p}) \leq 0]$
+is the indicator function such that
 
 $$
-P_f \approx \widehat{P}_f = \frac{1}{N} \sum^N_{i = 1} \mathbb{I}[g(\boldsymbol{x}^{(i)} \leq 0],
+\mathbb{I}[g(\boldsymbol{x}; \boldsymbol{p}) \leq 0] = \begin{cases} 1, & g(\boldsymbol{x}; \boldsymbol{p}) \leq 0, \\ 0, & g(\boldsymbol{x}; \boldsymbol{p}) > 0. \end{cases}
 $$
+
+The Monte-Carlo estimate of the failure probability is
+
+$$
+P_f \approx \widehat{P}_f = \frac{1}{N} \sum_{i = 1}^{N} \mathbb{I}[g(\boldsymbol{x}^{(i)}; \boldsymbol{p}) \leq 0],
+$$
+
 where $N$ is the number of Monte-Carlo sample points.
 
-To assess the accuracy of the estimate given by the above equation, 
+To assess the accuracy of this estimate,
 the coefficient of variation ($\mathrm{CoV}$) is often used:
 
 $$
-\mathrm{CoV}[\widehat{P}_f] \equiv \frac{\left( \mathbb{V}[\widehat{P}_f] \right)^{0.5}}{\mathbb{E}[\widehat{P}_f]} = \left( \frac{1 - \widehat{P}_f}{N \widehat{P}_f} \right)^{0.5},
+\mathrm{CoV}[\widehat{P}_f] \equiv \frac{\left( \mathbb{V}[\widehat{P}_f] \right)^{1/2}}{\mathbb{E}[\widehat{P}_f]} = \left( \frac{1 - \widehat{P}_f}{N \widehat{P}_f} \right)^{1/2}.
 $$
 
-The Monte-Carlo simulation method to estimate the failure probability is 
-summarized in {prf:ref}`MC Simulation Pf`.
+The Monte-Carlo simulation for estimating the failure probability is summarized
+in {prf:ref}`MC Simulation Pf`.
 
-```{prf:algorithm} Monte-Carlo simulation for estimating $P_f$
+
+```{prf:algorithm}
 :label: MC Simulation Pf
 
-**Inputs** A performance function $g$, random input variables $\boldsymbol{X}$, number of MC sample points $N$
+**Inputs** A performance function $g$, random input variables $\boldsymbol{X}$,
+a set of deterministic parameters $\boldsymbol{p}$,
+number of MC sample points $N$
 
 **Output** $\widehat{P}_f$ and $\mathrm{CoV}[\widehat{P}_f]$
 
@@ -140,31 +147,31 @@ summarized in {prf:ref}`MC Simulation Pf`.
 2. For $i = 1$ to $N$:
 
     1. Sample $\boldsymbol{x}^{(i)}$ from $\boldsymbol{X}$
-    2. Evaluate $g(\boldsymbol{x}^{(i); \boldsymbol{p}})$
+    2. Evaluate $g(\boldsymbol{x}^{(i)}; \boldsymbol{p})$
     3. If $g(\boldsymbol{x}^{(i)}; \boldsymbol{p}) \leq 0$:
-      
+
         - $N_f \leftarrow N_f + 1$
- 
- 3. $\widehat{P}_f = \frac{N_f}{N}$
- 4. $\mathrm{CoV}[\widehat{P}_f] = \left( \frac{1 - \widehat{P}_f}{N \widehat{P}_f} \right)^{0.5}$
+
+3. $\widehat{P}_f \leftarrow \frac{N_f}{N}$
+4. $\mathrm{CoV}[\widehat{P}_f] \leftarrow \left( \frac{1 - \widehat{P}_f}{N \widehat{P}_f} \right)^{1/2}$
 ```
 
-{prf:ref}`MC Simulation Pf` is implemented in a Python function that assumes
-the performance function can be evaluated in a vectorized manner
-and a probabilistic model of the relevant inputs has been defined such that
-sample points can be generated from them.
-
-```{note}
-And indeed, test functions included in UQTestFuns are all given with the
-corresponding probabilistic input model according to the literature.
+```{margin}
+Indeed, every test function in UQTestFuns comes
+with a probabilistic input model taken from the literature.
 ```
 
-```{code-cell} ipython3
+{prf:ref}`MC Simulation Pf` is implemented below as a Python function.
+It assumes the performance function can be evaluated in a vectorized manner
+and that a probabilistic input model has been defined
+so that sample points can be drawn from it.
+
+```{code-cell}
 :tags: [hide-input]
 
-def estimate_pf(performance_function, prob_input, sample_size):
+def estimate_pf(performance_function, prob_input, sample_size, rng):
     """Estimate failure probability via MC simulation.
-    
+
     Parameters
     ----------
     performance_function
@@ -173,14 +180,16 @@ def estimate_pf(performance_function, prob_input, sample_size):
       The probabilistic input model of the performance function.
     sample_size
       The Monte-Carlo simulation sample size.
-      
+    rng
+      An instance of a NumPy random number generator used to draw the sample.
+
     Returns
     -------
     Tuple
       The estimated failure probability and its coefficient of variation (CoV).
     """
 
-    xx = prob_input.get_sample(sample_size)
+    xx = prob_input.get_sample(sample_size, rng=rng)
     yy = performance_function(xx)
 
     pf = np.sum(yy <= 0) / sample_size
@@ -191,82 +200,78 @@ def estimate_pf(performance_function, prob_input, sample_size):
 
 ## Two-dimensional cantilever beam reliability problem
 
-To test the implemented algorithm above, we choose the two-dimensional 
-cantilever beam reliability problem included in UQTestFuns. Several published
-results are available for this problem.
+To test the algorithm above,
+we use the {ref}`two-dimensional cantilever beam reliability problem <test-functions:cantilever-beam-2d>`
+included in UQTestFuns, for which several published results are available.
 
-The reliability problem consists of a cantilever beam with a rectangular
-cross-section subjected to a uniformly distributed loading. 
-The maximum deflection at the free end is taken to be the performance criterion
-such that the performance function reads:
+The problem consists of a cantilever beam with a rectangular cross-section
+under a uniformly distributed load.
+
+The maximum deflection at the free end serves as the performance criterion,
+so the performance function reads
 
 $$
-g(\boldsymbol{x}; \boldsymbol{p}) = \frac{l}{325} - \frac{12 l^4 w}{8 E h^3},
+g(\boldsymbol{x}; \boldsymbol{p}) = \frac{l}{325} - \frac{12 \, l^4 w}{8 \, E h^3},
 $$
-where $\boldsymbol{x} = \{ w, h \}$ is the two-dimensional vector of
-input variables, namely the load per unit area ($w$)
-and the depth of the cross section ($h$);
-and $\boldsymbol{p} = \{ E l\}$ is the vector of parameters,
-namely the modulus of elasticity of the beam ($E$) and the span of the beam
-($l$).
 
-To create an instance of the cantilever beam function:
+where $\boldsymbol{x} = \{ w, h \}$ collects the input variables:
+the load per unit area ($w$) and the depth of the cross-section ($h$).
+The parameters $\boldsymbol{p} = \{ E, l \}$
+are the modulus of elasticity ($E$) and the span of the beam ($l$).
 
-```{code-cell} ipython3
+Create an instance of the cantilever beam function:
+
+```{code-cell}
 cantilever = uqtf.CantileverBeam2D()
 ```
 
-The input variables $w$ and $h$ are probabilistically defined according
-to the table below.
+The input variables $w$ and $h$ are defined probabilistically as shown below:
 
-```{code-cell} ipython3
+```{code-cell}
 print(cantilever.prob_input)
 ```
 
 The default values of the parameters $E$ and $l$ are:
 
-```{code-cell} ipython3
+```{code-cell}
 print(cantilever.parameters)
 ```
 
-For reproducibility of this tutorial, set the seed number of the 
-pseudo-random generator attached to the probabilistic input model:
+Finally, several published estimates of the failure probability are available for this problem:
 
-```{code-cell} ipython3
-cantilever.prob_input.reset_rng(245634)
-```
-
-Finally, several published results of the failure probability of the problem
-are as follows:
-
-- $\widehat{P}_f = 9.88 \times 10^{-3}$ using {term}`FORM` with $27$ 
-  performance function evaluations ({cite}`Li2018`)
-- $\widehat{P}_f = 9.6071 \times 10^{-3}$ using {term}`IS` with $10^3$
-  performance function evaluations ({cite}`Rajashekhar1993`)
-- $\widehat{P}_f = 9.499 \times 10^{-3}$ using sequential surrogate reliability
-  method with $18$ performance function evaluations ({cite}`Li2018`)
+- $\widehat{P}_f = 9.88 \times 10^{-3}$, using {term}`FORM`
+  with $27$ performance function evaluations {cite}`Li2018`;
+- $\widehat{P}_f = 9.6071 \times 10^{-3}$, using {term}`IS`
+  with $10^3$ performance function evaluations {cite}`Rajashekhar1993`;
+- $\widehat{P}_f = 9.499 \times 10^{-3}$,
+  using a sequential surrogate reliability method
+  with $18$ performance function evaluations {cite}`Li2018`.
 
 ## Failure probability estimation
 
-To observe the convergence of the estimation procedure implemented above,
-several Monte-Carlo sample sizes are used:
+To observe the convergence of the procedure,
+we estimate the failure probability at several Monte-Carlo sample sizes.
+For reproducibility, we create a random number generator with a fixed seed
+and pass it to each call, so the successive estimates draw from a single,
+advancing stream:
 
-```{code-cell} ipython3
-sample_sizes = 5**np.arange(3, 12)
+```{code-cell}
+rng = np.random.default_rng(245634)
+
+sample_sizes = 5 ** np.arange(3, 12)
 pf_estimates = np.zeros(len(sample_sizes))
 cov_estimates = np.zeros(len(sample_sizes))
 
 for i, sample_size in enumerate(sample_sizes):
     pf_estimates[i], cov_estimates[i] = estimate_pf(
-        cantilever, cantilever.prob_input, sample_size
+        cantilever, cantilever.prob_input, sample_size, rng
     )
 ```
 
-The estimated failure probability as a function of sample size is plotted
-below. The uncertainty band around the estimate is also included and it
-corresponds to one standard deviation.
+The estimated failure probability is plotted below against the sample size,
+with an uncertainty band of one standard deviation around each estimate.
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-input]
 
 fig, ax = plt.subplots(1, 1)
@@ -284,25 +289,83 @@ ax.fill_between(
     pf_estimates * (1 - cov_estimates),
     color="gray",
 )
+ax.axhline(y=9.88e-3, color="black", linestyle="--", label="FORM")
+ax.axhline(y=9.6071e-3, label="IS", color="black", linestyle="-.")
+ax.axhline(y=9.499e-3, color="black", linestyle=":", label="Surrogate")
 ax.grid()
+ax.legend(fontsize=14)
+ax.set_ylim([0.004, 0.016])
 ax.set_xscale("log")
 ax.set_xlabel("MC sample size", fontsize=14)
 ax.set_ylabel(r"$\widehat{P}_f$", fontsize=14);
 ```
 
-The final estimate of the failure probability
-(from $>10^7$ function evaluations) is:
+The final estimate of the failure probability,
+from more than $10^7$ function evaluations, is:
 
-```{code-cell} ipython3
+```{code-cell}
 print(f"{pf_estimates[-1]:1.4e}")
 ```
 
-This values seems to be consistent with the provided published results
-albeit with a much higher computational cost.
+This value is consistent with the published results above,
+though it comes at a much higher computational cost.
+Such a cost is acceptable here
+only because the cantilever beam is an inexpensive analytic test function;
+for a real computational model,
+where a single evaluation may take minutes or hours (even days!),
+obtaining more than $10^7$ evaluations would be unrealistic.
 
-The challenge for a reliability analysis method is to accurately and 
-efficiently (as few performance function evaluations as possible)
-estimate the failure probability.
+## Trying another problem
+
+Because `estimate_pf()` takes the test function
+and its probabilistic input as arguments,
+nothing in it is specific to the cantilever beam problem.
+To test your method on a different reliability problem,
+change a single line: swap `uqtf.CantileverBeam2D()` for another function,
+and the probabilistic input that comes along with it.
+For example, the {ref}`four-branch <test-functions:four-branch>`
+series-system problem {cite}`Katsuki1994`
+is also a two-dimensional reliability function:
+
+```{code-cell}
+four_branch = uqtf.FourBranch()
+
+rng = np.random.default_rng(245634)
+pf, cov = estimate_pf(four_branch, four_branch.prob_input, 500000, rng)
+
+print(f"{pf:1.4e}")
+```
+
+The same method now runs on an entirely different problem,
+with the correct input model supplied by the library
+rather than provided by hand.
+In UQTestFuns, every built-in function shares the same interface,
+so a method designed for one works for all of them.
+See the full list of
+{ref}`test functions for reliability analysis <fundamentals:reliability>`
+for the other problems you can drop in.
+
+---
+
+## Summary
+
+In this tutorial, you implemented a Monte-Carlo method
+to estimate the failure probability of a computational model
+and tried it out on the two-dimensional cantilever beam from UQTestFuns.
+Two features of the test function made this validation straightforward:
+its probabilistic input model came built in, ready to sample from,
+and its published reference results gave you concrete numbers
+to check your estimate against.
+The estimate converged to a value consistent with the literature,
+confirming the implementation works as intended.
+
+This is the role a UQTestFuns test function plays: a known,
+well-documented problem against which you can develop
+and validate your own reliability analysis method
+before applying it to a real computational model.
+There, the challenge is to estimate the failure probability
+both accurately and efficiently,
+i.e., with as few performance function evaluations as possible.
 
 ## References
 

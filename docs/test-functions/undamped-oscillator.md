@@ -13,7 +13,7 @@ kernelspec:
 ---
 
 (test-functions:undamped-oscillator)=
-# Undamped Oscillator
+# Undamped Oscillator Reliability Problem
 
 ```{code-cell} ipython3
 import numpy as np
@@ -21,14 +21,12 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The undamped oscillator function (`UndampedOscillator`) is a six-dimensional,
-scalar-valued test function that models a non-linear, undamped,
-single-degree-of-freedom, forced oscillating mechanical system.
-
-This function is frequently used as a test function for reliability analysis
-methods (see  {cite}`Bucher1990, Rajashekhar1993, Gayton2003, Schueremans2005, Echard2011, Echard2013`).
-Additionally, in {cite}`Luethen2021`, the function is employed
-as a test function for metamodeling exercises.
+The `UndampedOscillator` function is a six-dimensional limit-state function
+that models a nonlinear, undamped, single-degree-of-freedom forced
+oscillating mechanical system.
+It is widely used as a test function for reliability analysis methods
+(see {cite}`Bucher1990, Rajashekhar1993, Gayton2003, Schueremans2005, Echard2011, Echard2013`)
+and metamodeling exercises {cite}`Luethen2021`.
 
 ## Test function instance
 
@@ -110,8 +108,7 @@ Shown below is the histogram of the output based on $10^6$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(1000000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(1000000)
 idx_pos = yy_test > 0
 idx_neg = yy_test <= 0
 
@@ -121,7 +118,7 @@ plt.axvline(0, linewidth=1.0, color="#ca0020")
 
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$g(\mathbf{X})$")
+plt.xlabel(r"$g(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 

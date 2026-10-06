@@ -1,0 +1,12 @@
+name: McLainS1
+description: Part-of-a-sphere surface function from McLain (1974)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+evaluate: evaluate.mclain_s1
+
+inputs: inputs.yaml

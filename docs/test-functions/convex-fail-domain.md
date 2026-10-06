@@ -21,8 +21,9 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The Convex failure domain is a test function 
-from {cite}`Borri1997` for reliability analysis exercises {cite}`Waarts2000`.
+The convex failure domain problem {cite}`Borri1997` (`ConvexFailDomain`
+for short) is a two-dimensional reliability analysis benchmark with a
+convex limit-state surface {cite}`Waarts2000`.
 
 The plots of the function are shown below. The left plot shows the surface
 plot of the performance function, the center plot shows the contour
@@ -34,8 +35,7 @@ overlaid.
 :tags: [remove-input]
 
 my_fun = uqtf.ConvexFailDomain()
-my_fun.prob_input.reset_rng(237324)
-xx = my_fun.prob_input.get_sample(1000000)
+xx = my_fun.prob_input.get_sample(1000000, rng=237324)
 yy = my_fun(xx)
 idx_neg = yy <= 0.0
 idx_pos = yy > 0.0
@@ -66,9 +66,9 @@ axs_0.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_0.set_xlabel("$X_1$", fontsize=18)
-axs_0.set_ylabel("$X_2$", fontsize=18)
-axs_0.set_zlabel("$g$", fontsize=18)
+axs_0.set_xlabel(r"$X_1$", fontsize=18)
+axs_0.set_ylabel(r"$X_2$", fontsize=18)
+axs_0.set_zlabel(r"$g$", fontsize=18)
 
 # Contour plot
 axs_1 = plt.subplot(132)
@@ -82,8 +82,8 @@ cf = axs_1.contour(
 )
 axs_1.set_xlim([lb_1, ub_1])
 axs_1.set_ylim([lb_2, ub_2])
-axs_1.set_xlabel("$x_1$", fontsize=18)
-axs_1.set_ylabel("$x_2$", fontsize=18)
+axs_1.set_xlabel(r"$x_1$", fontsize=18)
+axs_1.set_ylabel(r"$x_2$", fontsize=18)
 axs_1.tick_params(labelsize=16)
 axs_1.clabel(cf, inline=True, fontsize=18)
 
@@ -103,7 +103,7 @@ axs_2.scatter(
     color="#ca0020",
     marker=".",
     s=30,
-    label="$g(x) \leq 0$"
+    label=r"$g(x) \leq 0$"
 )
 axs_2.scatter(
     xx[idx_pos, 0],
@@ -111,12 +111,12 @@ axs_2.scatter(
     color="#0571b0",
     marker=".",
     s=30,
-    label="$g(x) > 0$"
+    label=r"$g(x) > 0$"
 )
 axs_2.set_xlim([lb_1, ub_1])
 axs_2.set_ylim([lb_2, ub_2])
-axs_2.set_xlabel("$x_1$", fontsize=18)
-axs_2.set_ylabel("$x_2$", fontsize=18)
+axs_2.set_xlabel(r"$x_1$", fontsize=18)
+axs_2.set_ylabel(r"$x_2$", fontsize=18)
 axs_2.tick_params(labelsize=16)
 axs_2.clabel(cf, inline=True, fontsize=18)
 axs_2.legend(fontsize=18, loc="lower right");
@@ -142,7 +142,7 @@ print(my_testfun)
 ## Description
 
 The test function (i.e., the performance function) is analytically defined
-as follows:
+as follows[^location]:
 
 $$
 g(\boldsymbol{x}) = 0.1 (x_1 - x_2)^2 - \frac{(x_1 + x_2)}{\sqrt{2}} + 2.5,
@@ -227,7 +227,7 @@ plt.axvline(0, linewidth=1.0, color="#ca0020")
 
 plt.grid()
 plt.ylabel("Counts [-]")
-plt.xlabel("$\mathcal{M}(\mathbf{X})$")
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$")
 plt.gcf().set_dpi(150);
 ```
 

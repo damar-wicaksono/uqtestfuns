@@ -13,14 +13,12 @@ kernelspec:
 ---
 
 (test-functions:friedman-10d)=
-# Ten-dimensional (10D) Friedman Function
+# Ten-dimensional Function from Friedman (1991)
 
-The 10D Friedman function (or `Friedman6D` function for short) is
-a ten-dimensional (including five dummy variables) scalar-valued function.
-The function features a combination of non-linearity and variable interaction.
-
-It was originally used in {cite}`Friedman1991` as a test function for testing
-a regression spline method.
+The `Friedman10D` function is a nominally ten-dimensional function
+introduced in {cite}`Friedman1991` as a test function
+for regression spline methods.
+Only the first five input variables are active; the remaining five are inert.
 
 ```{note}
 The function was an extension of the six-dimensional version introduced
@@ -32,7 +30,7 @@ in UQTestFuns.
 
 ```{code-cell} ipython3
 import numpy as np
-import matplotlib.pyplot as pltx
+import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
@@ -63,7 +61,7 @@ inert.
 ## Probabilistic input
 
 Based on {cite}`Friedman1991`, the probabilistic input model
-for the function consists of two independent random variables as shown below.
+for the function consists of ten independent random variables as shown below.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -83,13 +81,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 

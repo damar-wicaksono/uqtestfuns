@@ -17,37 +17,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["ConvexFailDomain"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Borri1997": {
-        "function_id": "ConvexFailDomain",
-        "description": (
-            "Input model for the convex failure domain problem "
-            "from Borri and Speranzini (1997)"
-        ),
-        "marginals": [
-            {
-                "name": "X1",
-                "distribution": "normal",
-                "parameters": [0, 1],
-                "description": None,
-            },
-            {
-                "name": "X2",
-                "distribution": "normal",
-                "parameters": [0, 1],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    },
-}
-
 
 def evaluate(xx: np.ndarray) -> np.ndarray:
     """Evaluate the convex failure domain function on a set of input values.
@@ -74,16 +43,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     )
 
     return yy
-
-
-class ConvexFailDomain(UQTestFunFixDimABC):
-    """Concrete implementation of the Convex failure domain reliability."""
-
-    _tags = ["reliability"]
-    _description = (
-        "Convex failure domain problem from Borri and Speranzini (1997)"
-    )
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-
-    evaluate = staticmethod(evaluate)  # type: ignore

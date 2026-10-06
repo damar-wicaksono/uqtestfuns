@@ -10,7 +10,7 @@ In [4], the function was employed in a metamodeling exercise.
 
 The function features a curved, non-convex valley.
 While it is relatively easy to reach the valley, the convergence to the global
-minimum is difficult.
+minimum is challenging.
 
 References
 ----------
@@ -33,123 +33,43 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.uqtestfun_abc import UQTestFunVarDimABC
-from uqtestfuns.core.custom_typing import ProbInputSpecs, FunParamSpecs
-
-__all__ = ["Rosenbrock"]
-
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Picheny2013": {
-        "function_id": "Rosenbrock",
-        "description": (
-            "Search domain for the Rosenbrock function from Picheny et al. "
-            "(2013)"
-        ),
-        "marginals": [
-            {
-                "name": "x",
-                "distribution": "uniform",
-                "parameters": [-5.0, 10.0],
-                "description": None,
-            },
-        ],
-        "copulas": None,
-    }
-}
-
-
-AVAILABLE_PARAMETERS: FunParamSpecs = {
-    "Rosenbrock1960": {
-        "function_id": "Rosenbrock",
-        "description": (
-            "Parameter set for the Rosenbrock function from Rosenbrock (1960)"
-        ),
-        "declared_parameters": [
-            {
-                "keyword": "a",
-                "value": 1.0,
-                "type": float,
-                "description": "Global optimum location and value",
-            },
-            {
-                "keyword": "b",
-                "value": 100.0,
-                "type": float,
-                "description": (
-                    "Steepness, curvature, and width of the valley"
-                ),
-            },
-            {
-                "keyword": "c",
-                "value": 0.0,
-                "type": float,
-                "description": "Shift parameter",
-            },
-            {
-                "keyword": "d",
-                "value": 1.0,
-                "type": float,
-                "description": "Scale parameter",
-            },
-        ],
-    },
-}
-
 
 def evaluate(
-    xx: np.ndarray, a: float, b: float, c: float, d: float
+    xx: np.ndarray,
+    a: float,
+    b: float,
+    c: float,
+    d: float,
 ) -> np.ndarray:
     """Evaluate the Rosenbrock function on a set of input values.
 
     Parameters
     ----------
     xx : np.ndarray
-        M-Dimensional input values given by an N-by-M array where
-        N is the number of input values.
+        An ``(N, M)`` array of input values where ``N`` is the number of
+        evaluation points and ``M`` is the input dimension.
     a : float
-        The parameter controlling the magnitude of the quadratic penalty term
-        between a given input and the parameter; the global optimum location
-        and value are controlled by this parameter.
+        Parameter controlling the location of the global optimum.
     b : float
-        The parameter controlling the magnitude of the quadratic penalty term
-        between two adjacent input variables; the steepness, curvature, and
-        width of the valley are controlled by this parameter.
+        Parameter controlling the steepness and width of the valley.
     c : float
-        The shift parameter.
+        Shift parameter.
     d : float
-        The scale parameter.
+        Scale parameter.
 
     Returns
     -------
     np.ndarray
-        The output of the test function evaluated on the input values.
-        The output is a 1-dimensional array of length N.
-
-    Notes
-    -----
-    - The function returns a constant zero for M < 2.
+        A one-dimensional array of length ``N`` containing the function output.
     """
+    # Deal with special dimension of 1
     if xx.shape[1] == 1:
-        return np.zeros(xx.shape[0])
+        yy = (xx[:, 0] - a) ** 2
+    else:
+        yy = (xx[:, :-1] - a) ** 2 + b * (xx[:, 1:] - xx[:, :-1] ** 2) ** 2
+        yy = np.sum(yy, axis=1)
 
-    yy = (xx[:, :-1] - a) ** 2 + b * (xx[:, 1:] - xx[:, :-1] ** 2) ** 2
-    yy = np.sum(yy, axis=1)
     # Shift and rescale
     yy = (yy - c) / d
 
     return yy
-
-
-class Rosenbrock(UQTestFunVarDimABC):
-    """A concrete implementation of the Rosenbrock test function."""
-
-    _tags = ["optimization", "metamodeling"]
-    _description = (
-        "Optimization test function from Rosenbrock (1960), "
-        "also known as the banana function"
-    )
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = AVAILABLE_PARAMETERS
-
-    evaluate = staticmethod(evaluate)  # type: ignore

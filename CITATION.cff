@@ -16,22 +16,40 @@ authors:
     family-names: Hecht
     affiliation: CASUS/HZDR
     orcid: 'https://orcid.org/0000-0001-9214-8253'
+preferred-citation:
+  type: article
+  authors:
+    - given-names: Damar
+      family-names: Wicaksono
+      affiliation: CASUS/HZDR
+      orcid: 'https://orcid.org/0000-0001-8587-7730'
+    - given-names: Michael
+      family-names: Hecht
+      affiliation: CASUS/HZDR
+      orcid: 'https://orcid.org/0000-0001-9214-8253'
+  title: "UQTestFuns: A Python3 library of uncertainty quantification (UQ) test functions"
+  journal: "Journal of Open Source Software"
+  year: 2023
+  volume: 8
+  issue: 90
+  doi: 10.21105/joss.05671
+  url: 'https://doi.org/10.21105/joss.05671'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.14710452
-    description: The Zenodo URL of version 0.6.0 of the package
+    value: 10.5281/zenodo.23184614
+    description: The Zenodo URL of version 0.7.0 of the package
 repository-code: 'https://github.com/damar-wicaksono/uqtestfuns'
 url: 'https://uqtestfuns.readthedocs.io/en/latest/'
 repository-artifact: 'https://pypi.org/project/uqtestfuns/'
 abstract: >-
-  UQTestFuns is an open-source Python3 library of test
-  functions commonly used within the uncertainty
+  UQTestFuns is an open-source Python library of test
+  functions commonly used within the applied uncertainty
   quantification (UQ) community. The package aims to provide
-  an implementation with minimal dependencies and a common interface
+  an implementation with minimal dependencies and a consistent interface
   of many test functions available in the UQ literature,
   a single entry point collecting test functions and their probabilistic
-  input specifications in a single Python package,
-  and an opportunity for an open-source contribution,
+  input specifications in one Python package,
+  and an opportunity for open-source contributions,
   supporting the implementation of new test functions
   or posting reference results.
 keywords:
@@ -42,5 +60,5 @@ keywords:
   - reliability-analysis
   - surrogate-modeling
 license: MIT
-version: 0.6.0
-date-released: '2025-01-21'
+version: 0.7.0
+date-released: '2026-10-06'

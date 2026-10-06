@@ -1,0 +1,28 @@
+name: GenzDiscontinuous
+description: >-
+  M-dimensional discontinuous function from Genz (1984)
+tags:
+  - integration
+  - sensitivity
+
+dimensions:
+  input: variable
+  output: 1
+
+inputs: inputs.yaml
+
+evaluate: evaluate.discontinuous
+
+parameters:
+  keyword_descriptions:
+    aa: >-
+      Shape parameters (larger = steeper exponential rise, harder integration)
+    bb: >-
+      Offset parameters (define the boundary of the non-zero region)
+  sets:
+    Genz1984:
+      aa:
+        factory: evaluate.get_aa_genz1984
+      bb:
+        factory: evaluate.get_bb_genz1984
+      description: Constant shape and offset parameters from Genz (1984)

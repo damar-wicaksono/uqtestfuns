@@ -23,9 +23,9 @@ Notes
 -----
 
 - The equation of the Sulfur model in [2] (Eq. (12)) is erroneous.
-  The solar constant term S0 should not be squared otherwise the dimension
+  The solar constant term S0 should not be squared, otherwise the dimension
   will not agree. Moreover, the equation is missing factors of 365 in the
-  denominator and 10^12 in the numerator because the parameter L
+  denominator and 10^12 in the numerator. The parameter L
   (Sulfate lifetime in the atmosphere) is given in [days]
   while the parameter Q (Global input flux of anthropogenic sulfur is
   given in [TgS/year].
@@ -61,87 +61,6 @@ References
 
 import numpy as np
 
-from uqtestfuns.core.custom_typing import MarginalSpecs, ProbInputSpecs
-from uqtestfuns.core.uqtestfun_abc import UQTestFunFixDimABC
-
-__all__ = ["Sulfur"]
-
-
-MARGINALS_PENNER1994: MarginalSpecs = [  # From [3] (Table 2)
-    {
-        "name": "Q",
-        "distribution": "lognormal",
-        "parameters": [np.log(71.0), np.log(1.15)],
-        "description": (
-            "Source strength of anthropogenic Sulfur [10^12 g/year]"
-        ),
-    },
-    {
-        "name": "Y",
-        "distribution": "lognormal",
-        "parameters": [np.log(0.5), np.log(1.5)],
-        "description": "Fraction of SO2 oxidized to SO4(2-) aerosol [-]",
-    },
-    {
-        "name": "L",
-        "distribution": "lognormal",
-        "parameters": [np.log(5.5), np.log(1.5)],
-        "description": "Average lifetime of atmospheric SO4(2-) [days]",
-    },
-    {
-        "name": "Psi_e",
-        "distribution": "lognormal",
-        "parameters": [np.log(5.0), np.log(1.4)],
-        "description": "Aerosol mass scattering efficiency [m^2/g]",
-    },
-    {
-        "name": "beta",
-        "distribution": "lognormal",
-        "parameters": [np.log(0.3), np.log(1.3)],
-        "description": "Fraction of light scattered upward hemisphere [-]",
-    },
-    {
-        "name": "f_Psi_e",
-        "distribution": "lognormal",
-        "parameters": [np.log(1.7), np.log(1.2)],
-        "description": "Fractional increase in aerosol scattering efficiency "
-        "due to hygroscopic growth [-]",
-    },
-    {
-        "name": "T^2",
-        "distribution": "lognormal",
-        "parameters": [np.log(0.58), np.log(1.4)],
-        "description": "Square of atmospheric "
-        "transmittance above aerosol layer [-]",
-    },
-    {
-        "name": "(1-Ac)",
-        "distribution": "lognormal",
-        "parameters": [np.log(0.39), np.log(1.1)],
-        "description": "Fraction of earth not covered by cloud [-]",
-    },
-    {
-        "name": "(1-Rs)^2",
-        "distribution": "lognormal",
-        "parameters": [np.log(0.72), np.log(1.2)],
-        "description": "Square of surface coalbedo [-]",
-    },
-]
-
-AVAILABLE_INPUTS: ProbInputSpecs = {
-    "Penner1994": {
-        "function_id": "Sulfur",
-        "description": (
-            "Probabilistic input model for the Sulfur model "
-            "from Penner et al. (1994)."
-        ),
-        "marginals": MARGINALS_PENNER1994,
-        "copulas": None,
-    },
-}
-
-DEFAULT_INPUT_SELECTION = "Penner1994"
-
 SOLAR_CONSTANT = 1361  # [W/m^2] from [4]
 EARTH_AREA = 5.1e14  # [m^2] from [5]
 DAYS_IN_YEAR = 365  # [days]
@@ -153,14 +72,14 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     References
     ----------
     xx : np.ndarray
-        A nine-dimensional input values given by an N-by-9 array
-        where N is the number of input values.
+        An ``(N, 9)`` array of input values where ``N`` is the number of
+        evaluation points.
 
     Returns
     -------
     np.ndarray
-        The output of the Sulfur model test function, i.e.,
-        the direct radiative forcing by sulfate aerosols.
+        A one-dimensional array of length ``N`` containing the direct
+        radiative forcing by sulfate aerosols.
     """
     # Source strength of anthropogenic Sulfur (initially given in Teragram)
     qq = xx[:, 0] * 1e12
@@ -195,14 +114,3 @@ def evaluate(xx: np.ndarray) -> np.ndarray:
     dd_f = -0.5 * factor_1 * sulfate_loading
 
     return dd_f
-
-
-class Sulfur(UQTestFunFixDimABC):
-    """A concrete implementation of the Sulfur model test function."""
-
-    _tags = ["metamodeling", "sensitivity"]
-    _description = "Sulfur model from Charlson et al. (1992)"
-    _available_inputs = AVAILABLE_INPUTS
-    _available_parameters = None
-
-    evaluate = staticmethod(evaluate)  # type: ignore

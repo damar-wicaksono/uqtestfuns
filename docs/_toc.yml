@@ -44,20 +44,18 @@ parts:
             title: Alemazkoor & Meidani (2018) 20D
           - file: test-functions/borehole
             title: Borehole
-          - file: test-functions/bratley1992a
-            title: Bratley et al. (1992) A
-          - file: test-functions/bratley1992b
-            title: Bratley et al. (1992) B
-          - file: test-functions/bratley1992c
-            title: Bratley et al. (1992) C
-          - file: test-functions/bratley1992d
-            title: Bratley et al. (1992) D
+          - file: test-functions/bratley-a
+            title: Bratley A
+          - file: test-functions/bratley-b
+            title: Bratley B
+          - file: test-functions/bratley-c
+            title: Bratley C
+          - file: test-functions/bratley-d
+            title: Bratley D
           - file: test-functions/cantilever-beam-2d
-            title: Cantilever Beam (2D)
+            title: Cantilever Beam 2D
           - file: test-functions/cheng2d
             title: Cheng and Sandu (2010) 2D
-          - file: test-functions/circular-pipe-crack
-            title: Circular Pipe Crack
           - file: test-functions/coffee-cup
             title: Coffee Cup
           - file: test-functions/convex-fail-domain
@@ -65,75 +63,73 @@ parts:
           - file: test-functions/currin-sine
             title: Currin et al. (1988) Sine
           - file: test-functions/damped-cosine
-            title: Damped Cosine
+            title: Santner et al. (2018) Damped Cosine
           - file: test-functions/damped-oscillator
             title: Damped Oscillator
-          - file: test-functions/damped-oscillator-reliability
-            title: Damped Oscillator Reliability
           - file: test-functions/dette-8d
-            title: Dette & Pepelyshev (2010) 8D
+            title: Dette 8D
           - file: test-functions/dette-curved
-            title: Dette & Pepelyshev (2010) Curved
+            title: Dette Curved
           - file: test-functions/dette-exp
-            title: Dette & Pepelyshev (2010) Exponential
+            title: Dette Exp.
           - file: test-functions/flood
             title: Flood
-          - file: test-functions/forrester
-            title: Forrester et al. (2008)
+          - file: test-functions/forrester-1d
+            title: Forrester et al. (2008) 1D
           - file: test-functions/four-branch
-            title: Four-branch
+            title: Four-Branch
           - file: test-functions/franke-1
-            title: (1st) Franke
+            title: Franke (1979) 1st
           - file: test-functions/franke-2
-            title: (2nd) Franke
+            title: Franke (1979) 2nd
           - file: test-functions/franke-3
-            title: (3rd) Franke
+            title: Franke (1979) 3rd
           - file: test-functions/franke-4
-            title: (4th) Franke
+            title: Franke (1979) 4th
           - file: test-functions/franke-5
-            title: (5th) Franke
+            title: Franke (1979) 5th
           - file: test-functions/franke-6
-            title: (6th) Franke
+            title: Franke (1979) 6th
           - file: test-functions/friedman-6d
-            title: Friedman (6D)
+            title: Friedman 6D
           - file: test-functions/friedman-10d
-            title: Friedman (10D)
+            title: Friedman 10D
           - file: test-functions/gayton-hat
             title: Gayton Hat
           - file: test-functions/genz-continuous
-            title: Genz (Continuous)
+            title: Genz Continuous
           - file: test-functions/genz-corner-peak
-            title: Genz (Corner Peak)
-          - file: test-functions/genz-gaussian
-            title: Genz (Gaussian)
+            title: Genz Corner Peak
           - file: test-functions/genz-discontinuous
-            title: Genz (Discontinuous)
+            title: Genz Discontinuous
+          - file: test-functions/genz-gaussian
+            title: Genz Gaussian
           - file: test-functions/genz-oscillatory
-            title: Genz (Oscillatory)
+            title: Genz Oscillatory
           - file: test-functions/genz-product-peak
-            title: Genz (Product Peak)
+            title: Genz Product Peak
           - file: test-functions/gramacy-sine
-            title: Gramacy (2007) Sine
+            title: Gramacy Sine
           - file: test-functions/higdon-sine
-            title: Higdon (2002) Sine
+            title: Higdon Sine
           - file: test-functions/holsclaw-sine
-            title: Holsclaw et al. (2013) Sine
+            title: Holsclaw Sine
           - file: test-functions/hyper-sphere
-            title: Hyper-sphere Bound
+            title: Hyper-sphere
           - file: test-functions/ishigami
             title: Ishigami
           - file: test-functions/lim-non-poly
-            title: Lim et al. (2002) Non-Polynomial
+            title: Lim Non Poly
           - file: test-functions/lim-poly
-            title: Lim et al. (2002) Polynomial
+            title: Lim Poly
           - file: test-functions/linkletter-dec-coeffs
-            title: Linkletter et al. (2006) Dec. Coeffs.
+            title: Linkletter Dec. Coeffs.
           - file: test-functions/linkletter-inert
-            title: Linkletter et al. (2006) Inert
+            title: Linkletter Inert
           - file: test-functions/linkletter-linear
-            title: Linkletter et al. (2006) Linear
+            title: Linkletter Linear
           - file: test-functions/linkletter-sine
-            title: Linkletter et al. (2006) Sine
+            title: Linkletter Sine
           - file: test-functions/mclain-s1
             title: McLain S1
           - file: test-functions/mclain-s2
@@ -144,24 +140,34 @@ parts:
             title: McLain S4
           - file: test-functions/mclain-s5
             title: McLain S5
-          - file: test-functions/moon3d
-            title: Moon (2010) 3D
-          - file: test-functions/morris2006
-            title: Morris et al. (2006)
+          - file: test-functions/moon-3d
+            title: Moon 3D
+          - file: test-functions/morris-m
+            title: Morris M
           - file: test-functions/oakley-1d
-            title: Oakley & O'Hagan (2002) 1D
+            title: Oakley 1D
           - file: test-functions/otl-circuit
-            title: OTL Circuit
+            title: OTL Circuit (6D)
+          - file: test-functions/otl-circuit-20d
+            title: OTL Circuit (20D)
           - file: test-functions/piston
-            title: Piston Simulation
+            title: Piston (7D)
+          - file: test-functions/piston-20d
+            title: Piston (20D)
           - file: test-functions/portfolio-3d
-            title: Simple Portfolio Model
+            title: Portfolio 3D
           - file: test-functions/robot-arm
             title: Robot Arm
           - file: test-functions/rosenbrock
             title: Rosenbrock
           - file: test-functions/rs-circular-bar
             title: RS - Circular Bar
+          - file: test-functions/rs-circular-pipe-crack
+            title: RS - Circular Pipe Crack
+          - file: test-functions/rs-damped-oscillator
+            title: RS - Damped Oscillator
+          - file: test-functions/rs-speed-reducer-shaft
+            title: RS - Speed Reducer Shaft
           - file: test-functions/rs-quadratic
             title: RS - Quadratic
           - file: test-functions/saltelli-linear
@@ -174,26 +180,24 @@ parts:
             title: Sobol'-Levitan
           - file: test-functions/solar-cell
             title: Solar Cell
-          - file: test-functions/speed-reducer-shaft
-            title: Speed Reducer Shaft
           - file: test-functions/sulfur
             title: Sulfur
           - file: test-functions/undamped-oscillator
             title: Undamped Oscillator
           - file: test-functions/webster-2d
-            title: Webster et al. (1996) 2D
-          - file: test-functions/welch1992
-            title: Welch et al. (1992)
+            title: Webster 2D
+          - file: test-functions/welch-20d
+            title: Welch 20D
           - file: test-functions/wing-weight
             title: Wing Weight
   - caption: Probabilistic Input
     chapters:
       - file: prob-input/overview
         title: Overview
-      - file: prob-input/preliminaries
-        title: Preliminaries
-      - file: prob-input/univariate-random-variable
-        title: Univariate Random Variable
+      - file: prob-input/concepts-and-notations
+        title: Concepts and Notations
+      - file: prob-input/marginal-distribution
+        title: Marginal Distribution
       - file: prob-input/probabilistic-input
         title: Probabilistic Input Model
       - file: prob-input/available
@@ -223,28 +227,34 @@ parts:
     chapters:
       - file: api/overview
         title: Overview
+      - file: api/create
+        title: Create
       - file: api/list-functions
         title: List Functions
-      - file: api/uqtestfun-abc
-        title: UQTestFunABC
+      - file: api/list-parameters
+        title: List Parameters
+      - file: api/list-inputs
+        title: List Inputs
       - file: api/uqtestfun
         title: UQTestFun
       - file: api/probinput
         title: ProbInput
       - file: api/marginal
         title: Marginal
-      - file: api/input-spec
-        title: ProbInputSpec
-      - file: api/funparams
-        title: FunParams
+      - file: api/parameters
+        title: Parameters
   - caption: Development
     chapters:
       - file: development/overview
         title: Overview
+      - file: development/how-it-works
+        title: How UQTestFuns Works
       - file: development/setting-up-dev-env
         title: Development Environment
       - file: development/adding-test-function-implementation
         title: Test Function Implementation
+      - file: development/yaml-specification
+        title: YAML Specification Reference
       - file: development/adding-test-function-docs
         title: Test Function Docs
       - file: development/making-a-pull-request

@@ -15,13 +15,13 @@ kernelspec:
 (test-functions:ackley)=
 # Ackley Function
 
-The Ackley function is an $M$-dimensional scalar-valued function.
+The `Ackley` function is an $M$-dimensional scalar-valued function.
 Introduced by Ackley {cite}`Ackley1987` as a benchmark function for
 global optimization algorithms, the function was originally presented in
 two dimensions.
 Bäck and Schwefel {cite}`Baeck1993` later generalized the function to higher
 dimensions.
-More recently, it was employed as a test function for a metamodeling method
+More recently, it was used as a test function for a metamodeling method
 in {cite}`Kaintura2017`.
 
 ```{code-cell} ipython3
@@ -30,8 +30,9 @@ import matplotlib.pyplot as plt
 import uqtestfuns as uqtf
 ```
 
-The plots for one-dimensional and two-dimensional Ackley function are shown below.
-As can be seen, the function features many local optima with a single global optima.
+The plots for one-dimensional and two-dimensional Ackley function
+are shown below. As can be seen, the function features many local optima
+with a single global optimum.
 
 ```{code-cell} ipython3
 :tags: [remove-input]
@@ -56,8 +57,8 @@ fig = plt.figure(figsize=(15, 5))
 axs_1 = plt.subplot(131)
 axs_1.plot(xx_1d, yy_1d, color="#8da0cb")
 axs_1.grid()
-axs_1.set_xlabel("$x$", fontsize=14)
-axs_1.set_ylabel("$\mathcal{M}(x)$", fontsize=14)
+axs_1.set_xlabel(r"$x$", fontsize=14)
+axs_1.set_ylabel(r"$\mathcal{M}(x)$", fontsize=14)
 axs_1.set_title("1D Ackley")
 
 # Surface
@@ -71,9 +72,9 @@ axs_2.plot_surface(
     antialiased=False,
     alpha=0.5
 )
-axs_2.set_xlabel("$x_1$", fontsize=14)
-axs_2.set_ylabel("$x_2$", fontsize=14)
-axs_2.set_zlabel("$\mathcal{M}(x_1, x_2)$", fontsize=14)
+axs_2.set_xlabel(r"$x_1$", fontsize=14)
+axs_2.set_ylabel(r"$x_2$", fontsize=14)
+axs_2.set_zlabel(r"$\mathcal{M}(x_1, x_2)$", fontsize=14)
 axs_2.set_title("Surface plot of 2D Ackley", fontsize=14)
 
 # Contour
@@ -95,29 +96,21 @@ plt.gcf().set_dpi(75);
 
 ## Test function instance  
   
-To create a default instance of the Ackley test function, type:  
-  
+To create an instance of the test function with, for example,
+six input dimensions, type:
+
 ```{code-cell} ipython3
-my_testfun = uqtf.Ackley()
+my_testfun = uqtf.Ackley(input_dimension=6)
 ```
-  
-Check if it has been correctly instantiated:  
-  
+
+Check if it has been correctly instantiated:
+
 ```{code-cell} ipython3
 print(my_testfun)
 ```
-  
-By default, the input dimension is set to $2$[^default_dimension].
-To create an instance with another value of input dimension,
-pass an integer to the parameter `input_dimension` (keyword only).
-For example, to create an instance of 10-dimensional Ackley function, type:
 
-```{code-cell} ipython3
-my_testfun = uqtf.Ackley(input_dimension=10)
-```
-
-In the subsequent section, this 10-dimensional Ackley function will be used
-for illustration.
+In the later sections, 
+the function will be illustrated using this six-dimensional instance.
 
 ## Description
 
@@ -134,13 +127,17 @@ $\boldsymbol{a} = \{ a_1, a_2, a_3 \}$ are parameters of the function.
 
 ## Input
 
-Based on {cite}`Ackley1987`, the search domain of the Ackley function is
-in $[-32.768, 32.768]^M$.
-In UQTestFuns, this search domain can be represented as probabilistic input
-using the uniform distribution with marginals shown in the table below.
+Based on {cite}`Ackley1987`, the probabilistic input model for the function
+consists of $M$ independent uniform random variables over $[0,1]$:
+
+$$
+X_m \sim \mathcal{U}(-32.768, 32.768), \quad m = 1, \ldots, M
+$$
+
+which for the current instance is shown below:
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+:tags: [hide-input, output_scroll]
 
 print(my_testfun.prob_input)
 ```
@@ -168,14 +165,12 @@ Shown below is the histogram of the output based on $100'000$ random points:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-np.random.seed(42)
-xx_test = my_testfun.prob_input.get_sample(100000)
-yy_test = my_testfun(xx_test)
+yy_test = my_testfun.get_sample(100000)
 
 plt.hist(yy_test, bins="auto", color="#8da0cb");
 plt.grid();
 plt.ylabel("Counts [-]");
-plt.xlabel("$\mathcal{M}(\mathbf{X})$");
+plt.xlabel(r"$\mathcal{M}(\mathbf{X})$");
 plt.gcf().set_dpi(150);
 ```
 
@@ -190,6 +185,3 @@ $\mathcal{M}(\boldsymbol{x}^*) = 0$ at $x_m^* = 0,\, m = 1, \ldots, M$.
 :style: unsrtalpha
 :filter: docname in docnames
 ```
-
-[^default_dimension]: This default dimension applies to all variable dimension
-test functions. It will be used if the `input_dimension` argument is not given.

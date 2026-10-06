@@ -4,6 +4,7 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.11"
+    nodejs: "20"
   jobs:
     pre_build:
       - "jupyter-book config sphinx docs/"

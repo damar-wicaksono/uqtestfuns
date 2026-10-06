@@ -1,0 +1,13 @@
+name: Franke2
+description: >-
+  (2nd) Franke function with two plateaus joined by a diagonal ridge from Franke (1979)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 2
+  output: 1
+
+evaluate: evaluate.franke_2
+
+inputs: inputs.yaml

@@ -1,0 +1,26 @@
+name: InvalidMarginalsParameters
+description: Specification with an invalid marginal parameter value
+tags: [metamodeling]
+
+dimensions:
+  input: variable
+  output: 1
+
+evaluate: common.evaluate
+
+inputs:
+  Default:
+    description: Three active inputs and seven inert inputs
+    marginals:
+      - name: A1
+        distribution: uniform
+        parameters: [0.0, abc]
+        description: First active variable
+      - name: A2
+        distribution: normal
+        parameters: [0.0, 1.0]
+        description: Second active variable
+      - name: A3
+        distribution: lognormal
+        parameters: [0.0, 0.5]
+        description: Third active variable

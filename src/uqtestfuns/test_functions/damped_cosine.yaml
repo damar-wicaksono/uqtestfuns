@@ -1,0 +1,17 @@
+name: DampedCosine
+description: One-dimensional damped cosine function from Santner et al. (2018)
+tags:
+  - metamodeling
+
+dimensions:
+  input: 1
+  output: 1
+
+inputs:
+  Santner2018:
+    description: Input domain from Santner et al. (2018)
+    marginals:
+      - name: x
+        distribution: uniform
+        parameters: [0.0, 1.0]
+    copulas: null

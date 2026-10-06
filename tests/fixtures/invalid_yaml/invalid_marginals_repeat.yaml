@@ -1,0 +1,17 @@
+name: InvalidMarginalsRepeat
+description: Specification with invalid repeat value in the marginals specification
+tags: [metamodeling]
+
+dimensions:
+  input: variable
+  output: 1
+
+evaluate: common.evaluate
+
+inputs:
+  Testing:
+    marginals:
+      - name: Y$idx
+        distribution: normal
+        parameters: [0.0, 1.0]
+        repeat: a
