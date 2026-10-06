@@ -21,12 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <br>
 
-UQTestFuns is an open-source Python library of test functions for the
-applied uncertainty quantification (UQ) community: one consistent
-interface, minimal dependencies (NumPy, SciPy, PyYAML, and tabulate), and each function's
-probabilistic input specification bundled in, so you don't have to
-reimplement it yourself.
-
+UQTestFuns is an open-source Python library of test functions for the applied
+uncertainty quantification (UQ) community: one consistent interface,
+minimal dependencies, and each function's probabilistic input specification
+bundled in, so you don't have to reimplement them yourself.
 
 ::::{grid}
 :gutter: 2

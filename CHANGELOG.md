@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-06
+
 ### Added
 
 - A project logo with light and dark variants, a tagline variant for the
@@ -215,6 +217,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   pointed to the old label `test-functions:damped-oscillator-reliability`
   instead of the current `test-functions:rs-damped-oscillator-reliability`
   after the function was renamed to `RSDampedOscillator`.
+- Fixed a nested square root bug in the Piston function's documented
+  formula for volume *V*, which differed from the original
+  Ben-Ari & Steinberg (2007) paper.
 
 ### Removed
 
@@ -552,6 +557,7 @@ First public release of UQTestFuns.
 - Mirror GitHub action to the [CASUS organization](https://github.com/casus)
 
 [Unreleased]: https://github.com/damar-wicaksono/uqtestfuns/compare/main...dev
+[0.7.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/damar-wicaksono/uqtestfuns/compare/v0.4.0...v0.4.1
