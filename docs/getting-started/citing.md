@@ -25,6 +25,12 @@ Every release is archived on [Zenodo], which assigns each version its own
 DOI; the citation details (BibTeX, APA, and other formats) for whichever
 version you used are available there directly.
 
+```{note}
+The [Zenodo link][Zenodo] points to the concept DOI, which always resolves
+to the latest archived version. From there you can navigate to any previous
+release and find its version-specific DOI and citation details.
+```
+
 ## Citing a specific test function
 
 In addition to citing UQTestFuns itself, please also cite the original

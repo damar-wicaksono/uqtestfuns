@@ -1,9 +1,9 @@
-<div align="center">
+<h1 align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/damar-wicaksono/uqtestfuns/dev/docs/_static/logo-dark-tagline.png">
-    <img src="https://raw.githubusercontent.com/damar-wicaksono/uqtestfuns/dev/docs/_static/logo-light-tagline.png" alt="UQTestFuns" width="550">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/damar-wicaksono/uqtestfuns/main/docs/_static/logo-dark-tagline.png">
+    <img src="https://raw.githubusercontent.com/damar-wicaksono/uqtestfuns/main/docs/_static/logo-light-tagline.png" alt="UQTestFuns" width="550">
   </picture>
-</div>
+</h1>
 
 ---
 
@@ -24,13 +24,13 @@ UQTestFuns is an open-source Python library of test functions commonly used
 within the applied uncertainty quantification (UQ) community.
 Specifically, the package provides:
 
-- an implementation _with minimal dependencies_ (i.e., NumPy, SciPy,
-  PyYAML, and tabulate) and
-  _a common interface_ of many test functions available in the UQ literature
-- a _single entry point_ collecting test functions _and_ their probabilistic
-  input specifications in a single Python package
-- an _opportunity for an open-source contribution_, supporting
-  the implementation of new test functions or posting reference results.
+- an implementation of many test functions available in the UQ literature,
+  with a consistent interface and minimal dependencies (i.e., NumPy, SciPy,
+  PyYAML, and tabulate)
+- a single entry point collecting test functions and their probabilistic input
+  specifications in one Python package
+- an opportunity for open-source contributions, such as implementing new test
+  functions or posting reference results.
 
 In short, UQTestFuns is an homage
 to the [Virtual Library of Simulation Experiments (VLSE)](https://www.sfu.ca/~ssurjano/).
@@ -185,7 +185,9 @@ UQTestFuns is currently maintained by:
 - [Damar Wicaksono](mailto:d.wicaksono@hzdr.de) ([HZDR/CASUS](https://www.casus.science/))
 
 The project was originally developed under the Mathematical Foundations of
-Complex System Science Group led by Michael Hecht at CASUS.
+Complex System Science Group
+led by [Michael Hecht](https://sites.google.com/view/prof-dr-michael-hecht/home)
+at CASUS.
 
 Contributors:
 

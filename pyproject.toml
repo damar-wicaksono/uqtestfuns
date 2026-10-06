@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "uqtestfuns"
-version = "0.6.0"
+version = "0.7.0"
 description = "A Python library of test functions from the uncertainty quantification community with a common interface for benchmarking purpose."
 readme = "README.md"
 authors = [

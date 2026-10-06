@@ -28,6 +28,7 @@ sphinx:
     - 'sphinx_proof'
     - 'sphinxcontrib.mermaid'
   config:
+    copyright: "2023–2026"
     html_static_path:
       - _static
     html_favicon: _static/favicon.ico
