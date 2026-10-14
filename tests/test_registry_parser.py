@@ -1,3 +1,11 @@
+"""Tests for YAML specification parsing and component resolution.
+
+This module tests that YAML specification files are correctly parsed into
+structured spec objects (UQTestFunSpec, UQTestFunInfo) and that each component
+(evaluate callable, probabilistic input, and parameters) resolves to the
+expected Python objects. It does not test UQTestFun construction or evaluation.
+"""
+
 import numpy as np
 import pytest
 import yaml
@@ -42,6 +50,8 @@ VALID_SPEC_FILES = [
     "simple_series/variant_sum.yaml",
     "simple_series/variant_prod.yaml",
     "simple_series/variant_max.yaml",
+    "field_output.yaml",
+    "field_output_param_dep.yaml",
 ]
 
 

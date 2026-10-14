@@ -8,7 +8,7 @@ function discovery and instantiation.
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, TypedDict
+from typing import Any, Dict, List, Optional, Tuple, TypedDict, Union
 
 from .specs import CallableSpec, InputVariants, ParametersVariants
 
@@ -47,8 +47,14 @@ class UQTestFunInfo:
         List of categorical tags for classification and search.
     input_dimension : Optional[int]
         Number of input dimensions (None if variable_dimension is True).
-    output_dimension : int
-        Number of output dimensions (default is 1).
+    output_shape : Union[Tuple[int, ...], str]
+        The raw output shape from the YAML: a tuple of integers or a string
+        naming a shape function (when the output shape depends on
+        parameter values).
+    output_dimension : Optional[int]
+        Total number of scalar values in one output point (the product of all
+        elements in ``output_shape``). ``None`` when ``output_shape`` is a
+        string, because the shape is not known until instantiation.
     spec_path : Path
         Absolute path to the YAML specification file
         for the next targeted read.
@@ -72,7 +78,8 @@ class UQTestFunInfo:
 
     # Dimension info
     input_dimension: Optional[int]
-    output_dimension: int
+    output_dimension: Optional[int]
+    output_shape: Union[Tuple[int, ...], str]
 
     # File references
     spec_path: Path
@@ -115,9 +122,15 @@ class UQTestFunSpec:
     parameters : Optional[ParametersVariants]
         Mapping of parameter IDs to their complete specifications.
         Used for test functions that support multiple parameter configurations.
+    output_shape : Union[Tuple[int, ...], CallableSpec]
+        The output shape after parsing. A tuple of integers for a fixed shape
+        (empty tuple ``()`` for scalar output), or a ``CallableSpec`` when the
+        output shape depends on parameter values and must be resolved at
+        instantiation time.
     """
 
     name: str
     evaluate: CallableSpec
     inputs: InputVariants
     parameters: Optional[ParametersVariants]
+    output_shape: Union[Tuple[int, ...], CallableSpec]

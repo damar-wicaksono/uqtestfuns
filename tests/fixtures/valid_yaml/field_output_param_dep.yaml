@@ -1,0 +1,26 @@
+name: FieldOutputParamDep
+description: Test function with a field as output whose shape depends on the input parameter
+tags:
+  - metamodeling
+
+dimensions:
+  input: 1
+  output: output_shape
+
+inputs:
+  Uniform:
+    description: One-dimensional uniform input
+    marginals:
+      - name: X1
+        distribution: uniform
+        parameters: [ 0.0, 5.0 ]
+
+parameters:
+
+  keyword_descriptions:
+    n_t: Number of time steps
+
+  sets:
+    Equal:
+      n_t: 10
+      description: 10 steps

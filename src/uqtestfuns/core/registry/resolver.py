@@ -11,7 +11,7 @@ import importlib
 import inspect
 
 from functools import partial
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from .specs import (
     CallableSpec,
@@ -210,6 +210,29 @@ def resolve_parameters(
         values=values,
         _protected=True,  # This parameter instance is protected
     )
+
+
+def resolve_output_shape(
+    output_shape_spec: Union[Tuple[int, ...], CallableSpec],
+) -> Union[Tuple[int, ...], Callable]:
+    """Resolve an output shape specification to a concrete shape or callable.
+
+    Parameters
+    ----------
+    output_shape_spec : Union[Tuple[int, ...], CallableSpec]
+        Either a fixed output shape as a tuple of integers (empty tuple for
+        scalar output), or a ``CallableSpec`` naming the shape function to
+        resolve when the output shape depends on parameter values.
+
+    Returns
+    -------
+    Union[Tuple[int, ...], Callable]
+        The tuple passed through unchanged, or the resolved shape function
+        ready to be called as ``fn(**parameters)``.
+    """
+    if isinstance(output_shape_spec, CallableSpec):
+        return resolve_callable(output_shape_spec)
+    return output_shape_spec
 
 
 def resolve_callable(callable_spec: CallableSpec) -> Callable:

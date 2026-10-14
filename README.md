@@ -74,6 +74,7 @@ Name          : Borehole
 Description   : Eight-dimensional water flow model through a borehole from Harper and Gupta (1983)
 Input dim.    : 8
 Output dim.   : 1
+Output shape  : ()
 Parameterized : False
 ```
 
