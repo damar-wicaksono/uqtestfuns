@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `SaturatedPointHeatSource`: a new test function for the coupled
+  thermo-hydro-mechanical response of a water-saturated porous rock to a
+  steady point heat source. The model yields three output fields (temperature
+  change, excess pore pressure, and radial displacement) evaluated on a
+  user-specified grid of radial distances and times. It was introduced in
+  Chaudhry et al. (2021) as a test case for global sensitivity analysis.
 - `UQTestFun` now accepts an `output_shape` constructor argument in place of
   the former `output_dimension`. The argument accepts a scalar integer (1 for
   scalar output, *n* for a 1-D vector), a tuple of integers for a fixed
@@ -42,6 +48,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `list_functions()` now accepts `"?"` as a valid value for the
   `output_dimension` filter, returning only functions whose output shape
   is parameter-dependent.
+
+### Fixed
+
+- `resolve_generic` in the YAML expression parser now recurses into lists,
+  so `$(...)` expressions embedded in a YAML list (e.g. a time-grid
+  parameter defined as `[$(24 * 60 * 60), ...]`) are evaluated correctly
+  instead of being stored as raw strings.
 
 ## [0.7.0] - 2026-10-06
 

@@ -64,6 +64,7 @@ def resolve_generic(value: Any) -> Any:
 
     This function resolves values from YAML specifications by:
     - Returning numeric values (float, int) unchanged
+    - Recursively resolving each element of a list
     - Extracting and resolving expressions wrapped in '$()' syntax
     - Substituting named mathematical constants with their numeric values
     - Handling negative constants (e.g., '$(-pi)')
@@ -108,6 +109,9 @@ def resolve_generic(value: Any) -> Any:
     >>> resolve_generic('$(e)')
     2.718281828459045
     """
+    if isinstance(value, list):
+        return [resolve_generic(v) for v in value]
+
     if isinstance(value, str) and _is_expression(value):
         # Evaluate the expression
         value = value[2:-1].strip()

@@ -1,0 +1,77 @@
+name: SaturatedPointHeatSource
+description: >-
+  Thermal consolidation around a point heat source in saturated porous media
+  from Chaudhry et al. (2021)
+tags:
+  - sensitivity
+  - metamodeling
+
+dimensions:
+  input: 8
+  output: output_shape
+
+inputs:
+  Chaudhry2021:
+    description: >-
+      Input parameters for sensitivity analysis from Chaudhry et al. (2021),
+      Table 1
+    marginals:
+      - name: K
+        distribution: trunc-normal
+        parameters: [1.79, 0.34, 1.29, 2.45]
+        description: Total thermal conductivity [W/m/K]
+      - name: C
+        distribution: normal
+        parameters: [978., 68.]
+        description: Total specific heat capacity [J/kg/K]
+      - name: rho
+        distribution: trunc-normal
+        parameters: [2480., 30., 2420., 2540.]
+        description: Total density [kg/m^3]
+      - name: E
+        distribution: trunc-normal
+        parameters: [12.8e+9, 3.7e+9, 5.5e+9, 20.1e+9]
+        description: Young's modulus [Pa]
+      - name: a_s
+        distribution: uniform
+        parameters: [3.0e-5, 7.5e-5]
+        description: Volumetric thermal expansion coefficient of solid [1/K]
+      - name: k_s
+        distribution: trunc-normal
+        parameters: [5.6e-20, 5.5e-20, 7.8e-21, 2.2e-19]
+        description: Intrinsic permeability [m^2]
+      - name: nu
+        distribution: triangular
+        parameters: [0.2, 0.4, 0.3]
+        description: Poisson's ratio [-]
+      - name: phi
+        distribution: trunc-normal
+        parameters: [0.15, 0.0276, 0.097, 0.185]
+        description: Porosity [-]
+    copulas: null
+
+parameters:
+  keyword_descriptions:
+    Q: Point heat source power [W]
+    a_w: Volumetric thermal expansion coefficient of water [1/K]
+    mu_w: Dynamic viscosity of water [Pa.s]
+    rr: Radius query points [m]
+    tt: Time query points [s]
+  sets:
+    Chaudhry2021:
+      Q: 3000.
+      a_w: 4.0e-4
+      mu_w: 1.0e-3
+      rr: [2, 4, 6, 8, 10, 12, 15, 20, 25, 30]
+      tt:
+        - $(24 * 60 * 60)
+        - $(7 * 24 * 60 * 60)
+        - $(30 * 24 * 60 * 60)
+        - $(90 * 24 * 60 * 60)
+        - $(180 * 24 * 60 * 60)
+        - $(365 * 24 * 60 * 60)
+        - $(2 * 365 * 24 * 60 * 60)
+        - $(3 * 365 * 24 * 60 * 60)
+        - $(4 * 365 * 24 * 60 * 60)
+        - $(5 * 365 * 24 * 60 * 60)
+      description: Parameter set from Chaudhry et al. (2021)
