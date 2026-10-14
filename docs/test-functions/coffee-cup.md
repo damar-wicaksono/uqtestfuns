@@ -37,8 +37,8 @@ num_sample = 20
 xx = my_fun.prob_input.get_sample(num_sample, 237324)
 
 yy = my_fun(xx)
-t_e = 200.0
-n_ts = 150
+t_e = my_fun.parameters["t_end"]
+n_ts = my_fun.parameters["n_ts"]
 tt = np.linspace(0, t_e, n_ts)
 
 for i in range(len(xx)):
@@ -83,18 +83,20 @@ $$
 
 where $\kappa$ is the thermal conductivity of the cup.
 
-The test function is the solution to the IVP evaluated at $n_{ts} = 150$
-evenly spaced time points over $[0, t_e]$ with $t_e = 200$ s:
+The test function is the solution to the IVP evaluated at $n_{ts}$
+evenly spaced time points over $[0, t_e]$, where $n_{ts} = 150$ and
+$t_e = 200$ s are the default values of the parameters:
 
 $$
-\mathcal{M}(\boldsymbol{x}; \boldsymbol{p}) = \left( T(t_i; \boldsymbol{x}, \boldsymbol{p}) \right), \; i = 0, \ldots, n_{ts},
+\mathcal{M}(\boldsymbol{x}; \boldsymbol{p}) = \left( T(t_i; \boldsymbol{x}, \boldsymbol{p}) \right), \; i = 1, \ldots, n_{ts},
 $$
 
-where:
+where the time grid $t_1, \ldots, t_{n_{ts}}$ is determined internally from
+$\boldsymbol{p}$ and is not an input to $\mathcal{M}$, and:
 
 - $\boldsymbol{x} = \left( \kappa, T_{\text{amb}} \right)$ is a
   two-dimensional vector of uncertain input variables, defined further below.
-- $\boldsymbol{p} = \{ T_0 \}$ is the initial temperature of the coffee cup,
+- $\boldsymbol{p} = \{ T_0, t_e, n_{ts} \}$ are the model parameters
   defined further below.
 
 ## Probabilistic input

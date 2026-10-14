@@ -27,14 +27,6 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from typing import Any, Dict, Optional
 
-# --- Time grid parameters: fixed to ensure unambiguous output dimension
-# end of transient [s]
-_T_END = 200.0
-# number of time steps
-_N_TS = 150
-# evaluation time points
-_T_EVAL = np.linspace(0.0, _T_END, _N_TS)
-
 
 def fun_ivp(t: float, temp: float, kappa: float, temp_amb: float):
     """The right-hand side of the initial value problem.
@@ -56,6 +48,8 @@ def fun_ivp(t: float, temp: float, kappa: float, temp_amb: float):
 def evaluate(
     xx: np.ndarray,
     temp_0: float,
+    t_end: float,
+    n_ts: int,
     solve_ivp_kwargs: Optional[Dict[str, Any]],
 ) -> np.ndarray:
     """Compute the temperature evolution of the cooling coffee cup.
@@ -66,6 +60,10 @@ def evaluate(
         An ``(N, 2)`` array of input values.
     temp_0 : float
         The initial temperature of the coffee cup [degC].
+    t_end : float
+        The final time step [s]
+    n_ts : int
+        The number of time steps [-]
     solve_ivp_kwargs : dict, optional
         Additional keyword arguments passed to ``solve_ivp()``.
         If ``None``, default solver settings are used.
@@ -73,13 +71,16 @@ def evaluate(
     Returns
     -------
     np.ndarray
-        A two-dimensional array of shape ``(N, 150)`` containing the
-        temperature evolution at 150 evenly spaced time points over
-        200 seconds.
+        Temperature evolution at each of the ``n_ts`` time points.
+        Shape is ``(N, n_ts)`` when ``n_ts > 1``, or ``(N,)`` when
+        ``n_ts == 1``.
     """
 
     # Initialize the output
-    yy = np.empty((len(xx), _N_TS))
+    yy = np.empty((len(xx), n_ts))
+
+    # Time query points
+    t_eval = np.linspace(0.0, t_end, n_ts)
 
     # Get solve_ivp kwargs
     if solve_ivp_kwargs is None:
@@ -93,13 +94,29 @@ def evaluate(
         # Solve the IVP
         sol = solve_ivp(
             fun_ivp,
-            t_span=(0.0, _T_END),
+            t_span=(0.0, t_end),
             y0=[temp_0],
-            t_eval=_T_EVAL,
+            t_eval=t_eval,
             args=(kappa, temp_amb),
             **solve_ivp_kwargs,
         )
 
         yy[i, :] = sol.y[0]
 
-    return yy
+    return yy[:, 0] if n_ts == 1 else yy
+
+
+def output_shape(n_ts: int, **kwargs):
+    """Return the output shape of the model for each sample point.
+
+    Parameters
+    ----------
+    n_ts : int
+        The number of time steps [-]
+
+    Returns
+    -------
+    tuple
+        The output shape of the model for each sample point.
+    """
+    return (n_ts,)

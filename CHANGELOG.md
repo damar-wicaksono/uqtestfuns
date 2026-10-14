@@ -31,6 +31,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `UQTestFun.__str__()` now includes an `Output shape` line alongside
   `Output dim.`, e.g. `Output shape  : ()` for scalar output or
   `Output shape  : (3, 10, 10)` for field output.
+- `CoffeeCup`: the time grid is now controlled by two new parameters,
+  `t_end` (end of the transient [s], default 200.0) and `n_ts` (number
+  of evenly spaced time points, default 150), added to the `Tennoee2018`
+  parameter set. The module-level constants `_T_END`, `_N_TS`, and
+  `_T_EVAL` have been removed. The output shape is now parameter-dependent
+  (reported as `?` in `list_functions()`); with the defaults the output is
+  unchanged at shape `(150,)`. `list_functions(output_dimension=150)` no
+  longer finds `CoffeeCup` as a consequence.
+- `list_functions()` now accepts `"?"` as a valid value for the
+  `output_dimension` filter, returning only functions whose output shape
+  is parameter-dependent.
 
 ## [0.7.0] - 2026-10-06
 

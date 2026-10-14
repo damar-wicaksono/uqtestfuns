@@ -99,7 +99,7 @@ class TestInvalidValueArgument:
         with pytest.raises(ValueError):
             list_functions(tag=tag)
 
-    @pytest.mark.parametrize("output_dimension", [-1, -2, -3])
+    @pytest.mark.parametrize("output_dimension", ["a", -1, -2, -3])
     def test_output_dimension(self, output_dimension):
         """Test function call with an invalid value for 'output_dimension'."""
         with pytest.raises(ValueError):
@@ -130,7 +130,7 @@ class TestInvalidTypeArgument:
         with pytest.raises(TypeError):
             list_functions(tag=tag)
 
-    @pytest.mark.parametrize("output_dimension", ["a", [2]])
+    @pytest.mark.parametrize("output_dimension", [(1,), [2]])
     def test_output_dimension(self, output_dimension):
         """Test function call with an invalid type for 'output_dimension'."""
         with pytest.raises(TypeError):

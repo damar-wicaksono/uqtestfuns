@@ -86,7 +86,9 @@ class TestConstruction:
         # Assertions
         assert f.name == info.name
         assert f.input_dimension == info.input_dimension
-        assert f.output_dimension == info.output_dimension
+        if info.output_dimension is not None:
+            # Only when the output dimension is statically known
+            assert f.output_dimension == info.output_dimension
         assert f.description == info.description
 
     def test_props_var_dim(self, builtin_name: str, info: UQTestFunInfo):
