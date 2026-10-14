@@ -632,18 +632,22 @@ def _verify_input_args(
         )
 
     # --- Parse 'output_dimension'
-    if not isinstance(output_dimension, (int, type(None))):
+    if not isinstance(output_dimension, (int, type(None), str)):
         raise TypeError(
             f"Invalid type for output dimension! "
             f"Expected either an integer or a string. "
             f"Got instead {type(output_dimension)}."
         )
     if output_dimension is not None:
-        if output_dimension <= 0:
-            raise ValueError(
-                f"Invalid value ({output_dimension}) for output dimension! "
-                f"Must be a positive integer."
-            )
+        msg_ = (
+            f"Invalid value ({output_dimension}) for output dimension! "
+            f"Must be either a positive integer or '?'"
+        )
+        if isinstance(output_dimension, int) and output_dimension <= 0:
+            raise ValueError(msg_)
+
+        if isinstance(output_dimension, str) and output_dimension != "?":
+            raise ValueError(msg_)
 
     # --- Parse 'parameterized'
     if not isinstance(parameterized, (bool, type(None))):
