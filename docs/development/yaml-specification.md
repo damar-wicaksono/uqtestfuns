@@ -152,13 +152,19 @@ dimensions:
 
 ### `output`
 
-`output` is optional and defaults to 1. It's the number of output
-values the function returns, and only needs to be specified when the
-function returns a vector output.
+`output` is optional and defaults to 1. It accepts three forms:
 
-For example, the {ref}`coffee cup model <test-functions:coffee-cup>`
-declares `output: 150`, because its evaluation function returns the
-temperature as a function of time rather than a single value.
+- **A positive integer**: the {term}`output dimension <Output dimension>` —
+  the number of scalar values the function returns.
+  A value of 1 (the default) means scalar output; an integer greater than 1
+  means a 1-D vector output of that length.
+  For example, the {ref}`coffee cup model <test-functions:coffee-cup>`
+  declares `output: 150` because it returns a temperature time series.
+- **A list of integers**: a fixed multi-dimensional {term}`output shape <Output shape>`,
+  e.g. `output: [3, 10, 10]` for a function that returns a `(3, 10, 10)` field.
+- **A function name** (string): when the {term}`output shape <Output shape>`
+  depends on the function's parameters and cannot be known until instantiation.
+  The name is resolved the same way as the `evaluate` directive.
 
 ## The evaluate directive
 
@@ -760,7 +766,7 @@ tags: [str, ...]                   # REQUIRED
 # --- The dimensions ---
 dimensions:                        # REQUIRED
   input: int | variable            #   integer for fixed-dim, "variable" for variable-dim
-  output: int                      #   OPTIONAL, default 1
+  output: int | [int, ...] | str   #   OPTIONAL, default 1
 
 # --- The evaluate directive ---
 evaluate: str                      # OPTIONAL, default: evaluate in <stem>.py

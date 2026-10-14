@@ -7,7 +7,7 @@ callable object for uncertainty quantification test functions.
 
 import numpy as np
 
-from typing import Callable, Optional, Union
+from typing import Callable, Optional, Tuple, Union
 
 from .parameters import Parameters
 from .prob_input.probabilistic_input import ProbInput
@@ -26,8 +26,8 @@ class UQTestFun:
     evaluate : Callable
         The evaluation function. Must accept a 2D numpy array of shape
         ``(n_samples, input_dimension)`` and return an array of shape
-        ``(n_samples,)`` or ``(n_samples, output_dimension)``. If parameters
-        are provided, they are passed as keyword arguments.
+        ``(n_samples,) + output_shape``. If parameters are provided,
+        they are passed as keyword arguments.
     prob_input : ProbInput
         The probabilistic input model defining the input space and the
         distribution of the input variables.
@@ -38,8 +38,19 @@ class UQTestFun:
         The name of the UQ test function. Default is None.
     description : str, optional
         A human-readable description of the UQ test function. Default is None.
-    output_dimension : int, optional
-        The number of output values produced per input point. Default is 1.
+    output_shape : Union[int, Tuple[int, ...], Callable], optional
+        The shape of a single output point. Three forms are accepted:
+
+        - **int** ``1`` (default): scalar output; each evaluation returns an
+          array of shape ``(n_samples,)``.
+        - **int** ``n > 1``: vector output of length ``n``; shape is
+          ``(n_samples, n)``.
+        - **tuple of ints**, e.g. ``(i1, i2, i3)``: field output; shape is
+          ``(n_samples, i1, i2, i3)``.
+        - **Callable**: a shape function called as ``fn(**parameters)``
+          (empty dict when the function has no parameters) that returns one
+          of the tuple forms above. Use this when the output shape depends
+          on the parameter values.
 
     Raises
     ------
@@ -54,7 +65,7 @@ class UQTestFun:
         parameters: Optional[Parameters] = None,
         name: Optional[str] = None,
         description: Optional[str] = None,
-        output_dimension: int = 1,
+        output_shape: Union[int, Tuple[int, ...], Callable] = 1,
     ):
         if not callable(evaluate):
             raise TypeError("'evaluate' must be callable")
@@ -72,7 +83,14 @@ class UQTestFun:
 
         self._name = name
         self._description = description
-        self._output_dimension = output_dimension
+        if callable(output_shape):
+            self._output_shape: Union[Tuple[int, ...], Callable] = output_shape
+        elif output_shape == 1:
+            self._output_shape = ()
+        elif isinstance(output_shape, int):
+            self._output_shape = (output_shape,)
+        else:
+            self._output_shape = tuple(output_shape)
 
     # --- Public properties
     @property
@@ -133,16 +151,37 @@ class UQTestFun:
         return self._prob_input.dimension
 
     @property
+    def output_shape(self) -> Tuple[int, ...]:
+        """Get the output shape of the UQ test function.
+
+        Returns
+        -------
+        Tuple[int, ...]
+            The shape of a single output point. ``()`` for scalar output,
+            ``(n,)`` for a vector of length ``n``, or ``(i1, i2, ...)`` for
+            a field. When the shape is parameter-dependent, the shape function
+            is called with the current parameters on every access.
+        """
+        if callable(self._output_shape):
+            params = self.parameters
+            if params is not None:
+                shape = self._output_shape(**params)
+            else:
+                shape = self._output_shape()
+            return () if shape == (1,) else shape
+        return self._output_shape
+
+    @property
     def output_dimension(self) -> int:
         """Get the output dimension of the UQ test function.
 
         Returns
         -------
         int
-            The dimension of the output space, representing the number of
-            output values produced by the test function for each input.
+            The total number of scalar values in one output point, i.e. the
+            product of all elements in ``output_shape`` (1 for scalar output).
         """
-        return self._output_dimension
+        return int(np.prod(self.output_shape))
 
     # --- dunder methods
     def __call__(self, xx: np.ndarray) -> np.ndarray:
@@ -156,8 +195,7 @@ class UQTestFun:
         Returns
         -------
         np.ndarray
-            Output array of shape ``(n_samples,)`` if ``output_dimension``
-            is 1, or ``(n_samples, output_dimension)`` otherwise.
+            Output array of shape ``(n_samples,) + output_shape``.
 
         Raises
         ------
@@ -175,11 +213,7 @@ class UQTestFun:
             yy = self._evaluate(xx)
 
         # --- Output verification
-        expected_shape = (
-            (xx.shape[0],)
-            if self._output_dimension == 1
-            else (xx.shape[0], self._output_dimension)
-        )
+        expected_shape = (xx.shape[0],) + self.output_shape
         if yy.shape != expected_shape:
             raise ValueError(
                 f"Expected output shape {expected_shape}, got {yy.shape}"
@@ -191,6 +225,7 @@ class UQTestFun:
         """Return a human-readable summary of the UQ test function."""
         table = f"Input dim.    : {self.input_dimension}\n"
         table += f"Output dim.   : {self.output_dimension}\n"
+        table += f"Output shape  : {self.output_shape}\n"
         description_ = self.description
 
         if description_ is not None:

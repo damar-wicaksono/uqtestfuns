@@ -1,0 +1,16 @@
+name: FieldOutput
+description: Test function with a field as output
+tags:
+  - metamodeling
+
+dimensions:
+  input: 1
+  output: [3, 10, 10]
+
+inputs:
+  Uniform:
+    description: One-dimensional uniform input
+    marginals:
+      - name: X1
+        distribution: uniform
+        parameters: [ 0.0, 5.0 ]

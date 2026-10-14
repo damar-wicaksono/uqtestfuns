@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Callable, Dict
+from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import yaml
 
@@ -8,10 +8,11 @@ from uqtestfuns.core.registry.entries import (
     UQTestFunSpec,
     KeywordInfo,
 )
-from uqtestfuns.core.registry.specs import InputVariants
+from uqtestfuns.core.registry.specs import CallableSpec, InputVariants
 from .evaluate import parse_evaluate
 from .inputs import parse_inputs
 from .parameters import parse_parameters
+from .output_shape import parse_output_shape
 from .utils import safe_load
 from .validation import SpecValidationError, validate_required_keys
 
@@ -92,8 +93,9 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
                 f"got {input_dimension!r} in {yaml_file}"
             )
 
-    # --- Output dimension (optional with default value)
-    output_dimension = dimensions.get("output", 1)
+    # --- Output shape / dimension (optional, default scalar output)
+    raw_output = dimensions.get("output", 1)
+    output_shape, output_dimension = _parse_output_dimension(raw_output)
 
     # --- File references
     spec_path = yaml_file.resolve()
@@ -162,6 +164,7 @@ def parse_info(yaml_file: Path) -> UQTestFunInfo:
         tags,
         input_dimension,
         output_dimension,
+        output_shape,
         spec_path,
         available_input_ids,
         default_input_id,
@@ -251,9 +254,51 @@ def parse_spec(spec_file: Path, pkg_root: Path) -> UQTestFunSpec:
             pkg_root,
         )
 
+    # Parse output shape
+    raw_output = data.get("dimensions", {}).get("output", 1)
+    output_shape_raw, output_dimension = _parse_output_dimension(raw_output)
+    output_shape: Union[Tuple[int, ...], CallableSpec]
+    if isinstance(output_shape_raw, str):
+        output_shape = parse_output_shape(
+            output_shape_raw,
+            spec_file,
+            pkg_root,
+        )
+    else:
+        output_shape = output_shape_raw
+
     return UQTestFunSpec(
         name=name,
         evaluate=evaluate,
         inputs=input_specs,
         parameters=parameters_specs,
+        output_shape=output_shape,
     )
+
+
+def _parse_output_dimension(
+    raw_output: Union[int, List[int], str],
+) -> Tuple[Union[Tuple[int, ...], str], Optional[int]]:
+    """Normalize the raw ``dimensions.output`` value from YAML.
+
+    Returns a ``(output_shape, output_dimension)`` pair. ``output_shape`` is a
+    tuple of ints (empty for scalar) or the original string when the output
+    shape depends on a shape function. ``output_dimension`` is the product of
+    the shape elements, or ``None`` when the shape is not yet known.
+    """
+    if isinstance(raw_output, list):
+        output_shape: Tuple[int, ...] = tuple(raw_output)
+        output_dimension = 1
+        for s in output_shape:
+            output_dimension *= s
+
+        return output_shape, output_dimension
+
+    if isinstance(raw_output, str):
+        return raw_output, None
+
+    output_dimension = raw_output
+    if output_dimension == 1:
+        return (), output_dimension
+
+    return (output_dimension,), output_dimension

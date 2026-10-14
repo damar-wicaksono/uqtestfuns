@@ -2,11 +2,13 @@
 Test module for UQTestFun class, a generic class for generic UQ test function.
 """
 
+from __future__ import annotations
+
 import numpy as np
 import pytest
 import re
 
-from typing import Callable, Optional
+from typing import Callable, Optional, Tuple, Union
 from typing_extensions import TypedDict
 
 from uqtestfuns.core.uqtestfun import UQTestFun
@@ -21,29 +23,99 @@ class UQTestFunArgs(TypedDict):
     prob_input: ProbInput
     parameters: Optional[Parameters]
     name: str | None
+    output_shape: int | tuple | Callable
+
+
+# Shape functions for the callable output_shape case.
+# Parameters fixture uses p=10.0, so _shape_fn_with_params returns (3, 10).
+def _shape_fn_with_params(p, **kwargs):
+    return (3, int(p))
+
+
+def _shape_fn_no_params():
+    return (3, 4)
+
+
+def _make_evaluate(output_shape, has_parameters=False):
+    """Return an evaluate function whose output matches the given shape."""
+    if output_shape == 1:
+
+        def evaluate(x, **kwargs):
+            p = kwargs.get("p", 1.0)
+            return p * (np.sum(x, axis=1) + 1)
+    elif output_shape == "callable":
+        if has_parameters:
+
+            def evaluate(x, **kwargs):
+                p = kwargs.get("p", 1.0)
+                return p * np.ones((x.shape[0], 3, int(p)))
+        else:
+
+            def evaluate(x, **kwargs):
+                return np.ones((x.shape[0], 3, 4))
+    elif isinstance(output_shape, int):
+
+        def evaluate(x, **kwargs):
+            p = kwargs.get("p", 1.0)
+            return p * np.ones((x.shape[0], output_shape))
+    else:
+
+        def evaluate(x, **kwargs):
+            p = kwargs.get("p", 1.0)
+            return p * np.ones((x.shape[0],) + output_shape)
+
+    return evaluate
 
 
 @pytest.fixture(params=[True, False], ids=["w/_parameters", "w/o_parameters"])
-def uqtestfun(request):
-    """Create an instance of UQTestFun with or without parameters."""
+def has_parameters(request):
+    return request.param
+
+
+@pytest.fixture(
+    params=[1, 3, (3, 4), "callable"],
+    ids=[
+        "output_shape_1",
+        "output_shape_3",
+        "output_shape_(3,4)",
+        "output_shape_callable",
+    ],
+)
+def output_shape_param(request):
+    return request.param
+
+
+@pytest.fixture
+def uqtestfun(has_parameters, output_shape_param):
+    """Create an instance of UQTestFun.
+
+    With varying output shapes, with or without parameters.
+    """
+    output_shape = output_shape_param
     input_marginals = create_random_marginals(1)
 
-    def evaluate(x, **kwargs):
-        p = kwargs.get("p", 1.0)
-        return p * (np.sum(x, axis=1) + 1)
-
-    if request.param:
+    if has_parameters:
         parameters = Parameters({"p": 10.0})
         name = "TestFunction"
     else:
         parameters = None
         name = None
 
+    output_shape_arg: Union[int, Tuple[int, ...], Callable]
+    if output_shape == "callable":
+        if has_parameters:
+            output_shape_arg = _shape_fn_with_params
+        else:
+            output_shape_arg = _shape_fn_no_params
+    else:
+        output_shape_arg = output_shape
+
     my_args: UQTestFunArgs = {
-        "evaluate": evaluate,
+        "evaluate": _make_evaluate(output_shape, has_parameters),
         "prob_input": ProbInput(input_marginals),
         "parameters": parameters,
         "name": name,
+        "output_shape": output_shape_arg,
     }
 
     uqtestfun_instance = UQTestFun(**my_args)
@@ -84,11 +156,7 @@ def test_str(uqtestfun):
     s = str(uqtestfun_instance)
 
     name = uqtestfun_instance.name
-    # if name is None:
-    #     name = "N/A"
     description = uqtestfun_instance.description
-    # if description is None:
-    #     description = "N/A"
 
     # Assertions
     if name is None:
@@ -129,10 +197,22 @@ def test_get_sample(uqtestfun):
     sample_size = 10
     yy = uqtestfun_instance.get_sample(sample_size)
 
-    if uqtestfun_instance.output_dimension == 1:
-        assert yy.shape == (sample_size,)
-    else:
-        assert yy.shape == (sample_size, uqtestfun_instance.output_dimension)
+    # Assertion
+    assert len(yy) == sample_size
+
+
+def test_output_shape(uqtestfun):
+    """Test the output_shape and dimension properties of UQTestFun."""
+    uqtestfun_instance, _ = uqtestfun
+
+    sample_size = 10
+    yy = uqtestfun_instance.get_sample(sample_size)
+
+    # Assertions
+    # The shape of a single evaluation point
+    assert yy[0].shape == uqtestfun_instance.output_shape
+    # The output dimension
+    assert yy[0].size == uqtestfun_instance.output_dimension
 
 
 def test_invalid_input(uqtestfun):
@@ -186,7 +266,7 @@ def test_invalid_output_shape():
         evaluate=evaluate,
         prob_input=prob_input,
         parameters=None,
-        output_dimension=2,
+        output_shape=2,
     )
 
     with pytest.raises(ValueError):

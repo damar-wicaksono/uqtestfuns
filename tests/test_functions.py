@@ -475,7 +475,7 @@ class TestParametersObject:
                 "Non-parameterized functions do not support parameters"
             )
 
-        # Create a dummpy Parameters
+        # Create a dummy Parameters
         params = Parameters({})
 
         with pytest.raises(ValueError):

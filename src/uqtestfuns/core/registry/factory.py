@@ -15,6 +15,7 @@ from uqtestfuns.core.registry.resolver import (
     resolve_evaluate,
     resolve_prob_input,
     resolve_parameters,
+    resolve_output_shape,
 )
 from uqtestfuns.core.prob_input.probabilistic_input import ProbInput
 from uqtestfuns.core.parameters import Parameters
@@ -79,13 +80,16 @@ def make_factory(spec: UQTestFunSpec, info: UQTestFunInfo) -> Callable:
         # --- Resolve evaluate
         evaluate = resolve_evaluate(spec.evaluate, parameters)
 
+        # --- Resolve output shape
+        output_shape = resolve_output_shape(spec.output_shape)
+
         return UQTestFun(
             evaluate=evaluate,
             prob_input=prob_input,
             parameters=parameters,
             name=info.name,
             description=info.description,
-            output_dimension=info.output_dimension,
+            output_shape=output_shape,
         )
 
     factory.__name__ = info.name

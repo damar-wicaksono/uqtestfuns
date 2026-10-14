@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `UQTestFun` now accepts an `output_shape` constructor argument in place of
+  the former `output_dimension`. The argument accepts a scalar integer (1 for
+  scalar output, *n* for a 1-D vector), a tuple of integers for a fixed
+  multi-dimensional output shape (e.g. `(3, 10, 10)` for a field output), or a
+  callable whose return value is the shape (for parameter-dependent output
+  shapes). The `output_shape` property always returns a concrete tuple on an
+  instance; the derived `output_dimension` property is the product of its
+  elements.
+- The YAML `dimensions.output` field now accepts three forms: an integer
+  (scalar or 1-D vector, as before), a list of integers (fixed
+  multi-dimensional shape, e.g. `output: [3, 10, 10]`), or a function name
+  (string) that is resolved at instantiation time to compute a
+  parameter-dependent shape.
+- `list_functions()` shows `?` in the `# Output` column for functions whose
+  output shape is parameter-dependent and therefore not known at registry-scan
+  time.
+
+### Changed
+
+- `UQTestFun.__str__()` now includes an `Output shape` line alongside
+  `Output dim.`, e.g. `Output shape  : ()` for scalar output or
+  `Output shape  : (3, 10, 10)` for field output.
+
 ## [0.7.0] - 2026-10-06
 
 ### Added

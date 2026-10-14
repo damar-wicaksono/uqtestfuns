@@ -103,6 +103,15 @@ def create(
         return factory(**kwargs)
 
 
+def _fmt_input_dim(entry: UQTestFunInfo) -> str:
+    return "M" if entry.variable_dimension else str(entry.input_dimension)
+
+
+def _fmt_output_dim(entry: UQTestFunInfo) -> str:
+    output_dim = entry.output_dimension
+    return "?" if output_dim is None else str(output_dim)
+
+
 COLUMN_DEFINITIONS: Dict[str, Dict[str, Any]] = {
     "no": {
         "header": "No.",
@@ -120,17 +129,13 @@ COLUMN_DEFINITIONS: Dict[str, Dict[str, Any]] = {
         "header": "# Input",
         "align": "center",
         "maxcolwidth": 20,
-        "extractor": lambda idx, name, entry: (
-            "M"
-            if (entry.variable_dimension or entry.input_dimension is None)
-            else str(entry.input_dimension)
-        ),
+        "extractor": lambda idx, name, entry: _fmt_input_dim(entry),
     },
     "output": {
         "header": "# Output",
         "align": "center",
         "maxcolwidth": 20,
-        "extractor": lambda idx, name, entry: str(entry.output_dimension),
+        "extractor": lambda idx, name, entry: _fmt_output_dim(entry),
     },
     "param": {
         "header": "Param.",
@@ -368,19 +373,18 @@ def list_functions(
     # Filter entries
     filtered: Dict[str, UQTestFunInfo] = {}
     for name, entry in entries.items():
-        if entry.variable_dimension:
-            dim_str = "M"
-        else:
-            dim_str = str(entry.input_dimension)
         if input_dimension is not None:
-            if dim_str != str(input_dimension).upper():
+            if _fmt_input_dim(entry) != str(input_dimension).upper():
                 continue
+
         if output_dimension is not None:
-            if entry.output_dimension != output_dimension:
+            if _fmt_output_dim(entry) != str(output_dimension):
                 continue
+
         if parameterized is not None:
             if bool(entry.available_parameters_ids) != parameterized:
                 continue
+
         if tag is not None:
             if tag not in entry.tags:
                 continue
