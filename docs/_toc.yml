@@ -172,6 +172,8 @@ parts:
             title: RS - Quadratic
           - file: test-functions/saltelli-linear
             title: Saltelli Linear
+          - file: test-functions/saturated-point-heat-source
+            title: Saturated Point Heat Source
           - file: test-functions/sobol-g
             title: Sobol'-G
           - file: test-functions/sobol-g-star
