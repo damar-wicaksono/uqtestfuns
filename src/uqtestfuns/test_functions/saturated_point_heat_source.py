@@ -28,8 +28,11 @@ References
 
 import numpy as np
 
-from scipy.special import erfc
+from scipy.special import erfc, erf
 from typing import List, Tuple, Union
+
+_SQRT_PI = np.sqrt(np.pi)
+_RATIO_TOL = 1e-4  # switch to Taylor when |delta| * max(1, z^2) < this
 
 
 def evaluate(
@@ -54,9 +57,9 @@ def evaluate(
     mu_w : float
         Dynamic viscosity of water [Pa s].
     rr : array-like of float
-        Radius query points [m], shape ``(N_r,)``. Must be strictly positive.
+        Radius query points [m], 1-D, all entries strictly positive.
     tt : array-like of float
-        Time query points [s], shape ``(N_t,)``. Must be non-negative.
+        Time query points [s], 1-D, all entries non-negative (zero allowed).
 
     Returns
     -------
@@ -67,9 +70,20 @@ def evaluate(
         displacement u_r [m].
     """
 
-    # Create output array
     rr = np.asarray(rr, dtype=float)
     tt = np.asarray(tt, dtype=float)
+
+    if rr.ndim != 1:
+        raise ValueError(f"rr must be 1-dimensional, got shape {rr.shape}.")
+    if tt.ndim != 1:
+        raise ValueError(f"tt must be 1-dimensional, got shape {tt.shape}.")
+    if not np.all(rr > 0):
+        raise ValueError(
+            "All entries of rr must be strictly positive (rr > 0)."
+        )
+    if not np.all(tt >= 0):
+        raise ValueError("All entries of tt must be non-negative (tt >= 0).")
+
     out = np.empty((len(xx), 3, len(rr), len(tt)))
 
     # Get the individual inputs
@@ -109,24 +123,22 @@ def evaluate(
     # Thermal stress coefficient
     bb = (ll + 2 * GG / 3) * a_s  # Eq. 11, [2]
 
-    # Thermal pressurization coefficient and pore pressure amplitude
-    XX = aa_u * mm - bb  # Eq. (14) in [2]
-    denom = 1 - cc / kappa  # Warning: singular when c is very close to kappa
-    P1 = XX / denom  # (N,)
+    # Thermal pressurization coefficient, Eq. (14) in [2]
+    XX = aa_u * mm - bb  # (N,)
 
     # erfc front function (c), Eq. (18) in [2]
     ff_c = _ff(rr, tt, cc)
 
     # --- Excess pore pressure (Eq. (24) in [2])
-    pp = P1[:, None, None] * q_4piK * (ff_kappa - ff_c) / rr[None, :, None]
+    rr_f = _ratio_f(rr, tt, kappa, cc, ff_kappa, ff_c)
+    pp = XX[:, None, None] * q_4piK / rr[None, :, None] * rr_f
 
     # Displacement shape
-    # Eq. (19) in [2] with kappa
-    gg_kappa = _gg(rr, tt, kappa, ff_kappa)
-    # Eq. (19) in [2] with c
-    gg_c = _gg(rr, tt, cc, ff_c)
+    gg_kappa = _gg(rr, tt, kappa, ff_kappa)  # Eq. (19) in [2] with kappa
+    gg_c = _gg(rr, tt, cc, ff_c)  # Eq. (19) in [2] with c
+    rr_g = _ratio_g(rr, tt, kappa, cc, gg_kappa, gg_c)
     # Eqs. (15), (16), and (20) in [2]
-    g_field = (P1 + bb)[:, None, None] * gg_kappa - P1[:, None, None] * gg_c
+    g_field = bb[:, None, None] * gg_kappa + XX[:, None, None] * rr_g
 
     # --- Displacement (Eq. (25) in [2])
     u_r = q_4piK / mm[:, None, None] * g_field
@@ -163,7 +175,10 @@ def _ff(rr: np.ndarray, tt: np.ndarray, AA: np.ndarray) -> np.ndarray:
     At = AA[:, None] * tt[None, :]  # (N, N_t)
     denom = 2.0 * np.sqrt(At)[:, None, :]  # (N, 1, N_t)
 
-    return erfc(rr[None, :, None] / denom)  # (N, N_r, N_t)
+    # At t = 0, the denominator is 0, giving r/0 = inf;
+    # but erfc(inf) = 0 is well-defined: Suppress the warning.
+    with np.errstate(divide="ignore", invalid="ignore"):
+        return erfc(rr[None, :, None] / denom)  # (N, N_r, N_t)
 
 
 def _gg(
@@ -203,6 +218,152 @@ def _gg(
     term3 = np.sqrt(At_r2 / np.pi) * np.exp(-1.0 / (4.0 * At_r2))
 
     return term1 + term2 - term3
+
+
+def _ratio_f(
+    rr: np.ndarray,
+    tt: np.ndarray,
+    kappa: np.ndarray,
+    cc: np.ndarray,
+    ff_kappa: np.ndarray,
+    ff_c: np.ndarray,
+) -> np.ndarray:
+    """Compute R_f = (f^kappa - f^c) / (1 - c/kappa), stable near c = kappa.
+
+    Uses a quadratic Taylor expansion in delta = 1 - c/kappa when
+    |delta| * max(1, z^2) < _RATIO_TOL, the direct quotient otherwise.
+    Series derived symbolically; verified against 60-digit reference.
+
+    z = r / (2 sqrt(kappa t)).
+
+    Parameters
+    ----------
+    rr : np.ndarray
+        Radius query points, shape ``(N_r,)``.
+    tt : np.ndarray
+        Time query points, shape ``(N_t,)``.
+    kappa : np.ndarray
+        Thermal diffusivity values, shape ``(N,)``.
+    cc : np.ndarray
+        Hydraulic diffusivity values, shape ``(N,)``.
+    ff_kappa : np.ndarray
+        Precomputed ``_ff(rr, tt, kappa)``, shape ``(N, N_r, N_t)``.
+    ff_c : np.ndarray
+        Precomputed ``_ff(rr, tt, cc)``, shape ``(N, N_r, N_t)``.
+
+    Returns
+    -------
+    np.ndarray
+        Shape ``(N, N_r, N_t)``.
+    """
+    # delta = 1 - c/kappa: zero at the singularity, negative when c > kappa
+    delta = (1.0 - cc / kappa)[:, None, None]  # (N, 1, 1)
+
+    # z = r / (2 sqrt(kappa t)): erfc argument at thermal diffusivity.
+    # errstate: at t=0, sqrt(0)=0 so z=inf; erfc(inf)=0, the result is correct.
+    At = kappa[:, None] * tt[None, :]  # (N, N_t)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        z = rr[None, :, None] / (2.0 * np.sqrt(At)[:, None, :])  # (N,N_r,N_t)
+
+    # Broadcast delta to (N, N_r, N_t) for element-wise masking with z.
+    delta_bc = np.broadcast_to(delta, z.shape)
+
+    # Switch to Taylor where the direct quotient loses precision.
+    # The erfc argument for c differs from z by ~|delta|/2, so the two erfc
+    # values agree to ~|delta| relative digits; for large z they agree to
+    # ~|delta|*z^2 because erfc decays fast there. Hence, the z^2 scaling.
+    near = np.abs(delta_bc) * np.maximum(1.0, z**2) < _RATIO_TOL
+
+    out = np.empty_like(ff_kappa)
+    # Direct quotient: safe wherever near is False.
+    # errstate: delta=0 gives 0/0=NaN, but near=True there, so it is unused.
+    with np.errstate(divide="ignore", invalid="ignore"):
+        out[~near] = ((ff_kappa - ff_c) / delta)[~near]
+
+    # Taylor branch: extract the near-singular elements as 1-D arrays to
+    # avoid evaluating exp(-z^2) at z=inf (t=0 entries, where near=False).
+    zn, dn = z[near], delta_bc[near]
+    z2n = zn**2
+
+    # Quadratic Taylor expansion of R_f in delta, via L'Hopital at delta=0:
+    #   R_f ~ (z e^{-z^2} / sqrt(pi)) * (1 + c1*delta + c2*delta^2)
+    # Coefficients from expanding z_c = z/sqrt(1-delta) and differentiating:
+    #   c1 = 3/4 - z^2/2
+    #   c2 = 5/8 - 5*z^2/6 + z^4/6
+    c1 = 3 / 4 - z2n / 2
+    c2 = 5 / 8 - 5 / 6 * z2n + z2n**2 / 6
+    out[near] = zn * np.exp(-z2n) / _SQRT_PI * (1.0 + c1 * dn + c2 * dn**2)
+
+    return out
+
+
+def _ratio_g(
+    rr: np.ndarray,
+    tt: np.ndarray,
+    kappa: np.ndarray,
+    cc: np.ndarray,
+    gg_kappa: np.ndarray,
+    gg_c: np.ndarray,
+) -> np.ndarray:
+    """Compute R_g = (g^kappa - g^c) / (1 - c/kappa), stable near c = kappa.
+
+    Uses a quadratic Taylor expansion in delta = 1 - c/kappa when
+    |delta| * max(1, z^2) < _RATIO_TOL, the direct quotient otherwise.
+    Series derived symbolically; verified against 60-digit reference.
+
+    Parameters
+    ----------
+    rr : np.ndarray
+        Radius query points, shape ``(N_r,)``.
+    tt : np.ndarray
+        Time query points, shape ``(N_t,)``.
+    kappa : np.ndarray
+        Thermal diffusivity values, shape ``(N,)``.
+    cc : np.ndarray
+        Hydraulic diffusivity values, shape ``(N,)``.
+    gg_kappa : np.ndarray
+        Precomputed ``_gg(rr, tt, kappa, ff_kappa)``, shape ``(N, N_r, N_t)``.
+    gg_c : np.ndarray
+        Precomputed ``_gg(rr, tt, cc, ff_c)``, shape ``(N, N_r, N_t)``.
+
+    Returns
+    -------
+    np.ndarray
+        Shape ``(N, N_r, N_t)``.
+    """
+    # Same setup as _ratio_f: delta, z, near mask.
+    delta = (1.0 - cc / kappa)[:, None, None]  # (N, 1, 1)
+    At = kappa[:, None] * tt[None, :]  # (N, N_t)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        z = rr[None, :, None] / (2.0 * np.sqrt(At)[:, None, :])  # (N,N_r,N_t)
+    delta_bc = np.broadcast_to(delta, z.shape)
+    near = np.abs(delta_bc) * np.maximum(1.0, z**2) < _RATIO_TOL
+
+    out = np.empty_like(gg_kappa)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        out[~near] = ((gg_kappa - gg_c) / delta)[~near]
+
+    zn, dn = z[near], delta_bc[near]
+    z2n = zn**2
+
+    # Quadratic Taylor expansion of R_g in delta.
+    # G(z) denotes g^A written in z = r/(2 sqrt(At)).  The expansion is:
+    #   R_g ~ -G'(z)*z/2 + (-3G'(z)*z/8 - G''(z)*z^2/8)*delta + ...
+    #
+    # Zeroth-order term (delta=0 limit): -G'(z)*z/2.
+    # G'(z) = -erf(z)/(2z^3) + exp(-z^2)/(sqrt(pi)*z^2), so:
+    #   -G'(z)*z/2 = (erf(z) - 2z exp(-z^2)/sqrt(pi)) / (4z^2)
+    limit = (erf(zn) - 2.0 / _SQRT_PI * zn * np.exp(-z2n)) / (4.0 * z2n)
+
+    # Linear and quadratic corrections: the 3G' and G'' terms simplify to
+    #   c1 = 1/4, c2 = 5/24 - z^2/12  (both multiplied by z exp(-z^2)/sqrt(pi))
+    corr = (
+        zn * np.exp(-z2n) / _SQRT_PI * (dn / 4 + (5 / 24 - z2n / 12) * dn**2)
+    )
+
+    out[near] = limit + corr
+
+    return out
 
 
 def output_shape(

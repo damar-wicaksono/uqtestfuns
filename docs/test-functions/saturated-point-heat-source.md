@@ -22,11 +22,14 @@ import uqtestfuns as uqtf
 ```
 
 Thermal consolidation around a point heat source (`SaturatedPointHeatSource`)
-describes the coupled thermo-hydro-mechanical response of a water-saturated
-porous rock to a steady point source of heat.
-The model yields three output fields: temperature change $\Delta T$,
-excess pore pressure $p$, and radial displacement $u_r$.
-It appeared in {cite}`Chaudhry2021` as a test case for global sensitivity analysis.
+describes the coupled thermo-hydro-mechanical response of an infinite,
+water-saturated porous rock to a constant-power point source of heat.
+The model yields three fields over the radial distance $r$ and time $t$,
+all relative to the initial state: the temperature change $\Delta T$,
+the excess pore pressure $p$, and the radial displacement $u_r$.
+The analytical solution is due to {cite}`Booker1985`, as corrected by
+{cite}`Chaudhry2019`; it appeared in {cite}`Chaudhry2021` as a test case
+for local and global sensitivity analysis.
 
 The three output fields evaluated at the nominal parameter values
 are shown in the figures below.
